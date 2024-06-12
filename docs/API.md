@@ -2,7 +2,7 @@
 
 ## API Reference
 
-### The message object.
+### The Message Object
 
 The message object is a critical component when interacting with the various LLM APIs through the `llm-interface` package. It contains the data that will be sent to the LLM for processing. Below is a detailed explanation of a valid message object.
 
