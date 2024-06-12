@@ -59,11 +59,15 @@ openai
   });
 ```
 
+Additional [usage examples](/docs/USAGE.md) and [API documentation](/docs/API.md) are available.
+
 ## Running Tests
 
 The project includes tests for each LLM handler. To run the tests, use the following command:
 
-`npm test`
+```bash
+npm test
+```
 
 ## Contribute
 
