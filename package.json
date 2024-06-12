@@ -1,0 +1,42 @@
+{
+  "name": "llm-interface",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "llm",
+    "ai",
+    "anthropic",
+    "claude",
+    "google",
+    "gemini",
+    "groq",
+    "llamacp",
+    "openai",
+    "chatgpt"
+  ],
+  "author": "Sam Estrin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samestrin/llm-interface/issues"
+  },
+  "homepage": "https://github.com/samestrin/llm-interface#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samestrin/llm-interface.git"
+  },
+  "description": "A unified interface for integrating and interacting with multiple Large Language Model (LLM) APIs, including OpenAI, Anthropic, Google Gemini, Groq, and LlamaCP.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.22.0",
+    "@google/generative-ai": "^0.12.0",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "groq-sdk": "^0.5.0",
+    "openai": "^4.50.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
