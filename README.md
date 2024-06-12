@@ -14,7 +14,7 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 - **Dynamic Module Loading**: Automatically loads and manages different LLM handlers.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
-- **JSON Output**: Simple to use JSON output from OpenAI and Gemini.
+- **JSON Output**: Simple to use JSON output for OpenAI and Gemini responses.
 
 ## Dependencies
 
