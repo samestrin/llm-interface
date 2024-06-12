@@ -15,7 +15,16 @@ test("Anthropic API Client should send a message and receive a response", async 
     messages: [
       {
         role: "user",
-        content: "Write me a short story about trees.",
+        content:
+          "You are a helpful assistant. Say OK if you understand and stop.",
+      },
+      {
+        role: "system",
+        content: "OK",
+      },
+      {
+        role: "user",
+        content: "Explain the importance of low latency LLMs.",
       },
     ],
   };

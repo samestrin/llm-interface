@@ -19,12 +19,16 @@ test("OpenAI API Client should send a message and receive a response", async () 
       },
       {
         role: "user",
-        content: "Explain the importance of low latency LLMs.",
+        content:
+          "Explain the importance of low latency LLMs. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}]",
       },
     ],
   };
 
-  let response = await openai.sendMessage(message, { max_tokens: 100 });
+  const response = await openai.sendMessage(message, {
+    max_tokens: 100,
+    response_format: "json_object",
+  });
   console.log(response);
   expect(typeof response).toBe("string");
 });

@@ -14,6 +14,10 @@ test("LlamaCPP API Client should send a message and receive a response", async (
     model: "some-llamacpp-model",
     messages: [
       {
+        role: "system",
+        content: "You are a helpful assistant.",
+      },
+      {
         role: "user",
         content: "Explain the importance of low latency LLMs.",
       },

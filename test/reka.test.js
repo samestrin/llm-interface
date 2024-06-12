@@ -11,13 +11,22 @@ test("Reka API Client should send a message and receive a response", async () =>
     messages: [
       {
         role: "user",
-        content: "What is the fifth prime number?",
+        content:
+          "You are a helpful assistant. Say OK if you understand and stop.",
+      },
+      {
+        role: "system",
+        content: "OK",
+      },
+      {
+        role: "user",
+        content: "Explain the importance of low latency LLMs.",
       },
     ],
   };
   try {
     const response = await reka.sendMessage(message, {});
-    console.log(response); // Log the response for debugging
+    console.log(JSON.stringify(response)); // Log the response for debugging
     expect(typeof response).toBe("string");
   } catch (error) {
     console.error("Test failed:", error); // Log the error for debugging
