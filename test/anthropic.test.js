@@ -3,13 +3,13 @@
  * @description Tests for the Anthropic API client.
  */
 
-const AnthropicWrapper = require("../src/anthropic"); // Adjust path as needed
+const Anthropic = require("../src/anthropic"); // Adjust path as needed
 const { anthropicApiKey } = require("../config");
 
 test("Anthropic API Client should send a message and receive a response", async () => {
   expect(typeof anthropicApiKey).toBe("string");
 
-  const anthropic = new AnthropicWrapper(anthropicApiKey);
+  const anthropic = new Anthropic(anthropicApiKey);
   const message = {
     model: "claude-3-opus-20240229",
     messages: [

@@ -1,6 +1,20 @@
+/**
+ * @file reka.js
+ * @class Reka
+ * @description Wrapper class for the Reka AI HTTP API.
+ * @param {string} apiKey - The API key for OpenAI.
+ */
+
 const axios = require("axios");
 
-class RekaWrapper {
+/**
+ * Class representing a wrapper for the Reka API.
+ *
+ * @class
+ * @param {string} apiKey - The API key for authentication.
+ */
+
+class Reka {
   constructor(apiKey) {
     this.apiKey = apiKey;
     this.client = axios.create({
@@ -12,6 +26,19 @@ class RekaWrapper {
     });
   }
 
+  /**
+   * Sends a message to the Reka API.
+   *
+   * @async
+   * @param {Object} message - The message object containing the messages to be sent.
+   * @param {Object} [options={}] - Additional options for the API call.
+   * @param {string} [options.model="reka-core"] - The model to be used for processing the message.
+   * @returns {Promise<string>} The response content from the API.
+   * @throws {Error} Throws an error if the API call fails or the response format is unexpected.
+   *
+   * @example
+   * const response = await wrapper.sendMessage({ messages: [{ role: 'user', content: 'Hello' }] });
+   */
   async sendMessage(message, options = {}) {
     const { model = "reka-core" } = options;
 
@@ -56,4 +83,4 @@ class RekaWrapper {
   }
 }
 
-module.exports = RekaWrapper;
+module.exports = Reka;

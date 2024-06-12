@@ -42,7 +42,7 @@ The Anthropic interface allows you to send messages to the Anthropic API.
 #### Example
 
 ```javascript
-const AnthropicWrapper = new handlers.anthropic(process.env.ANTHROPIC_API_KEY);
+const anthropic = new handlers.anthropic(process.env.ANTHROPIC_API_KEY);
 
 const message = {
   model: "claude-3-opus-20240229",
@@ -57,7 +57,8 @@ const message = {
   ],
 };
 
-AnthropicWrapper.sendMessage(message, { max_tokens: 150 })
+anthropic
+  .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
     console.log(response);
   })

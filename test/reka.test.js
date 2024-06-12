@@ -1,10 +1,10 @@
-const RekaWrapper = require("../src/reka"); // Adjust path as needed
+const Reka = require("../src/reka"); // Adjust path as needed
 const { rekaApiKey } = require("../config");
 
 test("Reka API Client should send a message and receive a response", async () => {
   expect(typeof rekaApiKey).toBe("string");
 
-  const reka = new RekaWrapper(rekaApiKey);
+  const reka = new Reka(rekaApiKey);
 
   const message = {
     model: "reka-core",

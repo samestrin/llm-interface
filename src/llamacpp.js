@@ -25,7 +25,7 @@ class LlamaCPP {
    * @returns {Promise<string>} - The response text.
    * @throws {Error} - Throws an error if the API call fails.
    * @example
-   * const response = await llamaCP.sendMessage({ messages: [{ role: 'user', content: 'Hello!' }] });
+   * const response = await llamaCPP.sendMessage({ messages: [{ role: 'user', content: 'Hello!' }] });
    */
   async sendMessage(prompt, options = {}) {
     const { max_tokens = 150 } = options;

@@ -47,7 +47,8 @@ openai
 - **Example:**
 
 ```javascript
-AnthropicWrapper.sendMessage(message, { max_tokens: 150 })
+anthropic
+  .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
     console.log(response);
   })

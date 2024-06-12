@@ -1,14 +1,14 @@
 /**
  * @file groq.js
- * @class GroqWrapper
+ * @class Groq
  * @description Wrapper class for the Groq API.
  * @param {string} apiKey - The API key for Groq.
  */
-const Groq = require("groq-sdk");
+const GroqSDK = require("groq-sdk");
 
-class GroqWrapper {
+class Groq {
   constructor(apiKey) {
-    this.groq = new Groq({
+    this.groq = new GroqSDK({
       apiKey: apiKey,
     });
   }
@@ -22,7 +22,7 @@ class GroqWrapper {
    * @returns {Promise<string>} - The response text.
    * @throws {Error} - Throws an error if the API call fails.
    * @example
-   * const response = await groqWrapper.sendMessage({ messages: [{ role: 'user', content: 'Hello!' }] });
+   * const response = await groq.sendMessage({ messages: [{ role: 'user', content: 'Hello!' }] });
    */
   async sendMessage(message, options = {}) {
     const { max_tokens = 150, model = message.model || "llama3-8b-8192" } =
@@ -43,4 +43,4 @@ class GroqWrapper {
   }
 }
 
-module.exports = GroqWrapper;
+module.exports = Groq;

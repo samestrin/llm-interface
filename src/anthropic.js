@@ -1,15 +1,15 @@
 /**
  * @file anthropic.js
- * @class AnthropicWrapper
+ * @class Anthropic
  * @description Wrapper class for the Anthropic API.
  * @param {string} apiKey - The API key for Anthropic.
  */
 
-const Anthropic = require("@anthropic-ai/sdk");
+const AnthropicSDK = require("@anthropic-ai/sdk");
 
-class AnthropicWrapper {
+class Anthropic {
   constructor(apiKey) {
-    this.anthropic = new Anthropic({
+    this.anthropic = new AnthropicSDK({
       apiKey: apiKey,
     });
   }
@@ -23,7 +23,7 @@ class AnthropicWrapper {
    * @returns {Promise<string>} - The response text.
    * @throws {Error} - Throws an error if the API call fails.
    * @example
-   * const response = await anthropicWrapper.sendMessage({ messages: [{ role: 'user', content: 'Hello!' }] });
+   * const response = await Anthropic.sendMessage({ messages: [{ role: 'user', content: 'Hello!' }] });
    */
 
   async sendMessage(message, options = {}) {
@@ -60,4 +60,4 @@ class AnthropicWrapper {
   }
 }
 
-module.exports = AnthropicWrapper;
+module.exports = Anthropic;
