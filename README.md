@@ -59,7 +59,7 @@ openai
   });
 ```
 
-Additional [usage examples](/docs/USAGE.md) and [API documentation](/docs/API.md) are available.
+Additional [usage examples](/docs/USAGE.md) and [API reference](/docs/API.md) are available.
 
 ## Running Tests
 
