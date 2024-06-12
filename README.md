@@ -26,6 +26,39 @@ The project relies on several npm packages and APIs. Here are the primary depend
 - `groq-sdk`: SDK for interacting with the Groq API.
 - `openai`: SDK for interacting with the OpenAI API.
 
+## Installation
+
+To install the `llm-interface` package, you can use npm:
+
+```bash
+npm install llm-interface
+```
+
+## Usage
+
+### Example
+
+```javascript
+const handlers = require("llm-interface");
+
+const openai = new handlers.openai(process.env.OPENAI_API_KEY);
+const message = {
+  model: "gpt-3.5-turbo",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+openai
+  .sendMessage(message, { max_tokens: 150 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ## Running Tests
 
 The project includes tests for each LLM handler. To run the tests, use the following command:
