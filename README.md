@@ -39,7 +39,7 @@ npm install llm-interface
 
 ### Example
 
-### Import `llm-interface`
+Import `llm-interface` using:
 
 ```javascript
 const handlers = require("llm-interface");
@@ -51,7 +51,7 @@ or
 import handlers from "llm-interface";
 ```
 
-#### OpenAI Interface
+then call the handler you want to use:
 
 ```javascript
 const openai = new handlers.openai(process.env.OPENAI_API_KEY);
@@ -72,7 +72,7 @@ openai
   });
 ```
 
-Additional [usage examples](/docs/USAGE.md) and [API reference](/docs/API.md) are available.
+Additional [usage examples](/docs/USAGE.md) and [API reference](/docs/API.md) are available. You may also wish to review the [test cases](/test/) for further examples.
 
 ## Running Tests
 
