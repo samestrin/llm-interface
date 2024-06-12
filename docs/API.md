@@ -98,6 +98,27 @@ groq
   });
 ```
 
+### Reka AI
+
+#### `sendMessage(message, options)`
+
+- **Parameters:**
+  - `message`: An object containing the model and messages to send.
+  - `options`: An optional object containing `model`.
+- **Returns:** A promise that resolves to the response text.
+- **Example:**
+
+```javascript
+reka
+  .sendMessage(message, {})
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### LlamaCPP
 
 #### `sendMessage(message, options)`
