@@ -114,6 +114,28 @@ groq
   });
 ```
 
+### Reka AI Interface
+
+The Reka AI interface allows you to send messages to the Reka AI REST API.
+
+#### Example
+
+```javascript
+const reka = new handlers.reka(process.env.REKA_API_KEY);
+
+const message = {
+  model: "reka-core",
+  messages: [
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
+reka
+  .sendMessage(message, {})
+  .then((response) => console.log("Response:", response))
+  .catch((error) => console.error("Error:", error));
+```
+
 ### LlamaCPP Interface
 
 The LlamaCPP interface allows you to send messages to the LlamaCPP API.
