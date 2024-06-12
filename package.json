@@ -16,7 +16,8 @@
     "groq",
     "llamacpp",
     "openai",
-    "chatgpt"
+    "chatgpt",
+    "reka"
   ],
   "author": "Sam Estrin",
   "license": "MIT",
