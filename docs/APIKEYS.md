@@ -34,6 +34,6 @@ The Reka AI API requires a credit card, but currently comes with a $5 credit.
 
 ## LLaMA.cpp
 
-Instead of an API key, you'll need a URL to use LLaMA.cpp.
+Instead of an API key, you'll need a URL to use LLaMA.cpp. This is provided by LLaMA.cpp HTTP Server.
 
 - [LLaMA.cpp HTTP Server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server).
