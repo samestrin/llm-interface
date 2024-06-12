@@ -1,6 +1,6 @@
 # llm-interface
 
-## Usage
+## Usage Examples
 
 First, require the handlers from the `llm-interface` package:
 
