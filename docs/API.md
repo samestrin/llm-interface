@@ -98,7 +98,7 @@ groq
   });
 ```
 
-### LlamaCP
+### LlamaCPP
 
 #### `sendMessage(message, options)`
 
@@ -109,7 +109,7 @@ groq
 - **Example:**
 
 ```javascript
-llamacp
+llamacpp
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
     console.log(response);

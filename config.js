@@ -9,6 +9,6 @@ module.exports = {
   openaiApiKey: process.env.OPENAI_API_KEY,
   groqApiKey: process.env.GROQ_API_KEY,
   geminiApiKey: process.env.GEMINI_API_KEY,
-  llamaURL: process.env.LLAMACP_URL,
+  llamaURL: process.env.LLAMACPP_URL,
   anthropicApiKey: process.env.ANTHROPIC_API_KEY,
 };

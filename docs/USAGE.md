@@ -114,23 +114,23 @@ groq
   });
 ```
 
-### LlamaCP Interface
+### LlamaCPP Interface
 
-The LlamaCP interface allows you to send messages to the LlamaCP API.
+The LlamaCPP interface allows you to send messages to the LlamaCPP API.
 
 #### Example
 
 ```javascript
-const llamacp = new handlers.llamacp(process.env.LLAMACP_URL);
+const llamacpp = new handlers.llamacpp(process.env.LLAMACPP_URL);
 
 const message = {
-  model: "some-llamacp-model",
+  model: "some-llamacpp-model",
   messages: [
     { role: "user", content: "Explain the importance of low latency LLMs." },
   ],
 };
 
-llamacp
+llamacpp
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
     console.log(response);

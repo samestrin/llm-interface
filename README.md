@@ -6,7 +6,7 @@
 
 ## Introduction
 
-The LLM Interface project is a versatile and comprehensive wrapper designed to interact with multiple Large Language Model (LLM) APIs. It simplifies integrating various LLM providers, including OpenAI, Anthropic, Google Gemini, Groq, and LlamaCP, into your applications. This project aims to provide a simplified and unified interface for sending messages and receiving responses from different LLM services, making it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
+The LLM Interface project is a versatile and comprehensive wrapper designed to interact with multiple Large Language Model (LLM) APIs. It simplifies integrating various LLM providers, including OpenAI, Anthropic, Google Gemini, Groq, and LlamaCPP, into your applications. This project aims to provide a simplified and unified interface for sending messages and receiving responses from different LLM services, making it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
 ## Features
 
@@ -20,7 +20,7 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 The project relies on several npm packages and APIs. Here are the primary dependencies:
 
 - `dotenv`: For managing environment variables.
-- `axios`: For making HTTP requests (used in LlamaCP).
+- `axios`: For making HTTP requests (used in LlamaCPP).
 - `@anthropic-ai/sdk`: SDK for interacting with the Anthropic API.
 - `@google/generative-ai`: SDK for interacting with the Google Gemini API.
 - `groq-sdk`: SDK for interacting with the Groq API.

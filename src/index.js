@@ -7,7 +7,7 @@ const modules = {
   openai: "./openai",
   claude: "./claude",
   gemini: "./gemini",
-  llamacp: "./llamacp",
+  llamacpp: "./llamacpp",
 };
 
 const handlers = {};

@@ -1,16 +1,16 @@
 /**
- * @file llamacp.js
- * @class LlamaCP
- * @description Wrapper class for the LlamaCP API.
- * @param {string} llamacpURL - The URL for the LlamaCP API.
+ * @file llamacpp.js
+ * @class LlamaCPP
+ * @description Wrapper class for the LlamaCPP API.
+ * @param {string} llamacppURL - The URL for the LlamaCPP API.
  */
 
 const axios = require("axios");
 
-class LlamaCP {
-  constructor(llamacpURL) {
+class LlamaCPP {
+  constructor(llamacppURL) {
     this.client = axios.create({
-      llamacpURL: llamacpURL,
+      baseURL: llamacppURL,
       headers: {
         "Content-Type": "application/json",
       },
@@ -18,7 +18,7 @@ class LlamaCP {
   }
 
   /**
-   * Sends a message to the LlamaCP API.
+   * Sends a message to the LlamaCPP API.
    * @param {Object} prompt - The prompt object to send.
    * @param {Object} [options] - Optional parameters.
    * @param {number} [options.max_tokens=150] - Maximum number of tokens.
@@ -64,4 +64,4 @@ class LlamaCP {
   }
 }
 
-module.exports = LlamaCP;
+module.exports = LlamaCPP;
