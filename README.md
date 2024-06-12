@@ -39,9 +39,21 @@ npm install llm-interface
 
 ### Example
 
+### Import `llm-interface`
+
 ```javascript
 const handlers = require("llm-interface");
+```
 
+or
+
+```javascript
+import handlers from "llm-interface";
+```
+
+#### OpenAI Interface
+
+```javascript
 const openai = new handlers.openai(process.env.OPENAI_API_KEY);
 const message = {
   model: "gpt-3.5-turbo",
