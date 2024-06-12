@@ -20,26 +20,31 @@ class OpenAI {
    * @param {Object} [options] - Optional parameters.
    * @param {number} [options.max_tokens=150] - Maximum number of tokens.
    * @param {string} [options.model="gpt-3.5-turbo-0613"] - The model to use.
+   * @param {string} [options.response_format=""] - The response format to use.
    * @returns {Promise<string>} - The response text.
    * @throws {Error} - Throws an error if the API call fails.
    * @example
    * const response = await openAI.sendMessage({ messages: [{ role: 'user', content: 'Hello!' }] });
    */
   async sendMessage(message, options = {}) {
-    // Extract values from message object
     const { model: messageModel, messages } = message;
+    const {
+      max_tokens = 150,
+      model = messageModel || "gpt-3.5-turbo-0613",
+      response_format,
+    } = options;
 
-    // Use options to overwrite model and max_tokens if provided
-    const { max_tokens = 150, model = messageModel || "gpt-3.5-turbo-0613" } =
-      options;
+    const requestPayload = {
+      model,
+      messages,
+      max_tokens,
+      ...(response_format && { response_format: { type: response_format } }),
+    };
 
     try {
-      const completion = await this.openai.chat.completions.create({
-        model,
-        messages,
-        max_tokens,
-      });
-
+      const completion = await this.openai.chat.completions.create(
+        requestPayload
+      );
       return completion.choices[0].message.content;
     } catch (error) {
       throw new Error(error.response.data.error.message);

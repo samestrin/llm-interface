@@ -30,7 +30,9 @@ class LlamaCPP {
   async sendMessage(prompt, options = {}) {
     const { max_tokens = 150 } = options;
     try {
-      const formattedPrompt = prompt.messages.map((message) => message.content);
+      const formattedPrompt = prompt.messages
+        .map((message) => message.content)
+        .join(" ");
 
       const response = await this.client.post("", {
         prompt: formattedPrompt,
@@ -49,10 +51,6 @@ class LlamaCPP {
       return contents;
     } catch (error) {
       if (error.response) {
-        console.error(
-          "Server responded with status code:",
-          error.response.status
-        );
         console.error("Response data:", error.response.data);
       } else if (error.request) {
         console.error("No response received:", error.request);

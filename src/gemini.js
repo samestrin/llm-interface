@@ -16,9 +16,14 @@ class Gemini {
    * Converts input data structure for the Gemini API.
    * @param {Object} input - The input message object.
    * @param {number} max_tokens - The maximum number of tokens.
+   * @param {number} response_format - The output response_format
    * @returns {Object} - The converted data structure.
    */
-  convertDataStructure(input, max_tokens) {
+  convertDataStructure(input, max_tokens, response_format) {
+    if (response_format === "json_object") {
+      response_format = "application/json";
+    }
+
     let history = input.messages.slice(0, -1).map((message) => ({
       role: message.role,
       parts: [{ text: message.content }],
@@ -36,6 +41,7 @@ class Gemini {
       prompt,
       generationConfig: {
         maxOutputTokens: max_tokens,
+        ...(response_format && { response_mime_type: response_format }),
       },
     };
   }
@@ -46,18 +52,23 @@ class Gemini {
    * @param {Object} [options] - Optional parameters.
    * @param {number} [options.max_tokens=150] - Maximum number of tokens.
    * @param {string} [options.model="gemini-1.5-flash"] - The model to use.
+   * @param {string} [options.response_format=""] - The response format to use.*
    * @returns {Promise<string>} - The response text.
    * @throws {Error} - Throws an error if the API call fails.
    * @example
    * const response = await gemini.sendMessage({ messages: [{ role: 'user', content: 'Hello!' }] });
    */
   async sendMessage(message, options = {}) {
-    const { max_tokens = 150, model = message.model || "gemini-1.5-flash" } =
-      options;
+    const {
+      max_tokens = 150,
+      model = message.model || "gemini-1.5-flash",
+      response_format,
+    } = options;
 
     const { history, prompt, generationConfig } = this.convertDataStructure(
       message,
-      max_tokens
+      max_tokens,
+      response_format
     );
 
     try {
