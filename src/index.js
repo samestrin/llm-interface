@@ -5,14 +5,14 @@
 
 const modules = {
   openai: "./openai",
-  claude: "./claude",
+  anthropic: "./anthropic",
   gemini: "./gemini",
   llamacpp: "./llamacpp",
   reka: "./reka",
+  groq: "./groq",
 };
 
 const handlers = {};
-
 Object.keys(modules).forEach((key) => {
   Object.defineProperty(handlers, key, {
     get: function () {
