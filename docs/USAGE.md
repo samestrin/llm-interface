@@ -47,6 +47,12 @@ const AnthropicWrapper = new handlers.anthropic(process.env.ANTHROPIC_API_KEY);
 const message = {
   model: "claude-3-opus-20240229",
   messages: [
+    {
+      role: "user",
+      content:
+        "You are a helpful assistant. Say OK if you understand and stop.",
+    },
+    { role: "system", content: "OK" },
     { role: "user", content: "Explain the importance of low latency LLMs." },
   ],
 };
@@ -126,6 +132,12 @@ const reka = new handlers.reka(process.env.REKA_API_KEY);
 const message = {
   model: "reka-core",
   messages: [
+    {
+      role: "user",
+      content:
+        "You are a helpful assistant. Say OK if you understand and stop.",
+    },
+    { role: "system", content: "OK" },
     { role: "user", content: "Explain the importance of low latency LLMs." },
   ],
 };

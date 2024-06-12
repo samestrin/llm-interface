@@ -21,13 +21,13 @@ Different LLMs may have their own message object rules. For example, both Anthro
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
+  - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
 ```javascript
 openai
-  .sendMessage(message, { max_tokens: 150 })
+  .sendMessage(message, { max_tokens: 150, response_format: "json_object" })
   .then((response) => {
     console.log(response);
   })
@@ -62,7 +62,7 @@ AnthropicWrapper.sendMessage(message, { max_tokens: 150 })
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
+  - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -104,7 +104,7 @@ groq
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `model`.
+  - `options`: An optional object containing `model`. This method currently has no token limitation.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
