@@ -11,4 +11,5 @@ module.exports = {
   geminiApiKey: process.env.GEMINI_API_KEY,
   llamaURL: process.env.LLAMACPP_URL,
   anthropicApiKey: process.env.ANTHROPIC_API_KEY,
+  rekaApiKey: process.env.REKA_API_KEY,
 };
