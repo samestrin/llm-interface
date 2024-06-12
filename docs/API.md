@@ -120,7 +120,7 @@ reka
   });
 ```
 
-### LlamaCPP
+### LLaMA.cpp
 
 #### `sendMessage(message, options)`
 

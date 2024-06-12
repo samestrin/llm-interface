@@ -149,9 +149,9 @@ reka
   .catch((error) => console.error("Error:", error));
 ```
 
-### LlamaCPP Interface
+### LLaMA.cpp Interface
 
-The LlamaCPP interface allows you to send messages to the LlamaCPP API.
+The LLaMA.cpp interface allows you to send messages to the LLaMA.cpp API; this is exposed by the [LLaMA.cpp HTTP Server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server).
 
 #### Example
 
