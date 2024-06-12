@@ -1,6 +1,6 @@
 # llm-interface
 
-Getting API keys for your project is a simple process. However, most APIs require a credit card.
+Getting API keys for your project is a simple process. You'll need to sign-up, then visit the URLs below generate your desired API keys. However, most LLMs require a credit card.
 
 ## OpenAI
 
