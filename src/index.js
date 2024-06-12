@@ -8,6 +8,7 @@ const modules = {
   claude: "./claude",
   gemini: "./gemini",
   llamacpp: "./llamacpp",
+  reka: "./reka",
 };
 
 const handlers = {};
