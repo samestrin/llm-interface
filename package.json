@@ -1,6 +1,6 @@
 {
   "name": "llm-interface",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "src/index.js",
   "description": "A simple, unified interface for integrating and interacting with multiple Large Language Model (LLM) APIs, including OpenAI, Anthropic, Google Gemini, Groq, and LlamaCPP.",
   "scripts": {
