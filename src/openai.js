@@ -6,8 +6,13 @@
  */
 
 const { OpenAI: OpenAIClient } = require("openai");
+const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
 
 class OpenAI {
+  /**
+   * @constructor
+   * @param {string} apiKey - The API key for OpenAI.
+   */
   constructor(apiKey) {
     this.openai = new OpenAIClient({
       apiKey: apiKey,
@@ -16,24 +21,24 @@ class OpenAI {
 
   /**
    * Sends a message to the OpenAI API.
-   * @param {Object} message - The message object to send.
-   * @param {Object} [options] - Optional parameters.
-   * @param {number} [options.max_tokens=150] - Maximum number of tokens.
-   * @param {string} [options.model="gpt-3.5-turbo-0613"] - The model to use.
-   * @param {string} [options.response_format=""] - The response format to use.
-   * @returns {Promise<string>} - The response text.
-   * @throws {Error} - Throws an error if the API call fails.
+   *
+   * @param {Object} message - The message object containing the model and messages to send.
+   * @param {Object} [options={}] - Optional parameters for the request.
+   * @param {number} [cacheTimeoutSeconds] - Optional timeout in seconds for caching the response.
+   * @returns {Promise<string|null>} The response text from the API.
+   * @throws {Error} Throws an error if the API request fails.
+   *
    * @example
-   * const response = await openAI.sendMessage({ messages: [{ role: 'user', content: 'Hello!' }] });
+   * const openai = new OpenAI(apiKey);
+   * openai.sendMessage(message, { max_tokens: 150 }, 60).then(console.log).catch(console.error);
    */
-  async sendMessage(message, options = {}) {
+  async sendMessage(message, options = {}, cacheTimeoutSeconds) {
     const { model: messageModel, messages } = message;
     const {
       max_tokens = 150,
       model = messageModel || "gpt-3.5-turbo-0613",
       response_format,
     } = options;
-
     const requestPayload = {
       model,
       messages,
@@ -41,17 +46,30 @@ class OpenAI {
       ...(response_format && { response_format: { type: response_format } }),
     };
 
+    const cacheKey = JSON.stringify(requestPayload);
+    if (cacheTimeoutSeconds) {
+      const cachedResponse = getFromCache(cacheKey);
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+    }
+
     try {
       const completion = await this.openai.chat.completions.create(
         requestPayload
       );
-      return completion &&
+      const responseContent =
+        completion &&
         completion.choices &&
         completion.choices[0] &&
         completion.choices[0].message &&
         completion.choices[0].message.content
-        ? completion.choices[0].message.content
-        : null;
+          ? completion.choices[0].message.content
+          : null;
+      if (cacheTimeoutSeconds) {
+        saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+      }
+      return responseContent;
     } catch (error) {
       throw new Error(error.response.data.error.message);
     }

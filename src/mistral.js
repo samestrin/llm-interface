@@ -1,21 +1,21 @@
 /**
  * @file mistral.js
- * @description Wrapper class for the Mistral API.
- * @param {string} apiKey - The API key for Mistral.
+ * @class Mistral
+ * @description Wrapper class for the Mistral AI API.
+ * @param {string} apiKey - The API key for Mistral AI.
  */
 
 const axios = require("axios");
+const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
 
 class Mistral {
   /**
-   * Creates an instance of the Mistral class.
-   *
    * @constructor
-   * @param {string} apiKey - The API key for Mistral.
+   * @param {string} apiKey - The API key for Mistral AI.
    */
   constructor(apiKey) {
     this.client = axios.create({
-      baseURL: "https://api.mistral.ai/v1",
+      baseURL: "https://api.mistral.ai",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
@@ -24,30 +24,23 @@ class Mistral {
   }
 
   /**
-   * Sends a message to the Mistral API and returns the response.
+   * Sends a message to the Mistral AI API.
    *
-   * @param {Object} message - The message object containing model and messages.
-   * @param {string} message.model - The model to use for the request.
-   * @param {Array<Object>} message.messages - The array of message objects to form the prompt.
-   * @param {Object} [options] - Optional parameters for the request.
-   * @param {number} [options.max_tokens] - Maximum number of tokens to generate.
-   * @returns {Promise<string>} The response text from the API.
-   * @throws {Error} Throws an error if the request fails.
+   * @param {Object} message - The message object containing the model and messages to send.
+   * @param {Object} [options={}] - Optional parameters for the request.
+   * @param {number} [cacheTimeoutSeconds] - Optional timeout in seconds for caching the response.
+   * @returns {Promise<string|null>} The response text from the API.
+   * @throws {Error} Throws an error if the API request fails.
    *
    * @example
-   * const message = {
-   *   model: "mistral-large-latest",
-   *   messages: [
-   *     { role: "system", content: "You are a helpful assistant." },
-   *     { role: "user", content: "Explain the importance of low latency LLMs." }
-   *   ],
-   * };
-   * mistral.sendMessage(message, { max_tokens: 100 })
-   *   .then(response => console.log(response))
-   *   .catch(error => console.error(error));
+   * const mistral = new Mistral(apiKey);
+   * mistral.sendMessage(message, { max_tokens: 150 }, 60).then(console.log).catch(console.error);
    */
-  async sendMessage(message, options = {}) {
-    const { model, messages } = message;
+  async sendMessage(message, options = {}, cacheTimeoutSeconds) {
+    let { model, messages } = message;
+
+    // Set default model if not provided
+    model = model || options.model || "mistral-large-latest";
 
     const payload = {
       model,
@@ -55,17 +48,31 @@ class Mistral {
       ...options,
     };
 
-    try {
-      const response = await this.client.post(`/chat/completions`, payload);
+    // Create cache key and check for cached response
+    const cacheKey = JSON.stringify(payload);
+    if (cacheTimeoutSeconds) {
+      const cachedResponse = getFromCache(cacheKey);
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+    }
 
-      return response &&
+    try {
+      // Make API request and cache the response
+      const response = await this.client.post(`/chat/completions`, payload);
+      const responseContent =
+        response &&
         response.data &&
         response.data.choices &&
         response.data.choices[0] &&
         response.data.choices[0].message &&
         response.data.choices[0].message.content
-        ? response.data.choices[0].message.content
-        : null;
+          ? response.data.choices[0].message.content
+          : null;
+      if (cacheTimeoutSeconds) {
+        saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+      }
+      return responseContent;
     } catch (error) {
       if (error.response) {
         console.error("Response data:", error.response.data);

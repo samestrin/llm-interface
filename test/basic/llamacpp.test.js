@@ -3,8 +3,8 @@
  * @description Tests for the LlamaCPP API client.
  */
 
-const LlamaCPP = require("../src/llamacpp");
-const { llamaURL } = require("../config");
+const LlamaCPP = require("../../src/llamacpp");
+const { llamaURL } = require("../../config");
 const axios = require("axios");
 const url = require("url");
 
