@@ -3,8 +3,8 @@
  * @description Tests for the Mistral API client.
  */
 
-const Mistral = require("../src/mistral");
-const { mistralApiKey } = require("../config");
+const Mistral = require("../../src/mistral");
+const { mistralApiKey } = require("../../config");
 
 test("Mistral API Key should be set", async () => {
   expect(typeof mistralApiKey).toBe("string");

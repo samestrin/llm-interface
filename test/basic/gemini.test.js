@@ -3,8 +3,8 @@
  * @description Tests for the Gemini API client.
  */
 
-const Gemini = require("../src/gemini");
-const { geminiApiKey } = require("../config");
+const Gemini = require("../../src/gemini");
+const { geminiApiKey } = require("../../config");
 
 test("Gemini API Key should be set", async () => {
   expect(typeof geminiApiKey).toBe("string");

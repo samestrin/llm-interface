@@ -6,17 +6,16 @@
  */
 
 const axios = require("axios");
+const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
 
 class Goose {
   /**
-   * Creates an instance of the Goose class.
-   *
    * @constructor
    * @param {string} apiKey - The API key for Goose AI.
    */
   constructor(apiKey) {
     this.client = axios.create({
-      baseURL: "https://api.goose.ai/v1/engines",
+      baseURL: "https://api.goose.ai",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
@@ -25,41 +24,48 @@ class Goose {
   }
 
   /**
-   * Sends a message to the Goose AI API and returns the response.
+   * Sends a message to the Goose AI API.
    *
-   * @param {Object} message - The message object containing model and messages.
-   * @param {string} message.model - The model to use for the request.
-   * @param {Array<Object>} message.messages - The array of message objects to form the prompt.
-   * @param {Object} [options] - Optional parameters for the request.
-   * @returns {Promise<Array<string>>} The response text from the API.
-   * @throws {Error} Throws an error if the request fails.
+   * @param {Object} message - The message object containing the model and messages to send.
+   * @param {Object} [options={}] - Optional parameters for the request.
+   * @param {number} [cacheTimeoutSeconds] - Optional timeout in seconds for caching the response.
+   * @returns {Promise<string|null>} The response text from the API.
+   * @throws {Error} Throws an error if the API request fails.
    *
    * @example
-   * const message = {
-   *   model: "gpt-neo-20b",
-   *   messages: [
-   *     { role: "system", content: "You are a helpful assistant." },
-   *     { role: "user", content: "Explain the importance of low latency LLMs." }
-   *   ],
-   * };
-   * goose.sendMessage(message, { max_tokens: 100 })
-   *   .then(response => console.log(response))
-   *   .catch(error => console.error(error));
+   * const goose = new Goose(apiKey);
+   * goose.sendMessage(message, { max_tokens: 150 }, 60).then(console.log).catch(console.error);
    */
-  async sendMessage(message, options = {}) {
-    const { model, messages } = message;
+  async sendMessage(message, options = {}, cacheTimeoutSeconds) {
+    const { messages } = message;
+    const { max_tokens = 150 } = options;
+    let { model } = message;
 
-    // Convert messages array to a single prompt string
+    // Set default model if not provided
+    model = model || options.model || "gpt-neo-20b";
+
+    // Prepare the payload for the API request
     const formattedPrompt = messages
       .map((message) => message.content)
       .join(" ");
-
     const payload = {
       prompt: formattedPrompt,
+      model,
+      max_tokens,
       ...options,
     };
 
+    // Create cache key and check for cached response
+    const cacheKey = JSON.stringify(payload);
+    if (cacheTimeoutSeconds) {
+      const cachedResponse = getFromCache(cacheKey);
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+    }
+
     try {
+      // Make API request and cache the response
       const url = `https://api.goose.ai/v1/engines/${model}/completions`;
       const response = await this.client.post(url, payload);
       const responseText =
@@ -70,7 +76,9 @@ class Goose {
         response.data.choices[0].text
           ? response.data.choices[0].text.trim()
           : null;
-
+      if (cacheTimeoutSeconds) {
+        saveToCache(cacheKey, responseText, cacheTimeoutSeconds);
+      }
       return responseText;
     } catch (error) {
       if (error.response) {

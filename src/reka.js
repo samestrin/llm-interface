@@ -1,24 +1,22 @@
 /**
  * @file reka.js
  * @class Reka
- * @description Wrapper class for the Reka AI HTTP API.
- * @param {string} apiKey - The API key for OpenAI.
+ * @description Wrapper class for the Reka AI API.
+ * @param {string} apiKey - The API key for Reka AI.
  */
 
 const axios = require("axios");
-
-/**
- * Class representing a wrapper for the Reka API.
- *
- * @class
- * @param {string} apiKey - The API key for authentication.
- */
+const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
 
 class Reka {
+  /**
+   * @constructor
+   * @param {string} apiKey - The API key for Reka AI.
+   */
   constructor(apiKey) {
     this.apiKey = apiKey;
     this.client = axios.create({
-      baseURL: "https://api.reka.ai/v1",
+      baseURL: "https://api.reka.ai",
       headers: {
         "Content-Type": "application/json",
         "X-Api-Key": this.apiKey,
@@ -27,22 +25,25 @@ class Reka {
   }
 
   /**
-   * Sends a message to the Reka API.
+   * Sends a message to the Reka AI API.
    *
-   * @async
-   * @param {Object} message - The message object containing the messages to be sent.
-   * @param {Object} [options={}] - Additional options for the API call.
-   * @param {string} [options.model="reka-core"] - The model to be used for processing the message.
-   * @returns {Promise<string>} The response content from the API.
-   * @throws {Error} Throws an error if the API call fails or the response format is unexpected.
+   * @param {Object} message - The message object containing the model and messages to send.
+   * @param {Object} [options={}] - Optional parameters for the request.
+   * @param {number} [cacheTimeoutSeconds] - Optional timeout in seconds for caching the response.
+   * @returns {Promise<string|null>} The response text from the API.
+   * @throws {Error} Throws an error if the API request fails.
    *
    * @example
-   * const response = await wrapper.sendMessage({ messages: [{ role: 'user', content: 'Hello' }] });
+   * const reka = new Reka(apiKey);
+   * reka.sendMessage(message, { max_tokens: 150 }, 60).then(console.log).catch(console.error);
    */
-  async sendMessage(message, options = {}) {
-    const { model = "reka-core" } = options;
+  async sendMessage(message, options = {}, cacheTimeoutSeconds) {
+    let { model } = message;
 
-    // Convert all "system" roles to "assistant" and "user" to "user", start with "user"
+    // Set default model if not provided
+    model = model || options.model || "reka-core";
+
+    // Convert message roles as required by the API
     const convertedMessages = message.messages.map((msg, index) => {
       if (msg.role === "system") {
         return { ...msg, role: "assistant" };
@@ -50,20 +51,27 @@ class Reka {
       return { ...msg, role: "user" };
     });
 
-    // Add stream: false to the message object
     const modifiedMessage = {
       messages: convertedMessages,
       model,
       stream: false,
     };
 
-    try {
-      const response = await this.client.post("/chat", modifiedMessage);
+    // Create cache key and check for cached response
+    const cacheKey = JSON.stringify(modifiedMessage);
+    if (cacheTimeoutSeconds) {
+      const cachedResponse = getFromCache(cacheKey);
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+    }
 
+    try {
+      // Make API request and cache the response
+      const response = await this.client.post("/chat", modifiedMessage);
       const stopResponse = response.data.responses.find(
         (resp) => resp.finish_reason === "stop"
       );
-
       if (
         !stopResponse ||
         !stopResponse.message ||
@@ -71,17 +79,16 @@ class Reka {
       ) {
         throw new Error("Unexpected response format");
       }
-
-      return stopResponse &&
-        stopResponse.message &&
-        stopResponse.message.content
-        ? stopResponse.message.content
-        : null;
+      const responseContent = stopResponse.message.content;
+      if (cacheTimeoutSeconds) {
+        saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+      }
+      return responseContent;
     } catch (error) {
       console.error(
         "API Error:",
         error.response ? error.response.data : error.message
-      ); // Log the error for debugging
+      );
       throw new Error(error.response ? error.response.data : error.message);
     }
   }

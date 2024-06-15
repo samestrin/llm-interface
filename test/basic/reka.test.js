@@ -3,8 +3,8 @@
  * @description Tests for the Reka AI API client.
  */
 
-const Reka = require("../src/reka");
-const { rekaApiKey } = require("../config");
+const Reka = require("../../src/reka");
+const { rekaApiKey } = require("../../config");
 
 test("Reka AI API Key should be set", async () => {
   expect(typeof rekaApiKey).toBe("string");

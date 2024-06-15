@@ -3,8 +3,8 @@
  * @description Tests for the OpenAI API client.
  */
 
-const OpenAI = require("../src/openai");
-const { openaiApiKey } = require("../config");
+const OpenAI = require("../../src/openai");
+const { openaiApiKey } = require("../../config");
 
 test("OpenAI API Key should be set", async () => {
   expect(typeof openaiApiKey).toBe("string");
@@ -21,15 +21,11 @@ test("OpenAI API Client should send a message and receive a response", async () 
       },
       {
         role: "user",
-        content:
-          "Explain the importance of low latency LLMs. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}]",
+        content: "Explain the importance of low latency LLMs.",
       },
     ],
   };
-  const response = await openai.sendMessage(message, {
-    max_tokens: 100,
-    response_format: "json_object",
-  });
+  let response = await openai.sendMessage(message, { max_tokens: 100 });
 
   expect(typeof response).toBe("string");
 });

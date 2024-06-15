@@ -3,8 +3,8 @@
  * @description Tests for the Anthropic API client.
  */
 
-const Anthropic = require("../src/anthropic");
-const { anthropicApiKey } = require("../config");
+const Anthropic = require("../../src/anthropic");
+const { anthropicApiKey } = require("../../config");
 
 test("Anthropic API Key should be set", async () => {
   expect(typeof anthropicApiKey).toBe("string");
