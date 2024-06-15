@@ -14,17 +14,35 @@ The Anthropic API requires a credit card.
 
 - https://console.anthropic.com/settings/keys
 
+## Cohere
+
+The Cohere API offers trial keys. Trial keys are rate-limited, and cannot be used for commercial purposes.
+
+- https://dashboard.cohere.com/api-keys
+
 ## Gemini
 
 The Gemini API is currently free.
 
 - https://makersuite.google.com/app/apikey
 
+## Goose AI
+
+The Goose AI API is a commercial product, but it currently does not require a credit card, and comes with a $9.99 credit.
+
+- https://goose.ai/dashboard/apikeys
+
 ## Groq
 
 The Groq API is currently free.
 
 - https://console.groq.com/keys
+
+## Mistral
+
+The Mistral API is a commercial product, but it currently does not require a credit card, and comes with a $5.00 credit.
+
+- https://console.mistral.ai/api-keys/
 
 ## Reka AI
 

@@ -3,12 +3,14 @@
  * @description Tests for the Groq API client.
  */
 
-const Groq = require("../src/groq"); // Adjust path as needed
+const Groq = require("../src/groq");
 const { groqApiKey } = require("../config");
 
-test("Groq API Client should send a message and receive a response", async () => {
+test("Groq API Key should be set", async () => {
   expect(typeof groqApiKey).toBe("string");
+});
 
+test("Groq API Client should send a message and receive a response", async () => {
   const groq = new Groq(groqApiKey);
   const message = {
     model: "llama3-8b-8192",
@@ -24,6 +26,6 @@ test("Groq API Client should send a message and receive a response", async () =>
     ],
   };
   const response = await groq.sendMessage(message, { max_tokens: 100 });
-  console.log(response);
+
   expect(typeof response).toBe("string");
 });

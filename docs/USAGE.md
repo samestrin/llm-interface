@@ -67,6 +67,33 @@ anthropic
   });
 ```
 
+### Cohere Interface
+
+The Cohere interface allows you to send messages to the Cohere API.
+
+#### Example
+
+```javascript
+const cohere = new LLMInterface.cohere(process.env.GROQ_API_KEY);
+
+const message = {
+  model: "gpt-neo-20b",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
+cohere
+  .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### Gemini Interface
 
 The Gemini interface allows you to send messages to the Google Gemini API.
@@ -94,6 +121,33 @@ gemini
   });
 ```
 
+### Goose AI Interface
+
+The Goose AI interface allows you to send messages to the Goose AI API.
+
+#### Example
+
+```javascript
+const goose = new LLMInterface.goose(process.env.GROQ_API_KEY);
+
+const message = {
+  model: "gpt-neo-20b",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
+goose
+  .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### Groq Interface
 
 The Groq interface allows you to send messages to the Groq API.
@@ -112,6 +166,33 @@ const message = {
 };
 
 groq
+  .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Mistral AI Interface
+
+The Mistral AI interface allows you to send messages to the Mistral AI API.
+
+#### Example
+
+```javascript
+const mistral = new LLMInterface.mistral(process.env.GROQ_API_KEY);
+
+const message = {
+  model: "llama3-8b-8192",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
+mistral
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
     console.log(response);

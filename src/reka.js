@@ -72,7 +72,11 @@ class Reka {
         throw new Error("Unexpected response format");
       }
 
-      return stopResponse.message.content;
+      return stopResponse &&
+        stopResponse.message &&
+        stopResponse.message.content
+        ? stopResponse.message.content
+        : null;
     } catch (error) {
       console.error(
         "API Error:",

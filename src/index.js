@@ -11,6 +11,8 @@ const modules = {
   reka: "./reka",
   groq: "./groq",
   goose: "./goose",
+  cohere: "./cohere",
+  mistral: "./mistral",
 };
 
 const LLMInterface = {};

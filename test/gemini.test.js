@@ -3,12 +3,14 @@
  * @description Tests for the Gemini API client.
  */
 
-const Gemini = require("../src/gemini"); // Adjust path as needed
+const Gemini = require("../src/gemini");
 const { geminiApiKey } = require("../config");
 
-test("Gemini API Client should send a message and receive a response", async () => {
+test("Gemini API Key should be set", async () => {
   expect(typeof geminiApiKey).toBe("string");
+});
 
+test("Gemini API Client should send a message and receive a response", async () => {
   const gemini = new Gemini(geminiApiKey);
   const message = {
     model: "gemini-1.5-flash",
@@ -24,6 +26,6 @@ test("Gemini API Client should send a message and receive a response", async () 
     ],
   };
   const response = await gemini.sendMessage(message, { max_tokens: 100 });
-  console.log(response);
+
   expect(typeof response).toBe("string");
 });

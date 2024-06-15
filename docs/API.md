@@ -57,6 +57,27 @@ anthropic
   });
 ```
 
+### Cohere
+
+#### `sendMessage(message, options)`
+
+- **Parameters:**
+  - `message`: An object containing the model and messages to send.
+  - `options`: An optional object containing `max_tokens` and `model`.
+- **Returns:** A promise that resolves to the response text.
+- **Example:**
+
+```javascript
+cohere
+  .sendMessage(message, { max_tokens: 150 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### Gemini
 
 #### `sendMessage(message, options)`
@@ -78,6 +99,27 @@ gemini
   });
 ```
 
+### Goose AI
+
+#### `sendMessage(message, options)`
+
+- **Parameters:**
+  - `message`: An object containing the model and messages to send.
+  - `options`: An optional object containing `max_tokens`, and `model`.
+- **Returns:** A promise that resolves to the response text.
+- **Example:**
+
+```javascript
+goose
+  .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### Groq
 
 #### `sendMessage(message, options)`
@@ -90,6 +132,27 @@ gemini
 
 ```javascript
 groq
+  .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Mistral AI
+
+#### `sendMessage(message, options)`
+
+- **Parameters:**
+  - `message`: An object containing the model and messages to send.
+  - `options`: An optional object containing `max_tokens` and `model`.
+- **Returns:** A promise that resolves to the response text.
+- **Example:**
+
+```javascript
+mistral
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
     console.log(response);

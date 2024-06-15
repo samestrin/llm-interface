@@ -1,11 +1,17 @@
-const Reka = require("../src/reka"); // Adjust path as needed
+/**
+ * @file rekate.test.js
+ * @description Tests for the Reka AI API client.
+ */
+
+const Reka = require("../src/reka");
 const { rekaApiKey } = require("../config");
 
-test("Reka API Client should send a message and receive a response", async () => {
+test("Reka AI API Key should be set", async () => {
   expect(typeof rekaApiKey).toBe("string");
+});
 
+test("Reka AI API Client should send a message and receive a response", async () => {
   const reka = new Reka(rekaApiKey);
-
   const message = {
     model: "reka-core",
     messages: [
@@ -26,10 +32,10 @@ test("Reka API Client should send a message and receive a response", async () =>
   };
   try {
     const response = await reka.sendMessage(message, {});
-    console.log(JSON.stringify(response)); // Log the response for debugging
+
     expect(typeof response).toBe("string");
   } catch (error) {
-    console.error("Test failed:", error); // Log the error for debugging
+    console.error("Test failed:", error);
     throw error;
   }
-}, 30000); // Extend timeout to 30 seconds
+}, 30000);

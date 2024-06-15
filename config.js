@@ -13,4 +13,6 @@ module.exports = {
   anthropicApiKey: process.env.ANTHROPIC_API_KEY,
   rekaApiKey: process.env.REKA_API_KEY,
   gooseApiKey: process.env.GOOSE_API_KEY,
+  cohereApiKey: process.env.COHERE_API_KEY,
+  mistralApiKey: process.env.MISTRAL_API_KEY,
 };

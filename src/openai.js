@@ -45,7 +45,13 @@ class OpenAI {
       const completion = await this.openai.chat.completions.create(
         requestPayload
       );
-      return completion.choices[0].message.content;
+      return completion &&
+        completion.choices &&
+        completion.choices[0] &&
+        completion.choices[0].message &&
+        completion.choices[0].message.content
+        ? completion.choices[0].message.content
+        : null;
     } catch (error) {
       throw new Error(error.response.data.error.message);
     }

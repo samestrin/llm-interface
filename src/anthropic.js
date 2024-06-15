@@ -51,7 +51,12 @@ class Anthropic {
 
     try {
       const response = await this.anthropic.messages.create(params);
-      return response.content[0].text;
+      return response &&
+        response.content &&
+        response.content[0] &&
+        response.content[0].text
+        ? response.content[0].text
+        : null;
     } catch (error) {
       throw new Error(
         error.response ? error.response.data.error.message : error.message

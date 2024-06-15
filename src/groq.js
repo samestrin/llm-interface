@@ -36,7 +36,13 @@ class Groq {
 
     try {
       const chatCompletion = await this.groq.chat.completions.create(params);
-      return chatCompletion.choices[0].message.content;
+      return chatCompletion &&
+        chatCompletion.choices &&
+        chatCompletion.choices[0] &&
+        chatCompletion.choices[0].message &&
+        chatCompletion.choices[0].message.content
+        ? chatCompletion.choices[0].message.content
+        : null;
     } catch (error) {
       throw new Error(error.response.data.error.message);
     }

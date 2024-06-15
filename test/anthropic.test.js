@@ -3,12 +3,14 @@
  * @description Tests for the Anthropic API client.
  */
 
-const Anthropic = require("../src/anthropic"); // Adjust path as needed
+const Anthropic = require("../src/anthropic");
 const { anthropicApiKey } = require("../config");
 
-test("Anthropic API Client should send a message and receive a response", async () => {
+test("Anthropic API Key should be set", async () => {
   expect(typeof anthropicApiKey).toBe("string");
+});
 
+test("Anthropic API Client should send a message and receive a response", async () => {
   const anthropic = new Anthropic(anthropicApiKey);
   const message = {
     model: "claude-3-opus-20240229",
@@ -28,8 +30,10 @@ test("Anthropic API Client should send a message and receive a response", async 
       },
     ],
   };
-
-  const response = await anthropic.sendMessage(message, { max_tokens: 100 });
-  console.log(response);
-  expect(typeof response).toBe("string");
-}, 30000); // Extend timeout to 30 seconds
+  try {
+    const response = await anthropic.sendMessage(message, { max_tokens: 100 });
+    expect(typeof response).toBe("string");
+  } catch (error) {
+    throw new Error(`Test failed: ${safeStringify(error)}`);
+  }
+}, 30000);

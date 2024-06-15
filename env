@@ -4,4 +4,5 @@
   ANTHROPIC_API_KEY=
   REKA_API_KEY=
   GOOSE_API_KEY=
+  MISTRAL_API_KEY=
   LLAMACPP_URL=http://localhost:8080/completions
