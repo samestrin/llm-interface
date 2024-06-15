@@ -1,5 +1,27 @@
 # llm-interface
 
+## Table of Contents
+
+- [Initializing llm-interface](#initializing-llm-interface)
+- [Basic Usage Examples](#basic-usage-examples)
+  - [OpenAI Interface](#openai-interface)
+  - [Anthropic Interface](#anthropic-interface)
+  - [Cohere Interface](#cohere-interface)
+  - [Gemini Interface](#gemini-interface)
+  - [Goose AI Interface](#goose-ai-interface)
+  - [Groq Interface](#groq-interface)
+  - [Mistral AI Interface](#mistral-ai-interface)
+  - [Reka AI Interface](#reka-ai-interface)
+  - [LLaMA.cpp Interface](#llamacpp-interface)
+- [Advanced Usage Examples](#advanced-usage-examples)
+  - [OpenAI Interface (JSON Output)](#openai-interface-json-output)
+  - [Gemini Interface (JSON Output)](#gemini-interface-json-output)
+  - [OpenAI Interface (Cached)](#openai-interface-cached)
+
+# Usage
+
+How to use `llm-interface` in your project.
+
 ## Initializing llm-interface
 
 First, require the LLMInterface from the `llm-interface` package:
