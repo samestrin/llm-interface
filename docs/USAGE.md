@@ -2,10 +2,10 @@
 
 ## Usage Examples
 
-First, require the handlers from the `llm-interface` package:
+First, require the LLMInterface from the `llm-interface` package:
 
 ```javascript
-const handlers = require("llm-interface");
+const LLMInterface = require("llm-interface");
 ```
 
 ### OpenAI Interface
@@ -15,7 +15,7 @@ The OpenAI interface allows you to send messages to the OpenAI API.
 #### Example
 
 ```javascript
-const openai = new handlers.openai(process.env.OPENAI_API_KEY);
+const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
 const message = {
   model: "gpt-3.5-turbo",
@@ -42,7 +42,7 @@ The Anthropic interface allows you to send messages to the Anthropic API.
 #### Example
 
 ```javascript
-const anthropic = new handlers.anthropic(process.env.ANTHROPIC_API_KEY);
+const anthropic = new LLMInterface.anthropic(process.env.ANTHROPIC_API_KEY);
 
 const message = {
   model: "claude-3-opus-20240229",
@@ -74,7 +74,7 @@ The Gemini interface allows you to send messages to the Google Gemini API.
 #### Example
 
 ```javascript
-const gemini = new handlers.gemini(process.env.GEMINI_API_KEY);
+const gemini = new LLMInterface.gemini(process.env.GEMINI_API_KEY);
 
 const message = {
   model: "gemini-1.5-flash",
@@ -101,7 +101,7 @@ The Groq interface allows you to send messages to the Groq API.
 #### Example
 
 ```javascript
-const groq = new handlers.groq(process.env.GROQ_API_KEY);
+const groq = new LLMInterface.groq(process.env.GROQ_API_KEY);
 
 const message = {
   model: "llama3-8b-8192",
@@ -128,7 +128,7 @@ The Reka AI interface allows you to send messages to the Reka AI REST API.
 #### Example
 
 ```javascript
-const reka = new handlers.reka(process.env.REKA_API_KEY);
+const reka = new LLMInterface.reka(process.env.REKA_API_KEY);
 
 const message = {
   model: "reka-core",
@@ -156,7 +156,7 @@ The LLaMA.cpp interface allows you to send messages to the LLaMA.cpp API; this i
 #### Example
 
 ```javascript
-const llamacpp = new handlers.llamacpp(process.env.LLAMACPP_URL);
+const llamacpp = new LLMInterface.llamacpp(process.env.LLAMACPP_URL);
 
 const message = {
   model: "some-llamacpp-model",

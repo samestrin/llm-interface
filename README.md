@@ -6,12 +6,16 @@
 
 ## Introduction
 
-The LLM Interface project is a versatile and comprehensive wrapper designed to interact with multiple Large Language Model (LLM) APIs. It simplifies integrating various LLM providers, including **OpenAI, Anthropic, Google Gemini, Groq, Reka AI, and LLaMA.cpp**, into your applications. This project aims to provide a simplified and unified interface for sending messages and receiving responses from different LLM services, making it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
+The LLM Interface project is a versatile and comprehensive wrapper designed to interact with multiple Large Language Model (LLM) APIs. It simplifies integrating various LLM providers, including **OpenAI, Anthropic, Google Gemini, Goose AI, Groq, Reka AI, and LLaMA.cpp**, into your applications. This project aims to provide a simplified and unified interface for sending messages and receiving responses from different LLM services, making it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
+
+## New in 0.0.7
+
+- **Goose AI**: Added support for Goose AI
 
 ## Features
 
 - **Unified Interface**: A single, consistent interface to interact with multiple LLM APIs.
-- **Dynamic Module Loading**: Automatically loads and manages different LLM handlers.
+- **Dynamic Module Loading**: Automatically loads and manages different LLM LLMInterface.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
 - **JSON Output**: Simple to use JSON output for OpenAI and Gemini responses.
@@ -20,7 +24,7 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 The project relies on several npm packages and APIs. Here are the primary dependencies:
 
-- `axios`: For making HTTP requests (used for LLaMA.cpp and Reka).
+- `axios`: For making HTTP requests (used for Goose AI, LLaMA.cpp and Reka).
 - `@anthropic-ai/sdk`: SDK for interacting with the Anthropic API.
 - `@google/generative-ai`: SDK for interacting with the Google Gemini API.
 - `groq-sdk`: SDK for interacting with the Groq API.
@@ -42,19 +46,19 @@ npm install llm-interface
 Import `llm-interface` using:
 
 ```javascript
-const handlers = require("llm-interface");
+const LLMInterface = require("llm-interface");
 ```
 
 or
 
 ```javascript
-import handlers from "llm-interface";
+import LLMInterface from "llm-interface";
 ```
 
 then call the handler you want to use:
 
 ```javascript
-const openai = new handlers.openai(process.env.OPENAI_API_KEY);
+const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 const message = {
   model: "gpt-3.5-turbo",
   messages: [

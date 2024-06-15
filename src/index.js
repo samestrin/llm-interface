@@ -1,6 +1,6 @@
 /**
  * @file index.js
- * @description Entry point for the LLM interface module, dynamically loading handlers for different LLM providers.
+ * @description Entry point for the LLM interface module, dynamically loading LLMInterface for different LLM providers.
  */
 
 const modules = {
@@ -10,11 +10,12 @@ const modules = {
   llamacpp: "./llamacpp",
   reka: "./reka",
   groq: "./groq",
+  goose: "./goose",
 };
 
-const handlers = {};
+const LLMInterface = {};
 Object.keys(modules).forEach((key) => {
-  Object.defineProperty(handlers, key, {
+  Object.defineProperty(LLMInterface, key, {
     get: function () {
       if (!this[`_${key}`]) {
         this[`_${key}`] = require(modules[key]);
@@ -26,4 +27,5 @@ Object.keys(modules).forEach((key) => {
   });
 });
 
-module.exports = handlers;
+const handlers = LLMInterface;
+module.exports = { LLMInterface, handlers };

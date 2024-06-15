@@ -29,7 +29,7 @@ test("Anthropic API Client should send a message and receive a response", async 
     ],
   };
 
-  const response = await anthropic.sendMessage(message, { max_tokens: 150 });
+  const response = await anthropic.sendMessage(message, { max_tokens: 100 });
   console.log(response);
   expect(typeof response).toBe("string");
 }, 30000); // Extend timeout to 30 seconds
