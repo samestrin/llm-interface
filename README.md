@@ -42,6 +42,8 @@ The project relies on several npm packages and APIs. Here are the primary depend
 - `groq-sdk`: SDK for interacting with the Groq API.
 - `openai`: SDK for interacting with the OpenAI API.
 - `dotenv`: For managing environment variables. Used by test cases.
+- `flat-cache`: For caching API responses to improve performance and reduce redundant requests.
+- `jest`: For running test cases.
 
 ## Installation
 
