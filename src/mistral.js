@@ -15,7 +15,7 @@ class Mistral {
    */
   constructor(apiKey) {
     this.client = axios.create({
-      baseURL: "https://api.mistral.ai",
+      baseURL: "https://api.mistral.ai/v1",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,

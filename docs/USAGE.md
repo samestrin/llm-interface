@@ -1,12 +1,22 @@
 # llm-interface
 
-## Usage Examples
+## Initializing llm-interface
 
 First, require the LLMInterface from the `llm-interface` package:
 
 ```javascript
 const LLMInterface = require("llm-interface");
 ```
+
+or import it:
+
+```javascript
+import LLMInterface from "llm-interface";
+```
+
+## Basic Usage Examples
+
+Then select the interface you'd like to use and initialize it with an API key or LLama.cpp URL.
 
 ### OpenAI Interface
 
@@ -248,6 +258,105 @@ const message = {
 
 llamacpp
   .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+## Advanced Usage Examples
+
+Then select the interface you'd like to use and initialize it with an API key or LLama.cpp URL.
+
+### OpenAI Interface (JSON Output)
+
+The OpenAI interface allows you to send messages to the OpenAI API and request the response back in JSON. To take advantage of this feature be sure to include text like "Return the results as a JSON object." and provide a desired output format like "Follow this format: [{reason, reasonDescription}]."
+
+#### Example
+
+```javascript
+const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
+
+const message = {
+  model: "gpt-3.5-turbo",
+  messages: [
+    {
+      role: "system",
+      content: "You are a helpful assistant.",
+    },
+    {
+      role: "user",
+      content:
+        "Explain the importance of low latency LLMs. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}].",
+    },
+  ],
+};
+
+openai
+  .sendMessage(message, { max_tokens: 150, response_format: "json_object" })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Gemini Interface (JSON Output)
+
+The Gemini interface allows you to send messages to the Google Gemini API. To take advantage of this feature be sure to include text like "Return the results as a JSON object." and provide a desired output format like "Follow this format: [{reason, reasonDescription}]."
+
+#### Example
+
+```javascript
+const gemini = new LLMInterface.gemini(process.env.GEMINI_API_KEY);
+
+const message = {
+  model: "gemini-1.5-flash",
+  messages: [
+    {
+      role: "system",
+      content: "You are a helpful assistant.",
+    },
+    {
+      role: "user",
+      content:
+        "Explain the importance of low latency LLMs. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}].",
+    },
+  ],
+};
+
+gemini
+  .sendMessage(message, { max_tokens: 100, response_format: "json_object" })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### OpenAI Interface (Cached)
+
+The OpenAI interface allows you to send messages to the OpenAI API. To reduce operational costs and improve performance you can optionally specify a cache timeout in seconds. In this example we store the results for 86400 seconds or one day.
+
+#### Example
+
+```javascript
+const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
+
+const message = {
+  model: "gpt-3.5-turbo",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
+openai
+  .sendMessage(message, { max_tokens: 150 }, 86400)
   .then((response) => {
     console.log(response);
   })

@@ -10,6 +10,10 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Updates
 
+**v0.0.9**
+
+- **Response Caching**: Efficiently caches LLM responses to reduce costs, enhance performance and minimize redundant requests, with customizable cache timeout settings.
+
 **v0.0.8**
 
 - **Mistral AI**: Added support for Mistral AI
@@ -26,12 +30,13 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
 - **JSON Output**: Simple to use JSON output for OpenAI and Gemini responses.
+- **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
 
 ## Dependencies
 
 The project relies on several npm packages and APIs. Here are the primary dependencies:
 
-- `axios`: For making HTTP requests (used for Cohere, Goose AI, LLaMA.cpp and Reka).
+- `axios`: For making HTTP requests (used for Cohere, Goose AI, LLaMA.cpp, Mistral, and Reka AI).
 - `@anthropic-ai/sdk`: SDK for interacting with the Anthropic API.
 - `@google/generative-ai`: SDK for interacting with the Google Gemini API.
 - `groq-sdk`: SDK for interacting with the Groq API.

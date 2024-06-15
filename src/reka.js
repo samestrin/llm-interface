@@ -68,21 +68,20 @@ class Reka {
 
     try {
       // Make API request and cache the response
-      const response = await this.client.post("/chat", modifiedMessage);
-      const stopResponse = response.data.responses.find(
-        (resp) => resp.finish_reason === "stop"
-      );
-      if (
-        !stopResponse ||
-        !stopResponse.message ||
-        !stopResponse.message.content
-      ) {
+      const response = await this.client.post("/v1/chat", modifiedMessage);
+
+      // Check for the response content
+      const responseContent =
+        response.data?.responses?.[0]?.message?.content || null;
+
+      if (!responseContent) {
         throw new Error("Unexpected response format");
       }
-      const responseContent = stopResponse.message.content;
+
       if (cacheTimeoutSeconds) {
         saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
       }
+
       return responseContent;
     } catch (error) {
       console.error(

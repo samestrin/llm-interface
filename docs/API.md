@@ -17,11 +17,12 @@ Different LLMs may have their own message object rules. For example, both Anthro
 
 ### OpenAI
 
-#### `sendMessage(message, options)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -38,11 +39,12 @@ openai
 
 ### Anthropic
 
-#### `sendMessage(message, options)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -59,11 +61,12 @@ anthropic
 
 ### Cohere
 
-#### `sendMessage(message, options)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -80,11 +83,12 @@ cohere
 
 ### Gemini
 
-#### `sendMessage(message, options)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -101,11 +105,12 @@ gemini
 
 ### Goose AI
 
-#### `sendMessage(message, options)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, and `model`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -122,11 +127,12 @@ goose
 
 ### Groq
 
-#### `sendMessage(message, options)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -143,11 +149,12 @@ groq
 
 ### Mistral AI
 
-#### `sendMessage(message, options)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -164,11 +171,12 @@ mistral
 
 ### Reka AI
 
-#### `sendMessage(message, options)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `model`. This method currently has no token limitation.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -185,11 +193,12 @@ reka
 
 ### LLaMA.cpp
 
-#### `sendMessage(message, options)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 

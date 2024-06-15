@@ -21,6 +21,7 @@ test("Mistral API Client should send a message and receive a response", async ()
   };
   try {
     const response = await mistral.sendMessage(message, { max_tokens: 100 });
+
     expect(typeof response).toBe("string");
   } catch (error) {
     throw new Error(`Test failed: ${safeStringify(error)}`);
