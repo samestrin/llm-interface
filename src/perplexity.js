@@ -86,9 +86,19 @@ class Perplexity {
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          console.error("API Error:", error.message);
-          throw new Error(error.message);
+          if (error.response) {
+            console.error("Response data:", error.response.data);
+          } else if (error.request) {
+            console.error("No response received:", error.request);
+          } else {
+            console.error("Error setting up the request:", error.message);
+          }
+          throw error;
         }
+        // Implement progressive delay
+        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        currentRetry++;
       }
     }
   }
