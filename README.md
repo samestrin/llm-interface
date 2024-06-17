@@ -10,22 +10,21 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Updates
 
+**v0.0.11**
+
+- **Simple Prompt Handler**: Added support for simplified prompting.
+
 **v0.0.10**
 
 - **Hugging Face**: Added support for new LLM provider Hugging Face (_over 150,000 publicly accessible machine learning models_)
 - **Perplexity**: Added support for new LLM provider Perplexity
 - **AI21**: Add support for new LLM provider AI21 Studio
 - **JSON Output Improvements**: The `json_object` mode for OpenAI and Gemini now guarantees the return a valid JSON object or null.
-- **Graceful Retries**: Retry LLM queries upon failure.
+- **Graceful Retries**: Retry LLM queries upon failure with progressive delays.
 
 **v0.0.9**
 
 - **Response Caching**: Efficiently caches LLM responses to reduce costs, enhance performance and minimize redundant requests, with customizable cache timeout settings.
-
-**v0.0.8**
-
-- **Mistral AI**: Added support for new LLM provider Mistral
-- **Cohere**: Added support for new LLM provider Cohere
 
 ## Features
 

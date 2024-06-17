@@ -7,6 +7,7 @@
 
 const axios = require("axios");
 const { getFromCache, saveToCache } = require("./cache"); // Import caching functions
+const { returnSimpleMessageObject } = require("./utils");
 
 class HuggingFace {
   /**
@@ -31,6 +32,9 @@ class HuggingFace {
    * @returns {Promise<string|null>} - A promise that resolves to the response text or null if an error occurs.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
+    if (typeof message === "string") {
+      message = returnSimpleMessageObject(message);
+    }
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === "number") {
       cacheTimeoutSeconds = interfaceOptions;
@@ -61,6 +65,7 @@ class HuggingFace {
     }
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+    let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(`${model}`, payload);
@@ -82,7 +87,6 @@ class HuggingFace {
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          // Handle errors
           if (error.response) {
             console.error("Response data:", error.response.data);
           } else if (error.request) {
@@ -92,6 +96,10 @@ class HuggingFace {
           }
           throw error;
         }
+        // Implement progressive delay
+        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        currentRetry++;
       }
     }
   }

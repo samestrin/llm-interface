@@ -7,6 +7,7 @@
 
 const axios = require("axios");
 const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
+const { returnMessageObject } = require("./utils");
 
 class Mistral {
   /**
@@ -41,6 +42,9 @@ class Mistral {
    * mistral.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
+    if (typeof message === "string") {
+      message = returnMessageObject(message);
+    }
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === "number") {
       cacheTimeoutSeconds = interfaceOptions;
@@ -69,6 +73,7 @@ class Mistral {
     }
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+    let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(`/chat/completions`, payload);
@@ -101,6 +106,10 @@ class Mistral {
           }
           throw error;
         }
+        // Implement progressive delay
+        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        currentRetry++;
       }
     }
   }

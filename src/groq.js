@@ -7,6 +7,7 @@
 
 const GroqSDK = require("groq-sdk");
 const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
+const { returnMessageObject } = require("./utils");
 
 class Groq {
   /**
@@ -37,6 +38,9 @@ class Groq {
    * groq.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
+    if (typeof message === "string") {
+      message = returnMessageObject(message);
+    }
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === "number") {
       cacheTimeoutSeconds = interfaceOptions;
@@ -62,6 +66,8 @@ class Groq {
     }
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+    let currentRetry = 0;
+
     while (retryAttempts >= 0) {
       try {
         const chatCompletion = await this.groq.chat.completions.create(params);
@@ -83,8 +89,19 @@ class Groq {
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          throw new Error(error.response.data.error.message);
+          if (error.response) {
+            console.error("Response data:", error.response.data);
+          } else if (error.request) {
+            console.error("No response received:", error.request);
+          } else {
+            console.error("Error setting up the request:", error.message);
+          }
+          throw error;
         }
+        // Implement progressive delay
+        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        currentRetry++;
       }
     }
   }

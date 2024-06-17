@@ -2,6 +2,7 @@
 
 const axios = require("axios");
 const { getFromCache, saveToCache } = require("./cache");
+const { returnMessageObject } = require("./utils");
 
 class AzureAI {
   /**
@@ -29,6 +30,9 @@ class AzureAI {
    * @throws {Error} Throws an error if the API request fails.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
+    if (typeof message === "string") {
+      message = returnMessageObject(message);
+    }
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === "number") {
       cacheTimeoutSeconds = interfaceOptions;
@@ -68,6 +72,7 @@ class AzureAI {
     }
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+    let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(
@@ -100,9 +105,19 @@ class AzureAI {
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          console.error("API Error:", error.message);
-          throw new Error(error.message);
+          if (error.response) {
+            console.error("Response data:", error.response.data);
+          } else if (error.request) {
+            console.error("No response received:", error.request);
+          } else {
+            console.error("Error setting up the request:", error.message);
+          }
+          throw error;
         }
+        // Implement progressive delay
+        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        currentRetry++;
       }
     }
   }

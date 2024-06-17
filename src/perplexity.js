@@ -2,6 +2,7 @@
 
 const axios = require("axios");
 const { getFromCache, saveToCache } = require("./cache");
+const { returnMessageObject } = require("./utils");
 
 class Perplexity {
   /**
@@ -29,6 +30,9 @@ class Perplexity {
    * @throws {Error} Throws an error if the API request fails.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
+    if (typeof message === "string") {
+      message = returnMessageObject(message);
+    }
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === "number") {
       cacheTimeoutSeconds = interfaceOptions;
@@ -54,6 +58,7 @@ class Perplexity {
     }
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+    let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(

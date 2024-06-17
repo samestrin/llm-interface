@@ -7,6 +7,7 @@
 
 const axios = require("axios");
 const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
+const { returnSimpleMessageObject } = require("./utils");
 
 class Reka {
   /**
@@ -42,6 +43,9 @@ class Reka {
    * reka.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
+    if (typeof message === "string") {
+      message = returnSimpleMessageObject(message);
+    }
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === "number") {
       cacheTimeoutSeconds = interfaceOptions;
@@ -78,6 +82,7 @@ class Reka {
     }
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+    let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post("/v1/chat", modifiedMessage);
@@ -100,6 +105,10 @@ class Reka {
           );
           throw new Error(error.response ? error.response.data : error.message);
         }
+        // Implement progressive delay
+        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        currentRetry++;
       }
     }
   }

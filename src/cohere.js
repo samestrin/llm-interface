@@ -7,6 +7,7 @@
 
 const axios = require("axios");
 const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
+const { returnSimpleMessageObject } = require("./utils");
 
 class Cohere {
   /**
@@ -56,21 +57,33 @@ class Cohere {
     model = model || options.model || "command-r-plus";
 
     // Prepare the payload for the API request
-    const chat_history = messages.slice(0, -1).map((msg) => ({
-      role: msg.role === "user" ? "USER" : "CHATBOT",
-      message: msg.content,
-    }));
-    const current_message = messages[messages.length - 1].content;
-    const payload = {
-      chat_history:
-        chat_history.length > 0
-          ? chat_history
-          : [{ role: "USER", message: "" }],
-      message: current_message,
-      model,
-      max_tokens,
-      ...options,
-    };
+    let chat_history, current_message, payload;
+
+    if (typeof message === "string") {
+      payload = {
+        chat_history: [],
+        message,
+        model,
+        max_tokens,
+        ...options,
+      };
+    } else {
+      chat_history = messages.slice(0, -1).map((msg) => ({
+        role: msg.role === "user" ? "USER" : "CHATBOT",
+        message: msg.content,
+      }));
+      current_message = messages[messages.length - 1].content;
+      payload = {
+        chat_history:
+          chat_history.length > 0
+            ? chat_history
+            : [{ role: "USER", message: "" }],
+        message: current_message,
+        model,
+        max_tokens,
+        ...options,
+      };
+    }
 
     // Create cache key and check for cached response
     const cacheKey = JSON.stringify(payload);
@@ -82,6 +95,7 @@ class Cohere {
     }
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+    let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(`/chat`, payload);
@@ -106,6 +120,10 @@ class Cohere {
           }
           throw error;
         }
+        // Implement progressive delay
+        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        currentRetry++;
       }
     }
   }

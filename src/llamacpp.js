@@ -49,10 +49,16 @@ class LlamaCPP {
 
     const { max_tokens = 150 } = options;
 
-    // Prepare the payload for the API request
-    const formattedPrompt = prompt.messages
-      .map((message) => message.content)
-      .join(" ");
+    let formattedPrompt;
+    if (typeof prompt === "string") {
+      formattedPrompt = prompt;
+    } else {
+      // Prepare the payload for the API request
+      formattedPrompt = prompt.messages
+        .map((message) => message.content)
+        .join(" ");
+    }
+
     const payload = {
       prompt: formattedPrompt,
       n_predict: max_tokens,
@@ -68,6 +74,7 @@ class LlamaCPP {
     }
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+    let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post("", payload);
@@ -97,6 +104,10 @@ class LlamaCPP {
           }
           throw error;
         }
+        // Implement progressive delay
+        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        currentRetry++;
       }
     }
   }

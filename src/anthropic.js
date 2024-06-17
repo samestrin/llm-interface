@@ -7,6 +7,7 @@
 
 const AnthropicSDK = require("@anthropic-ai/sdk");
 const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
+const { returnSimpleMessageObject } = require("./utils");
 
 class Anthropic {
   /**
@@ -37,6 +38,10 @@ class Anthropic {
    * anthropic.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
+    if (typeof message === "string") {
+      message = returnSimpleMessageObject(message);
+    }
+
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === "number") {
       cacheTimeoutSeconds = interfaceOptions;
@@ -76,6 +81,7 @@ class Anthropic {
     }
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+    let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.anthropic.messages.create(params);
@@ -105,6 +111,10 @@ class Anthropic {
           }
           throw error;
         }
+        // Implement progressive delay
+        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        currentRetry++;
       }
     }
   }

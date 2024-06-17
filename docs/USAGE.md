@@ -16,6 +16,8 @@
   - [Perplexity Interface](#perplexity-interface)
   - [Reka AI Interface](#reka-ai-interface)
   - [LLaMA.cpp Interface](#llamacpp-interface)
+- [Simple Usage Example](#simple-usage-example)
+  - [OpenAI Interface (String Based Prompt)](#openai-interface-string-based-prompt)
 - [Advanced Usage Examples](#advanced-usage-examples)
   - [OpenAI Interface (JSON Output)](#openai-interface-json-output)
   - [OpenAI Interface (Cached)](#openai-interface-cached)
@@ -382,9 +384,34 @@ llamacpp
   });
 ```
 
+## Simple Usage Example
+
+The following example demonstrates simplified use of `llm-interface`.
+
+### OpenAI Interface (String Based Prompt)
+
+This simplified example uses a string based prompt with the default OpenAI model (gpt-3.5-turbo).
+
+#### Example
+
+```javascript
+const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
+
+const message = "Explain the importance of low latency LLMs.";
+
+openai
+  .sendMessage(message)
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ## Advanced Usage Examples
 
-Then select the interface you'd like to use and initialize it with an API key or LLama.cpp URL.
+The following examples highlight some of the advanced features of `llm-interface`.
 
 ### OpenAI Interface (JSON Output)
 
