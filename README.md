@@ -20,6 +20,10 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Updates
 
+**v1.0.00**
+
+- **Initial 1.0 Release**
+
 **v0.0.11**
 
 - **Simple Prompt Handler**: Added support for simplified prompting.
@@ -31,10 +35,6 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 - **AI21**: Add support for new LLM provider AI21 Studio
 - **JSON Output Improvements**: The `json_object` mode now guarantees the return a valid JSON object or null.
 - **Graceful Retries**: Retry LLM queries upon failure with progressive delays.
-
-**v0.0.9**
-
-- **Response Caching**: Efficiently caches LLM responses to reduce costs, enhance performance and minimize redundant requests, with customizable cache timeout settings.
 
 ## Dependencies
 
