@@ -8,6 +8,16 @@
 
 The LLM Interface project is a versatile and comprehensive wrapper designed to interact with multiple Large Language Model (LLM) APIs. It simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, Anthropic, Cohere, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Perplexity, Reka AI, and LLaMA.cpp**, into your applications. This project aims to provide a simplified and unified interface for sending messages and receiving responses from different LLM services, making it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
+## Features
+
+- **Unified Interface**: A single, consistent interface to interact with multiple LLM APIs.
+- **Dynamic Module Loading**: Automatically loads and manages different LLM LLMInterface.
+- **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
+- **Extensible**: Easily extendable to support additional LLM providers as needed.
+- **JSON Output**: Simple to use JSON output for OpenAI and Gemini responses.
+- **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
+- **Graceful Retries**: Automatically retry failed prompts with increasing delays to ensure successful responses.
+
 ## Updates
 
 **v0.0.11**
@@ -25,15 +35,6 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 **v0.0.9**
 
 - **Response Caching**: Efficiently caches LLM responses to reduce costs, enhance performance and minimize redundant requests, with customizable cache timeout settings.
-
-## Features
-
-- **Unified Interface**: A single, consistent interface to interact with multiple LLM APIs.
-- **Dynamic Module Loading**: Automatically loads and manages different LLM LLMInterface.
-- **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
-- **Extensible**: Easily extendable to support additional LLM providers as needed.
-- **JSON Output**: Simple to use JSON output for OpenAI and Gemini responses.
-- **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
 
 ## Dependencies
 
