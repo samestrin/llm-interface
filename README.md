@@ -10,6 +10,13 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Updates
 
+**v0.0.10**
+
+- **Hugging Face**: Added support for Hugging Face Inference (_over 150,000 publicly accessible machine learning models_)
+- **Perplexity Labs**: Added support for Perplexity Labs
+- **JSON Improvements**: The `json_object` mode for OpenAI and Gemini now guarantees the return a valid JSON object or null.
+- **Graceful Retries**: Retry LLM queries upon failure.
+
 **v0.0.9**
 
 - **Response Caching**: Efficiently caches LLM responses to reduce costs, enhance performance and minimize redundant requests, with customizable cache timeout settings.
@@ -18,10 +25,6 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 - **Mistral AI**: Added support for Mistral AI
 - **Cohere**: Added support for Cohere
-
-**v0.0.7**
-
-- **Goose AI**: Added support for Goose AI
 
 ## Features
 
@@ -36,7 +39,7 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 The project relies on several npm packages and APIs. Here are the primary dependencies:
 
-- `axios`: For making HTTP requests (used for Cohere, Goose AI, LLaMA.cpp, Mistral, and Reka AI).
+- `axios`: For making HTTP requests (used for various HTTP AI APIs).
 - `@anthropic-ai/sdk`: SDK for interacting with the Anthropic API.
 - `@google/generative-ai`: SDK for interacting with the Google Gemini API.
 - `groq-sdk`: SDK for interacting with the Groq API.

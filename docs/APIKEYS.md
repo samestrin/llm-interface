@@ -8,6 +8,12 @@ The OpenAI API requires a credit card.
 
 - https://platform.openai.com/api-keys
 
+## AI21 Studio
+
+The AI21 API is a commercial product, but it currently does not require a credit card, and comes with a $90 credit.
+
+- https://studio.ai21.com/account/api-key?source=docs
+
 ## Anthropic
 
 The Anthropic API requires a credit card.
@@ -38,11 +44,23 @@ The Groq API is currently free.
 
 - https://console.groq.com/keys
 
+## Hugging Face
+
+The Hugging Face Inference API is currently free for rate-limited, non-commercial use.
+
+- https://huggingface.co/settings/tokens
+
 ## Mistral
 
 The Mistral API is a commercial product, but it currently does not require a credit card, and comes with a $5.00 credit.
 
 - https://console.mistral.ai/api-keys/
+
+## Perplexity
+
+The Perplexity API requires a credit cards.
+
+- https://www.perplexity.ai/settings/api
 
 ## Reka AI
 

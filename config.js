@@ -15,4 +15,7 @@ module.exports = {
   gooseApiKey: process.env.GOOSE_API_KEY,
   cohereApiKey: process.env.COHERE_API_KEY,
   mistralApiKey: process.env.MISTRAL_API_KEY,
+  huggingfaceApiKey: process.env.HUGGINGFACE_API_KEY,
+  perplexityApiKey: process.env.PERPLEXITY_API_KEY,
+  ai21ApiKey: process.env.AI21_API_KEY,
 };

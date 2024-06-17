@@ -37,6 +37,28 @@ openai
   });
 ```
 
+### AI21
+
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
+
+- **Parameters:**
+  - `message`: An object containing the model and messages to send.
+  - `options`: An optional object containing `max_tokens` and `model`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+- **Returns:** A promise that resolves to the response text.
+- **Example:**
+
+```javascript
+ai21
+  .sendMessage(message, { max_tokens: 150 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### Anthropic
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
@@ -147,6 +169,28 @@ groq
   });
 ```
 
+### Hugging Face
+
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
+
+- **Parameters:**
+  - `message`: An object containing the model and messages to send.
+  - `options`: An optional object containing `max_tokens` and `model`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+- **Returns:** A promise that resolves to the response text.
+- **Example:**
+
+```javascript
+huggingface
+  .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### Mistral AI
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
@@ -160,6 +204,28 @@ groq
 
 ```javascript
 mistral
+  .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Perplexity Labs
+
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
+
+- **Parameters:**
+  - `message`: An object containing the model and messages to send.
+  - `options`: An optional object containing `max_tokens` and `model`.
+  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+- **Returns:** A promise that resolves to the response text.
+- **Example:**
+
+```javascript
+perplexity
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
     console.log(response);
