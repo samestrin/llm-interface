@@ -10,7 +10,7 @@ test("Reka AI API Key should be set", async () => {
   expect(typeof rekaApiKey).toBe("string");
 });
 
-test("Reka AI API Client should send a message and receive a response", async () => {
+test("Reka AI AjestPI Client should send a message and receive a response", async () => {
   const reka = new Reka(rekaApiKey);
   const message = "Explain the importance of low latency LLMs.";
   try {

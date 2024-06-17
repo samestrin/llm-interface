@@ -72,6 +72,23 @@ openai
   });
 ```
 
+### AI21 Interface
+
+The AI21 interface allows you to send messages to the AI21 API.
+
+#### Example
+
+````javascript
+const ai21 = new LLMInterface.ai21(process.env.AI21_API_KEY);
+
+const message = {
+  model: "jamba-instruct",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
 ### Anthropic Interface
 
 The Anthropic interface allows you to send messages to the Anthropic API.
@@ -102,34 +119,18 @@ anthropic
   .catch((error) => {
     console.error(error);
   });
-```
-
-### AI21 Interface
-
-The AI21 interface allows you to send messages to the AI21 API.
-
-#### Example
-
-```javascript
-const ai21 = new LLMInterface.ai21(process.env.AI21_API_KEY);
-
-const message = {
-  model: "jamba-instruct",
-  messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
-  ],
-};
+````
 
 ai21
-  .sendMessage(message, { max_tokens: 150 })
-  .then((response) => {
-    console.log(response);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
+.sendMessage(message, { max_tokens: 150 })
+.then((response) => {
+console.log(response);
+})
+.catch((error) => {
+console.error(error);
+});
+
+````
 
 ### Cohere Interface
 
@@ -156,7 +157,7 @@ cohere
   .catch((error) => {
     console.error(error);
   });
-```
+````
 
 ### Gemini Interface
 

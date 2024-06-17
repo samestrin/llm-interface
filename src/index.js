@@ -14,6 +14,8 @@ const modules = {
   cohere: "./cohere",
   mistral: "./mistral",
   huggingface: "./huggingface",
+  ai21: "./ai21",
+  perplexity: "./perplexity",
 };
 
 const LLMInterface = {};
