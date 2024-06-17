@@ -65,10 +65,11 @@ class Reka {
       }
       return { ...msg, role: "user" };
     });
-
+    const { max_tokens = 150 } = options;
     const modifiedMessage = {
       messages: convertedMessages,
       model,
+      max_tokens,
       stream: false,
     };
 

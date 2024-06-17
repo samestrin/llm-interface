@@ -42,10 +42,11 @@ class Perplexity {
 
     const { messages } = message;
     const { model = "llama-3-sonar-small-32k-online" } = options;
-
+    const { max_tokens = 150 } = options;
     const requestBody = {
       model,
       messages,
+      max_tokens,
     };
 
     // Create cache key and check for cached response
