@@ -1,5 +1,5 @@
 /**
- * @file rekate.test.js
+ * @file reka.test.js
  * @description Tests for the Reka AI API client.
  */
 

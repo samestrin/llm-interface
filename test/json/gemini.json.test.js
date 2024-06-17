@@ -30,5 +30,5 @@ test("Gemini API Client should send a message and receive a response", async () 
     max_tokens: 100,
     response_format: "json_object",
   });
-  expect(typeof response).toBe("string");
+  expect(typeof response).toBe("object");
 });

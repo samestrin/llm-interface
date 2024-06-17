@@ -29,15 +29,26 @@ class Reka {
    *
    * @param {Object} message - The message object containing the model and messages to send.
    * @param {Object} [options={}] - Optional parameters for the request.
-   * @param {number} [cacheTimeoutSeconds] - Optional timeout in seconds for caching the response.
+   * @param {Object | number} [interfaceOptions={}] - Optional interface options, including cache timeout and retry attempts.
    * @returns {Promise<string|null>} The response text from the API.
    * @throws {Error} Throws an error if the API request fails.
    *
    * @example
    * const reka = new Reka(apiKey);
-   * reka.sendMessage(message, { max_tokens: 150 }, 60).then(console.log).catch(console.error);
+   * const interfaceOpts = {
+   *   cacheTimeoutSeconds: 300,
+   *   retryAttempts: 3,
+   * };
+   * reka.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
    */
-  async sendMessage(message, options = {}, cacheTimeoutSeconds) {
+  async sendMessage(message, options = {}, interfaceOptions = {}) {
+    let cacheTimeoutSeconds;
+    if (typeof interfaceOptions === "number") {
+      cacheTimeoutSeconds = interfaceOptions;
+    } else {
+      cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
+    }
+
     let { model } = message;
 
     // Set default model if not provided
@@ -66,29 +77,30 @@ class Reka {
       }
     }
 
-    try {
-      // Make API request and cache the response
-      const response = await this.client.post("/v1/chat", modifiedMessage);
+    let retryAttempts = interfaceOptions.retryAttempts || 0;
+    while (retryAttempts >= 0) {
+      try {
+        const response = await this.client.post("/v1/chat", modifiedMessage);
+        let responseContent = null;
 
-      // Check for the response content
-      const responseContent =
-        response.data?.responses?.[0]?.message?.content || null;
+        if (response.data?.responses?.[0]?.message?.content) {
+          responseContent = response.data.responses[0].message.content;
+        }
 
-      if (!responseContent) {
-        throw new Error("Unexpected response format");
+        if (cacheTimeoutSeconds && responseContent) {
+          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+        }
+        return responseContent;
+      } catch (error) {
+        retryAttempts--;
+        if (retryAttempts < 0) {
+          console.error(
+            "API Error:",
+            error.response ? error.response.data : error.message
+          );
+          throw new Error(error.response ? error.response.data : error.message);
+        }
       }
-
-      if (cacheTimeoutSeconds) {
-        saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
-      }
-
-      return responseContent;
-    } catch (error) {
-      console.error(
-        "API Error:",
-        error.response ? error.response.data : error.message
-      );
-      throw new Error(error.response ? error.response.data : error.message);
     }
   }
 }

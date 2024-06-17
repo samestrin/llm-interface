@@ -24,19 +24,30 @@ class OpenAI {
    *
    * @param {Object} message - The message object containing the model and messages to send.
    * @param {Object} [options={}] - Optional parameters for the request.
-   * @param {number} [cacheTimeoutSeconds] - Optional timeout in seconds for caching the response.
+   * @param {Object | number} [interfaceOptions={}] - Optional interface options, including cache timeout and retry attempts.
    * @returns {Promise<string|null>} The response text from the API.
    * @throws {Error} Throws an error if the API request fails.
    *
    * @example
    * const openai = new OpenAI(apiKey);
-   * openai.sendMessage(message, { max_tokens: 150 }, 60).then(console.log).catch(console.error);
+   * const interfaceOpts = {
+   *   cacheTimeoutSeconds: 300,
+   *   retryAttempts: 3,
+   * };
+   * openai.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
    */
-  async sendMessage(message, options = {}, cacheTimeoutSeconds) {
+  async sendMessage(message, options = {}, interfaceOptions = {}) {
+    let cacheTimeoutSeconds;
+    if (typeof interfaceOptions === "number") {
+      cacheTimeoutSeconds = interfaceOptions;
+    } else {
+      cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
+    }
+
     const { model: messageModel, messages } = message;
     const {
       max_tokens = 150,
-      model = messageModel || "gpt-3.5-turbo-0613",
+      model = messageModel || "gpt-3.5-turbo",
       response_format,
     } = options;
     const requestPayload = {
@@ -54,24 +65,40 @@ class OpenAI {
       }
     }
 
-    try {
-      const completion = await this.openai.chat.completions.create(
-        requestPayload
-      );
-      const responseContent =
-        completion &&
-        completion.choices &&
-        completion.choices[0] &&
-        completion.choices[0].message &&
-        completion.choices[0].message.content
-          ? completion.choices[0].message.content
-          : null;
-      if (cacheTimeoutSeconds) {
-        saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+    let retryAttempts = interfaceOptions.retryAttempts || 0;
+    while (retryAttempts >= 0) {
+      try {
+        const completion = await this.openai.chat.completions.create(
+          requestPayload
+        );
+        let responseContent = null;
+        if (
+          completion &&
+          completion.choices &&
+          completion.choices[0] &&
+          completion.choices[0].message
+        ) {
+          responseContent = completion.choices[0].message.content;
+        }
+
+        if (response_format === "json_object") {
+          try {
+            responseContent = JSON.parse(responseContent);
+          } catch (e) {
+            responseContent = null;
+          }
+        }
+
+        if (cacheTimeoutSeconds && responseContent) {
+          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+        }
+        return responseContent;
+      } catch (error) {
+        retryAttempts--;
+        if (retryAttempts < 0) {
+          throw new Error(error.response.data.error.message);
+        }
       }
-      return responseContent;
-    } catch (error) {
-      throw new Error(error.response.data.error.message);
     }
   }
 }

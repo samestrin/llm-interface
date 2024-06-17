@@ -5,18 +5,21 @@
 - [Initializing llm-interface](#initializing-llm-interface)
 - [Basic Usage Examples](#basic-usage-examples)
   - [OpenAI Interface](#openai-interface)
+  - [AI21 Interface](#ai21-interface)
   - [Anthropic Interface](#anthropic-interface)
   - [Cohere Interface](#cohere-interface)
   - [Gemini Interface](#gemini-interface)
   - [Goose AI Interface](#goose-ai-interface)
   - [Groq Interface](#groq-interface)
+  - [HuggingFace Interface](#huggingface-interface)
   - [Mistral AI Interface](#mistral-ai-interface)
+  - [Perplexity Interface](#perplexity-interface)
   - [Reka AI Interface](#reka-ai-interface)
   - [LLaMA.cpp Interface](#llamacpp-interface)
 - [Advanced Usage Examples](#advanced-usage-examples)
   - [OpenAI Interface (JSON Output)](#openai-interface-json-output)
-  - [Gemini Interface (JSON Output)](#gemini-interface-json-output)
   - [OpenAI Interface (Cached)](#openai-interface-cached)
+  - [OpenAI Interface (Graceful Retry)](#openai-interface-graceful-retry)
 
 # Usage
 
@@ -90,6 +93,33 @@ const message = {
 };
 
 anthropic
+  .sendMessage(message, { max_tokens: 150 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### AI21 Interface
+
+The AI21 interface allows you to send messages to the AI21 API.
+
+#### Example
+
+```javascript
+const ai21 = new LLMInterface.ai21(process.env.AI21_API_KEY);
+
+const message = {
+  model: "jamba-instruct",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
+ai21
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
     console.log(response);
@@ -207,6 +237,38 @@ groq
   });
 ```
 
+### HuggingFace Interface
+
+The HuggingFace interface allows you to send messages to the HuggingFace API.
+
+#### Example
+
+```javascript
+const huggingface = new LLMInterface.huggingface(process.env.ANTHROPIC_API_KEY);
+
+const message = {
+  model: "claude-3-opus-20240229",
+  messages: [
+    {
+      role: "user",
+      content:
+        "You are a helpful assistant. Say OK if you understand and stop.",
+    },
+    { role: "system", content: "OK" },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
+huggingface
+  .sendMessage(message, { max_tokens: 150 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### Mistral AI Interface
 
 The Mistral AI interface allows you to send messages to the Mistral AI API.
@@ -226,6 +288,38 @@ const message = {
 
 mistral
   .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Perplexity Interface
+
+The Perplexity interface allows you to send messages to the Perplexity API.
+
+#### Example
+
+```javascript
+const perplexity = new LLMInterface.perplexity(process.env.ANTHROPIC_API_KEY);
+
+const message = {
+  model: "claude-3-opus-20240229",
+  messages: [
+    {
+      role: "user",
+      content:
+        "You are a helpful assistant. Say OK if you understand and stop.",
+    },
+    { role: "system", content: "OK" },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
+perplexity
+  .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
     console.log(response);
   })
@@ -294,7 +388,7 @@ Then select the interface you'd like to use and initialize it with an API key or
 
 ### OpenAI Interface (JSON Output)
 
-The OpenAI interface allows you to send messages to the OpenAI API and request the response back in JSON. To take advantage of this feature be sure to include text like "Return the results as a JSON object." and provide a desired output format like "Follow this format: [{reason, reasonDescription}]."
+Some interfaces allows you request the response back in JSON, currently **OpenAI** and **Gemini** are supported. To take advantage of this feature be sure to include text like "Return the results as a JSON object." and provide a desired output format like "Follow this format: [{reason, reasonDescription}]." In this example we use OpenAI and request a valid JSON object.
 
 #### Example
 
@@ -326,43 +420,9 @@ openai
   });
 ```
 
-### Gemini Interface (JSON Output)
-
-The Gemini interface allows you to send messages to the Google Gemini API. To take advantage of this feature be sure to include text like "Return the results as a JSON object." and provide a desired output format like "Follow this format: [{reason, reasonDescription}]."
-
-#### Example
-
-```javascript
-const gemini = new LLMInterface.gemini(process.env.GEMINI_API_KEY);
-
-const message = {
-  model: "gemini-1.5-flash",
-  messages: [
-    {
-      role: "system",
-      content: "You are a helpful assistant.",
-    },
-    {
-      role: "user",
-      content:
-        "Explain the importance of low latency LLMs. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}].",
-    },
-  ],
-};
-
-gemini
-  .sendMessage(message, { max_tokens: 100, response_format: "json_object" })
-  .then((response) => {
-    console.log(response);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
 ### OpenAI Interface (Cached)
 
-The OpenAI interface allows you to send messages to the OpenAI API. To reduce operational costs and improve performance you can optionally specify a cache timeout in seconds. In this example we store the results for 86400 seconds or one day.
+To reduce operational costs and improve performance you can optionally specify a cache timeout in seconds. In this example we use OpenAI and store the results for 86400 seconds or one day.
 
 #### Example
 
@@ -378,7 +438,34 @@ const message = {
 };
 
 openai
-  .sendMessage(message, { max_tokens: 150 }, 86400)
+  .sendMessage(message, { max_tokens: 150 }, { cacheTimeoutSeconds: 86400 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### OpenAI Interface (Graceful Retry)
+
+You can gracefully retry your requests. In this example we use OpenAI and up to 3 times if needed.
+
+#### Example
+
+```javascript
+const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
+
+const message = {
+  model: "gpt-3.5-turbo",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Explain the importance of low latency LLMs." },
+  ],
+};
+
+openai
+  .sendMessage(message, { max_tokens: 150 }, { retryAttempts: 3 })
   .then((response) => {
     console.log(response);
   })

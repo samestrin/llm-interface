@@ -31,5 +31,5 @@ test("OpenAI API Client should send a message and receive a response", async () 
     response_format: "json_object",
   });
 
-  expect(typeof response).toBe("string");
+  expect(typeof response).toBe("object");
 });

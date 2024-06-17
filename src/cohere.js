@@ -28,15 +28,26 @@ class Cohere {
    *
    * @param {Object} message - The message object containing the model and messages to send.
    * @param {Object} [options={}] - Optional parameters for the request.
-   * @param {number} [cacheTimeoutSeconds] - Optional timeout in seconds for caching the response.
+   * @param {Object | number} [interfaceOptions={}] - Optional interface options, including cache timeout and retry attempts.
    * @returns {Promise<string|null>} The response text from the API.
    * @throws {Error} Throws an error if the API request fails.
    *
    * @example
    * const cohere = new Cohere(apiKey);
-   * cohere.sendMessage(message, { max_tokens: 150 }, 60).then(console.log).catch(console.error);
+   * const interfaceOpts = {
+   *   cacheTimeoutSeconds: 300,
+   *   retryAttempts: 3,
+   * };
+   * cohere.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
    */
-  async sendMessage(message, options = {}, cacheTimeoutSeconds) {
+  async sendMessage(message, options = {}, interfaceOptions = {}) {
+    let cacheTimeoutSeconds;
+    if (typeof interfaceOptions === "number") {
+      cacheTimeoutSeconds = interfaceOptions;
+    } else {
+      cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
+    }
+
     const { messages } = message;
     const { max_tokens = 150 } = options;
     let { model } = message;
@@ -70,26 +81,32 @@ class Cohere {
       }
     }
 
-    try {
-      // Make API request and cache the response
-      const response = await this.client.post(`/chat`, payload);
-      const responseContent =
-        response && response.data && response.data.text
-          ? response.data.text
-          : null;
-      if (cacheTimeoutSeconds) {
-        saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+    let retryAttempts = interfaceOptions.retryAttempts || 0;
+    while (retryAttempts >= 0) {
+      try {
+        const response = await this.client.post(`/chat`, payload);
+        let responseContent = null;
+        if (response && response.data && response.data.text) {
+          responseContent = response.data.text;
+        }
+
+        if (cacheTimeoutSeconds && responseContent) {
+          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+        }
+        return responseContent;
+      } catch (error) {
+        retryAttempts--;
+        if (retryAttempts < 0) {
+          if (error.response) {
+            console.error("Response data:", error.response.data);
+          } else if (error.request) {
+            console.error("No response received:", error.request);
+          } else {
+            console.error("Error setting up the request:", error.message);
+          }
+          throw error;
+        }
       }
-      return responseContent;
-    } catch (error) {
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-      } else if (error.request) {
-        console.error("No response received:", error.request);
-      } else {
-        console.error("Error setting up the request:", error.message);
-      }
-      throw error;
     }
   }
 }

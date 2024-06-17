@@ -1,21 +1,17 @@
-/**
- * @file mistral.js
- * @class Mistral
- * @description Wrapper class for the Mistral AI API.
- * @param {string} apiKey - The API key for Mistral AI.
- */
+// AI21.js
 
 const axios = require("axios");
-const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
+const { getFromCache, saveToCache } = require("./cache");
 
-class Mistral {
+class AI21 {
   /**
    * @constructor
-   * @param {string} apiKey - The API key for Mistral AI.
+   * @param {string} apiKey - The API key for AI21.
    */
   constructor(apiKey) {
+    this.apiKey = apiKey;
     this.client = axios.create({
-      baseURL: "https://api.mistral.ai/v1",
+      baseURL: "https://api.ai21.com/studio/v1",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
@@ -24,21 +20,13 @@ class Mistral {
   }
 
   /**
-   * Sends a message to the Mistral AI API.
+   * Sends a message to the AI21 API.
    *
-   * @param {Object} message - The message object containing the model and messages to send.
+   * @param {Object} message - The message object containing the messages to send.
    * @param {Object} [options={}] - Optional parameters for the request.
    * @param {Object | number} [interfaceOptions={}] - Optional interface options, including cache timeout and retry attempts.
-   * @returns {Promise<string|null>} The response text from the API.
+   * @returns {Promise<Object|null>} The response object from the API.
    * @throws {Error} Throws an error if the API request fails.
-   *
-   * @example
-   * const mistral = new Mistral(apiKey);
-   * const interfaceOpts = {
-   *   cacheTimeoutSeconds: 300,
-   *   retryAttempts: 3,
-   * };
-   * mistral.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     let cacheTimeoutSeconds;
@@ -48,19 +36,23 @@ class Mistral {
       cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
     }
 
-    let { model, messages } = message;
+    const { messages } = message;
+    const {
+      model = "jamba-instruct",
+      max_tokens = 200,
+      temperature = 1,
+      top_p = 1,
+      stop = "<|endoftext|>",
+    } = options;
 
-    // Set default model if not provided
-    model = model || options.model || "mistral-large-latest";
-
-    const payload = {
+    const requestBody = {
       model,
       messages,
-      ...options,
+      max_tokens,
     };
 
     // Create cache key and check for cached response
-    const cacheKey = JSON.stringify(payload);
+    const cacheKey = JSON.stringify(requestBody);
     if (cacheTimeoutSeconds) {
       const cachedResponse = getFromCache(cacheKey);
       if (cachedResponse) {
@@ -71,9 +63,11 @@ class Mistral {
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     while (retryAttempts >= 0) {
       try {
-        const response = await this.client.post(`/chat/completions`, payload);
+        const response = await this.client.post(
+          "/chat/completions",
+          requestBody
+        );
         let responseContent = null;
-
         if (
           response &&
           response.data &&
@@ -92,18 +86,12 @@ class Mistral {
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          if (error.response) {
-            console.error("Response data:", error.response.data);
-          } else if (error.request) {
-            console.error("No response received:", error.request);
-          } else {
-            console.error("Error setting up the request:", error.message);
-          }
-          throw error;
+          console.error("API Error:", error.message);
+          throw new Error(error.message);
         }
       }
     }
   }
 }
 
-module.exports = Mistral;
+module.exports = AI21;

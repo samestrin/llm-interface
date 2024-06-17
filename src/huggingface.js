@@ -1,21 +1,21 @@
 /**
- * @file mistral.js
- * @class Mistral
- * @description Wrapper class for the Mistral AI API.
- * @param {string} apiKey - The API key for Mistral AI.
+ * @file huggingface.js
+ * @class Hugging Face Inference API
+ * @description Wrapper class for the Hugging Face Inference API.
+ * @param {string} apiKey - The API key for Hugging Face Inference API.
  */
 
 const axios = require("axios");
-const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
+const { getFromCache, saveToCache } = require("./cache"); // Import caching functions
 
-class Mistral {
+class HuggingFace {
   /**
    * @constructor
-   * @param {string} apiKey - The API key for Mistral AI.
+   * @param {string} apiKey - The API key for accessing the HuggingFace API.
    */
   constructor(apiKey) {
     this.client = axios.create({
-      baseURL: "https://api.mistral.ai/v1",
+      baseURL: "https://api-inference.huggingface.co/models/",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
@@ -24,21 +24,11 @@ class Mistral {
   }
 
   /**
-   * Sends a message to the Mistral AI API.
-   *
-   * @param {Object} message - The message object containing the model and messages to send.
-   * @param {Object} [options={}] - Optional parameters for the request.
+   * Sends a message to the HuggingFace API.
+   * @param {object} message - The message object containing model and messages to send.
+   * @param {object} options - Optional parameters such as max_tokens and model.
    * @param {Object | number} [interfaceOptions={}] - Optional interface options, including cache timeout and retry attempts.
-   * @returns {Promise<string|null>} The response text from the API.
-   * @throws {Error} Throws an error if the API request fails.
-   *
-   * @example
-   * const mistral = new Mistral(apiKey);
-   * const interfaceOpts = {
-   *   cacheTimeoutSeconds: 300,
-   *   retryAttempts: 3,
-   * };
-   * mistral.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
+   * @returns {Promise<string|null>} - A promise that resolves to the response text or null if an error occurs.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     let cacheTimeoutSeconds;
@@ -48,15 +38,17 @@ class Mistral {
       cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
     }
 
-    let { model, messages } = message;
+    const { model: messageModel, messages } = message;
+    const {
+      max_tokens = 150,
+      model = messageModel || "meta-llama/Meta-Llama-3-8B-Instruct",
+    } = options;
 
-    // Set default model if not provided
-    model = model || options.model || "mistral-large-latest";
+    const prompt = messages.map((msg) => msg.content).join(" ");
 
     const payload = {
-      model,
-      messages,
-      ...options,
+      inputs: prompt,
+      parameters: { max_new_tokens: max_tokens, ...options },
     };
 
     // Create cache key and check for cached response
@@ -71,18 +63,16 @@ class Mistral {
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     while (retryAttempts >= 0) {
       try {
-        const response = await this.client.post(`/chat/completions`, payload);
+        const response = await this.client.post(`${model}`, payload);
         let responseContent = null;
 
         if (
           response &&
           response.data &&
-          response.data.choices &&
-          response.data.choices[0] &&
-          response.data.choices[0].message &&
-          response.data.choices[0].message.content
+          response.data[0] &&
+          response.data[0].generated_text
         ) {
-          responseContent = response.data.choices[0].message.content;
+          responseContent = response.data[0].generated_text;
         }
 
         if (cacheTimeoutSeconds && responseContent) {
@@ -92,6 +82,7 @@ class Mistral {
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
+          // Handle errors
           if (error.response) {
             console.error("Response data:", error.response.data);
           } else if (error.request) {
@@ -106,4 +97,4 @@ class Mistral {
   }
 }
 
-module.exports = Mistral;
+module.exports = HuggingFace;

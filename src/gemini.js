@@ -26,9 +26,6 @@ class Gemini {
    * @returns {Object} The converted data structure.
    */
   convertDataStructure(input, max_tokens, response_format) {
-    if (response_format === "json_object") {
-      response_format = "application/json";
-    }
     let history = input.messages.slice(0, -1).map((message) => ({
       role: message.role,
       parts: [{ text: message.content }],
@@ -38,14 +35,16 @@ class Gemini {
       history[0].role = "user";
     }
     const prompt = input.messages[input.messages.length - 1].content;
-    return {
-      history,
-      prompt,
-      generationConfig: {
-        maxOutputTokens: max_tokens,
-        ...(response_format && { response_mime_type: response_format }),
-      },
+
+    const response_mime_type =
+      response_format == "json_object" ? "application/json" : "text/plain";
+
+    const generationConfig = {
+      maxOutputTokens: max_tokens,
+      ...(response_format && { response_mime_type }),
     };
+
+    return { history, prompt, generationConfig };
   }
 
   /**
@@ -53,15 +52,26 @@ class Gemini {
    *
    * @param {Object} message - The message object containing the model and messages to send.
    * @param {Object} [options={}] - Optional parameters for the request.
-   * @param {number} [cacheTimeoutSeconds] - Optional timeout in seconds for caching the response.
-   * @returns {Promise<string>} The response text from the API.
+   * @param {Object | number} [interfaceOptions={}] - Optional interface options, including cache timeout and retry attempts.
+   * @returns {Promise<string|null>} The response text from the API.
    * @throws {Error} Throws an error if the API request fails.
    *
    * @example
    * const gemini = new Gemini(apiKey);
-   * gemini.sendMessage(message, { max_tokens: 150 }, 60).then(console.log).catch(console.error);
+   * const interfaceOpts = {
+   *   cacheTimeoutSeconds: 300,
+   *   retryAttempts: 3,
+   * };
+   * gemini.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
    */
-  async sendMessage(message, options = {}, cacheTimeoutSeconds) {
+  async sendMessage(message, options = {}, interfaceOptions = {}) {
+    let cacheTimeoutSeconds;
+    if (typeof interfaceOptions === "number") {
+      cacheTimeoutSeconds = interfaceOptions;
+    } else {
+      cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
+    }
+
     const {
       max_tokens = 150,
       model = message.model || "gemini-1.5-flash",
@@ -86,18 +96,34 @@ class Gemini {
       }
     }
 
-    try {
-      const modelInstance = this.genAI.getGenerativeModel({ model });
-      const chat = modelInstance.startChat({ history, generationConfig });
-      const result = await chat.sendMessage(prompt);
-      const response = await result.response;
-      const text = await response.text();
-      if (cacheTimeoutSeconds) {
-        saveToCache(cacheKey, text, cacheTimeoutSeconds);
+    let retryAttempts = interfaceOptions.retryAttempts || 0;
+    while (retryAttempts >= 0) {
+      try {
+        const modelInstance = this.genAI.getGenerativeModel({ model });
+        const chat = modelInstance.startChat({ history, generationConfig });
+
+        const result = await chat.sendMessage(prompt);
+        const response = await result.response;
+        let text = await response.text();
+
+        if (response_format === "json_object") {
+          try {
+            text = JSON.parse(text);
+          } catch (e) {
+            text = null;
+          }
+        }
+
+        if (cacheTimeoutSeconds && text) {
+          saveToCache(cacheKey, text, cacheTimeoutSeconds);
+        }
+        return text;
+      } catch (error) {
+        retryAttempts--;
+        if (retryAttempts < 0) {
+          throw new Error(`Gemini API error: ${error.message}`);
+        }
       }
-      return text;
-    } catch (error) {
-      throw new Error(`Gemini API error: ${error.message}`);
     }
   }
 }
