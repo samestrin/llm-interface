@@ -22,7 +22,7 @@ Different LLMs may have their own message object rules. For example, both Anthro
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -44,7 +44,7 @@ openai
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -66,7 +66,7 @@ ai21
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -88,7 +88,7 @@ anthropic
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -110,7 +110,7 @@ cohere
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -132,7 +132,7 @@ gemini
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, and `model`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -154,7 +154,7 @@ goose
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -176,7 +176,7 @@ groq
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -198,7 +198,7 @@ huggingface
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -220,7 +220,7 @@ mistral
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -242,7 +242,7 @@ perplexity
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `model`. This method currently has no token limitation.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -264,7 +264,7 @@ reka
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`.
-  - `cacheTimeoutSeconds`: An optional number specifying the cache timeout in seconds. If set, caching is enabled.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
