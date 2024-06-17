@@ -13,8 +13,8 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 **v0.0.10**
 
 - **Hugging Face**: Added support for new LLM provider Hugging Face (_over 150,000 publicly accessible machine learning models_)
-- **Perplexity Labs**: Added support for new LLM provider Perplexity Labs
-- **AI21**: Add support for new LLM provider AI21
+- **Perplexity Labs**: Added support for new LLM provider Perplexity
+- **AI21**: Add support for new LLM provider AI21 Studio
 - **JSON Output Improvements**: The `json_object` mode for OpenAI and Gemini now guarantees the return a valid JSON object or null.
 - **Graceful Retries**: Retry LLM queries upon failure.
 
@@ -94,7 +94,7 @@ openai
   });
 ```
 
-Additional [usage examples](/docs/USAGE.md) and an [API reference](/docs/API.md) are available. You may also wish to review the [test cases](/test/) for further examples.
+If you need [API Keys](/docs/APIKEYS.md), [this](/docs/APIKEYS.md) is a good starting point. Additional [usage examples](/docs/USAGE.md) and an [API reference](/docs/API.md) are available. You may also wish to review the [test cases](/test/) for further examples.
 
 ## Running Tests
 
