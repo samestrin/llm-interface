@@ -76,6 +76,7 @@ then call the handler you want to use:
 
 ```javascript
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
+
 const message = {
   model: "gpt-3.5-turbo",
   messages: [
@@ -83,8 +84,24 @@ const message = {
     { role: "user", content: "Explain the importance of low latency LLMs." },
   ],
 };
+
 openai
   .sendMessage(message, { max_tokens: 150 })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+or if you want to keep things _simple_ you can use:
+
+```javascript
+const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
+
+openai
+  .sendMessage("Explain the importance of low latency LLMs.")
   .then((response) => {
     console.log(response);
   })

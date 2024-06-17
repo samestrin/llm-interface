@@ -14,7 +14,9 @@ test("HuggingFace Inference API Client should send a message and receive a respo
   const huggingface = new HuggingFace(huggingfaceApiKey);
   const message = "Explain the importance of low latency LLMs.";
   try {
-    const response = await huggingface.sendMessage(message, {});
+    const response = await huggingface.sendMessage(message, {
+      max_tokens: 100,
+    });
 
     expect(typeof response).toBe("string");
   } catch (error) {

@@ -7,21 +7,9 @@ test("AI21 API Key should be set", () => {
 
 test("AI21 API Client should send a message and receive a response", async () => {
   const ai21 = new AI21(ai21ApiKey);
-  const message = {
-    model: "jamba-instruct",
-    messages: [
-      {
-        role: "system",
-        content: "You are a helpful assistant.",
-      },
-      {
-        role: "user",
-        content: "Explain the importance of low latency LLMs.",
-      },
-    ],
-  };
+  const message = "Explain the importance of low latency LLMs.";
   const options = {
-    max_tokens: 200,
+    max_tokens: 100,
   };
   const response = await ai21.sendMessage(message, options);
 
