@@ -12,9 +12,10 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 **v0.0.10**
 
-- **Hugging Face**: Added support for Hugging Face Inference (_over 150,000 publicly accessible machine learning models_)
-- **Perplexity Labs**: Added support for Perplexity Labs
-- **JSON Improvements**: The `json_object` mode for OpenAI and Gemini now guarantees the return a valid JSON object or null.
+- **Hugging Face**: Added support for new LLM provider Hugging Face (_over 150,000 publicly accessible machine learning models_)
+- **Perplexity Labs**: Added support for new LLM provider Perplexity Labs
+- **AI21**: Add support for new LLM provider AI21
+- **JSON Output Improvements**: The `json_object` mode for OpenAI and Gemini now guarantees the return a valid JSON object or null.
 - **Graceful Retries**: Retry LLM queries upon failure.
 
 **v0.0.9**
@@ -23,8 +24,8 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 **v0.0.8**
 
-- **Mistral AI**: Added support for Mistral AI
-- **Cohere**: Added support for Cohere
+- **Mistral AI**: Added support for new LLM provider Mistral
+- **Cohere**: Added support for new LLM provider Cohere
 
 ## Features
 
