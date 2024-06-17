@@ -93,7 +93,7 @@ openai
   });
 ```
 
-If you need [API Keys](/docs/APIKEYS.md), [this](/docs/APIKEYS.md) is a good starting point. Additional [usage examples](/docs/USAGE.md) and an [API reference](/docs/API.md) are available. You may also wish to review the [test cases](/test/) for further examples.
+If you need [API Keys](/docs/APIKEYS.md), use this [starting point](/docs/APIKEYS.md). Additional [usage examples](/docs/USAGE.md) and an [API reference](/docs/API.md) are available. You may also wish to review the [test cases](/test/) for further examples.
 
 ## Running Tests
 
