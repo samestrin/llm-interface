@@ -9,7 +9,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { getFromCache, saveToCache } = require('../utils/cache');
 const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
 const { geminiApiKey } = require('../config/config');
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 // Gemini class for interacting with the Gemini API

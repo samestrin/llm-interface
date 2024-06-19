@@ -12,7 +12,7 @@ const {
   returnModelByAlias,
 } = require('../utils/utils');
 const { ai21ApiKey } = require('../config/config');
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 // AI21 class for interacting with the AI21 API

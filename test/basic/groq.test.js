@@ -5,27 +5,43 @@
 
 const Groq = require('../../src/interfaces/groq.js');
 const { groqApiKey } = require('../../src/config/config.js');
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../utils/defaults.js');
+describe('Groq Basic', () => {
+  if (groqApiKey) {
+    let response;
 
-test('Groq API Key should be set', async () => {
-  expect(typeof groqApiKey).toBe('string');
-});
+    test('API Key should be set', async () => {
+      expect(typeof groqApiKey).toBe('string');
+    });
 
-test('Groq API Client should send a message and receive a response', async () => {
-  const groq = new Groq(groqApiKey);
-  const message = {
-    model: 'llama3-8b-8192',
-    messages: [
-      {
-        role: 'system',
-        content: 'You are a helpful assistant.',
-      },
-      {
-        role: 'user',
-        content: 'Explain the importance of low latency LLMs.',
-      },
-    ],
-  };
-  const response = await groq.sendMessage(message, { max_tokens: 100 });
+    test('API Client should send a message and receive a response', async () => {
+      const groq = new Groq(groqApiKey);
+      const message = {
+        model: 'llama3-8b-8192',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.',
+          },
+          {
+            role: 'user',
+            content: simplePrompt,
+          },
+        ],
+      };
+      response = await groq.sendMessage(message, options);
 
-  expect(typeof response).toBe('string');
+      expect(typeof response).toBe('string');
+    });
+
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(response.length).toBeLessThan(expectedMaxLength);
+    });
+  } else {
+    test.skip(`API Key is not set`, () => {});
+  }
 });

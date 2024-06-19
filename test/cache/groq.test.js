@@ -5,60 +5,93 @@
 
 const Groq = require('../../src/interfaces/groq');
 const { groqApiKey } = require('../../src/config/config.js');
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../utils/defaults.js');
 const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
-jest.mock('../../src/utils/cache.js'); // Mock the cache module
+const suppressLogs = require('../utils/suppressLogs.js');
+jest.mock('../../src/utils/cache.js');
 
 describe('Groq Caching', () => {
-  const groq = new Groq(groqApiKey);
+  if (groqApiKey) {
+    const groq = new Groq(groqApiKey);
 
-  const message = {
-    model: 'llama3-8b-8192',
-    messages: [
-      { role: 'system', content: 'You are a helpful assistant.' },
-      { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-    ],
-  };
+    const message = {
+      model: 'llama3-8b-8192',
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant.' },
+        {
+          role: 'user',
+          content: simplePrompt,
+        },
+      ],
+    };
 
-  const options = { max_tokens: 150 };
-
-  // Convert the message structure for caching
-  const cacheKey = JSON.stringify({
-    model: 'llama3-8b-8192',
-    messages: message.messages,
-    max_tokens: 150,
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test('Groq API Key should be set', async () => {
-    expect(typeof groqApiKey).toBe('string');
-  });
-
-  test('Groq API should return cached response if available', async () => {
-    const cachedResponse = 'Cached response';
-    getFromCache.mockReturnValue(cachedResponse);
-
-    const response = await groq.sendMessage(message, options, 60);
-
-    expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-    expect(response).toBe(cachedResponse);
-    expect(saveToCache).not.toHaveBeenCalled();
-  });
-
-  test('Groq API should save response to cache if not cached', async () => {
-    getFromCache.mockReturnValue(null);
-
-    const apiResponse = 'API response';
-    groq.groq.chat.completions.create = jest.fn().mockResolvedValue({
-      choices: [{ message: { content: apiResponse } }],
+    // Convert the message structure for caching
+    const cacheKey = JSON.stringify({
+      model: message.model,
+      messages: message.messages,
+      max_tokens: options.max_tokens,
     });
 
-    const response = await groq.sendMessage(message, options, 60);
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
 
-    expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-    expect(response).toBe(apiResponse);
-    expect(saveToCache).toHaveBeenCalledWith(cacheKey, apiResponse, 60);
-  });
+    test('API Key should be set', async () => {
+      expect(typeof groqApiKey).toBe('string');
+    });
+
+    test('API should return cached response if available', async () => {
+      const cachedResponse = 'Cached response';
+      getFromCache.mockReturnValue(cachedResponse);
+
+      const response = await groq.sendMessage(message, options, {
+        cacheTimeoutSeconds: 60,
+      });
+
+      expect(getFromCache).toHaveBeenCalledWith(cacheKey);
+      expect(response).toBe(cachedResponse);
+      expect(saveToCache).not.toHaveBeenCalled();
+    });
+
+    test('API should save response to cache if not cached', async () => {
+      getFromCache.mockReturnValue(null);
+
+      const apiResponse = 'API response';
+      groq.groq.chat.completions.create = jest.fn().mockResolvedValue({
+        choices: [{ message: { content: apiResponse } }],
+      });
+
+      const response = await groq.sendMessage(message, options, {
+        cacheTimeoutSeconds: 60,
+      });
+
+      expect(getFromCache).toHaveBeenCalledWith(cacheKey);
+      expect(response).toBe(apiResponse);
+      expect(saveToCache).toHaveBeenCalledWith(cacheKey, apiResponse, 60);
+    });
+    test(
+      'Should respond with prompt API error messaging',
+      suppressLogs(async () => {
+        getFromCache.mockReturnValue(null);
+        groq.groq.chat.completions.create = jest
+          .fn()
+          .mockRejectedValue(new Error('API error'));
+
+        await expect(
+          groq.sendMessage(message, options, {
+            cacheTimeoutSeconds: 60,
+          }),
+        ).rejects.toThrow('API error');
+
+        expect(getFromCache).toHaveBeenCalledWith(cacheKey);
+        expect(saveToCache).not.toHaveBeenCalled();
+      }),
+    );
+  } else {
+    test.skip(`${module} API Key is not set`, () => {});
+  }
 });

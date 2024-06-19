@@ -20,6 +20,12 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Updates
 
+**v1.0.01**
+
+- **LLMInterfaceSendMessage**: Send a message to any LLM provider without creating a new instance of the `llm-interface`.
+- **Model Aliases**: Simplified model selection. `default`, `small`, or `large` model aliases now available.
+- **Major Refactor**: Improved comments, test cases, centralized LLM provider definitions.
+
 **v1.0.00**
 
 - **Initial 1.0 Release**
@@ -27,14 +33,6 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 **v0.0.11**
 
 - **Simple Prompt Handler**: Added support for simplified prompting.
-
-**v0.0.10**
-
-- **Hugging Face**: Added support for new LLM provider Hugging Face (_over 150,000 publicly accessible machine learning models_)
-- **Perplexity**: Added support for new LLM provider Perplexity
-- **AI21**: Add support for new LLM provider AI21 Studio
-- **JSON Output Improvements**: The `json_object` mode now guarantees the return a valid JSON object or null.
-- **Graceful Retries**: Retry LLM queries upon failure with progressive delays.
 
 ## Dependencies
 

@@ -12,7 +12,7 @@ const {
   returnModelByAlias,
 } = require('../utils/utils');
 const { huggingfaceApiKey } = require('../config/config');
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 // HuggingFace class for interacting with the Hugging Face API
@@ -65,6 +65,9 @@ class HuggingFace {
     // Format the prompt by joining message contents
     const prompt = messages.map((msg) => msg.content).join(' ');
 
+    // remove max_tokens if it exists
+    if (options.max_tokens) delete options.max_tokens;
+
     // Prepare the payload for the API call
     const payload = {
       inputs: prompt,
@@ -83,6 +86,7 @@ class HuggingFace {
     // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
+
     while (retryAttempts >= 0) {
       try {
         // Send the request to the Hugging Face API

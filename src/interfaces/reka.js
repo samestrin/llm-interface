@@ -12,7 +12,7 @@ const {
   returnModelByAlias,
 } = require('../utils/utils');
 const { rekaApiKey } = require('../config/config');
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 // Reka class for interacting with the Reka AI API
@@ -42,7 +42,9 @@ class Reka {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === 'string' ? returnMessageObject(message) : message;
+      typeof message === 'string'
+        ? returnSimpleMessageObject(message)
+        : message;
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === 'number') {
       cacheTimeoutSeconds = interfaceOptions;

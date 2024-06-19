@@ -9,7 +9,7 @@ const axios = require('axios');
 const { getFromCache, saveToCache } = require('../utils/cache');
 const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
 const { mistralApiKey } = require('../config/config');
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 // Mistral class for interacting with the Mistral API

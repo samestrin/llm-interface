@@ -5,18 +5,29 @@
 
 const AI21 = require('../../src/interfaces/ai21.js');
 const { ai21ApiKey } = require('../../src/config/config.js');
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../utils/defaults.js');
 
-test('AI21 API Key should be set', () => {
-  expect(typeof ai21ApiKey).toBe('string');
-});
+describe('AI21 Simple', () => {
+  if (ai21ApiKey) {
+    let response;
+    test('API Key should be set', () => {
+      expect(typeof ai21ApiKey).toBe('string');
+    });
 
-test('AI21 API Client should send a message and receive a response', async () => {
-  const ai21 = new AI21(ai21ApiKey);
-  const message = 'Explain the importance of low latency LLMs.';
-  const options = {
-    max_tokens: 100,
-  };
-  const response = await ai21.sendMessage(message, options);
+    test('API Client should send a message and receive a response', async () => {
+      const ai21 = new AI21(ai21ApiKey);
+      response = await ai21.sendMessage(simplePrompt, options);
 
-  expect(typeof response).toBe('string');
+      expect(typeof response).toBe('string');
+    });
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(response.length).toBeLessThan(expectedMaxLength);
+    });
+  } else {
+    test.skip(`API Key is not set`, () => {});
+  }
 });

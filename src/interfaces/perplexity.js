@@ -9,7 +9,7 @@ const axios = require('axios');
 const { getFromCache, saveToCache } = require('../utils/cache');
 const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
 const { perplexityApiKey } = require('../config/config');
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 // Perplexity class for interacting with the Perplexity API

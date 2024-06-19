@@ -9,7 +9,7 @@ const { OpenAI: OpenAIClient } = require('openai');
 const { getFromCache, saveToCache } = require('../utils/cache');
 const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
 const { openaiApiKey } = require('../config/config');
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 // OpenAI class for interacting with the OpenAI API

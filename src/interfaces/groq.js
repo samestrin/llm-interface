@@ -9,7 +9,7 @@ const GroqSDK = require('groq-sdk');
 const { getFromCache, saveToCache } = require('../utils/cache');
 const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
 const { groqApiKey } = require('../config/config');
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 // Groq class for interacting with the Groq API

@@ -12,7 +12,7 @@ const {
   returnModelByAlias,
 } = require('../utils/utils');
 const { anthropicApiKey } = require('../config/config');
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 // Anthropic class for interacting with the Anthropic API

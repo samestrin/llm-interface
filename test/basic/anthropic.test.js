@@ -5,38 +5,54 @@
 
 const Anthropic = require('../../src/interfaces/anthropic.js');
 const { anthropicApiKey } = require('../../src/config/config.js');
-const { safeStringify } = require('../utils/jest-serializer.js'); // Adjust the path if necessary
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../utils/defaults.js');
+const { safeStringify } = require('../utils/jestSerializer.js'); // Adjust the path if necessary
 
-test('Anthropic API Key should be set', async () => {
-  expect(typeof anthropicApiKey).toBe('string');
-});
+describe('Anthropic Basic', () => {
+  if (anthropicApiKey) {
+    let response;
+    test('API Key should be set', async () => {
+      expect(typeof anthropicApiKey).toBe('string');
+    });
 
-test('Anthropic API Client should send a message and receive a response', async () => {
-  const anthropic = new Anthropic(anthropicApiKey);
-  const message = {
-    model: 'claude-3-opus-20240229',
-    messages: [
-      {
-        role: 'user',
-        content:
-          'You are a helpful assistant. Say OK if you understand and stop.',
-      },
-      {
-        role: 'system',
-        content: 'OK',
-      },
-      {
-        role: 'user',
-        content: 'Explain the importance of low latency LLMs.',
-      },
-    ],
-  };
+    test('API Client should send a message and receive a response', async () => {
+      const anthropic = new Anthropic(anthropicApiKey);
+      const message = {
+        model: 'claude-3-opus-20240229',
+        messages: [
+          {
+            role: 'user',
+            content:
+              'You are a helpful assistant. Say OK if you understand and stop.',
+          },
+          {
+            role: 'system',
+            content: 'OK',
+          },
+          {
+            role: 'user',
+            content: simplePrompt,
+          },
+        ],
+      };
 
-  try {
-    const response = await anthropic.sendMessage(message, { max_tokens: 100 });
+      try {
+        response = await anthropic.sendMessage(message, options);
 
-    expect(typeof response).toBe('string');
-  } catch (error) {
-    throw new Error(`Test failed: ${safeStringify(error)}`);
+        expect(typeof response).toBe('string');
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
+    }, 30000);
+
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(response.length).toBeLessThan(expectedMaxLength);
+    });
+  } else {
+    test.skip(`API Key is not set`, () => {});
   }
-}, 30000);
+});

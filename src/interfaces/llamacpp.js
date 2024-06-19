@@ -5,7 +5,7 @@
  * @param {string} llamacppURL - The base URL for the LlamaCPP API.
  */
 
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
 const axios = require('axios');

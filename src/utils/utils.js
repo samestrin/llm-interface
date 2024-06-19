@@ -3,7 +3,7 @@
  * @description Utility functions
  */
 
-const config = require('../config/llm-providers.json');
+const config = require('../config/llmProviders.json');
 
 /**
  * Returns a message object with the provided message and an optional system message.

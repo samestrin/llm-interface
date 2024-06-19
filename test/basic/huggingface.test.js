@@ -5,33 +5,49 @@
 
 const HuggingFace = require('../../src/interfaces/huggingface.js');
 const { huggingfaceApiKey } = require('../../src/config/config.js');
-const { safeStringify } = require('../utils/jest-serializer.js');
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../utils/defaults.js');
 
-test('HuggingFace Inference API Key should be set', async () => {
-  expect(typeof huggingfaceApiKey).toBe('string');
-});
+describe('HuggingFace Basic', () => {
+  if (huggingfaceApiKey) {
+    let response;
 
-test('HuggingFace Inference API Client should send a message and receive a response', async () => {
-  const huggingface = new HuggingFace(huggingfaceApiKey);
-  const message = {
-    model: 'meta-llama/Meta-Llama-3-8B-Instruct',
-    messages: [
-      {
-        role: 'system',
-        content: 'You are a helpful assistant.',
-      },
-      {
-        role: 'user',
-        content: 'Explain the importance of low latency LLMs.',
-      },
-    ],
-  };
-  try {
-    const response = await huggingface.sendMessage(message, {});
+    test('API Key should be set', async () => {
+      expect(typeof huggingfaceApiKey).toBe('string');
+    });
 
-    expect(typeof response).toBe('string');
-  } catch (error) {
-    console.error('Test failed:', error);
-    throw error;
+    test('API Client should send a message and receive a response', async () => {
+      const huggingface = new HuggingFace(huggingfaceApiKey);
+      const message = {
+        model: 'meta-llama/Meta-Llama-3-8B-Instruct',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.',
+          },
+          {
+            role: 'user',
+            content: simplePrompt,
+          },
+        ],
+      };
+      try {
+        response = await huggingface.sendMessage(message, options);
+
+        expect(typeof response).toBe('string');
+      } catch (error) {
+        console.error('Test failed:', error);
+        throw error;
+      }
+    }, 30000);
+
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(response.length).toBeLessThan(expectedMaxLength);
+    });
+  } else {
+    test.skip(`API Key is not set`, () => {});
   }
-}, 30000);
+});

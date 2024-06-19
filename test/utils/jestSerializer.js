@@ -1,5 +1,5 @@
 /**
- * @file test/utils/jest-serializer.js
+ * @file test/utils/jestSerializer.js
  * @description Utility functions for Jest serialization.
  */
 
@@ -29,11 +29,6 @@ function safeStringify(obj, space = 2) {
   return jsonString;
 }
 
-/**
- * Jest serializer utility.
- *
- * @module
- */
 module.exports = {
   safeStringify,
 };

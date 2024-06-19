@@ -5,22 +5,34 @@
 
 const HuggingFace = require('../../src/interfaces/huggingface.js');
 const { huggingfaceApiKey } = require('../../src/config/config.js');
-
-test('HuggingFace Inference API Key should be set', async () => {
-  expect(typeof huggingfaceApiKey).toBe('string');
-});
-
-test('HuggingFace Inference API Client should send a message and receive a response', async () => {
-  const huggingface = new HuggingFace(huggingfaceApiKey);
-  const message = 'Explain the importance of low latency LLMs.';
-  try {
-    const response = await huggingface.sendMessage(message, {
-      max_tokens: 100,
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../utils/defaults.js');
+describe('HuggingFace Simple', () => {
+  if (huggingfaceApiKey) {
+    let response;
+    test('API Key should be set', async () => {
+      expect(typeof huggingfaceApiKey).toBe('string');
     });
 
-    expect(typeof response).toBe('string');
-  } catch (error) {
-    console.error('Test failed:', error);
-    throw error;
+    test('API Client should send a message and receive a response', async () => {
+      const huggingface = new HuggingFace(huggingfaceApiKey);
+
+      try {
+        response = await huggingface.sendMessage(simplePrompt, options);
+
+        expect(typeof response).toBe('string');
+      } catch (error) {
+        console.error('Test failed:', error);
+        throw error;
+      }
+    }, 30000);
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(response.length).toBeLessThan(expectedMaxLength);
+    });
+  } else {
+    test.skip(`API Key is not set`, () => {});
   }
-}, 30000);
+});

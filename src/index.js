@@ -34,6 +34,8 @@ Object.keys(modules).forEach((key) => {
 
 const handlers = LLMInterface; // alias to keep backward compatibility
 
+const LLMInstances = {}; // Persistent LLM instances
+
 /**
  * Sends a message to a specified LLM module and returns the response.
  * Reuses existing LLM instances for the given module and API key to optimize resource usage.
