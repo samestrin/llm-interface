@@ -3,19 +3,19 @@
  * @description Tests for the caching mechanism in the Anthropic class.
  */
 
-const Anthropic = require("../../src/anthropic");
-const { anthropicApiKey } = require("../../src/config/config.js");
-const { getFromCache, saveToCache } = require("../../src/cache");
-jest.mock("../../src/cache"); // Mock the cache module
+const Anthropic = require('../../src/anthropic');
+const { anthropicApiKey } = require('../../src/config/config.js');
+const { getFromCache, saveToCache } = require('../../src/cache');
+jest.mock('../../src/cache'); // Mock the cache module
 
-describe("Anthropic Caching", () => {
+describe('Anthropic Caching', () => {
   const anthropic = new Anthropic(anthropicApiKey);
 
   const message = {
-    model: "claude-3-opus-20240229",
+    model: 'claude-3-opus-20240229',
     messages: [
-      { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: "Explain the importance of low latency LLMs." },
+      { role: 'system', content: 'You are a helpful assistant.' },
+      { role: 'user', content: 'Explain the importance of low latency LLMs.' },
     ],
   };
 
@@ -24,30 +24,30 @@ describe("Anthropic Caching", () => {
   // Convert the message structure for caching
   const convertedMessages = message.messages.map((msg, index) => {
     if (index === 0) {
-      return { ...msg, role: "user" };
+      return { ...msg, role: 'user' };
     }
-    if (msg.role === "system") {
-      return { ...msg, role: "assistant" };
+    if (msg.role === 'system') {
+      return { ...msg, role: 'assistant' };
     }
-    return { ...msg, role: index % 2 === 0 ? "user" : "assistant" };
+    return { ...msg, role: index % 2 === 0 ? 'user' : 'assistant' };
   });
 
   const cacheKey = JSON.stringify({
     max_tokens: 150,
     messages: convertedMessages,
-    model: "claude-3-opus-20240229",
+    model: 'claude-3-opus-20240229',
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test("Anthropic API Key should be set", async () => {
-    expect(typeof anthropicApiKey).toBe("string");
+  test('Anthropic API Key should be set', async () => {
+    expect(typeof anthropicApiKey).toBe('string');
   });
 
-  test("Anthropic API should return cached response if available", async () => {
-    const cachedResponse = "Cached response";
+  test('Anthropic API should return cached response if available', async () => {
+    const cachedResponse = 'Cached response';
     getFromCache.mockReturnValue(cachedResponse);
 
     const response = await anthropic.sendMessage(message, options, 60);
@@ -57,10 +57,10 @@ describe("Anthropic Caching", () => {
     expect(saveToCache).not.toHaveBeenCalled();
   });
 
-  test("Anthropic API should save response to cache if not cached", async () => {
+  test('Anthropic API should save response to cache if not cached', async () => {
     getFromCache.mockReturnValue(null);
 
-    const apiResponse = "API response";
+    const apiResponse = 'API response';
     anthropic.anthropic.messages.create = jest.fn().mockResolvedValue({
       content: [{ text: apiResponse }],
     });

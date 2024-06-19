@@ -28,7 +28,7 @@ Different LLMs may have their own message object rules. For example, both Anthro
 
 ```javascript
 openai
-  .sendMessage(message, { max_tokens: 150, response_format: "json_object" })
+  .sendMessage(message, { max_tokens: 150, response_format: 'json_object' })
   .then((response) => {
     console.log(response);
   })

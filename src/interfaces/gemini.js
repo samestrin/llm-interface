@@ -1,16 +1,16 @@
 /**
- * @file gemini.js
+ * @file interfaces/gemini.js
  * @class Gemini
  * @description Wrapper class for the Gemini API.
  * @param {string} apiKey - The API key for the Gemini API.
  */
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { getFromCache, saveToCache } = require("../utils/cache");
-const { returnMessageObject, returnModelByAlias } = require("../utils/utils");
-const { geminiApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { getFromCache, saveToCache } = require('../utils/cache');
+const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
+const { geminiApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // Gemini class for interacting with the Gemini API
 class Gemini {
@@ -19,7 +19,7 @@ class Gemini {
    * @param {string} apiKey - The API key for the Gemini API.
    */
   constructor(apiKey) {
-    this.interfaceName = "gemini";
+    this.interfaceName = 'gemini';
     this.apiKey = apiKey || geminiApiKey;
     this.genAI = new GoogleGenerativeAI(this.apiKey);
   }
@@ -36,18 +36,18 @@ class Gemini {
     input,
     maxTokens,
     responseFormat,
-    generationConfigOptions = {}
+    generationConfigOptions = {},
   ) {
     let history = input.messages.slice(0, -1).map((message) => ({
       role: message.role,
       parts: [{ text: message.content }],
     }));
-    if (history.length > 0 && history[0].role !== "user") {
-      history[0].role = "user";
+    if (history.length > 0 && history[0].role !== 'user') {
+      history[0].role = 'user';
     }
     const prompt = input.messages[input.messages.length - 1].content;
     const responseMimeType =
-      responseFormat === "json_object" ? "application/json" : "text/plain";
+      responseFormat === 'json_object' ? 'application/json' : 'text/plain';
     const generationConfig = {
       ...generationConfigOptions,
       maxOutputTokens: maxTokens,
@@ -65,15 +65,15 @@ class Gemini {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === "string" ? returnMessageObject(message) : message;
+      typeof message === 'string' ? returnMessageObject(message) : message;
     const cacheTimeoutSeconds =
-      typeof interfaceOptions === "number"
+      typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
     let { model } = messageObject;
     const selectedModel = returnModelByAlias(this.interfaceName, model);
-    const { maxTokens = 150, responseFormat = "text/plain" } = options;
+    let { max_tokens = 150, response_format = 'text/plain' } = options;
 
     // Set the model and default values
     model =
@@ -82,13 +82,13 @@ class Gemini {
       config[this.interfaceName].model.default.name;
     const { history, prompt, generationConfig } = this.convertDataStructure(
       messageObject,
-      maxTokens,
-      responseFormat,
+      max_tokens,
+      response_format,
       {
         temperature: options.temperature || 0.9,
         topP: options.topP || 1,
         topK: options.topK || 1,
-      }
+      },
     );
 
     // Generate a cache key based on the input data
@@ -120,7 +120,7 @@ class Gemini {
         const response = await result.response;
         let text = await response.text();
 
-        if (responseFormat === "json_object") {
+        if (response_format === 'json_object') {
           try {
             // Parse the response as JSON if requested
             text = JSON.parse(text);
@@ -138,8 +138,8 @@ class Gemini {
         retryAttempts--;
         if (retryAttempts < 0) {
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

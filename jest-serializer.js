@@ -5,15 +5,15 @@ const safeStringify = (obj, space = 2) => {
   const jsonString = JSON.stringify(
     obj,
     (key, value) => {
-      if (typeof value === "object" && value !== null) {
+      if (typeof value === 'object' && value !== null) {
         if (cache.has(value)) {
-          return "[Circular]";
+          return '[Circular]';
         }
         cache.add(value);
       }
       return value;
     },
-    space
+    space,
   );
   cache.clear();
   return jsonString;
@@ -22,7 +22,7 @@ const safeStringify = (obj, space = 2) => {
 module.exports = {
   safeStringify,
   test(value) {
-    return typeof value === "object" && value !== null;
+    return typeof value === 'object' && value !== null;
   },
   print(value) {
     return safeStringify(value, 2);

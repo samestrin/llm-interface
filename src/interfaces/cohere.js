@@ -1,19 +1,19 @@
 /**
- * @file cohere.js
+ * @file interfaces/cohere.js
  * @class Cohere
  * @description Wrapper class for the Cohere API.
  * @param {string} apiKey - The API key for the Cohere API.
  */
 
-const axios = require("axios");
-const { getFromCache, saveToCache } = require("../utils/cache");
+const axios = require('axios');
+const { getFromCache, saveToCache } = require('../utils/cache');
 const {
   returnSimpleMessageObject,
   returnModelByAlias,
-} = require("../utils/utils");
-const { cohereApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+} = require('../utils/utils');
+const { cohereApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // Cohere class for interacting with the Cohere API
 class Cohere {
@@ -22,12 +22,12 @@ class Cohere {
    * @param {string} apiKey - The API key for the Cohere API.
    */
   constructor(apiKey) {
-    this.interfaceName = "cohere";
+    this.interfaceName = 'cohere';
     this.apiKey = apiKey || cohereApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
@@ -42,11 +42,11 @@ class Cohere {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === "string"
+      typeof message === 'string'
         ? returnSimpleMessageObject(message)
         : message;
     const cacheTimeoutSeconds =
-      typeof interfaceOptions === "number"
+      typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
@@ -57,7 +57,7 @@ class Cohere {
       preamble,
       chatHistory: optionsChatHistory,
       conversationId,
-      promptTruncation = "OFF",
+      promptTruncation = 'OFF',
       connectors,
       documents,
       temperature = 0.3,
@@ -82,7 +82,7 @@ class Cohere {
 
     let payload, chatHistory;
 
-    if (typeof message === "string") {
+    if (typeof message === 'string') {
       // If message is a string, prepare a simple payload
       payload = {
         chatHistory: [],
@@ -98,7 +98,7 @@ class Cohere {
       } else {
         // Convert messages to chat history format expected by the Cohere API
         chatHistory = messages.slice(0, -1).map((msg) => ({
-          role: msg.role === "user" ? "USER" : "CHATBOT",
+          role: msg.role === 'user' ? 'USER' : 'CHATBOT',
           message: msg.content,
         }));
       }
@@ -107,7 +107,7 @@ class Cohere {
         chatHistory:
           chatHistory.length > 0
             ? chatHistory
-            : [{ role: "USER", message: "" }],
+            : [{ role: 'USER', message: '' }],
         message: currentMessage,
         model,
         maxTokens,
@@ -131,7 +131,7 @@ class Cohere {
     while (retryAttempts >= 0) {
       try {
         // Send the request to the Cohere API
-        const response = await this.client.post("", payload);
+        const response = await this.client.post('', payload);
         let responseContent = null;
         if (response && response.data && response.data.text) {
           responseContent = response.data.text;
@@ -146,8 +146,8 @@ class Cohere {
         retryAttempts--;
         if (retryAttempts < 0) {
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

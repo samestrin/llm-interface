@@ -4,18 +4,18 @@
  */
 
 const modules = {
-  openai: "./interfaces/openai",
-  anthropic: "./interfaces/anthropic",
-  gemini: "./interfaces/gemini",
-  llamacpp: "./interfaces/llamacpp",
-  reka: "./interfaces/reka",
-  groq: "./interfaces/groq",
-  goose: "./interfaces/goose",
-  cohere: "./interfaces/cohere",
-  mistral: "./interfaces/mistral",
-  huggingface: "./interfaces/huggingface",
-  ai21: "./interfaces/ai21",
-  perplexity: "./interfaces/perplexity",
+  openai: './interfaces/openai',
+  anthropic: './interfaces/anthropic',
+  gemini: './interfaces/gemini',
+  llamacpp: './interfaces/llamacpp',
+  reka: './interfaces/reka',
+  groq: './interfaces/groq',
+  goose: './interfaces/goose',
+  cohere: './interfaces/cohere',
+  mistral: './interfaces/mistral',
+  huggingface: './interfaces/huggingface',
+  ai21: './interfaces/ai21',
+  perplexity: './interfaces/perplexity',
 };
 
 const LLMInterface = {};
@@ -51,7 +51,7 @@ async function LLMInterfaceSendMessage(
   apiKey,
   message,
   options = {},
-  interfaceOptions = {}
+  interfaceOptions = {},
 ) {
   if (!LLMInterface[module]) {
     throw new Error(`Module ${module} is not supported.`);
@@ -74,7 +74,7 @@ async function LLMInterfaceSendMessage(
     const response = await llmInstance.sendMessage(
       message,
       options,
-      interfaceOptions
+      interfaceOptions,
     );
     return response;
   } catch (error) {

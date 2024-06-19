@@ -1,16 +1,16 @@
 /**
- * @file groq.js
+ * @file interfaces/groq.js
  * @class Groq
  * @description Wrapper class for the Groq API.
  * @param {string} apiKey - The API key for the Groq API.
  */
 
-const GroqSDK = require("groq-sdk");
-const { getFromCache, saveToCache } = require("../utils/cache");
-const { returnMessageObject, returnModelByAlias } = require("../utils/utils");
-const { groqApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+const GroqSDK = require('groq-sdk');
+const { getFromCache, saveToCache } = require('../utils/cache');
+const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
+const { groqApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // Groq class for interacting with the Groq API
 class Groq {
@@ -19,7 +19,7 @@ class Groq {
    * @param {string} apiKey - The API key for the Groq API.
    */
   constructor(apiKey) {
-    this.interfaceName = "groq";
+    this.interfaceName = 'groq';
     this.apiKey = apiKey || groqApiKey;
     this.groq = new GroqSDK({
       apiKey: this.apiKey,
@@ -35,9 +35,9 @@ class Groq {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === "string" ? returnMessageObject(message) : message;
+      typeof message === 'string' ? returnMessageObject(message) : message;
     const cacheTimeoutSeconds =
-      typeof interfaceOptions === "number"
+      typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
@@ -95,8 +95,8 @@ class Groq {
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

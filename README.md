@@ -64,13 +64,13 @@ npm install llm-interface
 Import `llm-interface` using:
 
 ```javascript
-const LLMInterface = require("llm-interface");
+const LLMInterface = require('llm-interface');
 ```
 
 or
 
 ```javascript
-import LLMInterface from "llm-interface";
+import LLMInterface from 'llm-interface';
 ```
 
 then call the handler you want to use:
@@ -79,10 +79,10 @@ then call the handler you want to use:
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
 const message = {
-  model: "gpt-3.5-turbo",
+  model: 'gpt-3.5-turbo',
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -102,7 +102,7 @@ or if you want to keep things _simple_ you can use:
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
 openai
-  .sendMessage("Explain the importance of low latency LLMs.")
+  .sendMessage('Explain the importance of low latency LLMs.')
   .then((response) => {
     console.log(response);
   })

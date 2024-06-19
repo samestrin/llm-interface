@@ -1,19 +1,19 @@
 /**
- * @file huggingface.js
+ * @file interfaces/huggingface.js
  * @class HuggingFace
  * @description Wrapper class for the Hugging Face API.
  * @param {string} apiKey - The API key for the Hugging Face API.
  */
 
-const axios = require("axios");
-const { getFromCache, saveToCache } = require("../utils/cache");
+const axios = require('axios');
+const { getFromCache, saveToCache } = require('../utils/cache');
 const {
   returnSimpleMessageObject,
   returnModelByAlias,
-} = require("../utils/utils");
-const { huggingfaceApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+} = require('../utils/utils');
+const { huggingfaceApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // HuggingFace class for interacting with the Hugging Face API
 class HuggingFace {
@@ -22,12 +22,12 @@ class HuggingFace {
    * @param {string} apiKey - The API key for the Hugging Face API.
    */
   constructor(apiKey) {
-    this.interfaceName = "huggingface";
+    this.interfaceName = 'huggingface';
     this.apiKey = apiKey || huggingfaceApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
@@ -42,11 +42,11 @@ class HuggingFace {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === "string"
+      typeof message === 'string'
         ? returnSimpleMessageObject(message)
         : message;
     const cacheTimeoutSeconds =
-      typeof interfaceOptions === "number"
+      typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
@@ -64,7 +64,7 @@ class HuggingFace {
     let greatest_tokens = Math.max(max_tokens, maxTokens);
 
     // Format the prompt by joining message contents
-    const prompt = messages.map((msg) => msg.content).join(" ");
+    const prompt = messages.map((msg) => msg.content).join(' ');
 
     // Prepare the payload for the API call
     const payload = {
@@ -108,8 +108,8 @@ class HuggingFace {
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

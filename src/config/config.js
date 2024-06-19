@@ -3,7 +3,7 @@
  * @description Configuration file to load environment variables.
  */
 
-require("dotenv").config();
+require('dotenv').config();
 
 module.exports = {
   openaiApiKey: process.env.OPENAI_API_KEY,

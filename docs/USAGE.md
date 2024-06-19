@@ -32,13 +32,13 @@ How to use `llm-interface` in your project.
 First, require the LLMInterface from the `llm-interface` package:
 
 ```javascript
-const LLMInterface = require("llm-interface");
+const LLMInterface = require('llm-interface');
 ```
 
 or import it:
 
 ```javascript
-import LLMInterface from "llm-interface";
+import LLMInterface from 'llm-interface';
 ```
 
 ## Basic Usage Examples
@@ -55,10 +55,10 @@ The OpenAI interface allows you to send messages to the OpenAI API.
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
 const message = {
-  model: "gpt-3.5-turbo",
+  model: 'gpt-3.5-turbo',
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -169,10 +169,10 @@ The Gemini interface allows you to send messages to the Google Gemini API.
 const gemini = new LLMInterface.gemini(process.env.GEMINI_API_KEY);
 
 const message = {
-  model: "gemini-1.5-flash",
+  model: 'gemini-1.5-flash',
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -196,10 +196,10 @@ The Goose AI interface allows you to send messages to the Goose AI API.
 const goose = new LLMInterface.goose(process.env.GROQ_API_KEY);
 
 const message = {
-  model: "gpt-neo-20b",
+  model: 'gpt-neo-20b',
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -223,10 +223,10 @@ The Groq interface allows you to send messages to the Groq API.
 const groq = new LLMInterface.groq(process.env.GROQ_API_KEY);
 
 const message = {
-  model: "llama3-8b-8192",
+  model: 'llama3-8b-8192',
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -250,15 +250,15 @@ The HuggingFace interface allows you to send messages to the HuggingFace API.
 const huggingface = new LLMInterface.huggingface(process.env.ANTHROPIC_API_KEY);
 
 const message = {
-  model: "claude-3-opus-20240229",
+  model: 'claude-3-opus-20240229',
   messages: [
     {
-      role: "user",
+      role: 'user',
       content:
-        "You are a helpful assistant. Say OK if you understand and stop.",
+        'You are a helpful assistant. Say OK if you understand and stop.',
     },
-    { role: "system", content: "OK" },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'OK' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -282,10 +282,10 @@ The Mistral AI interface allows you to send messages to the Mistral AI API.
 const mistral = new LLMInterface.mistral(process.env.GROQ_API_KEY);
 
 const message = {
-  model: "llama3-8b-8192",
+  model: 'llama3-8b-8192',
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -309,15 +309,15 @@ The Perplexity interface allows you to send messages to the Perplexity API.
 const perplexity = new LLMInterface.perplexity(process.env.ANTHROPIC_API_KEY);
 
 const message = {
-  model: "claude-3-opus-20240229",
+  model: 'claude-3-opus-20240229',
   messages: [
     {
-      role: "user",
+      role: 'user',
       content:
-        "You are a helpful assistant. Say OK if you understand and stop.",
+        'You are a helpful assistant. Say OK if you understand and stop.',
     },
-    { role: "system", content: "OK" },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'OK' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -341,22 +341,22 @@ The Reka AI interface allows you to send messages to the Reka AI REST API.
 const reka = new LLMInterface.reka(process.env.REKA_API_KEY);
 
 const message = {
-  model: "reka-core",
+  model: 'reka-core',
   messages: [
     {
-      role: "user",
+      role: 'user',
       content:
-        "You are a helpful assistant. Say OK if you understand and stop.",
+        'You are a helpful assistant. Say OK if you understand and stop.',
     },
-    { role: "system", content: "OK" },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'OK' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
 reka
   .sendMessage(message, {})
-  .then((response) => console.log("Response:", response))
-  .catch((error) => console.error("Error:", error));
+  .then((response) => console.log('Response:', response))
+  .catch((error) => console.error('Error:', error));
 ```
 
 ### LLaMA.cpp Interface
@@ -369,9 +369,9 @@ The LLaMA.cpp interface allows you to send messages to the LLaMA.cpp API; this i
 const llamacpp = new LLMInterface.llamacpp(process.env.LLAMACPP_URL);
 
 const message = {
-  model: "some-llamacpp-model",
+  model: 'some-llamacpp-model',
   messages: [
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -398,7 +398,7 @@ This simplified example uses a string based prompt with the default OpenAI model
 ```javascript
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
-const message = "Explain the importance of low latency LLMs.";
+const message = 'Explain the importance of low latency LLMs.';
 
 openai
   .sendMessage(message)
@@ -424,22 +424,22 @@ Some interfaces allows you request the response back in JSON, currently **OpenAI
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
 const message = {
-  model: "gpt-3.5-turbo",
+  model: 'gpt-3.5-turbo',
   messages: [
     {
-      role: "system",
-      content: "You are a helpful assistant.",
+      role: 'system',
+      content: 'You are a helpful assistant.',
     },
     {
-      role: "user",
+      role: 'user',
       content:
-        "Explain the importance of low latency LLMs. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}].",
+        'Explain the importance of low latency LLMs. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}].',
     },
   ],
 };
 
 openai
-  .sendMessage(message, { max_tokens: 150, response_format: "json_object" })
+  .sendMessage(message, { max_tokens: 150, response_format: 'json_object' })
   .then((response) => {
     console.log(response);
   })
@@ -458,10 +458,10 @@ To reduce operational costs and improve performance you can optionally specify a
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
 const message = {
-  model: "gpt-3.5-turbo",
+  model: 'gpt-3.5-turbo',
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -485,10 +485,10 @@ You can gracefully retry your requests. In this example we use OpenAI and up to 
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
 const message = {
-  model: "gpt-3.5-turbo",
+  model: 'gpt-3.5-turbo',
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 

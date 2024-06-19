@@ -1,15 +1,15 @@
 /**
- * @file llamacpp.js
+ * @file interfaces/llamacpp.js
  * @class LlamaCPP
  * @description Wrapper class for the LlamaCPP API.
  * @param {string} llamacppURL - The base URL for the LlamaCPP API.
  */
 
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
-const axios = require("axios");
-const { getFromCache, saveToCache } = require("../utils/cache");
+const axios = require('axios');
+const { getFromCache, saveToCache } = require('../utils/cache');
 
 // LlamaCPP class for interacting with the LlamaCPP API
 class LlamaCPP {
@@ -18,11 +18,11 @@ class LlamaCPP {
    * @param {string} llamacppURL - The base URL for the LlamaCPP API.
    */
   constructor(llamacppURL) {
-    this.interfaceName = "llamacpp";
+    this.interfaceName = 'llamacpp';
     this.client = axios.create({
       baseURL: llamacppURL || config[this.interfaceName].url,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   }
@@ -37,7 +37,7 @@ class LlamaCPP {
   async sendMessage(prompt, options = {}, interfaceOptions = {}) {
     // Get the cache timeout value from interfaceOptions
     let cacheTimeoutSeconds;
-    if (typeof interfaceOptions === "number") {
+    if (typeof interfaceOptions === 'number') {
       cacheTimeoutSeconds = interfaceOptions;
     } else {
       cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
@@ -48,13 +48,13 @@ class LlamaCPP {
 
     // Format the prompt based on the input type
     let formattedPrompt;
-    if (typeof prompt === "string") {
+    if (typeof prompt === 'string') {
       formattedPrompt = prompt;
     } else {
       // Join message contents to format the prompt
       formattedPrompt = prompt.messages
         .map((message) => message.content)
-        .join(" ");
+        .join(' ');
     }
 
     // Prepare the payload for the API call
@@ -79,9 +79,9 @@ class LlamaCPP {
     while (retryAttempts >= 0) {
       try {
         // Send the request to the LlamaCPP API
-        const response = await this.client.post("", payload);
+        const response = await this.client.post('', payload);
         // Extract the response content from the API response
-        let contents = "";
+        let contents = '';
         if (response.data.content) {
           contents = response.data.content;
         } else if (response.data.results) {
@@ -104,8 +104,8 @@ class LlamaCPP {
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

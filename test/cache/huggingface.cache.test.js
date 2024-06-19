@@ -1,43 +1,43 @@
 // test/huggingface.cache.test.js
 
-const HuggingFace = require("../../src/huggingface");
-const { huggingfaceApiKey } = require("../../src/config/config.js");
-const { getFromCache, saveToCache } = require("../../src/cache");
-jest.mock("../../src/cache"); // Mock the cache module
+const HuggingFace = require('../../src/huggingface');
+const { huggingfaceApiKey } = require('../../src/config/config.js');
+const { getFromCache, saveToCache } = require('../../src/cache');
+jest.mock('../../src/cache'); // Mock the cache module
 
-describe("HuggingFace Interface with Cache", () => {
+describe('HuggingFace Interface with Cache', () => {
   const huggingface = new HuggingFace(huggingfaceApiKey);
 
   const message = {
-    model: "gpt2",
+    model: 'gpt2',
     messages: [
-      { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: "Explain the importance of low latency LLMs." },
+      { role: 'system', content: 'You are a helpful assistant.' },
+      { role: 'user', content: 'Explain the importance of low latency LLMs.' },
     ],
   };
 
   const options = { max_new_tokens: 50 };
-  const inputs = message.messages.map((msg) => msg.content).join(" "); // Ensure consistent spacing
+  const inputs = message.messages.map((msg) => msg.content).join(' '); // Ensure consistent spacing
   const cacheKey = JSON.stringify({
     inputs: inputs,
     parameters: { max_new_tokens: 50 },
   });
   const cacheTimeoutSeconds = 86400;
   const mockResponse = [
-    { generated_text: "The importance of low latency LLMs is..." },
+    { generated_text: 'The importance of low latency LLMs is...' },
   ];
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("should return cached response if available", async () => {
+  it('should return cached response if available', async () => {
     getFromCache.mockReturnValue(mockResponse[0].generated_text);
 
     const response = await huggingface.sendMessage(
       message,
       options,
-      cacheTimeoutSeconds
+      cacheTimeoutSeconds,
     );
 
     expect(getFromCache).toHaveBeenCalledWith(cacheKey);
@@ -45,7 +45,7 @@ describe("HuggingFace Interface with Cache", () => {
     expect(saveToCache).not.toHaveBeenCalled();
   });
 
-  it("should save response to cache if not cached", async () => {
+  it('should save response to cache if not cached', async () => {
     getFromCache.mockReturnValue(null);
     saveToCache.mockImplementation(() => {});
 
@@ -57,11 +57,11 @@ describe("HuggingFace Interface with Cache", () => {
     const response = await huggingface.sendMessage(
       message,
       options,
-      cacheTimeoutSeconds
+      cacheTimeoutSeconds,
     );
 
     expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-    expect(huggingface.client.post).toHaveBeenCalledWith("gpt2", {
+    expect(huggingface.client.post).toHaveBeenCalledWith('gpt2', {
       inputs: inputs, // Ensure consistent spacing
       parameters: { max_new_tokens: 50 },
     });
@@ -69,19 +69,19 @@ describe("HuggingFace Interface with Cache", () => {
     expect(saveToCache).toHaveBeenCalledWith(
       cacheKey,
       mockResponse[0].generated_text,
-      cacheTimeoutSeconds
+      cacheTimeoutSeconds,
     );
   });
 
-  it("should handle API errors gracefully", async () => {
+  it('should handle API errors gracefully', async () => {
     getFromCache.mockReturnValue(null);
     huggingface.client.post = jest
       .fn()
-      .mockRejectedValue(new Error("API error"));
+      .mockRejectedValue(new Error('API error'));
 
     await expect(
-      huggingface.sendMessage(message, options, cacheTimeoutSeconds)
-    ).rejects.toThrow("API error");
+      huggingface.sendMessage(message, options, cacheTimeoutSeconds),
+    ).rejects.toThrow('API error');
 
     expect(getFromCache).toHaveBeenCalledWith(cacheKey);
     expect(saveToCache).not.toHaveBeenCalled();

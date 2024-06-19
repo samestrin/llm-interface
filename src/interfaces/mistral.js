@@ -1,16 +1,16 @@
 /**
- * @file mistral.js
+ * @file interfaces/mistral.js
  * @class Mistral
  * @description Wrapper class for the Mistral API.
  * @param {string} apiKey - The API key for the Mistral API.
  */
 
-const axios = require("axios");
-const { getFromCache, saveToCache } = require("../utils/cache");
-const { returnMessageObject, returnModelByAlias } = require("../utils/utils");
-const { mistralApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+const axios = require('axios');
+const { getFromCache, saveToCache } = require('../utils/cache');
+const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
+const { mistralApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // Mistral class for interacting with the Mistral API
 class Mistral {
@@ -19,12 +19,12 @@ class Mistral {
    * @param {string} apiKey - The API key for the Mistral API.
    */
   constructor(apiKey) {
-    this.interfaceName = "mistral";
+    this.interfaceName = 'mistral';
     this.apiKey = apiKey || mistralApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
@@ -39,9 +39,9 @@ class Mistral {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === "string" ? returnMessageObject(message) : message;
+      typeof message === 'string' ? returnMessageObject(message) : message;
     let cacheTimeoutSeconds;
-    if (typeof interfaceOptions === "number") {
+    if (typeof interfaceOptions === 'number') {
       cacheTimeoutSeconds = interfaceOptions;
     } else {
       cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
@@ -81,7 +81,7 @@ class Mistral {
     while (retryAttempts >= 0) {
       try {
         // Send the request to the Mistral API
-        const response = await this.client.post("", payload);
+        const response = await this.client.post('', payload);
         let responseContent = null;
         if (
           response &&
@@ -104,8 +104,8 @@ class Mistral {
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

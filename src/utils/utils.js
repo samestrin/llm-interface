@@ -3,7 +3,7 @@
  * @description Utility functions
  */
 
-const config = require("../config/llm-providers.json");
+const config = require('../config/llm-providers.json');
 
 /**
  * Returns a message object with the provided message and an optional system message.
@@ -14,16 +14,16 @@ const config = require("../config/llm-providers.json");
  */
 function returnMessageObject(
   message,
-  systemMessage = "You are a helpful assistant."
+  systemMessage = 'You are a helpful assistant.',
 ) {
   return {
     messages: [
       {
-        role: "system",
+        role: 'system',
         content: systemMessage,
       },
       {
-        role: "user",
+        role: 'user',
         content: message,
       },
     ],
@@ -40,7 +40,7 @@ function returnSimpleMessageObject(message) {
   return {
     messages: [
       {
-        role: "user",
+        role: 'user',
         content: message,
       },
     ],

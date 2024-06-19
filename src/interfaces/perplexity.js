@@ -1,16 +1,16 @@
 /**
- * @file perplexity.js
+ * @file interfaces/perplexity.js
  * @class Perplexity
  * @description Wrapper class for the Perplexity API.
  * @param {string} apiKey - The API key for the Perplexity API.
  */
 
-const axios = require("axios");
-const { getFromCache, saveToCache } = require("../utils/cache");
-const { returnMessageObject, returnModelByAlias } = require("../utils/utils");
-const { perplexityApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+const axios = require('axios');
+const { getFromCache, saveToCache } = require('../utils/cache');
+const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
+const { perplexityApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // Perplexity class for interacting with the Perplexity API
 class Perplexity {
@@ -19,12 +19,12 @@ class Perplexity {
    * @param {string} apiKey - The API key for the Perplexity API.
    */
   constructor(apiKey) {
-    this.interfaceName = "perplexity";
+    this.interfaceName = 'perplexity';
     this.apiKey = apiKey || perplexityApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
@@ -39,9 +39,9 @@ class Perplexity {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === "string" ? returnMessageObject(message) : message;
+      typeof message === 'string' ? returnMessageObject(message) : message;
     let cacheTimeoutSeconds;
-    if (typeof interfaceOptions === "number") {
+    if (typeof interfaceOptions === 'number') {
       cacheTimeoutSeconds = interfaceOptions;
     } else {
       cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
@@ -82,7 +82,7 @@ class Perplexity {
     while (retryAttempts >= 0) {
       try {
         // Send the request to the Perplexity API
-        const response = await this.client.post("", requestBody);
+        const response = await this.client.post('', requestBody);
         let responseContent = null;
         if (
           response &&
@@ -105,8 +105,8 @@ class Perplexity {
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

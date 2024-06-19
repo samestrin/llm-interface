@@ -1,16 +1,16 @@
 /**
- * @file goose.js
+ * @file interfaces/goose.js
  * @class Goose
  * @description Wrapper class for the Goose API.
  * @param {string} apiKey - The API key for the Goose API.
  */
 
-const axios = require("axios");
-const { getFromCache, saveToCache } = require("../utils/cache");
-const { returnMessageObject, returnModelByAlias } = require("../utils/utils");
-const { gooseApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+const axios = require('axios');
+const { getFromCache, saveToCache } = require('../utils/cache');
+const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
+const { gooseApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // Goose class for interacting with the Goose API
 class Goose {
@@ -19,12 +19,12 @@ class Goose {
    * @param {string} apiKey - The API key for the Goose API.
    */
   constructor(apiKey) {
-    this.interfaceName = "goose";
+    this.interfaceName = 'goose';
     this.apiKey = apiKey || gooseApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
@@ -39,9 +39,9 @@ class Goose {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === "string" ? returnMessageObject(message) : message;
+      typeof message === 'string' ? returnMessageObject(message) : message;
     const cacheTimeoutSeconds =
-      typeof interfaceOptions === "number"
+      typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
@@ -59,7 +59,7 @@ class Goose {
     // Format the prompt by joining message contents
     const formattedPrompt = messages
       .map((message) => message.content)
-      .join(" ");
+      .join(' ');
 
     // Prepare the payload for the API call
     const payload = {
@@ -106,8 +106,8 @@ class Goose {
         retryAttempts--;
         if (retryAttempts < 0) {
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

@@ -1,16 +1,16 @@
 /**
- * @file openai.js
+ * @file interfaces/openai.js
  * @class OpenAI
  * @description Wrapper class for the OpenAI API.
  * @param {string} apiKey - The API key for the OpenAI API.
  */
 
-const { OpenAI: OpenAIClient } = require("openai");
-const { getFromCache, saveToCache } = require("../utils/cache");
-const { returnMessageObject, returnModelByAlias } = require("../utils/utils");
-const { openaiApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+const { OpenAI: OpenAIClient } = require('openai');
+const { getFromCache, saveToCache } = require('../utils/cache');
+const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
+const { openaiApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // OpenAI class for interacting with the OpenAI API
 class OpenAI {
@@ -19,7 +19,7 @@ class OpenAI {
    * @param {string} apiKey - The API key for the OpenAI API.
    */
   constructor(apiKey) {
-    this.interfaceName = "openai";
+    this.interfaceName = 'openai';
     this.apiKey = apiKey || openaiApiKey;
     this.openai = new OpenAIClient({
       apiKey: this.apiKey,
@@ -35,9 +35,9 @@ class OpenAI {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === "string" ? returnMessageObject(message) : message;
+      typeof message === 'string' ? returnMessageObject(message) : message;
     let cacheTimeoutSeconds;
-    if (typeof interfaceOptions === "number") {
+    if (typeof interfaceOptions === 'number') {
       cacheTimeoutSeconds = interfaceOptions;
     } else {
       cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
@@ -53,16 +53,20 @@ class OpenAI {
       config[this.interfaceName].model.default.name;
     if (options.model) options.model = model;
 
-    const { max_tokens = 150, response_format = "" } = options;
+    const { max_tokens = 150, response_format = '' } = options;
 
     // Prepare the request payload for the API call
     const requestPayload = {
       model,
       messages,
       max_tokens,
-      ...(response_format && { response_format: { type: response_format } }),
       ...options,
     };
+
+    // Add response_format if specified
+    if (response_format) {
+      requestPayload.response_format = { type: response_format };
+    }
 
     // Generate a cache key based on the request payload
     const cacheKey = JSON.stringify(requestPayload);
@@ -79,9 +83,8 @@ class OpenAI {
     while (retryAttempts >= 0) {
       try {
         // Send the request to the OpenAI API
-        const completion = await this.openai.chat.completions.create(
-          requestPayload
-        );
+        const completion =
+          await this.openai.chat.completions.create(requestPayload);
         let responseContent = null;
         if (
           completion &&
@@ -92,7 +95,7 @@ class OpenAI {
           responseContent = completion.choices[0].message.content;
         }
 
-        if (response_format === "json_object") {
+        if (response_format === 'json_object') {
           try {
             // Parse the response as JSON if requested
             responseContent = JSON.parse(responseContent);
@@ -111,8 +114,8 @@ class OpenAI {
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

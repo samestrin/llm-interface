@@ -5,15 +5,15 @@
  * @param {string} apiKey - The API key for Reka AI.
  */
 
-const axios = require("axios");
-const { getFromCache, saveToCache } = require("../utils/cache");
+const axios = require('axios');
+const { getFromCache, saveToCache } = require('../utils/cache');
 const {
   returnSimpleMessageObject,
   returnModelByAlias,
-} = require("../utils/utils");
-const { rekaApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+} = require('../utils/utils');
+const { rekaApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // Reka class for interacting with the Reka AI API
 class Reka {
@@ -22,13 +22,13 @@ class Reka {
    * @param {string} apiKey - The API key for Reka AI.
    */
   constructor(apiKey) {
-    this.interfaceName = "reka";
+    this.interfaceName = 'reka';
     this.apiKey = apiKey || rekaApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
-        "Content-Type": "application/json",
-        "X-Api-Key": this.apiKey,
+        'Content-Type': 'application/json',
+        'X-Api-Key': this.apiKey,
       },
     });
   }
@@ -42,9 +42,9 @@ class Reka {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === "string" ? returnMessageObject(message) : message;
+      typeof message === 'string' ? returnMessageObject(message) : message;
     let cacheTimeoutSeconds;
-    if (typeof interfaceOptions === "number") {
+    if (typeof interfaceOptions === 'number') {
       cacheTimeoutSeconds = interfaceOptions;
     } else {
       cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
@@ -63,10 +63,10 @@ class Reka {
 
     // Convert message roles as required by the API
     const convertedMessages = messageObject.messages.map((msg, index) => {
-      if (msg.role === "system") {
-        return { ...msg, role: "assistant" };
+      if (msg.role === 'system') {
+        return { ...msg, role: 'assistant' };
       }
-      return { ...msg, role: "user" };
+      return { ...msg, role: 'user' };
     });
 
     // Prepare the modified message for the API call
@@ -93,7 +93,7 @@ class Reka {
     while (retryAttempts >= 0) {
       try {
         // Send the request to the Reka AI API
-        const response = await this.client.post("", modifiedMessage);
+        const response = await this.client.post('', modifiedMessage);
 
         let responseContent = null;
 
@@ -111,8 +111,8 @@ class Reka {
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error(
-            "API Error:",
-            error.response ? error.response.data : error.message
+            'API Error:',
+            error.response ? error.response.data : error.message,
           );
           throw new Error(error.response ? error.response.data : error.message);
         }

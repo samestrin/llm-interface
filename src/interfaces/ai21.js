@@ -1,19 +1,19 @@
 /**
- * @file ai21.js
+ * @file interfaces/ai21.js
  * @class AI21
  * @description Wrapper class for the AI21 API.
  * @param {string} apiKey - The API key for the AI21 API.
  */
 
-const axios = require("axios");
-const { getFromCache, saveToCache } = require("../utils/cache");
+const axios = require('axios');
+const { getFromCache, saveToCache } = require('../utils/cache');
 const {
   returnSimpleMessageObject,
   returnModelByAlias,
-} = require("../utils/utils");
-const { ai21ApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+} = require('../utils/utils');
+const { ai21ApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // AI21 class for interacting with the AI21 API
 class AI21 {
@@ -22,12 +22,12 @@ class AI21 {
    * @param {string} apiKey - The API key for AI21 API.
    */
   constructor(apiKey) {
-    this.interfaceName = "ai21";
+    this.interfaceName = 'ai21';
     this.apiKey = apiKey || ai21ApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
@@ -43,12 +43,12 @@ class AI21 {
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     // Convert a string message to a simple message object
     const messageObject =
-      typeof message === "string"
+      typeof message === 'string'
         ? returnSimpleMessageObject(message)
         : message;
     // Get the cache timeout value from interfaceOptions
     const cacheTimeoutSeconds =
-      typeof interfaceOptions === "number"
+      typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
@@ -60,7 +60,7 @@ class AI21 {
     const {
       temperature = 1,
       top_p = 1,
-      stop = "<|endoftext|>",
+      stop = '<|endoftext|>',
       max_tokens = 150,
     } = options;
 
@@ -91,7 +91,7 @@ class AI21 {
     while (retryAttempts >= 0) {
       try {
         // Send the request to the AI21 API
-        const response = await this.client.post("", requestBody);
+        const response = await this.client.post('', requestBody);
         // Extract the response content from the API response
         let responseContent = null;
         if (
@@ -118,8 +118,8 @@ class AI21 {
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }

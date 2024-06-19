@@ -3,13 +3,13 @@
  * @description Wrapper for flat-cache.
  */
 
-const flatCache = require("flat-cache");
-const path = require("path");
-const crypto = require("crypto");
+const flatCache = require('flat-cache');
+const path = require('path');
+const crypto = require('crypto');
 
 // Name of the cache file
-const cacheId = "llm-interface-cache";
-const cacheDir = path.resolve(__dirname, "..", "cache");
+const cacheId = 'llm-interface-cache';
+const cacheDir = path.resolve(__dirname, '..', 'cache');
 
 // Load the cache
 const cache = flatCache.load(cacheId, cacheDir);
@@ -21,7 +21,7 @@ const cache = flatCache.load(cacheId, cacheDir);
  * @returns {string} The MD5 hash of the key.
  */
 function getCacheFilePath(key) {
-  return crypto.createHash("md5").update(key).digest("hex");
+  return crypto.createHash('md5').update(key).digest('hex');
 }
 
 /**

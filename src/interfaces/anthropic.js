@@ -1,19 +1,19 @@
 /**
- * @file anthropic.js
+ * @file interfaces/anthropic.js
  * @class Anthropic
  * @description Wrapper class for the Anthropic API.
  * @param {string} apiKey - The API key for the Anthropic API.
  */
 
-const AnthropicSDK = require("@anthropic-ai/sdk");
-const { getFromCache, saveToCache } = require("../utils/cache");
+const AnthropicSDK = require('@anthropic-ai/sdk');
+const { getFromCache, saveToCache } = require('../utils/cache');
 const {
   returnSimpleMessageObject,
   returnModelByAlias,
-} = require("../utils/utils");
-const { anthropicApiKey } = require("../config/config");
-const config = require("../config/llm-providers.json");
-const log = require("loglevel");
+} = require('../utils/utils');
+const { anthropicApiKey } = require('../config/config');
+const config = require('../config/llm-providers.json');
+const log = require('loglevel');
 
 // Anthropic class for interacting with the Anthropic API
 class Anthropic {
@@ -22,7 +22,7 @@ class Anthropic {
    * @param {string} apiKey - The API key for the Anthropic API.
    */
   constructor(apiKey) {
-    this.interfaceName = "anthropic";
+    this.interfaceName = 'anthropic';
     this.anthropic = new AnthropicSDK({
       apiKey: apiKey || anthropicApiKey,
     });
@@ -38,12 +38,12 @@ class Anthropic {
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     // Convert a string message to a simple message object
     const messageObject =
-      typeof message === "string"
+      typeof message === 'string'
         ? returnSimpleMessageObject(message)
         : message;
     // Get the cache timeout value from interfaceOptions
     const cacheTimeoutSeconds =
-      typeof interfaceOptions === "number"
+      typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
@@ -57,12 +57,12 @@ class Anthropic {
     // Convert messages to the format expected by the Anthropic API
     const convertedMessages = messages.map((msg, index) => {
       if (index === 0) {
-        return { ...msg, role: "user" };
+        return { ...msg, role: 'user' };
       }
-      if (msg.role === "system") {
-        return { ...msg, role: "assistant" };
+      if (msg.role === 'system') {
+        return { ...msg, role: 'assistant' };
       }
-      return { ...msg, role: index % 2 === 0 ? "user" : "assistant" };
+      return { ...msg, role: index % 2 === 0 ? 'user' : 'assistant' };
     });
 
     // Prepare the parameters for the API call
@@ -117,8 +117,8 @@ class Anthropic {
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error(
-            "Response data:",
-            error.response ? error.response.data : null
+            'Response data:',
+            error.response ? error.response.data : null,
           );
           throw error;
         }
