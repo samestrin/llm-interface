@@ -1,12 +1,11 @@
 /**
  * @file llamacpp.test.js
- * @description Tests for the LlamaCPP API client.
+ * @description Simplified tests for the LlamaCPP API client.
  */
 
-const LlamaCPP = require('../../src/llamacpp');
+const LlamaCPP = require('../../src/interfaces/llamacpp.js');
 const { llamaURL } = require('../../config');
 const axios = require('axios');
-const url = require('url');
 
 test('LlamaCPP URL should be set', async () => {
   expect(typeof llamaURL).toBe('string');

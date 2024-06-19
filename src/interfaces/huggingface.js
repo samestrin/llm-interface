@@ -1,5 +1,5 @@
 /**
- * @file interfaces/huggingface.js
+ * @file src/interfaces/huggingface.js
  * @class HuggingFace
  * @description Wrapper class for the Hugging Face API.
  * @param {string} apiKey - The API key for the Hugging Face API.
@@ -60,8 +60,7 @@ class HuggingFace {
       config[this.interfaceName].model.default.name;
 
     // Support both styles of max tokens
-    const { max_tokens = 150, maxTokens = 150 } = options;
-    let greatest_tokens = Math.max(max_tokens, maxTokens);
+    const { max_tokens = 150 } = options;
 
     // Format the prompt by joining message contents
     const prompt = messages.map((msg) => msg.content).join(' ');
@@ -69,7 +68,7 @@ class HuggingFace {
     // Prepare the payload for the API call
     const payload = {
       inputs: prompt,
-      parameters: { max_new_tokens: greatest_tokens, ...options },
+      parameters: { max_new_tokens: max_tokens, ...options },
     };
 
     // Generate a cache key based on the payload

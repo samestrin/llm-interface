@@ -1,5 +1,5 @@
 /**
- * @file config/config.js
+ * @file src/config/config.js
  * @description Configuration file to load environment variables.
  */
 

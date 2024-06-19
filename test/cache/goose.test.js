@@ -1,12 +1,12 @@
 /**
- * @file goose.cache.test.js
+ * @file test/cache/goose.test.js
  * @description Tests for the caching mechanism in the Goose class.
  */
 
-const Goose = require('../../src/goose');
+const Goose = require('../../src/interfaces/goose.js');
 const { gooseApiKey } = require('../../src/config/config.js');
-const { getFromCache, saveToCache } = require('../../src/cache');
-jest.mock('../../src/cache'); // Mock the cache module
+const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+jest.mock('../../src/utils/cache.js'); // Mock the cache module
 
 describe('Goose AI Caching', () => {
   const goose = new Goose(gooseApiKey);

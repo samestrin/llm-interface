@@ -1,9 +1,9 @@
 /**
- * @file goose.test.js
- * @description Tests for the Goose AI API client.
+ * @file test/simple/goose.test.js
+ * @description Simplified tests for the Goose AI API client.
  */
 
-const Goose = require('../../src/goose');
+const Goose = require('../../src/interfaces/goose.js');
 const { gooseApiKey } = require('../../src/config/config.js');
 
 test('Goose API Key should be set', async () => {

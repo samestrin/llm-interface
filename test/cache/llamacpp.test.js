@@ -1,12 +1,12 @@
 /**
- * @file llamacpp.cache.test.js
+ * @file test/cache/llamacpp.test.js
  * @description Tests for the caching mechanism in the LlamaCPP class.
  */
 
-const LlamaCPP = require('../../src/llamacpp');
-const { llamaURL } = require('../../config');
-const { getFromCache, saveToCache } = require('../../src/cache');
-jest.mock('../../src/cache'); // Mock the cache module
+const LlamaCPP = require('../../src/interfaces/llamacpp.js');
+const { llamaURL } = require('../../src/config/config.js');
+const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+jest.mock('../../src/utils/cache.js'); // Mock the cache module
 
 describe('LlamaCPP Caching', () => {
   const llamacpp = new LlamaCPP(llamaURL);

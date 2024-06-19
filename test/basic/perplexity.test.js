@@ -1,5 +1,5 @@
 /**
- * @file basic/perplexity.test.js
+ * @file test/basic/perplexity.test.js
  * @description Tests for the Perplexity API client.
  */
 

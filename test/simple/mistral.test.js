@@ -1,9 +1,9 @@
 /**
  * @file mistral.test.js
- * @description Tests for the Mistral API client.
+ * @description Simplified tests for the Mistral API client.
  */
 
-const Mistral = require('../../src/mistral');
+const Mistral = require('../../src/interfaces/mistral.js');
 const { mistralApiKey } = require('../../src/config/config.js');
 
 test('Mistral API Key should be set', async () => {
@@ -18,6 +18,6 @@ test('Mistral API Client should send a message and receive a response', async ()
 
     expect(typeof response).toBe('string');
   } catch (error) {
-    throw new Error(`Test failed: ${safeStringify(error)}`);
+    throw new Error(`Test failed: ${error}`);
   }
 }, 30000);

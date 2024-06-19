@@ -1,5 +1,5 @@
 /**
- * @file basic/openai.test.js
+ * @file test/basic/openai.test.js
  * @description Tests for the OpenAI API client.
  */
 

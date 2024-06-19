@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "description": "A simple, unified interface for integrating and interacting with multiple Large Language Model (LLM) APIs, including OpenAI, AI21 Studio, Anthropic, Cohere, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Perplexity, Reka AI, and LLaMA.cpp.",
+  "type": "commonjs",
   "scripts": {
     "test": "jest"
   },

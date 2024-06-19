@@ -1,5 +1,5 @@
 /**
- * @file basic/gemini.test.js
+ * @file test/basic/gemini.test.js
  * @description Tests for the Gemini API client.
  */
 

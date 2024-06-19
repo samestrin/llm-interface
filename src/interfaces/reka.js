@@ -1,5 +1,5 @@
 /**
- * @file interfaces/reka.js
+ * @file src/interfaces/reka.js
  * @class Reka
  * @description Wrapper class for the Reka AI API.
  * @param {string} apiKey - The API key for Reka AI.

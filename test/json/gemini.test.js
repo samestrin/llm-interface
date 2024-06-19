@@ -1,5 +1,5 @@
 /**
- * @file json/gemini.json.test.js
+ * @file test/json/gemini.test.js
  * @description Tests for the Gemini API client JSON output.
  */
 

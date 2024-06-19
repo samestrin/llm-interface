@@ -1,5 +1,5 @@
 /**
- * @file interfaces/mistral.js
+ * @file src/interfaces/mistral.js
  * @class Mistral
  * @description Wrapper class for the Mistral API.
  * @param {string} apiKey - The API key for the Mistral API.

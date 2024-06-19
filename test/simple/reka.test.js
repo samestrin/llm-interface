@@ -1,9 +1,9 @@
 /**
  * @file reka.test.js
- * @description Tests for the Reka AI API client.
+ * @description Simplified test for the Reka AI API client.
  */
 
-const Reka = require('../../src/reka');
+const Reka = require('../../src/interfaces/reka.js');
 const { rekaApiKey } = require('../../src/config/config.js');
 
 test('Reka AI API Key should be set', async () => {

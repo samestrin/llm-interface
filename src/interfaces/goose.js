@@ -1,5 +1,5 @@
 /**
- * @file interfaces/goose.js
+ * @file src/interfaces/goose.js
  * @class Goose
  * @description Wrapper class for the Goose API.
  * @param {string} apiKey - The API key for the Goose API.
@@ -46,7 +46,7 @@ class Goose {
         : interfaceOptions.cacheTimeoutSeconds;
 
     const { messages } = messageObject;
-    const { maxTokens = 150 } = options;
+    const { max_tokens = 150 } = options;
     let { model } = messageObject;
 
     // Get the selected model based on alias or default
@@ -65,7 +65,7 @@ class Goose {
     const payload = {
       prompt: formattedPrompt,
       model,
-      maxTokens,
+      max_tokens,
       ...options,
     };
 

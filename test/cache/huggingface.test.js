@@ -1,9 +1,12 @@
-// test/huggingface.cache.test.js
+/**
+ * @file test/cache/huggingface.test.js
+ * @description Tests for the caching mechanism in the Groq class.
+ */
 
-const HuggingFace = require('../../src/huggingface');
+const HuggingFace = require('../../src/interfaces/huggingface.js');
 const { huggingfaceApiKey } = require('../../src/config/config.js');
-const { getFromCache, saveToCache } = require('../../src/cache');
-jest.mock('../../src/cache'); // Mock the cache module
+const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+jest.mock('../../src/utils/cache.js'); // Mock the cache module
 
 describe('HuggingFace Interface with Cache', () => {
   const huggingface = new HuggingFace(huggingfaceApiKey);

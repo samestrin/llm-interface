@@ -1,5 +1,5 @@
 /**
- * @file interfaces/groq.js
+ * @file src/interfaces/groq.js
  * @class Groq
  * @description Wrapper class for the Groq API.
  * @param {string} apiKey - The API key for the Groq API.

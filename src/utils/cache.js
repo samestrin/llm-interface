@@ -1,5 +1,5 @@
 /**
- * @file utils/cache.js
+ * @file src/utils/cache.js
  * @description Wrapper for flat-cache.
  */
 

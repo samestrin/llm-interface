@@ -1,5 +1,5 @@
 /**
- * @file basic/groq.test.js
+ * @file test/basic/groq.test.js
  * @description Tests for the Groq API client.
  */
 

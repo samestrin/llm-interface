@@ -1,5 +1,5 @@
 /**
- * @file basic/cohere.test.js
+ * @file test/basic/cohere.test.js
  * @description Tests for the Cohere API client.
  */
 

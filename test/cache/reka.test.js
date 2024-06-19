@@ -1,12 +1,12 @@
 /**
- * @file reka.cache.test.js
+ * @file test/cache/reka.test.js
  * @description Tests for the caching mechanism in the Reka class.
  */
 
-const Reka = require('../../src/reka');
+const Reka = require('../../src/interfaces/reka.js');
 const { rekaApiKey } = require('../../src/config/config.js');
-const { getFromCache, saveToCache } = require('../../src/cache');
-jest.mock('../../src/cache'); // Mock the cache module
+const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+jest.mock('../../src/utils/cache.js'); // Mock the cache module
 
 describe('Reka Caching', () => {
   const reka = new Reka(rekaApiKey);
@@ -32,6 +32,7 @@ describe('Reka Caching', () => {
   const cacheKey = JSON.stringify({
     messages: convertedMessages,
     model: 'reka-core',
+    max_tokens: 150, // Include the default value for max_tokens
     stream: false,
   });
 

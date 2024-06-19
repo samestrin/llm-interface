@@ -1,9 +1,9 @@
 /**
- * @file gemini.test.js
- * @description Tests for the Gemini API client.
+ * @file test/simple/gemini.test.js
+ * @description Simplified tests for the Gemini API client.
  */
 
-const Gemini = require('../../src/gemini');
+const Gemini = require('../../src/interfaces/gemini.js');
 const { geminiApiKey } = require('../../src/config/config.js');
 
 test('Gemini API Key should be set', async () => {

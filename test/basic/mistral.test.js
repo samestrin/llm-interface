@@ -1,5 +1,5 @@
 /**
- * @file basic/mistral.test.js
+ * @file test/basic/mistral.test.js
  * @description Tests for the Mistral API client.
  */
 
@@ -24,6 +24,6 @@ test('Mistral API Client should send a message and receive a response', async ()
 
     expect(typeof response).toBe('string');
   } catch (error) {
-    throw new Error(`Test failed: ${safeStringify(error)}`);
+    throw new Error(`Test failed: ${error}`);
   }
 }, 30000);

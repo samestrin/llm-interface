@@ -1,12 +1,12 @@
 /**
- * @file cohere.cache.test.js
+ * @file test/cache/cohere.test.js
  * @description Tests for the caching mechanism in the Cohere class.
  */
 
-const Cohere = require('../../src/cohere');
+const Cohere = require('../../src/interfaces/cohere.js');
 const { cohereApiKey } = require('../../src/config/config.js');
-const { getFromCache, saveToCache } = require('../../src/cache');
-jest.mock('../../src/cache'); // Mock the cache module
+const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+jest.mock('../../src/utils/cache.js'); // Mock the cache module
 
 describe('Cohere Caching', () => {
   const cohere = new Cohere(cohereApiKey);

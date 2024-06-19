@@ -1,5 +1,5 @@
 /**
- * @file interfaces/anthropic.js
+ * @file src/interfaces/anthropic.js
  * @class Anthropic
  * @description Wrapper class for the Anthropic API.
  * @param {string} apiKey - The API key for the Anthropic API.

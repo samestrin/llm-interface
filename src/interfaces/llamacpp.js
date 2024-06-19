@@ -1,5 +1,5 @@
 /**
- * @file interfaces/llamacpp.js
+ * @file src/interfaces/llamacpp.js
  * @class LlamaCPP
  * @description Wrapper class for the LlamaCPP API.
  * @param {string} llamacppURL - The base URL for the LlamaCPP API.

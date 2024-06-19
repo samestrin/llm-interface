@@ -1,11 +1,11 @@
 /**
- * @file basic/anthropic.test.js
+ * @file test/basic/anthropic.test.js
  * @description Tests for the Anthropic API client.
  */
 
 const Anthropic = require('../../src/interfaces/anthropic.js');
 const { anthropicApiKey } = require('../../src/config/config.js');
-const { safeStringify } = require('../../jest-serializer.js'); // Adjust the path if necessary
+const { safeStringify } = require('../utils/jest-serializer.js'); // Adjust the path if necessary
 
 test('Anthropic API Key should be set', async () => {
   expect(typeof anthropicApiKey).toBe('string');

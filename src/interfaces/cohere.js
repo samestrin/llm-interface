@@ -1,5 +1,5 @@
 /**
- * @file interfaces/cohere.js
+ * @file src/interfaces/cohere.js
  * @class Cohere
  * @description Wrapper class for the Cohere API.
  * @param {string} apiKey - The API key for the Cohere API.
@@ -55,23 +55,23 @@ class Cohere {
     const {
       stream = false,
       preamble,
-      chatHistory: optionsChatHistory,
-      conversationId,
-      promptTruncation = 'OFF',
+      chat_history: optionsChatHistory,
+      conversation_id,
+      prompt_truncation = 'OFF',
       connectors,
       documents,
       temperature = 0.3,
-      maxTokens = 150,
-      maxInputTokens,
+      max_input_tokens,
       k = 0,
       p = 0.75,
       seed,
-      stopSequences,
-      frequencyPenalty = 0.0,
-      presencePenalty = 0.0,
+      stop_sequences,
+      frequency_penalty = 0.0,
+      presence_penalty = 0.0,
       tools,
-      toolResults,
-      forceSingleStep = false,
+      tool_results,
+      force_single_step = false,
+      max_tokens = 150,
     } = options;
 
     // Prepare the payload for the API call
@@ -85,10 +85,10 @@ class Cohere {
     if (typeof message === 'string') {
       // If message is a string, prepare a simple payload
       payload = {
-        chatHistory: [],
+        chat_history: [],
         message,
         model,
-        maxTokens,
+        max_tokens,
         ...options,
       };
     } else {
@@ -104,13 +104,13 @@ class Cohere {
       }
       const currentMessage = messages[messages.length - 1].content;
       payload = {
-        chatHistory:
+        chat_history:
           chatHistory.length > 0
             ? chatHistory
             : [{ role: 'USER', message: '' }],
         message: currentMessage,
         model,
-        maxTokens,
+        max_tokens,
         // Include any additional options in the payload
         ...options,
       };

@@ -1,5 +1,5 @@
 /**
- * @file utils/utils.js
+ * @file src/utils/utils.js
  * @description Utility functions
  */
 

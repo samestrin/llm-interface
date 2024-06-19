@@ -1,12 +1,12 @@
 /**
- * @file gemini.cache.test.js
+ * @file test/cache/gemini.test.js
  * @description Tests for the caching mechanism in the Gemini class.
  */
 
-const Gemini = require('../../src/gemini');
+const Gemini = require('../../src/interfaces/gemini.js');
 const { geminiApiKey } = require('../../src/config/config.js');
-const { getFromCache, saveToCache } = require('../../src/cache');
-jest.mock('../../src/cache'); // Mock the cache module
+const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+jest.mock('../../src/utils/cache.js'); // Mock the cache module
 
 describe('Gemini Caching', () => {
   const gemini = new Gemini(geminiApiKey);
@@ -21,15 +21,15 @@ describe('Gemini Caching', () => {
 
   const options = { max_tokens: 100 };
 
-  // Create the cache key to match the expected internal structure
-  const cacheKey = JSON.stringify({
-    model: 'gemini-1.5-flash',
-    history: [
-      { role: 'user', parts: [{ text: 'You are a helpful assistant.' }] },
-    ],
-    prompt: 'Explain the importance of low latency LLMs.',
-    generationConfig: { maxOutputTokens: 100 },
-  });
+  const createCacheKey = (maxTokens) =>
+    JSON.stringify({
+      model: 'gemini-1.5-flash',
+      history: [
+        { role: 'user', parts: [{ text: 'You are a helpful assistant.' }] },
+      ],
+      prompt: 'Explain the importance of low latency LLMs.',
+      generationConfig: { maxOutputTokens: maxTokens },
+    });
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -43,9 +43,9 @@ describe('Gemini Caching', () => {
     const cachedResponse = 'Cached response';
     getFromCache.mockReturnValue(cachedResponse);
 
-    const response = await gemini.sendMessage(message, options, 60);
+    const response = await gemini.sendMessage(message, { ...options }, 60);
 
-    expect(getFromCache).toHaveBeenCalledWith(cacheKey);
+    expect(getFromCache).toHaveBeenCalledWith(createCacheKey(100));
     expect(response).toBe(cachedResponse);
     expect(saveToCache).not.toHaveBeenCalled();
   });
@@ -65,10 +65,14 @@ describe('Gemini Caching', () => {
     };
     gemini.genAI = genAI;
 
-    const response = await gemini.sendMessage(message, options, 60);
+    const response = await gemini.sendMessage(message, { ...options }, 60);
 
-    expect(getFromCache).toHaveBeenCalledWith(cacheKey);
+    expect(getFromCache).toHaveBeenCalledWith(createCacheKey(100));
     expect(response).toBe(apiResponse);
-    expect(saveToCache).toHaveBeenCalledWith(cacheKey, apiResponse, 60);
+    expect(saveToCache).toHaveBeenCalledWith(
+      createCacheKey(100),
+      apiResponse,
+      60,
+    );
   });
 });

@@ -1,5 +1,5 @@
 /**
- * @file interfaces/gemini.js
+ * @file src/interfaces/gemini.js
  * @class Gemini
  * @description Wrapper class for the Gemini API.
  * @param {string} apiKey - The API key for the Gemini API.
@@ -73,7 +73,11 @@ class Gemini {
 
     let { model } = messageObject;
     const selectedModel = returnModelByAlias(this.interfaceName, model);
-    let { max_tokens = 150, response_format = 'text/plain' } = options;
+    let max_tokens = options.max_tokens || 150;
+    let response_format = options.response_format || '';
+
+    if (options.max_tokens) delete options.max_tokens;
+    if (options.response_format) delete options.response_format;
 
     // Set the model and default values
     model =
@@ -84,11 +88,7 @@ class Gemini {
       messageObject,
       max_tokens,
       response_format,
-      {
-        temperature: options.temperature || 0.9,
-        topP: options.topP || 1,
-        topK: options.topK || 1,
-      },
+      options,
     );
 
     // Generate a cache key based on the input data

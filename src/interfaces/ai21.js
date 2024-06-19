@@ -1,5 +1,5 @@
 /**
- * @file interfaces/ai21.js
+ * @file src/interfaces/ai21.js
  * @class AI21
  * @description Wrapper class for the AI21 API.
  * @param {string} apiKey - The API key for the AI21 API.

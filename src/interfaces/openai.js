@@ -1,5 +1,5 @@
 /**
- * @file interfaces/openai.js
+ * @file src/interfaces/openai.js
  * @class OpenAI
  * @description Wrapper class for the OpenAI API.
  * @param {string} apiKey - The API key for the OpenAI API.

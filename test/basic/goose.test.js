@@ -1,5 +1,5 @@
 /**
- * @file basic/goose.test.js
+ * @file test/basic/goose.test.js
  * @description Tests for the Goose AI API client.
  */
 

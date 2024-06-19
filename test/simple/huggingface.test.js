@@ -1,9 +1,9 @@
 /**
- * @file huggingface.test.js
- * @description Tests for the Hugging Face Inference API client.
+ * @file test/simple/huggingface.test.js
+ * @description Simplified tests for the Hugging Face Inference API client.
  */
 
-const HuggingFace = require('../../src/huggingface');
+const HuggingFace = require('../../src/interfaces/huggingface.js');
 const { huggingfaceApiKey } = require('../../src/config/config.js');
 
 test('HuggingFace Inference API Key should be set', async () => {

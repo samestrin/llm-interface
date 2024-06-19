@@ -1,12 +1,12 @@
 /**
- * @file anthropic.cache.test.js
+ * @file test/cache/anthropic.test.js
  * @description Tests for the caching mechanism in the Anthropic class.
  */
 
-const Anthropic = require('../../src/anthropic');
+const Anthropic = require('../../src/interfaces/anthropic.js');
 const { anthropicApiKey } = require('../../src/config/config.js');
-const { getFromCache, saveToCache } = require('../../src/cache');
-jest.mock('../../src/cache'); // Mock the cache module
+const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+jest.mock('../../src/utils/cache.js'); // Mock the cache module
 
 describe('Anthropic Caching', () => {
   const anthropic = new Anthropic(anthropicApiKey);
@@ -33,9 +33,9 @@ describe('Anthropic Caching', () => {
   });
 
   const cacheKey = JSON.stringify({
-    max_tokens: 150,
-    messages: convertedMessages,
     model: 'claude-3-opus-20240229',
+    messages: convertedMessages,
+    max_tokens: 150,
   });
 
   afterEach(() => {

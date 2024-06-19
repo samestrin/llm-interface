@@ -1,9 +1,9 @@
 /**
- * @file groq.test.js
- * @description Tests for the Groq API client.
+ * @file test/simple/groq.test.js
+ * @description Simplified tests for the Groq API client.
  */
 
-const Groq = require('../../src/groq');
+const Groq = require('../../src/interfaces/groq.js');
 const { groqApiKey } = require('../../src/config/config.js');
 
 test('Groq API Key should be set', async () => {

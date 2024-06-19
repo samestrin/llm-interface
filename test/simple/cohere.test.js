@@ -1,9 +1,9 @@
 /**
- * @file cohere.test.js
- * @description Tests for the Cohere API client.
+ * @file test/simple/cohere.test.js
+ * @description Simplified tests for the Cohere API client.
  */
 
-const Cohere = require('../../src/cohere');
+const Cohere = require('../../src/interfaces/cohere.js');
 const { cohereApiKey } = require('../../src/config/config.js');
 
 test('Cohere API Key should be set', async () => {

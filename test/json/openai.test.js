@@ -1,5 +1,5 @@
 /**
- * @file json/openai.json.test.js
+ * @file test/json/openai.test.js
  * @description Tests for the OpenAI API client JSON output.
  */
 

@@ -1,4 +1,9 @@
-const AI21 = require('../../src/ai21');
+/**
+ * @file test/simple/ai21.test.js
+ * @description Simplified tests for the AI21 AI API client.
+ */
+
+const AI21 = require('../../src/interfaces/ai21.js');
 const { ai21ApiKey } = require('../../src/config/config.js');
 
 test('AI21 API Key should be set', () => {

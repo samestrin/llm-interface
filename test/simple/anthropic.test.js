@@ -1,9 +1,9 @@
 /**
- * @file anthropic.test.js
- * @description Tests for the Anthropic API client.
+ * @file test/simple/anthropic.test.js
+ * @description Simplified tests for the Anthropic API client.
  */
 
-const Anthropic = require('../../src/anthropic');
+const Anthropic = require('../../src/interfaces/anthropic.js');
 const { anthropicApiKey } = require('../../src/config/config.js');
 
 test('Anthropic API Key should be set', async () => {
@@ -17,6 +17,6 @@ test('Anthropic API Client should send a message and receive a response', async 
     const response = await anthropic.sendMessage(message, { max_tokens: 100 });
     expect(typeof response).toBe('string');
   } catch (error) {
-    throw new Error(`Test failed: ${safeStringify(error)}`);
+    throw new Error(`Test failed: ${error}`);
   }
 }, 30000);

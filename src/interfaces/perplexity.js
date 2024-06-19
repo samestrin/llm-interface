@@ -1,5 +1,5 @@
 /**
- * @file interfaces/perplexity.js
+ * @file src/interfaces/perplexity.js
  * @class Perplexity
  * @description Wrapper class for the Perplexity API.
  * @param {string} apiKey - The API key for the Perplexity API.

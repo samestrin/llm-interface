@@ -1,18 +1,18 @@
 /**
- * @file groq.cache.test.js
- * @description Tests for the caching mechanism in the Groq class.
+ * @file test/cache/openai.test.js
+ * @description Tests for the caching mechanism in the OpenAI class.
  */
 
-const Groq = require('../../src/groq');
-const { groqApiKey } = require('../../src/config/config.js');
-const { getFromCache, saveToCache } = require('../../src/cache');
-jest.mock('../../src/cache'); // Mock the cache module
+const OpenAI = require('../../src/interfaces/openai.js');
+const { openaiApiKey } = require('../../src/config/config.js');
+const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+jest.mock('../../src/utils/cache.js'); // Mock the cache module
 
-describe('Groq Caching', () => {
-  const groq = new Groq(groqApiKey);
+describe('OpenAI Caching', () => {
+  const openai = new OpenAI(openaiApiKey);
 
   const message = {
-    model: 'llama3-8b-8192',
+    model: 'gpt-3.5-turbo-0613',
     messages: [
       { role: 'system', content: 'You are a helpful assistant.' },
       { role: 'user', content: 'Explain the importance of low latency LLMs.' },
@@ -23,7 +23,7 @@ describe('Groq Caching', () => {
 
   // Convert the message structure for caching
   const cacheKey = JSON.stringify({
-    model: 'llama3-8b-8192',
+    model: 'gpt-3.5-turbo-0613',
     messages: message.messages,
     max_tokens: 150,
   });
@@ -32,30 +32,30 @@ describe('Groq Caching', () => {
     jest.clearAllMocks();
   });
 
-  test('Groq API Key should be set', async () => {
-    expect(typeof groqApiKey).toBe('string');
+  test('OpenAI API Key should be set', async () => {
+    expect(typeof openaiApiKey).toBe('string');
   });
 
-  test('Groq API should return cached response if available', async () => {
+  test('OpenAI API should return cached response if available', async () => {
     const cachedResponse = 'Cached response';
     getFromCache.mockReturnValue(cachedResponse);
 
-    const response = await groq.sendMessage(message, options, 60);
+    const response = await openai.sendMessage(message, options, 60);
 
     expect(getFromCache).toHaveBeenCalledWith(cacheKey);
     expect(response).toBe(cachedResponse);
     expect(saveToCache).not.toHaveBeenCalled();
   });
 
-  test('Groq API should save response to cache if not cached', async () => {
+  test('OpenAI API should save response to cache if not cached', async () => {
     getFromCache.mockReturnValue(null);
 
     const apiResponse = 'API response';
-    groq.groq.chat.completions.create = jest.fn().mockResolvedValue({
+    openai.openai.chat.completions.create = jest.fn().mockResolvedValue({
       choices: [{ message: { content: apiResponse } }],
     });
 
-    const response = await groq.sendMessage(message, options, 60);
+    const response = await openai.sendMessage(message, options, 60);
 
     expect(getFromCache).toHaveBeenCalledWith(cacheKey);
     expect(response).toBe(apiResponse);
