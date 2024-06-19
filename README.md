@@ -23,7 +23,7 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 **v1.0.01**
 
 - **LLMInterfaceSendMessage**: Send a message to any LLM provider without creating a new instance of the `llm-interface`.
-- **Model Aliases**: Simplified model selection. `default`, `small`, or `large` model aliases now available.
+- **Model Aliases**: Simplified model selection, `default`, `small`, and `large` model aliases now available.
 - **Major Refactor**: Improved comments, test cases, centralized LLM provider definitions.
 
 **v1.0.00**
