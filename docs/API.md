@@ -28,7 +28,7 @@ Different LLMs may have their own message object rules. For example, both Anthro
 
 ```javascript
 openai
-  .sendMessage(message, { max_tokens: 150, response_format: "json_object" })
+  .sendMessage(message, { max_tokens: 150, response_format: 'json_object' })
   .then((response) => {
     console.log(response);
   })
@@ -241,7 +241,7 @@ perplexity
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `model`. This method currently has no token limitation.
+  - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**

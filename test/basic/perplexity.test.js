@@ -1,26 +1,47 @@
-const Perplexity = require("../../src/perplexity");
-const { perplexityApiKey } = require("../../config");
+/**
+ * @file test/basic/perplexity.test.js
+ * @description Tests for the Perplexity API client.
+ */
 
-test("Perplexity Labs API Key should be set", () => {
-  expect(typeof perplexityApiKey).toBe("string");
-});
+const Perplexity = require('../../src/interfaces/perplexity.js');
+const { perplexityApiKey } = require('../../src/config/config.js');
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../utils/defaults.js');
+describe('Perplexity Basic', () => {
+  if (perplexityApiKey) {
+    let response;
 
-test("Perplexity Labs API Client should send a message and receive a response", async () => {
-  const perplixity = new Perplexity(perplexityApiKey);
-  const message = {
-    model: "llama-3-sonar-small-32k-online",
-    messages: [
-      {
-        role: "system",
-        content: "You are a helpful assistant.",
-      },
-      {
-        role: "user",
-        content: "Explain the importance of low latency LLMs.",
-      },
-    ],
-  };
-  const response = await perplixity.sendMessage(message, { max_tokens: 100 });
+    test('API Key should be set', () => {
+      expect(typeof perplexityApiKey).toBe('string');
+    });
 
-  expect(typeof response).toBe("string");
+    test('API Client should send a message and receive a response', async () => {
+      const perplixity = new Perplexity(perplexityApiKey);
+      const message = {
+        model: 'llama-3-sonar-small-32k-online',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.',
+          },
+          {
+            role: 'user',
+            content: simplePrompt,
+          },
+        ],
+      };
+      response = await perplixity.sendMessage(message, options);
+
+      expect(typeof response).toBe('string');
+    });
+
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(response.length).toBeLessThan(expectedMaxLength);
+    });
+  } else {
+    test.skip(`API Key is not set`, () => {});
+  }
 });

@@ -1,0 +1,33 @@
+/**
+ * @file perplexity.test.js
+ * @description Simplified tests for the Perplexity API client.
+ */
+
+const Perplexity = require('../../src/interfaces/perplexity.js');
+const { perplexityApiKey } = require('../../src/config/config.js');
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../utils/defaults.js');
+describe('Perplexity Simple', () => {
+  if (perplexityApiKey) {
+    let response;
+    test('API Key should be set', () => {
+      expect(typeof perplexityApiKey).toBe('string');
+    });
+
+    test('API Client should send a message and receive a response', async () => {
+      const perplixity = new Perplexity(perplexityApiKey);
+
+      response = await perplixity.sendMessage(simplePrompt, options);
+
+      expect(typeof response).toBe('string');
+    });
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(response.length).toBeLessThan(expectedMaxLength);
+    });
+  } else {
+    test.skip(`API Key is not set`, () => {});
+  }
+});

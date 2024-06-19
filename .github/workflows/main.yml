@@ -5,11 +5,11 @@ on:
     branches:
       - main
     paths:
-      - "package.json"
+      - 'package.json'
   workflow_dispatch:
   schedule:
     # Run the workflow every week (adjust as needed)
-    - cron: "0 0 * * 0"
+    - cron: '0 0 * * 0'
 
 jobs:
   update-packages:
@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Update NPM packages
         run: |

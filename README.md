@@ -20,6 +20,12 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Updates
 
+**v1.0.01**
+
+- **LLMInterfaceSendMessage**: Send a message to any LLM provider without creating a new instance of the `llm-interface`.
+- **Model Aliases**: Simplified model selection, `default`, `small`, and `large` model aliases now available.
+- **Major Refactor**: Improved comments, test cases, centralized LLM provider definitions.
+
 **v1.0.00**
 
 - **Initial 1.0 Release**
@@ -27,14 +33,6 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 **v0.0.11**
 
 - **Simple Prompt Handler**: Added support for simplified prompting.
-
-**v0.0.10**
-
-- **Hugging Face**: Added support for new LLM provider Hugging Face (_over 150,000 publicly accessible machine learning models_)
-- **Perplexity**: Added support for new LLM provider Perplexity
-- **AI21**: Add support for new LLM provider AI21 Studio
-- **JSON Output Improvements**: The `json_object` mode now guarantees the return a valid JSON object or null.
-- **Graceful Retries**: Retry LLM queries upon failure with progressive delays.
 
 ## Dependencies
 
@@ -64,13 +62,13 @@ npm install llm-interface
 Import `llm-interface` using:
 
 ```javascript
-const LLMInterface = require("llm-interface");
+const LLMInterface = require('llm-interface');
 ```
 
 or
 
 ```javascript
-import LLMInterface from "llm-interface";
+import LLMInterface from 'llm-interface';
 ```
 
 then call the handler you want to use:
@@ -79,10 +77,10 @@ then call the handler you want to use:
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
 const message = {
-  model: "gpt-3.5-turbo",
+  model: 'gpt-3.5-turbo',
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Explain the importance of low latency LLMs." },
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
   ],
 };
 
@@ -102,7 +100,7 @@ or if you want to keep things _simple_ you can use:
 const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
 
 openai
-  .sendMessage("Explain the importance of low latency LLMs.")
+  .sendMessage('Explain the importance of low latency LLMs.')
   .then((response) => {
     console.log(response);
   })

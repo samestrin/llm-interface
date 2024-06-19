@@ -1,29 +1,48 @@
 /**
- * @file mistral.test.js
+ * @file test/basic/mistral.test.js
  * @description Tests for the Mistral API client.
  */
 
-const Mistral = require("../../src/mistral");
-const { mistralApiKey } = require("../../config");
+const Mistral = require('../../src/interfaces/mistral.js');
+const { mistralApiKey } = require('../../src/config/config.js');
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../utils/defaults.js');
+describe('Mistral Basic', () => {
+  if (mistralApiKey) {
+    let response;
 
-test("Mistral API Key should be set", async () => {
-  expect(typeof mistralApiKey).toBe("string");
-});
+    test('API Key should be set', async () => {
+      expect(typeof mistralApiKey).toBe('string');
+    });
 
-test("Mistral API Client should send a message and receive a response", async () => {
-  const mistral = new Mistral(mistralApiKey);
-  const message = {
-    model: "mistral-large-latest",
-    messages: [
-      { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: "Explain the importance of low latency LLMs." },
-    ],
-  };
-  try {
-    const response = await mistral.sendMessage(message, { max_tokens: 100 });
+    test('API Client should send a message and receive a response', async () => {
+      const mistral = new Mistral(mistralApiKey);
+      const message = {
+        model: 'mistral-large-latest',
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant.' },
+          {
+            role: 'user',
+            content: simplePrompt,
+          },
+        ],
+      };
+      try {
+        response = await mistral.sendMessage(message, options);
 
-    expect(typeof response).toBe("string");
-  } catch (error) {
-    throw new Error(`Test failed: ${safeStringify(error)}`);
+        expect(typeof response).toBe('string');
+      } catch (error) {
+        throw new Error(`Test failed: ${error}`);
+      }
+    }, 30000);
+
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(response.length).toBeLessThan(expectedMaxLength);
+    });
+  } else {
+    test.skip(`API Key is not set`, () => {});
   }
-}, 30000);
+});
