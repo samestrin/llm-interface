@@ -1,5 +1,5 @@
 const AI21 = require("../../src/ai21");
-const { ai21ApiKey } = require("../../config");
+const { ai21ApiKey } = require("../../src/config/config.js");
 
 test("AI21 API Key should be set", () => {
   expect(typeof ai21ApiKey).toBe("string");

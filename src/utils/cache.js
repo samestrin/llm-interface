@@ -1,6 +1,6 @@
 /**
- * @file cache.js
- * @description Wrapper for flat-cache
+ * @file utils/cache.js
+ * @description Wrapper for flat-cache.
  */
 
 const flatCache = require("flat-cache");
@@ -20,20 +20,20 @@ const cache = flatCache.load(cacheId, cacheDir);
  * @param {string} key - The key to convert.
  * @returns {string} The MD5 hash of the key.
  */
-const getCacheFilePath = (key) => {
+function getCacheFilePath(key) {
   return crypto.createHash("md5").update(key).digest("hex");
-};
+}
 
 /**
  * Retrieves data from the cache.
  *
  * @param {string} key - The cache key.
- * @returns {any} The cached data.
+ * @returns {any} The cached data or null if not found.
  */
-const getFromCache = (key) => {
+function getFromCache(key) {
   const hashedKey = getCacheFilePath(key);
   return cache.getKey(hashedKey) || null;
-};
+}
 
 /**
  * Saves data to the cache.
@@ -41,11 +41,11 @@ const getFromCache = (key) => {
  * @param {string} key - The cache key.
  * @param {any} data - The data to cache.
  */
-const saveToCache = (key, data) => {
+function saveToCache(key, data) {
   const hashedKey = getCacheFilePath(key);
   cache.setKey(hashedKey, data);
   cache.save(true); // Save to disk
-};
+}
 
 module.exports = {
   getFromCache,

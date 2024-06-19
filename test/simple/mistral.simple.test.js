@@ -4,7 +4,7 @@
  */
 
 const Mistral = require("../../src/mistral");
-const { mistralApiKey } = require("../../config");
+const { mistralApiKey } = require("../../src/config/config.js");
 
 test("Mistral API Key should be set", async () => {
   expect(typeof mistralApiKey).toBe("string");

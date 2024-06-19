@@ -1,0 +1,110 @@
+{
+  "openai": {
+    "url": "",
+    "model": {
+      "default": { "name": "gpt-3.5-turbo", "tokens": 16385 },
+      "large": { "name": "gpt-4o", "tokens": 128000 },
+      "small": { "name": "davinci-002", "tokens": 16384 }
+    }
+  },
+  "ai21": {
+    "url": "https://api.ai21.com/studio/v1/chat/completions",
+    "model": {
+      "default": { "name": "jamba-instruct", "tokens": 256000 },
+      "large": { "name": "jamba-instruct", "tokens": 256000 },
+      "small": { "name": "j2-light", "tokens": 2048 }
+    }
+  },
+  "anthropic": {
+    "url": "",
+    "model": {
+      "default": { "name": "claude-3-opus-20240229", "tokens": 200000 },
+      "large": { "name": "claude-3-opus-20240229", "tokens": 200000 },
+      "small": { "name": "claude-3-haiku-20240307", "tokens": 200000 }
+    }
+  },
+  "azureai": {
+    "url": "https://api.openai.azure.com/chat/completions",
+    "model": {
+      "default": { "name": "gpt-35-turbo", "tokens": 16385 },
+      "large": { "name": "gpt-4o", "tokens": 128000 },
+      "small": { "name": "gpt-35-turbo", "tokens": 16385 }
+    },
+    "note": "url value is partial"
+  },
+  "cohere": {
+    "url": "https://api.cohere.ai/chat",
+    "model": {
+      "default": { "name": "command-r", "tokens": 128000 },
+      "large": { "name": "command-r-plus", "tokens": 128000 },
+      "small": { "name": "medium", "tokens": 2048 }
+    }
+  },
+  "gemini": {
+    "url": "",
+    "model": {
+      "default": { "name": "gemini-1.5-flash", "tokens": 1048576 },
+      "large": { "name": "gemini-1.5-pro", "tokens": 1048576 },
+      "small": { "name": "gemini-small" }
+    }
+  },
+  "goose": {
+    "url": "https://api.goose.ai/v1/engines",
+    "model": {
+      "default": { "name": "gpt-neo-20b", "tokens": 2048 },
+      "large": { "name": "gpt-neo-20b", "tokens": 2048 },
+      "small": { "name": "gpt-neo-125m", "tokens": 2048 }
+    },
+    "note": "url value is partial"
+  },
+  "groq": {
+    "url": "",
+    "model": {
+      "default": { "name": "llama3-8b-8192", "tokens": 8192 },
+      "large": { "name": "llama3-70b-8192", "tokens": 8192 },
+      "small": { "name": "gemma-7b-it", "tokens": 8192 }
+    }
+  },
+  "huggingface": {
+    "url": "https://api-inference.huggingface.co/models/",
+    "model": {
+      "default": {
+        "name": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "tokens": 8192
+      },
+      "large": {
+        "name": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "tokens": 8192
+      },
+      "small": { "name": "microsoft/Phi-3-mini-4k-instruct", "tokens": 4096 }
+    },
+    "note": "url value is partial"
+  },
+  "llamacpp": {
+    "url": "http://localhost:8080/completion"
+  },
+  "mistral": {
+    "url": "https://api.mistral.ai/v1/chat/completions",
+    "model": {
+      "default": { "name": "mistral-large-latest", "tokens": 32768 },
+      "large": { "name": "mistral-large-latest", "tokens": 32768 },
+      "small": { "name": "mistral-small", "tokens": 32768 }
+    }
+  },
+  "perplexity": {
+    "url": "https://api.perplexity.ai/chat/completions",
+    "model": {
+      "default": { "name": "llama-3-sonar-large-32k-online", "tokens": 28000 },
+      "large": { "name": "llama-3-sonar-large-32k-online", "tokens": 28000 },
+      "small": { "name": "llama-3-sonar-small-32k-online", "tokens": 28000 }
+    }
+  },
+  "reka": {
+    "url": "https://api.reka.ai/v1/chat",
+    "model": {
+      "default": { "name": "reka-core" },
+      "large": { "name": "reka-core" },
+      "small": { "name": "reka-edge" }
+    }
+  }
+}

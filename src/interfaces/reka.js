@@ -1,23 +1,31 @@
 /**
- * @file reka.js
+ * @file interfaces/reka.js
  * @class Reka
  * @description Wrapper class for the Reka AI API.
  * @param {string} apiKey - The API key for Reka AI.
  */
 
 const axios = require("axios");
-const { getFromCache, saveToCache } = require("./cache"); // Import the cache module
-const { returnSimpleMessageObject } = require("./utils");
+const { getFromCache, saveToCache } = require("../utils/cache");
+const {
+  returnSimpleMessageObject,
+  returnModelByAlias,
+} = require("../utils/utils");
+const { rekaApiKey } = require("../config/config");
+const config = require("../config/llm-providers.json");
+const log = require("loglevel");
 
+// Reka class for interacting with the Reka AI API
 class Reka {
   /**
-   * @constructor
+   * Constructor for the Reka class.
    * @param {string} apiKey - The API key for Reka AI.
    */
   constructor(apiKey) {
-    this.apiKey = apiKey;
+    this.interfaceName = "reka";
+    this.apiKey = apiKey || rekaApiKey;
     this.client = axios.create({
-      baseURL: "https://api.reka.ai",
+      baseURL: config[this.interfaceName].url,
       headers: {
         "Content-Type": "application/json",
         "X-Api-Key": this.apiKey,
@@ -26,26 +34,15 @@ class Reka {
   }
 
   /**
-   * Sends a message to the Reka AI API.
-   *
-   * @param {Object} message - The message object containing the model and messages to send.
-   * @param {Object} [options={}] - Optional parameters for the request.
-   * @param {Object | number} [interfaceOptions={}] - Optional interface options, including cache timeout and retry attempts.
-   * @returns {Promise<string|null>} The response text from the API.
-   * @throws {Error} Throws an error if the API request fails.
-   *
-   * @example
-   * const reka = new Reka(apiKey);
-   * const interfaceOpts = {
-   *   cacheTimeoutSeconds: 300,
-   *   retryAttempts: 3,
-   * };
-   * reka.sendMessage(message, { max_tokens: 150 }, interfaceOpts).then(console.log).catch(console.error);
+   * Send a message to the Reka AI API.
+   * @param {string|object} message - The message to send or a message object.
+   * @param {object} options - Additional options for the API request.
+   * @param {object} interfaceOptions - Options specific to the interface.
+   * @returns {string|null} The response content from the Reka AI API or null if an error occurs.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
-    if (typeof message === "string") {
-      message = returnSimpleMessageObject(message);
-    }
+    const messageObject =
+      typeof message === "string" ? returnMessageObject(message) : message;
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === "number") {
       cacheTimeoutSeconds = interfaceOptions;
@@ -53,19 +50,26 @@ class Reka {
       cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
     }
 
-    let { model } = message;
+    let { model } = messageObject;
 
-    // Set default model if not provided
-    model = model || options.model || "reka-core";
+    // Get the selected model based on alias or default
+    model = returnModelByAlias(this.interfaceName, model);
+
+    // Set the model and default values
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+
+    const { max_tokens = 150 } = options;
 
     // Convert message roles as required by the API
-    const convertedMessages = message.messages.map((msg, index) => {
+    const convertedMessages = messageObject.messages.map((msg, index) => {
       if (msg.role === "system") {
         return { ...msg, role: "assistant" };
       }
       return { ...msg, role: "user" };
     });
-    const { max_tokens = 150 } = options;
+
+    // Prepare the modified message for the API call
     const modifiedMessage = {
       messages: convertedMessages,
       model,
@@ -73,7 +77,7 @@ class Reka {
       stream: false,
     };
 
-    // Create cache key and check for cached response
+    // Generate a cache key based on the modified message
     const cacheKey = JSON.stringify(modifiedMessage);
     if (cacheTimeoutSeconds) {
       const cachedResponse = getFromCache(cacheKey);
@@ -82,11 +86,15 @@ class Reka {
       }
     }
 
+    // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
+
     while (retryAttempts >= 0) {
       try {
-        const response = await this.client.post("/v1/chat", modifiedMessage);
+        // Send the request to the Reka AI API
+        const response = await this.client.post("", modifiedMessage);
+
         let responseContent = null;
 
         if (response.data?.responses?.[0]?.message?.content) {
@@ -96,18 +104,23 @@ class Reka {
         if (cacheTimeoutSeconds && responseContent) {
           saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
         }
+
         return responseContent;
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          console.error(
+          // Log any errors and throw the error
+          log.error(
             "API Error:",
             error.response ? error.response.data : error.message
           );
           throw new Error(error.response ? error.response.data : error.message);
         }
-        // Implement progressive delay
-        const delay = (currentRetry + 1) * 0.3 * 1000; // milliseconds
+
+        // Calculate the delay for the next retry attempt
+        let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
+        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+
         await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }

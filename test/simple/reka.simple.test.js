@@ -4,7 +4,7 @@
  */
 
 const Reka = require("../../src/reka");
-const { rekaApiKey } = require("../../config");
+const { rekaApiKey } = require("../../src/config/config.js");
 
 test("Reka AI API Key should be set", async () => {
   expect(typeof rekaApiKey).toBe("string");

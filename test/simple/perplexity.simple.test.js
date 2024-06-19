@@ -1,5 +1,5 @@
-const Perplexity = require("../../src/perplexity");
-const { perplexityApiKey } = require("../../config");
+const Perplexity = require("../../src/interfaces/perplexity");
+const { perplexityApiKey } = require("../../src/config/config");
 
 test("Perplexity Labs API Key should be set", () => {
   expect(typeof perplexityApiKey).toBe("string");

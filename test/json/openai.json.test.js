@@ -4,7 +4,7 @@
  */
 
 const OpenAI = require("../../src/openai");
-const { openaiApiKey } = require("../../config");
+const { openaiApiKey } = require("../../src/config/config.js");
 
 test("OpenAI API Key should be set", async () => {
   expect(typeof openaiApiKey).toBe("string");

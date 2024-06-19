@@ -4,7 +4,7 @@
  */
 
 const Goose = require("../../src/goose");
-const { gooseApiKey } = require("../../config");
+const { gooseApiKey } = require("../../src/config/config.js");
 const { getFromCache, saveToCache } = require("../../src/cache");
 jest.mock("../../src/cache"); // Mock the cache module
 

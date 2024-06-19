@@ -4,7 +4,7 @@
  */
 
 const Cohere = require("../../src/cohere");
-const { cohereApiKey } = require("../../config");
+const { cohereApiKey } = require("../../src/config/config.js");
 const { getFromCache, saveToCache } = require("../../src/cache");
 jest.mock("../../src/cache"); // Mock the cache module
 

@@ -20,6 +20,7 @@ const safeStringify = (obj, space = 2) => {
 };
 
 module.exports = {
+  safeStringify,
   test(value) {
     return typeof value === "object" && value !== null;
   },

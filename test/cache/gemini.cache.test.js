@@ -4,7 +4,7 @@
  */
 
 const Gemini = require("../../src/gemini");
-const { geminiApiKey } = require("../../config");
+const { geminiApiKey } = require("../../src/config/config.js");
 const { getFromCache, saveToCache } = require("../../src/cache");
 jest.mock("../../src/cache"); // Mock the cache module
 

@@ -4,7 +4,7 @@
  */
 
 const OpenAI = require("../../src/openai");
-const { openaiApiKey } = require("../../config");
+const { openaiApiKey } = require("../../src/config/config.js");
 const { getFromCache, saveToCache } = require("../../src/cache");
 jest.mock("../../src/cache"); // Mock the cache module
 

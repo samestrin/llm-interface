@@ -3,8 +3,8 @@
  * @description Tests for the Groq API client.
  */
 
-const Groq = require("../../src/groq");
-const { groqApiKey } = require("../../config");
+const Groq = require("../../src/interfaces/groq.js");
+const { groqApiKey } = require("../../src/config/config.js");
 
 test("Groq API Key should be set", async () => {
   expect(typeof groqApiKey).toBe("string");

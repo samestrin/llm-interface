@@ -3,8 +3,9 @@
  * @description Tests for the Hugging Face Inference API client.
  */
 
-const HuggingFace = require("../../src/huggingface");
-const { huggingfaceApiKey } = require("../../config");
+const HuggingFace = require("../../src/interfaces/huggingface.js");
+const { huggingfaceApiKey } = require("../../src/config/config.js");
+const { safeStringify } = require("../../jest-serializer.js");
 
 test("HuggingFace Inference API Key should be set", async () => {
   expect(typeof huggingfaceApiKey).toBe("string");
@@ -16,13 +17,8 @@ test("HuggingFace Inference API Client should send a message and receive a respo
     model: "meta-llama/Meta-Llama-3-8B-Instruct",
     messages: [
       {
-        role: "user",
-        content:
-          "You are a helpful assistant. Say OK if you understand and stop.",
-      },
-      {
         role: "system",
-        content: "OK",
+        content: "You are a helpful assistant.",
       },
       {
         role: "user",

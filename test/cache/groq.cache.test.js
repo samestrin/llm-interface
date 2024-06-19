@@ -4,7 +4,7 @@
  */
 
 const Groq = require("../../src/groq");
-const { groqApiKey } = require("../../config");
+const { groqApiKey } = require("../../src/config/config.js");
 const { getFromCache, saveToCache } = require("../../src/cache");
 jest.mock("../../src/cache"); // Mock the cache module
 

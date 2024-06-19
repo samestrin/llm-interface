@@ -3,8 +3,8 @@
  * @description Tests for the OpenAI API client.
  */
 
-const OpenAI = require("../../src/openai");
-const { openaiApiKey } = require("../../config");
+const OpenAI = require("../../src/interfaces/openai.js");
+const { openaiApiKey } = require("../../src/config/config.js");
 
 test("OpenAI API Key should be set", async () => {
   expect(typeof openaiApiKey).toBe("string");

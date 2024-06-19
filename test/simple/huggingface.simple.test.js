@@ -4,7 +4,7 @@
  */
 
 const HuggingFace = require("../../src/huggingface");
-const { huggingfaceApiKey } = require("../../config");
+const { huggingfaceApiKey } = require("../../src/config/config.js");
 
 test("HuggingFace Inference API Key should be set", async () => {
   expect(typeof huggingfaceApiKey).toBe("string");

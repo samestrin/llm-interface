@@ -4,7 +4,7 @@
  */
 
 const Reka = require("../../src/reka");
-const { rekaApiKey } = require("../../config");
+const { rekaApiKey } = require("../../src/config/config.js");
 const { getFromCache, saveToCache } = require("../../src/cache");
 jest.mock("../../src/cache"); // Mock the cache module
 

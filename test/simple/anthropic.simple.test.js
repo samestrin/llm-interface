@@ -4,7 +4,7 @@
  */
 
 const Anthropic = require("../../src/anthropic");
-const { anthropicApiKey } = require("../../config");
+const { anthropicApiKey } = require("../../src/config/config.js");
 
 test("Anthropic API Key should be set", async () => {
   expect(typeof anthropicApiKey).toBe("string");

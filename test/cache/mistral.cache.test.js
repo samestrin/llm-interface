@@ -4,7 +4,7 @@
  */
 
 const Mistral = require("../../src/mistral");
-const { mistralApiKey } = require("../../config");
+const { mistralApiKey } = require("../../src/config/config.js");
 const { getFromCache, saveToCache } = require("../../src/cache");
 jest.mock("../../src/cache"); // Mock the cache module
 

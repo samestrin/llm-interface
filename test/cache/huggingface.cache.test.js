@@ -1,7 +1,7 @@
 // test/huggingface.cache.test.js
 
 const HuggingFace = require("../../src/huggingface");
-const { huggingfaceApiKey } = require("../../config");
+const { huggingfaceApiKey } = require("../../src/config/config.js");
 const { getFromCache, saveToCache } = require("../../src/cache");
 jest.mock("../../src/cache"); // Mock the cache module
 

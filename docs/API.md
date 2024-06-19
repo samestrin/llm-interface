@@ -241,7 +241,7 @@ perplexity
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `model`. This method currently has no token limitation.
+  - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
 - **Returns:** A promise that resolves to the response text.
 - **Example:**

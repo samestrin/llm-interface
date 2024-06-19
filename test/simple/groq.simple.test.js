@@ -4,7 +4,7 @@
  */
 
 const Groq = require("../../src/groq");
-const { groqApiKey } = require("../../config");
+const { groqApiKey } = require("../../src/config/config.js");
 
 test("Groq API Key should be set", async () => {
   expect(typeof groqApiKey).toBe("string");
