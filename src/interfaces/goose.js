@@ -86,7 +86,7 @@ class Goose {
         // Send the request to the Goose API
         const url = `/${model}/completions`;
         const response = await this.client.post(url, payload);
-        let responseText = null;
+        let responseContent = null;
         if (
           response &&
           response.data &&
@@ -94,14 +94,23 @@ class Goose {
           response.data.choices[0] &&
           response.data.choices[0].text
         ) {
-          responseText = response.data.choices[0].text.trim();
+          responseContent = response.data.choices[0].text.trim();
+        }
+        // Attempt to repair the object if needed
+        if (interfaceOptions.attemptJsonRepair) {
+          responseContent = parseJSON(
+            responseContent,
+            interfaceOptions.attemptJsonRepair,
+          );
+        }
+        // Build response object
+        responseContent = { results: responseContent };
+
+        if (cacheTimeoutSeconds && responseContent) {
+          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
         }
 
-        if (cacheTimeoutSeconds && responseText) {
-          saveToCache(cacheKey, responseText, cacheTimeoutSeconds);
-        }
-
-        return responseText;
+        return responseContent;
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {

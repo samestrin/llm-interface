@@ -81,23 +81,32 @@ class LlamaCPP {
         // Send the request to the LlamaCPP API
         const response = await this.client.post('', payload);
         // Extract the response content from the API response
-        let contents = '';
+        let responseContent = '';
         if (response.data.content) {
-          contents = response.data.content;
+          responseContent = response.data.content;
         } else if (response.data.results) {
           // Join the results content if available
-          contents = response.data.results
+          responseContent = response.data.results
             .map((result) => result.content)
             .join();
         }
+        // Attempt to repair the object if needed
+        if (interfaceOptions.attemptJsonRepair) {
+          responseContent = parseJSON(
+            responseContent,
+            interfaceOptions.attemptJsonRepair,
+          );
+        }
+        // Build response object
+        responseContent = { results: responseContent };
 
         // Cache the response content if cache timeout is set
-        if (cacheTimeoutSeconds && contents) {
-          saveToCache(cacheKey, contents, cacheTimeoutSeconds);
+        if (cacheTimeoutSeconds && responseContent) {
+          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
         }
 
         // Return the response content
-        return contents;
+        return responseContent;
       } catch (error) {
         // Decrease the number of retry attempts
         retryAttempts--;

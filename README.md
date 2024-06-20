@@ -20,19 +20,16 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Updates
 
+**v2.0.01**
+
+- **JSON Consistency**: A breaking change has been introduced: all responses now return as valid JSON objects.
+- **JSON Repair**: Use `interfaceOptions.attemptJsonRepair` to repair invalid JSON responses when they occur.
+
 **v1.0.01**
 
 - **LLMInterfaceSendMessage**: Send a message to any LLM provider without creating a new instance of the `llm-interface`.
 - **Model Aliases**: Simplified model selection, `default`, `small`, and `large` model aliases now available.
 - **Major Refactor**: Improved comments, test cases, centralized LLM provider definitions.
-
-**v1.0.00**
-
-- **Initial 1.0 Release**
-
-**v0.0.11**
-
-- **Simple Prompt Handler**: Added support for simplified prompting.
 
 ## Dependencies
 
@@ -45,6 +42,7 @@ The project relies on several npm packages and APIs. Here are the primary depend
 - `openai`: SDK for interacting with the OpenAI API.
 - `dotenv`: For managing environment variables. Used by test cases.
 - `flat-cache`: For caching API responses to improve performance and reduce redundant requests.
+- `jsonrepair`: Used to repair invalid JSON responses.
 - `jest`: For running test cases.
 
 ## Installation

@@ -9,7 +9,7 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 describe('HuggingFace Simple', () => {
   if (huggingfaceApiKey) {
     let response;
@@ -23,14 +23,14 @@ describe('HuggingFace Simple', () => {
       try {
         response = await huggingface.sendMessage(simplePrompt, options);
 
-        expect(typeof response).toBe('string');
+        expect(typeof response).toStrictEqual('object');
       } catch (error) {
         console.error('Test failed:', error);
         throw error;
       }
     }, 30000);
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-      expect(response.length).toBeLessThan(expectedMaxLength);
+      expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
     test.skip(`API Key is not set`, () => {});

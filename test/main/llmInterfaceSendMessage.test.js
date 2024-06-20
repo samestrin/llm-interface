@@ -9,7 +9,7 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 
 let modules = {
   openai: config.openaiApiKey,
@@ -41,7 +41,7 @@ for (const [module, apiKey] of Object.entries(modules)) {
           options,
         );
 
-        expect(typeof response).toBe('string');
+        expect(typeof response).toStrictEqual('object');
       }, 30000);
     });
   } else {

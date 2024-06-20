@@ -9,7 +9,7 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 describe('Cohere Simple', () => {
   if (cohereApiKey) {
     let response;
@@ -22,11 +22,11 @@ describe('Cohere Simple', () => {
 
       response = await cohere.sendMessage(simplePrompt, options);
 
-      expect(typeof response).toBe('string');
+      expect(typeof response).toStrictEqual('object');
     }, 30000);
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-      expect(response.length).toBeLessThan(expectedMaxLength);
+      expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
     test.skip(`API Key is not set`, () => {});

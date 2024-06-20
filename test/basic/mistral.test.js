@@ -9,7 +9,7 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 describe('Mistral Basic', () => {
   if (mistralApiKey) {
     let response;
@@ -33,14 +33,14 @@ describe('Mistral Basic', () => {
       try {
         response = await mistral.sendMessage(message, options);
 
-        expect(typeof response).toBe('string');
+        expect(typeof response).toStrictEqual('object');
       } catch (error) {
         throw new Error(`Test failed: ${error}`);
       }
     }, 30000);
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-      expect(response.length).toBeLessThan(expectedMaxLength);
+      expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
     test.skip(`API Key is not set`, () => {});

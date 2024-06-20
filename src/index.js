@@ -84,4 +84,4 @@ async function LLMInterfaceSendMessage(
   }
 }
 
-module.exports = { LLMInterface, LLMInterfaceSendMessage, handlers };
+module.exports = { LLMInterface, LLMInterfaceSendMessage };

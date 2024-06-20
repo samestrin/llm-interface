@@ -9,8 +9,8 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
-const { safeStringify } = require('../utils/jestSerializer.js'); // Adjust the path if necessary
+} = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js'); // Adjust the path if necessary
 
 describe('Anthropic Basic', () => {
   if (anthropicApiKey) {
@@ -43,14 +43,14 @@ describe('Anthropic Basic', () => {
       try {
         response = await anthropic.sendMessage(message, options);
 
-        expect(typeof response).toBe('string');
+        expect(typeof response).toStrictEqual('object');
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
     }, 30000);
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-      expect(response.length).toBeLessThan(expectedMaxLength);
+      expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
     test.skip(`API Key is not set`, () => {});

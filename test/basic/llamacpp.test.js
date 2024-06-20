@@ -9,7 +9,7 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 const axios = require('axios');
 describe('LlamaCPP Basic', () => {
   if (llamaURL) {
@@ -54,11 +54,11 @@ describe('LlamaCPP Basic', () => {
       };
       response = await llamacpp.sendMessage(message, options);
 
-      expect(typeof response).toBe('string');
+      expect(typeof response).toStrictEqual('object');
     }, 30000);
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-      expect(response.length).toBeLessThan(expectedMaxLength);
+      expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
     test.skip(`API Key is not set`, () => {});

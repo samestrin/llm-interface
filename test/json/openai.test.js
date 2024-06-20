@@ -9,7 +9,7 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 
 describe('OpenAI JSON', () => {
   if (openaiApiKey) {
@@ -37,7 +37,7 @@ describe('OpenAI JSON', () => {
         response_format: 'json_object',
       });
 
-      expect(typeof response).toBe('object');
+      expect(typeof response).toStrictEqual('object');
     });
   } else {
     test.skip(`API Key is not set`, () => {});

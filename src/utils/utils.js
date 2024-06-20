@@ -66,9 +66,55 @@ function returnModelByAlias(provider, model) {
 
   return model;
 }
+let jsonrepairInstance = null;
+
+/**
+ * Loads the jsonrepair dynamically and stores it in the singleton if not already loaded.
+ *
+ * @returns {Promise<object>} A promise that resolves to the jsonrepair instance.
+ */
+async function getJsonRepairInstance() {
+  if (!jsonrepairInstance) {
+    const { jsonrepair } = await import('jsonrepair');
+    jsonrepairInstance = jsonrepair;
+  }
+  return jsonrepairInstance;
+}
+
+/**
+ * Attempts to parse a JSON string. If parsing fails and attemptRepair is true,
+ * it uses jsonrepair to try repairing the JSON string.
+ *
+ * @param {string} json - The JSON string to parse.
+ * @param {boolean} attemptRepair - Whether to attempt repairing the JSON string if parsing fails.
+ * @returns {Promise<object|null>} - The parsed or repaired JSON object, or null if parsing and repair both fail.
+ */
+async function parseJSON(json, attemptRepair) {
+  try {
+    const parsed = JSON.parse(json);
+    return parsed;
+  } catch (e) {
+    console.log('JSON parse error:', e);
+    if (attemptRepair) {
+      try {
+        const jsonrepair = await getJsonRepairInstance();
+        const repaired = jsonrepair(json);
+        console.log('Repaired JSON:', repaired);
+        const reparsed = JSON.parse(repaired);
+        return reparsed;
+      } catch (importError) {
+        console.log('jsonrepair error:', importError);
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+}
 
 module.exports = {
   returnMessageObject,
   returnSimpleMessageObject,
   returnModelByAlias,
+  parseJSON,
 };

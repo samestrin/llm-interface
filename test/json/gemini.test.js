@@ -9,7 +9,7 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 describe('Gemini JSON', () => {
   if (geminiApiKey) {
     test('API Key should be set', async () => {
@@ -35,7 +35,7 @@ describe('Gemini JSON', () => {
         max_tokens: options.max_tokens,
         response_format: 'json_object',
       });
-      expect(typeof response).toBe('object');
+      expect(typeof response).toStrictEqual('object');
     });
   } else {
     test.skip(`API Key is not set`, () => {});

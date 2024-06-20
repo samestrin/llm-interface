@@ -22,7 +22,7 @@ Different LLMs may have their own message object rules. For example, both Anthro
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -30,7 +30,7 @@ Different LLMs may have their own message object rules. For example, both Anthro
 openai
   .sendMessage(message, { max_tokens: 150, response_format: 'json_object' })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -44,7 +44,7 @@ openai
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -52,7 +52,7 @@ openai
 ai21
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -66,7 +66,7 @@ ai21
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -74,7 +74,7 @@ ai21
 anthropic
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -88,7 +88,7 @@ anthropic
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -96,7 +96,7 @@ anthropic
 cohere
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -110,7 +110,7 @@ cohere
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -118,7 +118,7 @@ cohere
 gemini
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -132,7 +132,7 @@ gemini
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -140,7 +140,7 @@ gemini
 goose
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -154,7 +154,7 @@ goose
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -162,7 +162,7 @@ goose
 groq
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -176,7 +176,7 @@ groq
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -184,7 +184,7 @@ groq
 huggingface
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -198,7 +198,7 @@ huggingface
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -206,7 +206,7 @@ huggingface
 mistral
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -220,7 +220,7 @@ mistral
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -228,7 +228,7 @@ mistral
 perplexity
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -242,7 +242,7 @@ perplexity
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -250,7 +250,7 @@ perplexity
 reka
   .sendMessage(message, {})
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -264,7 +264,7 @@ reka
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to the response text.
 - **Example:**
 
@@ -272,7 +272,7 @@ reka
 llamacpp
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);

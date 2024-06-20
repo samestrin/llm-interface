@@ -9,7 +9,7 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 describe('Perplexity Simple', () => {
   if (perplexityApiKey) {
     let response;
@@ -22,10 +22,10 @@ describe('Perplexity Simple', () => {
 
       response = await perplixity.sendMessage(simplePrompt, options);
 
-      expect(typeof response).toBe('string');
+      expect(typeof response).toStrictEqual('object');
     });
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-      expect(response.length).toBeLessThan(expectedMaxLength);
+      expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
     test.skip(`API Key is not set`, () => {});
