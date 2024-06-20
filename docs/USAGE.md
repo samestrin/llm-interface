@@ -1,5 +1,7 @@
 # Usage
 
+The following guide was created to help you use `llm-interface` in your project. It assumes you have already installed the `llm-interface` NPM package.
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -45,8 +47,6 @@
    - [Groq Interface (JSON Output with Repair)](#groq-interface-json-output-with-repair)
    - [OpenAI Interface (Cached)](#openai-interface-cached)
    - [OpenAI Interface (Graceful Retry)](#openai-interface-graceful-retry)
-
-The following guide was created to help you use `llm-interface` in your project. It assumes you have already installed the `llm-interface` NPM package.
 
 ## Using the `LLMInterfaceSendMessage` function
 
