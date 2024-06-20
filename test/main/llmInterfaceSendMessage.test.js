@@ -5,11 +5,7 @@
 
 const { LLMInterfaceSendMessage } = require('../../src/index.js');
 const config = require('../../src/config/config.js');
-const {
-  simplePrompt,
-  options,
-  expectedMaxLength,
-} = require('../../src/utils/defaults.js');
+const { simplePrompt, options } = require('../../src/utils/defaults.js');
 
 let modules = {
   openai: config.openaiApiKey,
@@ -24,20 +20,32 @@ let modules = {
   huggingface: config.huggingfaceApiKey,
   ai21: config.ai21ApiKey,
   perplexity: config.perplexityApiKey,
-  cloudflareai: config.cloudflareaiApiKey,
+  cloudflareai: [config.cloudflareaiApiKey, config.cloudflareaiAccountId],
+  fireworksai: config.fireworksaiApiKey,
 };
 
-for (const [module, apiKey] of Object.entries(modules)) {
+for (let [module, apiKey] of Object.entries(modules)) {
   if (apiKey) {
+    let accountId = false;
+    if (Array.isArray(apiKey)) {
+      [apiKey, accountId] = apiKey;
+    }
+
     describe(`LLMInterfaceSendMessage("${module}")`, () => {
       test(`API Key should be set`, () => {
         expect(typeof apiKey).toBe('string');
       });
 
+      if (accountId) {
+        test(`Account ID should be set`, () => {
+          expect(typeof accountId).toBe('string');
+        });
+      }
+
       test(`API Client should send a message and receive a response`, async () => {
         const response = await LLMInterfaceSendMessage(
           module,
-          apiKey,
+          !accountId ? apiKey : [apiKey, accountId],
           simplePrompt,
           options,
         );

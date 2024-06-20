@@ -101,12 +101,10 @@ class OpenAI {
         }
 
         if (response_format === 'json_object') {
-          console.log(responseContent);
           responseContent = await parseJSON(
             responseContent,
             interfaceOptions.attemptJsonRepair,
           );
-          console.log(responseContent);
         }
 
         // Build response object

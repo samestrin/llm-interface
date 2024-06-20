@@ -121,6 +121,13 @@ The project includes tests for each LLM handler. To run the tests, use the follo
 npm test
 ```
 
+### v2.0.0
+
+```bash
+Test Suites: 43 passed, 43 total
+Tests:       172 passed, 172 total
+```
+
 ## Contribute
 
 Contributions to this project are welcome. Please fork the repository and submit a pull request with your changes or improvements.

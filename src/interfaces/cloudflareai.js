@@ -65,15 +65,6 @@ class CloudflareAI {
     // Get the selected model based on alias or default
     let selectedModel = returnModelByAlias(this.interfaceName, model);
 
-    // Format the prompt based on the input type
-    let formattedPrompt;
-    if (typeof messages === 'string') {
-      formattedPrompt = messages;
-    } else {
-      // Join message contents to format the prompt
-      formattedPrompt = messages.map((message) => message.content).join(' ');
-    }
-
     // Set default values for temperature, max_tokens, stop_sequences, frequency_penalty, and presence_penalty
     const {
       temperature = 0.7,
@@ -93,7 +84,7 @@ class CloudflareAI {
 
     // Prepare the request body for the API call
     const requestBody = {
-      messages: message.messages,
+      messages,
       max_tokens,
       ...options,
     };
