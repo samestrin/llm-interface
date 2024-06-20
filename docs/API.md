@@ -1,14 +1,33 @@
 # API Reference
 
-## OpenAI
+## LLMInterfaceSendMessage Function
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `LLMInterfaceSendMessage(llmProvider, apiKey, message, options, cacheTimeoutSeconds)`
+
+- **Parameters:**
+  - `llmProvider`: A string containing a valid llmProvider name.
+  - `apiKey`: A string containing a valid API key.
+  - `message`: An object containing the model and messages to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+- **Example:**
+
+```javascript
+
+```
+
+## Underlying Classes
+
+### OpenAI
+
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -22,15 +41,15 @@ openai
   });
 ```
 
-## AI21
+### AI21
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -44,15 +63,15 @@ ai21
   });
 ```
 
-## Anthropic
+### Anthropic
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -66,15 +85,15 @@ anthropic
   });
 ```
 
-## Cohere
+### Cohere
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -88,15 +107,15 @@ cohere
   });
 ```
 
-## Gemini
+### Gemini
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -110,15 +129,15 @@ gemini
   });
 ```
 
-## Goose AI
+### Goose AI
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`, and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -132,15 +151,15 @@ goose
   });
 ```
 
-## Groq
+### Groq
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -154,15 +173,15 @@ groq
   });
 ```
 
-## Hugging Face
+### Hugging Face
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -176,15 +195,15 @@ huggingface
   });
 ```
 
-## Mistral AI
+### Mistral AI
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -198,15 +217,15 @@ mistral
   });
 ```
 
-## Perplexity Labs
+### Perplexity Labs
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -220,15 +239,15 @@ perplexity
   });
 ```
 
-## Reka AI
+### Reka AI
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens` and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
@@ -242,15 +261,15 @@ reka
   });
 ```
 
-## LLaMA.cpp
+### LLaMA.cpp
 
-### `sendMessage(message, options, cacheTimeoutSeconds)`
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
   - `options`: An optional object containing `max_tokens`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
-- **Returns:** A promise that resolves to the response text.
+- **Returns:** A promise that resolves to a response JSON object.
 - **Example:**
 
 ```javascript
