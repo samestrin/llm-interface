@@ -59,7 +59,7 @@ LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, message, {
   });
 ```
 
-#### Valid `llmProvider` Values
+## Valid `llmProvider` Values
 
 The following are supported LLM providers (in alphabetical order):
 
