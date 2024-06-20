@@ -22,7 +22,7 @@ The Anthropic API requires a credit card.
 
 ## CloudflareAI
 
-The Cloudflare AI API offers trial keys.
+The Cloudflare AI API offers a free tier and and commercial accounts. A credit is not required for for the free tier.
 
 - https://dash.cloudflareai.com/profile/api-tokens
 
@@ -31,6 +31,12 @@ The Cloudflare AI API offers trial keys.
 The Cohere API offers trial keys. Trial keys are rate-limited, and cannot be used for commercial purposes.
 
 - https://dashboard.cohere.com/api-keys
+
+## Fireworks AI
+
+The Fireworks AI API offers a free developer tier and commercial accounts. A Credit is not required for the free developer tier.
+
+- https://fireworks.ai/api-keys
 
 ## Gemini
 
