@@ -74,9 +74,9 @@ When `default` or no model is passed, the system will use the default model for 
 
 ### Mistral AI
 
-- `default`: MistralAI-Large-Latest (tokens: 32,768)
-- `large`: MistralAI-Large-Latest (tokens: 32,768)
-- `small`: MistralAI-Small (tokens: 32,768)
+- `default`: Mistral-Large-Latest (tokens: 32,768)
+- `large`: Mistral-Large-Latest (tokens: 32,768)
+- `small`: Mistral-Small (tokens: 32,768)
 
 ### Perplexity
 
@@ -86,6 +86,6 @@ When `default` or no model is passed, the system will use the default model for 
 
 ### Reka AI
 
-- `default`: RekaAI-Core
-- `large`: RekaAI-Core
-- `small`: RekaAI-Edge
+- `default`: Reka-Core
+- `large`: Reka-Core
+- `small`: Reka-Edge
