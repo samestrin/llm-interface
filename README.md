@@ -61,23 +61,21 @@ npm install llm-interface
 
 ### Example
 
-Import `llm-interface` using:
+First import `LLMInterfaceSendMessage`. You can do this using either the CommonJS `require` syntax:
 
 ```javascript
-const LLMInterface = require('llm-interface');
+const { LLMInterfaceSendMessage } = require('llm-interface');
 ```
 
-or
+or the ES6 `import` syntax:
 
 ```javascript
-import LLMInterface from 'llm-interface';
+import { LLMInterfaceSendMessage } from 'llm-interface';
 ```
 
-then call the handler you want to use:
+then send your prompt to the LLM provider of your choice:
 
 ```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
 const message = {
   model: 'gpt-3.5-turbo',
   messages: [
@@ -86,10 +84,11 @@ const message = {
   ],
 };
 
-openai
-  .sendMessage(message, { max_tokens: 150 })
+LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, message, {
+  max_tokens: 150,
+})
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -99,12 +98,13 @@ openai
 or if you want to keep things _simple_ you can use:
 
 ```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
-openai
-  .sendMessage('Explain the importance of low latency LLMs.')
+LLMInterfaceSendMessage(
+  'openai',
+  process.env.OPENAI_API_KEY,
+  'Explain the importance of low latency LLMs.',
+)
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);

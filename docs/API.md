@@ -25,6 +25,25 @@ LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, message, {
   });
 ```
 
+#### Valid `llmProvider` Values
+
+The following are supported LLM providers (in alphabetical order):
+
+- `ai21` - AI21 Studio
+- `anthropic` - Anthropic
+- `cloudflareai` - Cloudflare AI
+- `cohere` - Cohere
+- `fireworksai` - Fireworks AI
+- `gemini` - Google Gemini
+- `gooseai` - Goose AI
+- `groq` - Groq
+- `huggingface` - Hugging Face
+- `llamacpp` - LLaMA.cpp
+- `mistralai` - Mistral AI
+- `openai` - OpenAI
+- `perplexity` - Perplexity
+- `rekaai` - Reka AI
+
 ## Underlying Classes
 
 ### OpenAI
