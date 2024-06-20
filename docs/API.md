@@ -40,7 +40,7 @@
 - **Parameters:**
   - `llmProvider`: A string containing a valid llmProvider name.
   - `apiKey`: A string containing a valid API key, or an array containing a valid API key and account id.
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -85,7 +85,7 @@ The following are supported LLM providers (in alphabetical order):
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -108,7 +108,7 @@ openai
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -131,7 +131,7 @@ ai21
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -154,7 +154,7 @@ anthropic
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -177,7 +177,7 @@ cloudflareai
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -200,7 +200,7 @@ cohere
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -223,7 +223,7 @@ gemini
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -246,7 +246,7 @@ gooseai
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -269,7 +269,7 @@ groq
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -292,7 +292,7 @@ huggingface
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -315,7 +315,7 @@ mistralai
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -338,7 +338,7 @@ perplexity
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
@@ -361,7 +361,7 @@ rekaai
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send or a string containing a single message to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
