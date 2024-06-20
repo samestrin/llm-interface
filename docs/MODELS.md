@@ -32,9 +32,9 @@ When `default` or no model is passed, the system will use the default model for 
 
 ### Cloudflare AI
 
-- `default`: llama-3-8b-instruct (tokens: 4,096)
-- `large`: llama-2-13b-chat-awq (tokens: 8,192)
-- `small`: tinyllama-1.1b-chat-v1.0 (tokens: 2,048)
+- `default`: Llama-3-8B-Instruct (tokens: 4,096)
+- `large`: Llama-2-13B-Chat-AWQ (tokens: 8,192)
+- `small`: TinyLlama-1.1B-Chat-v1.0 (tokens: 2,048)
 
 ### Cohere
 
@@ -42,11 +42,11 @@ When `default` or no model is passed, the system will use the default model for 
 - `large`: Command-R-Plus (tokens: 128,000)
 - `small`: Medium (tokens: 2,048)
 
-### Fireworks
+### Fireworks AI
 
-- `default`: llama-v3-8b-instruct (tokens: 8,192)
-- `large`: llama-v3-70b-instruct (tokens: 8,192)
-- `small`: phi-3-mini-128k-instruct (tokens: 128,000)
+- `default`: Llama-v3-8B-Instruct (tokens: 8,192)
+- `large`: Llama-v3-70B-Instruct (tokens: 8,192)
+- `small`: Phi-3-Mini-128K-Instruct (tokens: 128,000)
 
 ### Gemini
 
@@ -62,14 +62,14 @@ When `default` or no model is passed, the system will use the default model for 
 
 ### Groq
 
-- `default`: LLaMA3-8B-8192 (tokens: 8,192)
-- `large`: LLaMA3-70B-8192 (tokens: 8,192)
+- `default`: Llama3-8B-8192 (tokens: 8,192)
+- `large`: Llama3-70B-8192 (tokens: 8,192)
 - `small`: Gemma-7B-IT (tokens: 8,192)
 
-### HuggingFace
+### Hugging Face
 
-- `default`: Meta-LLaMA/Meta-LLaMA-3-8B-Instruct (tokens: 8,192)
-- `large`: Meta-LLaMA/Meta-LLaMA-3-8B-Instruct (tokens: 8,192)
+- `default`: Meta-Llama/Meta-Llama-3-8B-Instruct (tokens: 8,192)
+- `large`: Meta-Llama/Meta-Llama-3-8B-Instruct (tokens: 8,192)
 - `small`: Microsoft/Phi-3-Mini-4K-Instruct (tokens: 4,096)
 
 ### Mistral AI
@@ -80,9 +80,9 @@ When `default` or no model is passed, the system will use the default model for 
 
 ### Perplexity
 
-- `default`: LLaMA-3-Sonar-Large-32K-Online (tokens: 28,000)
-- `large`: LLaMA-3-Sonar-Large-32K-Online (tokens: 28,000)
-- `small`: LLaMA-3-Sonar-Small-32K-Online (tokens: 28,000)
+- `default`: Llama-3-Sonar-Large-32K-Online (tokens: 28,000)
+- `large`: Llama-3-Sonar-Large-32K-Online (tokens: 28,000)
+- `small`: Llama-3-Sonar-Small-32K-Online (tokens: 28,000)
 
 ### Reka AI
 
