@@ -10,13 +10,14 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Features
 
-- **Unified Interface**: A single, consistent interface to interact with multiple LLM APIs.
-- **Dynamic Module Loading**: Automatically loads and manages different LLM LLMInterface.
+- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with fourteen different LLM APIs.
+- **Dynamic Module Loading**: Automatically loads and manages different LLM LLMInterfaces.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
-- **JSON Output**: Simple to use JSON output for OpenAI and Gemini responses.
 - **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
 - **Graceful Retries**: Automatically retry failed prompts with increasing delays to ensure successful responses.
+- **JSON Output**: Simple to use native JSON output for OpenAI, Fireworks AI, and Gemini responses.
+- **JSON Repair**: Detect and repair invalid JSON responses.
 
 ## Updates
 
