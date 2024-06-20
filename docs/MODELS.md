@@ -1,6 +1,6 @@
 # Models
 
-`llm-prepare` provides three different model aliases for each LLM provider.
+`llm-prepare` provides three different model aliases for each LLM provider. If a model is not specified, `llm-prepare` will always use the `default`.
 
 ## Model Aliases
 
