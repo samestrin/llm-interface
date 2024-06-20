@@ -1,6 +1,6 @@
 # Usage
 
-# Table of Contents
+## Table of Contents
 
 1. [Introduction](#introduction)
 2. [Using the `LLMInterfaceSendMessage` Function](#using-the-llminterfacesendmessage-function)
@@ -19,12 +19,12 @@
    - [Gemini Interface Class](#gemini-interface-class)
    - [Goose AI Interface Class](#goose-ai-interface-class)
    - [Groq Interface Class](#groq-interface-class)
-   - [HuggingFace Interface Class](#huggingface-interface-class)
-   - [Mistral AI Interface Class](#mistralai-ai-interface-class)
+   - [Hugging Face Interface Class](#hugging-face-interface-class)
+   - [Mistral AI Interface Class](#mistral-ai-interface-class)
    - [Perplexity Interface Class](#perplexity-interface-class)
    - [Reka AI Interface Class](#reka-ai-interface-class)
    - [LLaMA.cpp Interface Class](#llamacpp-interface-class)
-5. [Simple Usage Example](#simple-usage-example)
+5. [Simple Usage Examples](#simple-usage-examples)
    - [OpenAI Interface (String Based Prompt)](#openai-interface-string-based-prompt)
    - [AI21 Interface (String Based Prompt)](#ai21-interface-string-based-prompt)
    - [Anthropic Interface (String Based Prompt)](#anthropic-interface-string-based-prompt)
@@ -34,8 +34,8 @@
    - [Gemini Interface (String Based Prompt)](#gemini-interface-string-based-prompt)
    - [Goose AI Interface (String Based Prompt)](#goose-ai-interface-string-based-prompt)
    - [Groq Interface (String Based Prompt)](#groq-interface-string-based-prompt)
-   - [HuggingFace Interface (String Based Prompt)](#huggingface-interface-string-based-prompt)
-   - [Mistral AI Interface (String Based Prompt)](#mistralai-ai-interface-string-based-prompt)
+   - [Hugging Face Interface (String Based Prompt)](#hugging-face-interface-string-based-prompt)
+   - [Mistral AI Interface (String Based Prompt)](#mistral-ai-interface-string-based-prompt)
    - [Perplexity Interface (String Based Prompt)](#perplexity-interface-string-based-prompt)
    - [Reka AI Interface (String Based Prompt)](#reka-ai-interface-string-based-prompt)
    - [LLaMA.cpp Interface (String Based Prompt)](#llamacpp-interface-string-based-prompt)
@@ -551,7 +551,7 @@ llamacpp
   });
 ```
 
-## Simple Usage Example
+## Simple Usage Examples
 
 The following example demonstrates simplified use of `llm-interface`.
 
