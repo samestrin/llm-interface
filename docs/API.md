@@ -1,23 +1,8 @@
-# llm-interface
+# API Reference
 
-## API Reference
+## OpenAI
 
-### The Message Object
-
-The message object is a critical component when interacting with the various LLM APIs through the `llm-interface` package. It contains the data that will be sent to the LLM for processing. Below is a detailed explanation of a valid message object.
-
-#### Structure of a Message Object
-
-A valid message object typically includes the following properties:
-
-- `model`: A string specifying the model to use for the request (optional).
-- `messages`: An array of message objects that form the conversation history.
-
-Different LLMs may have their own message object rules. For example, both Anthropic and Gemini always expect the initial message to have the `user` role. Please be aware of this and structure your message objects accordingly. However, `llm-interface` will attempt to auto-correct invalid objects where possible.
-
-### OpenAI
-
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -37,9 +22,9 @@ openai
   });
 ```
 
-### AI21
+## AI21
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -59,9 +44,9 @@ ai21
   });
 ```
 
-### Anthropic
+## Anthropic
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -81,9 +66,9 @@ anthropic
   });
 ```
 
-### Cohere
+## Cohere
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -103,9 +88,9 @@ cohere
   });
 ```
 
-### Gemini
+## Gemini
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -125,9 +110,9 @@ gemini
   });
 ```
 
-### Goose AI
+## Goose AI
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -147,9 +132,9 @@ goose
   });
 ```
 
-### Groq
+## Groq
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -169,9 +154,9 @@ groq
   });
 ```
 
-### Hugging Face
+## Hugging Face
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -191,9 +176,9 @@ huggingface
   });
 ```
 
-### Mistral AI
+## Mistral AI
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -213,9 +198,9 @@ mistral
   });
 ```
 
-### Perplexity Labs
+## Perplexity Labs
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -235,9 +220,9 @@ perplexity
   });
 ```
 
-### Reka AI
+## Reka AI
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
@@ -257,9 +242,9 @@ reka
   });
 ```
 
-### LLaMA.cpp
+## LLaMA.cpp
 
-#### `sendMessage(message, options, cacheTimeoutSeconds)`
+### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
   - `message`: An object containing the model and messages to send.
