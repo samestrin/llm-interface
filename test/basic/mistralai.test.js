@@ -1,25 +1,25 @@
 /**
- * @file test/basic/mistral.test.js
- * @description Tests for the Mistral API client.
+ * @file test/basic/mistralai.test.js
+ * @description Tests for the MistralAI API client.
  */
 
-const Mistral = require('../../src/interfaces/mistral.js');
-const { mistralApiKey } = require('../../src/config/config.js');
+const MistralAI = require('../../src/interfaces/mistralai.js');
+const { mistralaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
-describe('Mistral Basic', () => {
-  if (mistralApiKey) {
+describe('MistralAI Basic', () => {
+  if (mistralaiApiKey) {
     let response;
 
     test('API Key should be set', async () => {
-      expect(typeof mistralApiKey).toBe('string');
+      expect(typeof mistralaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const mistral = new Mistral(mistralApiKey);
+      const mistralai = new MistralAI(mistralaiApiKey);
       const message = {
         model: 'mistral-large-latest',
         messages: [
@@ -31,7 +31,7 @@ describe('Mistral Basic', () => {
         ],
       };
       try {
-        response = await mistral.sendMessage(message, options);
+        response = await mistralai.sendMessage(message, options);
 
         expect(typeof response).toStrictEqual('object');
       } catch (error) {

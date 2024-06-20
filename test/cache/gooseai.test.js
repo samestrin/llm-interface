@@ -1,10 +1,10 @@
 /**
- * @file test/cache/reka.test.js
- * @description Tests for the caching mechanism in the Reka class.
+ * @file test/cache/goose.test.js
+ * @description Tests for the caching mechanism in the GooseAI class.
  */
 
-const Reka = require('../../src/interfaces/reka.js');
-const { rekaApiKey } = require('../../src/config/config.js');
+const GooseAI = require('../../src/interfaces/gooseai.js');
+const { gooseaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -14,12 +14,12 @@ const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
 const suppressLogs = require('../../src/utils/suppressLogs.js');
 jest.mock('../../src/utils/cache.js');
 
-describe('Reka Caching', () => {
-  if (rekaApiKey) {
-    const reka = new Reka(rekaApiKey);
+describe('GooseAI Caching', () => {
+  if (gooseaiApiKey) {
+    const goose = new GooseAI(gooseaiApiKey);
 
     const message = {
-      model: 'reka-core',
+      model: 'gpt-neo-20b',
       messages: [
         { role: 'system', content: 'You are a helpful assistant.' },
         {
@@ -30,18 +30,14 @@ describe('Reka Caching', () => {
     };
 
     // Convert the message structure for caching
-    const convertedMessages = message.messages.map((msg, index) => {
-      if (msg.role === 'system') {
-        return { ...msg, role: 'assistant' };
-      }
-      return { ...msg, role: 'user' };
-    });
+    const formattedPrompt = message.messages
+      .map((message) => message.content)
+      .join(' ');
 
     const cacheKey = JSON.stringify({
-      messages: convertedMessages,
-      model: 'reka-core',
-      max_tokens: options.max_tokens, // Include the default value for max_tokens
-      stream: false,
+      prompt: formattedPrompt,
+      model: message.model,
+      max_tokens: options.max_tokens,
     });
 
     afterEach(() => {
@@ -49,19 +45,19 @@ describe('Reka Caching', () => {
     });
 
     test('API Key should be set', async () => {
-      expect(typeof rekaApiKey).toBe('string');
+      expect(typeof gooseaiApiKey).toBe('string');
     });
 
     test('API should return cached response if available', async () => {
       const cachedResponse = 'Cached response';
       getFromCache.mockReturnValue(cachedResponse);
 
-      const response = await reka.sendMessage(message, options, {
+      const response = await goose.sendMessage(message, options, {
         cacheTimeoutSeconds: 60,
       });
 
       expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-      expect(typeof response).toStrictEqual(cachedResponse);
+      expect(response).toStrictEqual(cachedResponse);
       expect(saveToCache).not.toHaveBeenCalled();
     });
 
@@ -69,15 +65,11 @@ describe('Reka Caching', () => {
       getFromCache.mockReturnValue(null);
 
       const apiResponse = 'API response';
-      reka.client.post = jest.fn().mockResolvedValue({
-        data: {
-          responses: [
-            { finish_reason: 'stop', message: { content: apiResponse } },
-          ],
-        },
+      goose.client.post = jest.fn().mockResolvedValue({
+        data: { choices: [{ text: apiResponse }] },
       });
 
-      const response = await reka.sendMessage(message, options, {
+      const response = await goose.sendMessage(message, options, {
         cacheTimeoutSeconds: 60,
       });
 
@@ -93,10 +85,10 @@ describe('Reka Caching', () => {
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {
         getFromCache.mockReturnValue(null);
-        reka.client.post = jest.fn().mockRejectedValue(new Error('API error'));
+        goose.client.post = jest.fn().mockRejectedValue(new Error('API error'));
 
         await expect(
-          reka.sendMessage(message, options, {
+          goose.sendMessage(message, options, {
             cacheTimeoutSeconds: 60,
           }),
         ).rejects.toThrow('API error');

@@ -5,11 +5,11 @@
  * @param {string} llamacppURL - The base URL for the LlamaCPP API.
  */
 
+const axios = require('axios');
+const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { getFromCache, saveToCache } = require('../utils/cache.js');
 const config = require('../config/llmProviders.json');
 const log = require('loglevel');
-
-const axios = require('axios');
-const { getFromCache, saveToCache } = require('../utils/cache');
 
 // LlamaCPP class for interacting with the LlamaCPP API
 class LlamaCPP {
@@ -92,7 +92,7 @@ class LlamaCPP {
         }
         // Attempt to repair the object if needed
         if (interfaceOptions.attemptJsonRepair) {
-          responseContent = parseJSON(
+          responseContent = await parseJSON(
             responseContent,
             interfaceOptions.attemptJsonRepair,
           );
@@ -130,5 +130,5 @@ class LlamaCPP {
     }
   }
 }
-
+LlamaCPP.prototype.adjustModelAlias = adjustModelAlias;
 module.exports = LlamaCPP;

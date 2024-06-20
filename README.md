@@ -24,6 +24,7 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 - **JSON Consistency**: A breaking change has been introduced: all responses now return as valid JSON objects.
 - **JSON Repair**: Use `interfaceOptions.attemptJsonRepair` to repair invalid JSON responses when they occur.
+- `handlers` Deprecated: `handlers` has been removed.
 
 **v1.0.01**
 

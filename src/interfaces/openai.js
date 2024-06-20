@@ -6,13 +6,14 @@
  */
 
 const { OpenAI: OpenAIClient } = require('openai');
-const { getFromCache, saveToCache } = require('../utils/cache');
+const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { getFromCache, saveToCache } = require('../utils/cache.js');
 const {
   returnMessageObject,
   returnModelByAlias,
   parseJSON,
-} = require('../utils/utils');
-const { openaiApiKey } = require('../config/config');
+} = require('../utils/utils.js');
+const { openaiApiKey } = require('../config/config.js');
 const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
@@ -100,10 +101,12 @@ class OpenAI {
         }
 
         if (response_format === 'json_object') {
-          responseContent = parseJSON(
+          console.log(responseContent);
+          responseContent = await parseJSON(
             responseContent,
             interfaceOptions.attemptJsonRepair,
           );
+          console.log(responseContent);
         }
 
         // Build response object
@@ -135,5 +138,6 @@ class OpenAI {
     }
   }
 }
+OpenAI.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = OpenAI;

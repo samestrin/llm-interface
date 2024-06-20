@@ -1,10 +1,10 @@
 /**
- * @file test/cache/mistral.test.js
- * @description Tests for the caching mechanism in the Mistral class.
+ * @file test/cache/reka.test.js
+ * @description Tests for the caching mechanism in the RekaAI class.
  */
 
-const Mistral = require('../../src/interfaces/mistral');
-const { mistralApiKey } = require('../../src/config/config.js');
+const RekaAI = require('../../src/interfaces/rekaai.js');
+const { rekaaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -14,12 +14,12 @@ const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
 const suppressLogs = require('../../src/utils/suppressLogs.js');
 jest.mock('../../src/utils/cache.js');
 
-describe('Mistral Caching', () => {
-  if (mistralApiKey) {
-    const mistral = new Mistral(mistralApiKey);
+describe('RekaAI Caching', () => {
+  if (rekaaiApiKey) {
+    const reka = new RekaAI(rekaaiApiKey);
 
     const message = {
-      model: 'mistral-1.0',
+      model: 'reka-core',
       messages: [
         { role: 'system', content: 'You are a helpful assistant.' },
         {
@@ -30,10 +30,18 @@ describe('Mistral Caching', () => {
     };
 
     // Convert the message structure for caching
+    const convertedMessages = message.messages.map((msg, index) => {
+      if (msg.role === 'system') {
+        return { ...msg, role: 'assistant' };
+      }
+      return { ...msg, role: 'user' };
+    });
+
     const cacheKey = JSON.stringify({
-      model: message.model,
-      messages: message.messages,
-      max_tokens: options.max_tokens,
+      messages: convertedMessages,
+      model: 'reka-core',
+      max_tokens: options.max_tokens, // Include the default value for max_tokens
+      stream: false,
     });
 
     afterEach(() => {
@@ -41,19 +49,19 @@ describe('Mistral Caching', () => {
     });
 
     test('API Key should be set', async () => {
-      expect(typeof mistralApiKey).toBe('string');
+      expect(typeof rekaaiApiKey).toBe('string');
     });
 
     test('API should return cached response if available', async () => {
-      const cachedResponse = 'Cached response';
+      const cachedResponse = { results: 'Cached response' };
       getFromCache.mockReturnValue(cachedResponse);
 
-      const response = await mistral.sendMessage(message, options, {
+      const response = await reka.sendMessage(message, options, {
         cacheTimeoutSeconds: 60,
       });
 
       expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-      expect(typeof response).toStrictEqual(cachedResponse);
+      expect(response).toStrictEqual(cachedResponse);
       expect(saveToCache).not.toHaveBeenCalled();
     });
 
@@ -61,11 +69,15 @@ describe('Mistral Caching', () => {
       getFromCache.mockReturnValue(null);
 
       const apiResponse = 'API response';
-      mistral.client.post = jest.fn().mockResolvedValue({
-        data: { choices: [{ message: { content: apiResponse } }] },
+      reka.client.post = jest.fn().mockResolvedValue({
+        data: {
+          responses: [
+            { finish_reason: 'stop', message: { content: apiResponse } },
+          ],
+        },
       });
 
-      const response = await mistral.sendMessage(message, options, {
+      const response = await reka.sendMessage(message, options, {
         cacheTimeoutSeconds: 60,
       });
 
@@ -81,12 +93,10 @@ describe('Mistral Caching', () => {
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {
         getFromCache.mockReturnValue(null);
-        mistral.client.post = jest
-          .fn()
-          .mockRejectedValue(new Error('API error'));
+        reka.client.post = jest.fn().mockRejectedValue(new Error('API error'));
 
         await expect(
-          mistral.sendMessage(message, options, {
+          reka.sendMessage(message, options, {
             cacheTimeoutSeconds: 60,
           }),
         ).rejects.toThrow('API error');

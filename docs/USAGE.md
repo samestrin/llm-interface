@@ -13,12 +13,14 @@
    - [OpenAI Interface Class](#openai-interface-class)
    - [AI21 Interface Class](#ai21-interface-class)
    - [Anthropic Interface Class](#anthropic-interface-class)
+   - [Cloudflare AI Interface Class](#cloudflare-ai-interface-class)
    - [Cohere Interface Class](#cohere-interface-class)
+   - [Fireworks AI Interface Class](#fireworks-ai-interface-class)
    - [Gemini Interface Class](#gemini-interface-class)
    - [Goose AI Interface Class](#goose-ai-interface-class)
    - [Groq Interface Class](#groq-interface-class)
    - [HuggingFace Interface Class](#huggingface-interface-class)
-   - [Mistral AI Interface Class](#mistral-ai-interface-class)
+   - [Mistral AI Interface Class](#mistralai-ai-interface-class)
    - [Perplexity Interface Class](#perplexity-interface-class)
    - [Reka AI Interface Class](#reka-ai-interface-class)
    - [LLaMA.cpp Interface Class](#llamacpp-interface-class)
@@ -26,12 +28,14 @@
    - [OpenAI Interface (String Based Prompt)](#openai-interface-string-based-prompt)
    - [AI21 Interface (String Based Prompt)](#ai21-interface-string-based-prompt)
    - [Anthropic Interface (String Based Prompt)](#anthropic-interface-string-based-prompt)
+   - [Cloudflare AI Interface (String Based Prompt)](#cloudflare-ai-interface-string-based-prompt)
    - [Cohere Interface (String Based Prompt)](#cohere-interface-string-based-prompt)
+   - [Fireworks AI Interface (String Based Prompt)](#fireworks-ai-interface-string-based-prompt)
    - [Gemini Interface (String Based Prompt)](#gemini-interface-string-based-prompt)
    - [Goose AI Interface (String Based Prompt)](#goose-ai-interface-string-based-prompt)
    - [Groq Interface (String Based Prompt)](#groq-interface-string-based-prompt)
    - [HuggingFace Interface (String Based Prompt)](#huggingface-interface-string-based-prompt)
-   - [Mistral AI Interface (String Based Prompt)](#mistral-ai-interface-string-based-prompt)
+   - [Mistral AI Interface (String Based Prompt)](#mistralai-ai-interface-string-based-prompt)
    - [Perplexity Interface (String Based Prompt)](#perplexity-interface-string-based-prompt)
    - [Reka AI Interface (String Based Prompt)](#reka-ai-interface-string-based-prompt)
    - [LLaMA.cpp Interface (String Based Prompt)](#llamacpp-interface-string-based-prompt)
@@ -233,6 +237,36 @@ anthropic
   });
 ```
 
+### Cloudflare AI Interface
+
+The CloudflareAI interface allows you to send messages to the Cloudflare AI API.
+
+#### Example
+
+```javascript
+const cloudflareai = new LLMInterface.cloudflareai(
+  process.env.CLOUDFLARE_API_KEY,
+  process.env.CLOUDFLARE_ACCOUNT_ID,
+);
+
+const message = {
+  model: '@cf/meta/llama-3-8b-instruct',
+  messages: [
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
+  ],
+};
+
+cloudflareai
+  .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### Cohere Interface
 
 The Cohere interface allows you to send messages to the Cohere API.
@@ -240,7 +274,7 @@ The Cohere interface allows you to send messages to the Cohere API.
 #### Example
 
 ```javascript
-const cohere = new LLMInterface.cohere(process.env.GROQ_API_KEY);
+const cohere = new LLMInterface.cohere(process.env.COHERE_API_KEY);
 
 const message = {
   model: 'gpt-neo-20b',
@@ -251,6 +285,35 @@ const message = {
 };
 
 cohere
+  .sendMessage(message, { max_tokens: 100 })
+  .then((response) => {
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Fireworks AI Interface
+
+The Fireworks AI interface allows you to send messages to the Fireworks AI API.
+
+#### Example
+
+```javascript
+const fireworksai = new LLMInterface.fireworksai(
+  process.env.FIREWORKSAI_API_KEY,
+);
+
+const message = {
+  model: 'accounts/fireworks/models/phi-3-mini-128k-instruct',
+  messages: [
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
+  ],
+};
+
+fireworksai
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
     console.log(response.results);
@@ -294,7 +357,7 @@ The Goose AI interface allows you to send messages to the Goose AI API.
 #### Example
 
 ```javascript
-const goose = new LLMInterface.goose(process.env.GROQ_API_KEY);
+const gooseai = new LLMInterface.gooseai(process.env.GOOSEAI_API_KEY);
 
 const message = {
   model: 'gpt-neo-20b',
@@ -304,7 +367,7 @@ const message = {
   ],
 };
 
-goose
+gooseai
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
     console.log(response.results);
@@ -348,7 +411,9 @@ The HuggingFace interface allows you to send messages to the HuggingFace API.
 #### Example
 
 ```javascript
-const huggingface = new LLMInterface.huggingface(process.env.ANTHROPIC_API_KEY);
+const huggingface = new LLMInterface.huggingface(
+  process.env.HUGGINGFACE_API_KEY,
+);
 
 const message = {
   model: 'claude-3-opus-20240229',
@@ -380,7 +445,7 @@ The Mistral AI interface allows you to send messages to the Mistral AI API.
 #### Example
 
 ```javascript
-const mistral = new LLMInterface.mistral(process.env.GROQ_API_KEY);
+const mistralai = new LLMInterface.mistralai(process.env.MISTRALAI_API_KEY);
 
 const message = {
   model: 'llama3-8b-8192',
@@ -390,7 +455,7 @@ const message = {
   ],
 };
 
-mistral
+mistralai
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
     console.log(response.results);
@@ -407,7 +472,7 @@ The Perplexity interface allows you to send messages to the Perplexity API.
 #### Example
 
 ```javascript
-const perplexity = new LLMInterface.perplexity(process.env.ANTHROPIC_API_KEY);
+const perplexity = new LLMInterface.perplexity(process.env.PERPLEXITY_API_KEY);
 
 const message = {
   model: 'claude-3-opus-20240229',
@@ -439,7 +504,7 @@ The Reka AI interface allows you to send messages to the Reka AI REST API.
 #### Example
 
 ```javascript
-const reka = new LLMInterface.reka(process.env.REKA_API_KEY);
+const rekaai = new LLMInterface.rekaai(process.env.REKAAI_API_KEY);
 
 const message = {
   model: 'reka-core',
@@ -454,7 +519,7 @@ const message = {
   ],
 };
 
-reka
+rekaai
   .sendMessage(message, {})
   .then((response) => console.log('Response:', response))
   .catch((error) => console.error('Error:', error));
@@ -595,6 +660,43 @@ anthropic
   });
 ```
 
+### Cloudflare AI Interface (String Based Prompt)
+
+This simplified example uses a string based prompt with the default model.
+
+#### Example
+
+```javascript
+LLMInterfaceSendMessage(
+  'cloudflareai',
+  [process.env.CLOUDFLARE_API_KEY, process.env.CLOUDFLARE_ACCOUNT_ID],
+  'Explain the importance of low latency LLMs.',
+)
+  .then((response) => {
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+or
+
+```javascript
+const cloudflareai = new LLMInterface.cloudflareai(
+  process.env.CLOUDFLARE_API_KEY,
+);
+
+cloudflareai
+  .sendMessage('Explain the importance of low latency LLMs.')
+  .then((response) => {
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
 ### Cohere Interface (String Based Prompt)
 
 This simplified example uses a string based prompt with the default model.
@@ -621,6 +723,43 @@ or
 const cohere = new LLMInterface.cohere(process.env.COHERE_API_KEY);
 
 cohere
+  .sendMessage('Explain the importance of low latency LLMs.')
+  .then((response) => {
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Fireworks AI Interface (String Based Prompt)
+
+This simplified example uses a string based prompt with the default model.
+
+#### Example
+
+```javascript
+LLMInterfaceSendMessage(
+  'fireworksai',
+  process.env.FIREWORKSAI_API_KEY,
+  'Explain the importance of low latency LLMs.',
+)
+  .then((response) => {
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+or
+
+```javascript
+const fireworksai = new LLMInterface.fireworksai(
+  process.env.FIREWORKSAI_API_KEY,
+);
+
+fireworksai
   .sendMessage('Explain the importance of low latency LLMs.')
   .then((response) => {
     console.log(response.results);
@@ -674,7 +813,7 @@ This simplified example uses a string based prompt with the default model.
 ```javascript
 LLMInterfaceSendMessage(
   'goose',
-  process.env.GOOSE_API_KEY,
+  process.env.GOOSEAI_API_KEY,
   'Explain the importance of low latency LLMs.',
 )
   .then((response) => {
@@ -688,7 +827,7 @@ LLMInterfaceSendMessage(
 or
 
 ```javascript
-const goose = new LLMInterface.goose(process.env.GOOSE_API_KEY);
+const goose = new LLMInterface.gooseai(process.env.GOOSEAI_API_KEY);
 
 goose
   .sendMessage('Explain the importance of low latency LLMs.')
@@ -780,8 +919,8 @@ This simplified example uses a string based prompt with the default model.
 
 ```javascript
 LLMInterfaceSendMessage(
-  'mistral',
-  process.env.MISTRAL_API_KEY,
+  'mistralai',
+  process.env.MISTRALAI_API_KEY,
   'Explain the importance of low latency LLMs.',
 )
   .then((response) => {
@@ -795,9 +934,9 @@ LLMInterfaceSendMessage(
 or
 
 ```javascript
-const mistral = new LLMInterface.mistral(process.env.MISTRAL_API_KEY);
+const mistralai = new LLMInterface.mistralai(process.env.MISTRALAI_API_KEY);
 
-mistral
+mistralai
   .sendMessage('Explain the importance of low latency LLMs.')
   .then((response) => {
     console.log(response.results);
@@ -851,7 +990,7 @@ This simplified example uses a string based prompt with the default model.
 ```javascript
 LLMInterfaceSendMessage(
   'reka',
-  process.env.REKA_API_KEY,
+  process.env.REKAAI_API_KEY,
   'Explain the importance of low latency LLMs.',
 )
   .then((response) => {
@@ -865,7 +1004,7 @@ LLMInterfaceSendMessage(
 or
 
 ```javascript
-const reka = new LLMInterface.reka(process.env.REKA_API_KEY);
+const reka = new LLMInterface.rekaai(process.env.REKAAI_API_KEY);
 
 reka
   .sendMessage('Explain the importance of low latency LLMs.')
@@ -920,7 +1059,7 @@ To maximize performance `llm-interface` will only load dependencies when invoked
 
 ### OpenAI Interface (Native JSON Output)
 
-Some interfaces allows you request the response back in JSON, currently **OpenAI** and **Gemini** are supported. To take advantage of this feature be sure to include text like "Return the results as a JSON object." and provide a desired output format like "Follow this format: [{reason, reasonDescription}]." \_It's important to provide a large enough max_token size to hold the entire JSON structure returned or it will not validate, and the response will return null.) In this example we use OpenAI and request a valid JSON object.
+Some interfaces allows you request the response back in JSON, currently **OpenAI**, **FireworksAI**, and **Gemini** are supported. To take advantage of this feature be sure to include text like "Return the results as a JSON object." and provide a desired output format like "Follow this format: [{reason, reasonDescription}]." \_It's important to provide a large enough max_token size to hold the entire JSON structure returned or it will not validate, and the response will return null.) In this example we use OpenAI and request a valid JSON object.
 
 #### Example
 

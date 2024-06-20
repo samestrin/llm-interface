@@ -6,12 +6,13 @@
  */
 
 const axios = require('axios');
-const { getFromCache, saveToCache } = require('../utils/cache');
+const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { getFromCache, saveToCache } = require('../utils/cache.js');
 const {
   returnSimpleMessageObject,
   returnModelByAlias,
-} = require('../utils/utils');
-const { cohereApiKey } = require('../config/config');
+} = require('../utils/utils.js');
+const { cohereApiKey } = require('../config/config.js');
 const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
@@ -138,7 +139,7 @@ class Cohere {
         }
         // Attempt to repair the object if needed
         if (interfaceOptions.attemptJsonRepair) {
-          responseContent = parseJSON(
+          responseContent = await parseJSON(
             responseContent,
             interfaceOptions.attemptJsonRepair,
           );
@@ -171,5 +172,7 @@ class Cohere {
     }
   }
 }
+
+Cohere.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = Cohere;

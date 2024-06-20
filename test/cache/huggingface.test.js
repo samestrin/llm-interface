@@ -50,7 +50,7 @@ describe('HuggingFace Caching', () => {
       });
 
       expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-      expect(typeof response).toStrictEqual(mockResponse[0].generated_text);
+      expect(response).toStrictEqual(mockResponse[0].generated_text);
       expect(saveToCache).not.toHaveBeenCalled();
     });
 
@@ -74,7 +74,7 @@ describe('HuggingFace Caching', () => {
         parameters: { max_new_tokens: options.max_tokens }, // Ensure the correct value is expected
       });
       const expectedResult = { results: mockResponse[0].generated_text };
-      expect(typeof response).toStrictEqual(expectedResult);
+      expect(response).toStrictEqual(expectedResult);
       expect(saveToCache).toHaveBeenCalledWith(cacheKey, expectedResult, 60);
     });
 

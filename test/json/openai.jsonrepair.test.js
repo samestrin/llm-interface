@@ -28,14 +28,18 @@ describe('OpenAI JSON', () => {
           },
           {
             role: 'user',
-            content: `${simplePrompt} Limit the results to 2 items. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}]`,
+            content: `${simplePrompt} Provide 5 result items. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}]`,
           },
         ],
       };
-      const response = await openai.sendMessage(message, {
-        max_tokens: options.max_tokens * 2,
-        response_format: 'json_object',
-      });
+      const response = await openai.sendMessage(
+        message,
+        {
+          max_tokens: options.max_tokens,
+          response_format: 'json_object',
+        },
+        { attemptJsonRepair: true },
+      );
 
       expect(typeof response).toStrictEqual('object');
     });

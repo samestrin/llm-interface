@@ -6,13 +6,14 @@
  */
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { getFromCache, saveToCache } = require('../utils/cache');
+const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { getFromCache, saveToCache } = require('../utils/cache.js');
 const {
   returnMessageObject,
   returnModelByAlias,
   parseJSON,
-} = require('../utils/utils');
-const { geminiApiKey } = require('../config/config');
+} = require('../utils/utils.js');
+const { geminiApiKey } = require('../config/config.js');
 const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
@@ -125,7 +126,7 @@ class Gemini {
         let text = await response.text();
 
         if (response_format === 'json_object') {
-          text = parseJSON(text, interfaceOptions.attemptJsonRepair);
+          text = await parseJSON(text, interfaceOptions.attemptJsonRepair);
         }
 
         // Build response object
@@ -156,5 +157,7 @@ class Gemini {
     }
   }
 }
+
+Gemini.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = Gemini;

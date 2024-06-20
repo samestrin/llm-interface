@@ -16,14 +16,15 @@ let modules = {
   anthropic: config.anthropicApiKey,
   gemini: config.geminiApiKey,
   llamacpp: config.llamaURL,
-  reka: config.rekaApiKey,
+  rekaai: config.rekaaiApiKey,
   groq: config.groqApiKey,
-  goose: config.gooseApiKey,
+  gooseai: config.gooseaiApiKey,
   cohere: config.cohereApiKey,
-  mistral: config.mistralApiKey,
+  mistralai: config.mistralaiApiKey,
   huggingface: config.huggingfaceApiKey,
   ai21: config.ai21ApiKey,
   perplexity: config.perplexityApiKey,
+  cloudflareai: config.cloudflareaiApiKey,
 };
 
 for (const [module, apiKey] of Object.entries(modules)) {

@@ -32,7 +32,7 @@ describe('Gemini JSON', () => {
         ],
       };
       const response = await gemini.sendMessage(message, {
-        max_tokens: options.max_tokens,
+        max_tokens: options.max_tokens * 2,
         response_format: 'json_object',
       });
       expect(typeof response).toStrictEqual('object');

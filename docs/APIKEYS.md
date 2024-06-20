@@ -20,6 +20,12 @@ The Anthropic API requires a credit card.
 
 - https://console.anthropic.com/settings/keys
 
+## CloudflareAI
+
+The Cloudflare AI API offers trial keys.
+
+- https://dash.cloudflareai.com/profile/api-tokens
+
 ## Cohere
 
 The Cohere API offers trial keys. Trial keys are rate-limited, and cannot be used for commercial purposes.
@@ -50,11 +56,11 @@ The Hugging Face Inference API is currently free for rate-limited, non-commercia
 
 - https://huggingface.co/settings/tokens
 
-## Mistral
+## MistralAI
 
-The Mistral API is a commercial product, but it currently does not require a credit card, and comes with a $5.00 credit.
+The MistralAI API is a commercial product, but it currently does not require a credit card, and comes with a $5.00 credit.
 
-- https://console.mistral.ai/api-keys/
+- https://console.mistralai.ai/api-keys/
 
 ## Perplexity
 

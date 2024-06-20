@@ -30,11 +30,23 @@ When `default` or no model is passed, the system will use the default model for 
 - `large`: Claude-3-Opus-20240229 (tokens: 200,000)
 - `small`: Claude-3-Haiku-20240307 (tokens: 200,000)
 
+### Cloudflare AI
+
+- `default`: llama-3-8b-instruct (tokens: 4,096)
+- `large`: llama-2-13b-chat-awq (tokens: 8,192)
+- `small`: tinyllama-1.1b-chat-v1.0 (tokens: 2,048)
+
 ### Cohere
 
 - `default`: Command-R (tokens: 128,000)
 - `large`: Command-R-Plus (tokens: 128,000)
 - `small`: Medium (tokens: 2,048)
+
+### Fireworks
+
+- `default`: llama-v3-8b-instruct (tokens: 8,192)
+- `large`: llama-v3-70b-instruct (tokens: 8,192)
+- `small`: phi-3-mini-128k-instruct (tokens: 128,000)
 
 ### Gemini
 
@@ -42,7 +54,7 @@ When `default` or no model is passed, the system will use the default model for 
 - `large`: Gemini-1.5-Pro (tokens: 1,048,576)
 - `small`: Gemini-Small
 
-### Goose
+### Goose AI
 
 - `default`: GPT-Neo-20B (tokens: 2,048)
 - `large`: GPT-Neo-20B (tokens: 2,048)
@@ -60,11 +72,11 @@ When `default` or no model is passed, the system will use the default model for 
 - `large`: Meta-LLaMA/Meta-LLaMA-3-8B-Instruct (tokens: 8,192)
 - `small`: Microsoft/Phi-3-Mini-4K-Instruct (tokens: 4,096)
 
-### Mistral
+### Mistral AI
 
-- `default`: Mistral-Large-Latest (tokens: 32,768)
-- `large`: Mistral-Large-Latest (tokens: 32,768)
-- `small`: Mistral-Small (tokens: 32,768)
+- `default`: MistralAI-Large-Latest (tokens: 32,768)
+- `large`: MistralAI-Large-Latest (tokens: 32,768)
+- `small`: MistralAI-Small (tokens: 32,768)
 
 ### Perplexity
 
@@ -72,8 +84,8 @@ When `default` or no model is passed, the system will use the default model for 
 - `large`: LLaMA-3-Sonar-Large-32K-Online (tokens: 28,000)
 - `small`: LLaMA-3-Sonar-Small-32K-Online (tokens: 28,000)
 
-### Reka
+### Reka AI
 
-- `default`: Reka-Core
-- `large`: Reka-Core
-- `small`: Reka-Edge
+- `default`: RekaAI-Core
+- `large`: RekaAI-Core
+- `small`: RekaAI-Edge

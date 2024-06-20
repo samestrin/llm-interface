@@ -3,23 +3,23 @@
  * @description Tests for the Reka AI API client.
  */
 
-const Reka = require('../../src/interfaces/reka.js');
-const { rekaApiKey } = require('../../src/config/config.js');
+const RekaAI = require('../../src/interfaces/rekaai.js');
+const { rekaaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
-describe('Reka Basic', () => {
-  if (rekaApiKey) {
+describe('RekaAI Basic', () => {
+  if (rekaaiApiKey) {
     let response;
 
     test('API Key should be set', async () => {
-      expect(typeof rekaApiKey).toBe('string');
+      expect(typeof rekaaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const reka = new Reka(rekaApiKey);
+      const reka = new RekaAI(rekaaiApiKey);
       const message = {
         model: 'reka-core',
         messages: [

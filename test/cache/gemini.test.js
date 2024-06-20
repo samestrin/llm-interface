@@ -58,7 +58,7 @@ describe('Gemini Caching', () => {
       );
 
       expect(getFromCache).toHaveBeenCalledWith(createCacheKey(100));
-      expect(typeof response).toStrictEqual(cachedResponse);
+      expect(response).toStrictEqual(cachedResponse);
       expect(saveToCache).not.toHaveBeenCalled();
     });
 

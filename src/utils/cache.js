@@ -27,8 +27,8 @@ function getCacheFilePath(key) {
 function getCacheInstance() {
   if (!cacheInstance) {
     const flatCache = require('flat-cache');
-    const cacheId = 'llm-interface-cache';
-    const cacheDir = path.resolve(__dirname, '..', 'cache');
+    const cacheId = 'LLMInterface-cache';
+    const cacheDir = path.resolve(__dirname, '../..', 'cache');
     cacheInstance = flatCache.load(cacheId, cacheDir);
   }
   return cacheInstance;

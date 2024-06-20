@@ -53,7 +53,7 @@ describe('AI21 Caching', () => {
       });
 
       expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-      expect(typeof response).toStrictEqual(cachedResponse);
+      expect(response).toStrictEqual(cachedResponse);
       expect(saveToCache).not.toHaveBeenCalled();
     });
 

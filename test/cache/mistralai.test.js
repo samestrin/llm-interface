@@ -1,10 +1,10 @@
 /**
- * @file test/cache/goose.test.js
- * @description Tests for the caching mechanism in the Goose class.
+ * @file test/cache/mistralai.test.js
+ * @description Tests for the caching mechanism in the MistralAI class.
  */
 
-const Goose = require('../../src/interfaces/goose.js');
-const { gooseApiKey } = require('../../src/config/config.js');
+const MistralAI = require('../../src/interfaces/mistralai.js');
+const { mistralaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -14,12 +14,12 @@ const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
 const suppressLogs = require('../../src/utils/suppressLogs.js');
 jest.mock('../../src/utils/cache.js');
 
-describe('Goose Caching', () => {
-  if (gooseApiKey) {
-    const goose = new Goose(gooseApiKey);
+describe('MistralAI Caching', () => {
+  if (mistralaiApiKey) {
+    const mistralai = new MistralAI(mistralaiApiKey);
 
     const message = {
-      model: 'gpt-neo-20b',
+      model: 'mistralai-1.0',
       messages: [
         { role: 'system', content: 'You are a helpful assistant.' },
         {
@@ -30,13 +30,9 @@ describe('Goose Caching', () => {
     };
 
     // Convert the message structure for caching
-    const formattedPrompt = message.messages
-      .map((message) => message.content)
-      .join(' ');
-
     const cacheKey = JSON.stringify({
-      prompt: formattedPrompt,
       model: message.model,
+      messages: message.messages,
       max_tokens: options.max_tokens,
     });
 
@@ -45,19 +41,19 @@ describe('Goose Caching', () => {
     });
 
     test('API Key should be set', async () => {
-      expect(typeof gooseApiKey).toBe('string');
+      expect(typeof mistralaiApiKey).toBe('string');
     });
 
     test('API should return cached response if available', async () => {
       const cachedResponse = 'Cached response';
       getFromCache.mockReturnValue(cachedResponse);
 
-      const response = await goose.sendMessage(message, options, {
+      const response = await mistralai.sendMessage(message, options, {
         cacheTimeoutSeconds: 60,
       });
 
       expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-      expect(typeof response).toStrictEqual(cachedResponse);
+      expect(response).toStrictEqual(cachedResponse);
       expect(saveToCache).not.toHaveBeenCalled();
     });
 
@@ -65,11 +61,11 @@ describe('Goose Caching', () => {
       getFromCache.mockReturnValue(null);
 
       const apiResponse = 'API response';
-      goose.client.post = jest.fn().mockResolvedValue({
-        data: { choices: [{ text: apiResponse }] },
+      mistralai.client.post = jest.fn().mockResolvedValue({
+        data: { choices: [{ message: { content: apiResponse } }] },
       });
 
-      const response = await goose.sendMessage(message, options, {
+      const response = await mistralai.sendMessage(message, options, {
         cacheTimeoutSeconds: 60,
       });
 
@@ -85,10 +81,12 @@ describe('Goose Caching', () => {
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {
         getFromCache.mockReturnValue(null);
-        goose.client.post = jest.fn().mockRejectedValue(new Error('API error'));
+        mistralai.client.post = jest
+          .fn()
+          .mockRejectedValue(new Error('API error'));
 
         await expect(
-          goose.sendMessage(message, options, {
+          mistralai.sendMessage(message, options, {
             cacheTimeoutSeconds: 60,
           }),
         ).rejects.toThrow('API error');

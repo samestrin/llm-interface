@@ -94,16 +94,13 @@ async function parseJSON(json, attemptRepair) {
     const parsed = JSON.parse(json);
     return parsed;
   } catch (e) {
-    console.log('JSON parse error:', e);
     if (attemptRepair) {
       try {
         const jsonrepair = await getJsonRepairInstance();
         const repaired = jsonrepair(json);
-        console.log('Repaired JSON:', repaired);
         const reparsed = JSON.parse(repaired);
         return reparsed;
       } catch (importError) {
-        console.log('jsonrepair error:', importError);
         return null;
       }
     } else {

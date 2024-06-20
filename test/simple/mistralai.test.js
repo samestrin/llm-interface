@@ -1,27 +1,27 @@
 /**
- * @file mistral.test.js
- * @description Simplified tests for the Mistral API client.
+ * @file mistralai.test.js
+ * @description Simplified tests for the MistralAI API client.
  */
 
-const Mistral = require('../../src/interfaces/mistral.js');
-const { mistralApiKey } = require('../../src/config/config.js');
+const MistralAI = require('../../src/interfaces/mistralai.js');
+const { mistralaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
-describe('Mistral Simple', () => {
-  if (mistralApiKey) {
+describe('MistralAI Simple', () => {
+  if (mistralaiApiKey) {
     let response;
     test('API Key should be set', async () => {
-      expect(typeof mistralApiKey).toBe('string');
+      expect(typeof mistralaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const mistral = new Mistral(mistralApiKey);
+      const mistralai = new MistralAI(mistralaiApiKey);
 
       try {
-        response = await mistral.sendMessage(simplePrompt, options);
+        response = await mistralai.sendMessage(simplePrompt, options);
 
         expect(typeof response).toStrictEqual('object');
       } catch (error) {
