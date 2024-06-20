@@ -4,9 +4,9 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
-const suppressLogs = require('../utils/suppressLogs.js');
+const suppressLogs = require('../../src/utils/suppressLogs.js');
 jest.mock('../../src/utils/cache.js');
 
 describe('HuggingFace Caching', () => {
@@ -50,7 +50,7 @@ describe('HuggingFace Caching', () => {
       });
 
       expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-      expect(response).toBe(mockResponse[0].generated_text);
+      expect(response).toStrictEqual(mockResponse[0].generated_text);
       expect(saveToCache).not.toHaveBeenCalled();
     });
 
@@ -73,12 +73,9 @@ describe('HuggingFace Caching', () => {
         inputs: inputs,
         parameters: { max_new_tokens: options.max_tokens }, // Ensure the correct value is expected
       });
-      expect(response).toBe(mockResponse[0].generated_text);
-      expect(saveToCache).toHaveBeenCalledWith(
-        cacheKey,
-        mockResponse[0].generated_text,
-        60,
-      );
+      const expectedResult = { results: mockResponse[0].generated_text };
+      expect(response).toStrictEqual(expectedResult);
+      expect(saveToCache).toHaveBeenCalledWith(cacheKey, expectedResult, 60);
     });
 
     test(

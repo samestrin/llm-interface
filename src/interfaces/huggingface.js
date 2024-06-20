@@ -6,12 +6,13 @@
  */
 
 const axios = require('axios');
-const { getFromCache, saveToCache } = require('../utils/cache');
+const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { getFromCache, saveToCache } = require('../utils/cache.js');
 const {
   returnSimpleMessageObject,
   returnModelByAlias,
-} = require('../utils/utils');
-const { huggingfaceApiKey } = require('../config/config');
+} = require('../utils/utils.js');
+const { huggingfaceApiKey } = require('../config/config.js');
 const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
@@ -100,6 +101,15 @@ class HuggingFace {
         ) {
           responseContent = response.data[0].generated_text;
         }
+        // Attempt to repair the object if needed
+        if (interfaceOptions.attemptJsonRepair) {
+          responseContent = await parseJSON(
+            responseContent,
+            interfaceOptions.attemptJsonRepair,
+          );
+        }
+        // Build response object
+        responseContent = { results: responseContent };
 
         if (cacheTimeoutSeconds && responseContent) {
           saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
@@ -125,5 +135,5 @@ class HuggingFace {
     }
   }
 }
-
+HuggingFace.prototype.adjustModelAlias = adjustModelAlias;
 module.exports = HuggingFace;

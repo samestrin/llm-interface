@@ -1,18 +1,13 @@
 /**
  * @file src/utils/cache.js
- * @description Wrapper for flat-cache.
+ * @description Wrapper for flat-cache; only loads flat-cache when used, stored in a singleton.
  */
 
-const flatCache = require('flat-cache');
 const path = require('path');
 const crypto = require('crypto');
 
-// Name of the cache file
-const cacheId = 'llm-interface-cache';
-const cacheDir = path.resolve(__dirname, '..', 'cache');
-
-// Load the cache
-const cache = flatCache.load(cacheId, cacheDir);
+// Singleton to store the cache instance
+let cacheInstance = null;
 
 /**
  * Converts a key to an MD5 hash.
@@ -25,12 +20,28 @@ function getCacheFilePath(key) {
 }
 
 /**
+ * Loads the cache dynamically and stores it in the singleton if not already loaded.
+ *
+ * @returns {object} The flat-cache instance.
+ */
+function getCacheInstance() {
+  if (!cacheInstance) {
+    const flatCache = require('flat-cache');
+    const cacheId = 'LLMInterface-cache';
+    const cacheDir = path.resolve(__dirname, '../..', 'cache');
+    cacheInstance = flatCache.load(cacheId, cacheDir);
+  }
+  return cacheInstance;
+}
+
+/**
  * Retrieves data from the cache.
  *
  * @param {string} key - The cache key.
  * @returns {any} The cached data or null if not found.
  */
 function getFromCache(key) {
+  const cache = getCacheInstance();
   const hashedKey = getCacheFilePath(key);
   return cache.getKey(hashedKey) || null;
 }
@@ -42,6 +53,7 @@ function getFromCache(key) {
  * @param {any} data - The data to cache.
  */
 function saveToCache(key, data) {
+  const cache = getCacheInstance();
   const hashedKey = getCacheFilePath(key);
   cache.setKey(hashedKey, data);
   cache.save(true); // Save to disk

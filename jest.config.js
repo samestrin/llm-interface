@@ -4,6 +4,9 @@
  */
 
 module.exports = {
+  transform: {
+    '^.+\\.js$': 'babel-jest',
+  },
   testTimeout: 30000, // Set global timeout to 30 seconds
-  snapshotSerializers: ['<rootDir>/test/utils/jestSerializer.js'],
+  snapshotSerializers: ['<rootDir>/src/utils/jestSerializer.js'],
 };

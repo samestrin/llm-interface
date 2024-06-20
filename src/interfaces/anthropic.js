@@ -6,12 +6,13 @@
  */
 
 const AnthropicSDK = require('@anthropic-ai/sdk');
-const { getFromCache, saveToCache } = require('../utils/cache');
+const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { getFromCache, saveToCache } = require('../utils/cache.js');
 const {
   returnSimpleMessageObject,
   returnModelByAlias,
-} = require('../utils/utils');
-const { anthropicApiKey } = require('../config/config');
+} = require('../utils/utils.js');
+const { anthropicApiKey } = require('../config/config.js');
 const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
@@ -104,6 +105,16 @@ class Anthropic {
           responseContent = response.content[0].text;
         }
 
+        // Attempt to repair the object if needed
+        if (interfaceOptions.attemptJsonRepair) {
+          responseContent = await parseJSON(
+            responseContent,
+            interfaceOptions.attemptJsonRepair,
+          );
+        }
+        // Build response object
+        responseContent = { results: responseContent };
+
         // Cache the response content if cache timeout is set
         if (cacheTimeoutSeconds && responseContent) {
           saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
@@ -133,5 +144,6 @@ class Anthropic {
     }
   }
 }
+Anthropic.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = Anthropic;

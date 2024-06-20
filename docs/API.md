@@ -1,36 +1,102 @@
-# llm-interface
+# API Reference
 
-## API Reference
+## Table of Contents
 
-### The Message Object
+1. [LLMInterfaceSendMessage Function](#llminterfacesendmessage-function)
+2. [Valid `llmProvider` Values](#valid-llmprovider-values)
+   - [AI21 Studio](#ai21---ai21-studio)
+   - [Anthropic](#anthropic---anthropic)
+   - [Cloudflare AI](#cloudflareai---cloudflare-ai)
+   - [Cohere](#cohere---cohere)
+   - [Fireworks AI](#fireworksai---fireworks-ai)
+   - [Google Gemini](#gemini---google-gemini)
+   - [Goose AI](#gooseai---goose-ai)
+   - [Groq](#groq---groq)
+   - [Hugging Face](#huggingface---hugging-face)
+   - [LLaMA.cpp](#llamacpp---llamacpp)
+   - [Mistral AI](#mistralai---mistral-ai)
+   - [OpenAI](#openai---openai)
+   - [Perplexity](#perplexity---perplexity)
+   - [Reka AI](#rekaai---reka-ai)
+3. [Underlying Classes](#underlying-classes)
+   - [OpenAI](#openai)
+   - [AI21](#ai21)
+   - [Anthropic](#anthropic)
+   - [Cloudflare AI](#cloudflare-ai)
+   - [Cohere](#cohere)
+   - [Gemini](#gemini)
+   - [Goose AI](#goose-ai)
+   - [Groq](#groq)
+   - [Hugging Face](#hugging-face)
+   - [Mistral AI](#mistral-ai)
+   - [Perplexity Labs](#perplexity-labs)
+   - [Reka AI](#reka-ai)
+   - [LLaMA.cpp](#llamacpp)
 
-The message object is a critical component when interacting with the various LLM APIs through the `llm-interface` package. It contains the data that will be sent to the LLM for processing. Below is a detailed explanation of a valid message object.
+## LLMInterfaceSendMessage Function
 
-#### Structure of a Message Object
+#### `LLMInterfaceSendMessage(llmProvider, apiKey, message, options, cacheTimeoutSeconds)`
 
-A valid message object typically includes the following properties:
+- **Parameters:**
+  - `llmProvider`: A string containing a valid llmProvider name.
+  - `apiKey`: A string containing a valid API key, or an array containing a valid API key and account id.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
 
-- `model`: A string specifying the model to use for the request (optional).
-- `messages`: An array of message objects that form the conversation history.
+##### Example:
 
-Different LLMs may have their own message object rules. For example, both Anthropic and Gemini always expect the initial message to have the `user` role. Please be aware of this and structure your message objects accordingly. However, `llm-interface` will attempt to auto-correct invalid objects where possible.
+```javascript
+LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, message, {
+  max_tokens: 150,
+})
+  .then((response) => {
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+## Valid `llmProvider` Values
+
+The following are supported LLM providers (in alphabetical order):
+
+- `ai21` - AI21 Studio
+- `anthropic` - Anthropic
+- `cloudflareai` - Cloudflare AI
+- `cohere` - Cohere
+- `fireworksai` - Fireworks AI
+- `gemini` - Google Gemini
+- `gooseai` - Goose AI
+- `groq` - Groq
+- `huggingface` - Hugging Face
+- `llamacpp` - LLaMA.cpp
+- `mistralai` - Mistral AI
+- `openai` - OpenAI
+- `perplexity` - Perplexity
+- `rekaai` - Reka AI
+
+## Underlying Classes
 
 ### OpenAI
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
 openai
   .sendMessage(message, { max_tokens: 150, response_format: 'json_object' })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -42,17 +108,18 @@ openai
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
 ai21
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -64,17 +131,41 @@ ai21
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
 anthropic
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Cloudflare AI
+
+#### `sendMessage(message, options, cacheTimeoutSeconds)`
+
+- **Parameters:**
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
+
+```javascript
+cloudflareai
+  .sendMessage(message, { max_tokens: 150 })
+  .then((response) => {
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -86,17 +177,18 @@ anthropic
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
 cohere
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -108,17 +200,18 @@ cohere
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
 gemini
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -130,17 +223,18 @@ gemini
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`, and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
-goose
+gooseai
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -152,17 +246,18 @@ goose
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
 groq
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -174,17 +269,18 @@ groq
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
 huggingface
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -196,17 +292,18 @@ huggingface
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
-mistral
+mistralai
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -218,17 +315,18 @@ mistral
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
 perplexity
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -240,17 +338,18 @@ perplexity
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
-  - `options`: An optional object containing `max_tokens` and `model`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `message`: An object containing the model and messages or a string containing a single message to send.
+  - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
-reka
+rekaai
   .sendMessage(message, {})
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -262,17 +361,18 @@ reka
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
 - **Parameters:**
-  - `message`: An object containing the model and messages to send.
+  - `message`: An object containing the model and messages or a string containing a single message to send.
   - `options`: An optional object containing `max_tokens`.
-  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` and `retryAttempts`.
-- **Returns:** A promise that resolves to the response text.
-- **Example:**
+  - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
+- **Returns:** A promise that resolves to a response JSON object.
+
+##### Example:
 
 ```javascript
 llamacpp
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);

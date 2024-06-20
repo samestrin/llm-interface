@@ -1,29 +1,30 @@
 /**
- * @file src/interfaces/reka.js
- * @class Reka
+ * @file src/interfaces/rekaai.js
+ * @class RekaAI
  * @description Wrapper class for the Reka AI API.
  * @param {string} apiKey - The API key for Reka AI.
  */
 
 const axios = require('axios');
-const { getFromCache, saveToCache } = require('../utils/cache');
+const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { getFromCache, saveToCache } = require('../utils/cache.js');
 const {
   returnSimpleMessageObject,
   returnModelByAlias,
-} = require('../utils/utils');
-const { rekaApiKey } = require('../config/config');
+} = require('../utils/utils.js');
+const { rekaaiApiKey } = require('../config/config.js');
 const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
-// Reka class for interacting with the Reka AI API
-class Reka {
+// RekaAI class for interacting with the Reka AI API
+class RekaAI {
   /**
-   * Constructor for the Reka class.
+   * Constructor for the RekaAI class.
    * @param {string} apiKey - The API key for Reka AI.
    */
   constructor(apiKey) {
-    this.interfaceName = 'reka';
-    this.apiKey = apiKey || rekaApiKey;
+    this.interfaceName = 'rekaai';
+    this.apiKey = apiKey || rekaaiApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
@@ -102,6 +103,15 @@ class Reka {
         if (response.data?.responses?.[0]?.message?.content) {
           responseContent = response.data.responses[0].message.content;
         }
+        // Attempt to repair the object if needed
+        if (interfaceOptions.attemptJsonRepair) {
+          responseContent = await parseJSON(
+            responseContent,
+            interfaceOptions.attemptJsonRepair,
+          );
+        }
+        // Build response object
+        responseContent = { results: responseContent };
 
         if (cacheTimeoutSeconds && responseContent) {
           saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
@@ -129,5 +139,5 @@ class Reka {
     }
   }
 }
-
-module.exports = Reka;
+RekaAI.prototype.adjustModelAlias = adjustModelAlias;
+module.exports = RekaAI;

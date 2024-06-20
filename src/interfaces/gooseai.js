@@ -1,54 +1,57 @@
 /**
- * @file src/interfaces/mistral.js
- * @class Mistral
- * @description Wrapper class for the Mistral API.
- * @param {string} apiKey - The API key for the Mistral API.
+ * @file src/interfaces/gooseai.js
+ * @class GooseAI
+ * @description Wrapper class for the GooseAI API.
+ * @param {string} apiKey - The API key for the GooseAI API.
  */
 
 const axios = require('axios');
-const { getFromCache, saveToCache } = require('../utils/cache');
-const { returnMessageObject, returnModelByAlias } = require('../utils/utils');
-const { mistralApiKey } = require('../config/config');
+const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { getFromCache, saveToCache } = require('../utils/cache.js');
+const {
+  returnMessageObject,
+  returnModelByAlias,
+} = require('../utils/utils.js');
+const { gooseaiApiKey } = require('../config/config.js');
 const config = require('../config/llmProviders.json');
 const log = require('loglevel');
 
-// Mistral class for interacting with the Mistral API
-class Mistral {
+// GooseAI class for interacting with the GooseAI API
+class GooseAI {
   /**
-   * Constructor for the Mistral class.
-   * @param {string} apiKey - The API key for the Mistral API.
+   * Constructor for the GooseAI class.
+   * @param {string} apiKey - The API key for the GooseAI API.
    */
   constructor(apiKey) {
-    this.interfaceName = 'mistral';
-    this.apiKey = apiKey || mistralApiKey;
+    this.interfaceName = 'gooseai';
+    this.apiKey = apiKey || gooseaiApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-type': 'application/json',
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
   }
 
   /**
-   * Send a message to the Mistral API.
+   * Send a message to the GooseAI API.
    * @param {string|object} message - The message to send or a message object.
    * @param {object} options - Additional options for the API request.
    * @param {object} interfaceOptions - Options specific to the interface.
-   * @returns {string} The response content from the Mistral API.
+   * @returns {string} The response content from the GooseAI API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
       typeof message === 'string' ? returnMessageObject(message) : message;
-    let cacheTimeoutSeconds;
-    if (typeof interfaceOptions === 'number') {
-      cacheTimeoutSeconds = interfaceOptions;
-    } else {
-      cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
-    }
+    const cacheTimeoutSeconds =
+      typeof interfaceOptions === 'number'
+        ? interfaceOptions
+        : interfaceOptions.cacheTimeoutSeconds;
 
+    const { messages } = messageObject;
     const { max_tokens = 150 } = options;
-    let { model, messages } = messageObject;
+    let { model } = messageObject;
 
     // Get the selected model based on alias or default
     model = returnModelByAlias(this.interfaceName, model);
@@ -56,12 +59,16 @@ class Mistral {
     // Set the model and default values
     model =
       model || options.model || config[this.interfaceName].model.default.name;
-    if (options.model) options.model = model;
+
+    // Format the prompt by joining message contents
+    const formattedPrompt = messages
+      .map((message) => message.content)
+      .join(' ');
 
     // Prepare the payload for the API call
     const payload = {
+      prompt: formattedPrompt,
       model,
-      messages,
       max_tokens,
       ...options,
     };
@@ -80,19 +87,28 @@ class Mistral {
     let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
-        // Send the request to the Mistral API
-        const response = await this.client.post('', payload);
+        // Send the request to the GooseAI API
+        const url = `/${model}/completions`;
+        const response = await this.client.post(url, payload);
         let responseContent = null;
         if (
           response &&
           response.data &&
           response.data.choices &&
           response.data.choices[0] &&
-          response.data.choices[0].message &&
-          response.data.choices[0].message.content
+          response.data.choices[0].text
         ) {
-          responseContent = response.data.choices[0].message.content;
+          responseContent = response.data.choices[0].text.trim();
         }
+        // Attempt to repair the object if needed
+        if (interfaceOptions.attemptJsonRepair) {
+          responseContent = await parseJSON(
+            responseContent,
+            interfaceOptions.attemptJsonRepair,
+          );
+        }
+        // Build response object
+        responseContent = { results: responseContent };
 
         if (cacheTimeoutSeconds && responseContent) {
           saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
@@ -102,7 +118,6 @@ class Mistral {
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          // Log any errors and throw the error
           log.error(
             'Response data:',
             error.response ? error.response.data : null,
@@ -121,4 +136,6 @@ class Mistral {
   }
 }
 
-module.exports = Mistral;
+GooseAI.prototype.adjustModelAlias = adjustModelAlias;
+
+module.exports = GooseAI;

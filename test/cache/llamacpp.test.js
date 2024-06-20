@@ -9,9 +9,9 @@ const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
+} = require('../../src/utils/defaults.js');
 const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
-const suppressLogs = require('../utils/suppressLogs.js');
+const suppressLogs = require('../../src/utils/suppressLogs.js');
 jest.mock('../../src/utils/cache.js');
 
 describe('LlamaCPP Caching', () => {
@@ -55,7 +55,7 @@ describe('LlamaCPP Caching', () => {
       });
 
       expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-      expect(response).toBe(cachedResponse);
+      expect(response).toStrictEqual(cachedResponse);
       expect(saveToCache).not.toHaveBeenCalled();
     });
 
@@ -72,8 +72,12 @@ describe('LlamaCPP Caching', () => {
       });
 
       expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-      expect(response).toBe(apiResponse);
-      expect(saveToCache).toHaveBeenCalledWith(cacheKey, apiResponse, 60);
+      expect(response.results).toBe(apiResponse);
+      expect(saveToCache).toHaveBeenCalledWith(
+        cacheKey,
+        { results: apiResponse },
+        60,
+      );
     });
     test(
       'Should respond with prompt API error messaging',

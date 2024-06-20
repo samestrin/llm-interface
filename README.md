@@ -6,33 +6,34 @@
 
 ## Introduction
 
-The LLM Interface project is a versatile and comprehensive wrapper designed to interact with multiple Large Language Model (LLM) APIs. It simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, Anthropic, Cohere, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Perplexity, Reka AI, and LLaMA.cpp**, into your applications. This project aims to provide a simplified and unified interface for sending messages and receiving responses from different LLM services, making it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
+The LLM Interface project is a versatile and comprehensive wrapper designed to interact with multiple Large Language Model (LLM) APIs. It simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, Anthropic, Cloudflare AI, Cohere, Fireworks AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Perplexity, Reka AI, and LLaMA.cpp**, into your applications. This project aims to provide a simplified and unified interface for sending messages and receiving responses from different LLM services, making it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
 ## Features
 
-- **Unified Interface**: A single, consistent interface to interact with multiple LLM APIs.
-- **Dynamic Module Loading**: Automatically loads and manages different LLM LLMInterface.
+- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with fourteen different LLM APIs.
+- **Dynamic Module Loading**: Automatically loads and manages different LLM LLMInterfaces.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
-- **JSON Output**: Simple to use JSON output for OpenAI and Gemini responses.
 - **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
 - **Graceful Retries**: Automatically retry failed prompts with increasing delays to ensure successful responses.
+- **JSON Output**: Simple to use native JSON output for OpenAI, Fireworks AI, and Gemini responses.
+- **JSON Repair**: Detect and repair invalid JSON responses.
 
 ## Updates
+
+**v2.0.0**
+
+- **New LLM Providers**: Added support for Cloudflare AI, and Fireworks AI
+- **JSON Consistency**: A breaking change has been introduced: all responses now return as valid JSON objects.
+- **JSON Repair**: Use `interfaceOptions.attemptJsonRepair` to repair invalid JSON responses when they occur.
+- **Interface Name Changes**:`reka` becomes `rekaai`, `goose` becomes `gooseai`, `mistral` becomes `mistralai`.
+- **Deprecated**: `handlers` has been removed.
 
 **v1.0.01**
 
 - **LLMInterfaceSendMessage**: Send a message to any LLM provider without creating a new instance of the `llm-interface`.
 - **Model Aliases**: Simplified model selection, `default`, `small`, and `large` model aliases now available.
 - **Major Refactor**: Improved comments, test cases, centralized LLM provider definitions.
-
-**v1.0.00**
-
-- **Initial 1.0 Release**
-
-**v0.0.11**
-
-- **Simple Prompt Handler**: Added support for simplified prompting.
 
 ## Dependencies
 
@@ -45,6 +46,7 @@ The project relies on several npm packages and APIs. Here are the primary depend
 - `openai`: SDK for interacting with the OpenAI API.
 - `dotenv`: For managing environment variables. Used by test cases.
 - `flat-cache`: For caching API responses to improve performance and reduce redundant requests.
+- `jsonrepair`: Used to repair invalid JSON responses.
 - `jest`: For running test cases.
 
 ## Installation
@@ -59,23 +61,21 @@ npm install llm-interface
 
 ### Example
 
-Import `llm-interface` using:
+First import `LLMInterfaceSendMessage`. You can do this using either the CommonJS `require` syntax:
 
 ```javascript
-const LLMInterface = require('llm-interface');
+const { LLMInterfaceSendMessage } = require('llm-interface');
 ```
 
-or
+or the ES6 `import` syntax:
 
 ```javascript
-import LLMInterface from 'llm-interface';
+import { LLMInterfaceSendMessage } from 'llm-interface';
 ```
 
-then call the handler you want to use:
+then send your prompt to the LLM provider of your choice:
 
 ```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
 const message = {
   model: 'gpt-3.5-turbo',
   messages: [
@@ -84,10 +84,11 @@ const message = {
   ],
 };
 
-openai
-  .sendMessage(message, { max_tokens: 150 })
+LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, message, {
+  max_tokens: 150,
+})
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -97,12 +98,13 @@ openai
 or if you want to keep things _simple_ you can use:
 
 ```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
-openai
-  .sendMessage('Explain the importance of low latency LLMs.')
+LLMInterfaceSendMessage(
+  'openai',
+  process.env.OPENAI_API_KEY,
+  'Explain the importance of low latency LLMs.',
+)
   .then((response) => {
-    console.log(response);
+    console.log(response.results);
   })
   .catch((error) => {
     console.error(error);
@@ -117,6 +119,13 @@ The project includes tests for each LLM handler. To run the tests, use the follo
 
 ```bash
 npm test
+```
+
+#### Test Results (v2.0.0)
+
+```bash
+Test Suites: 43 passed, 43 total
+Tests:       172 passed, 172 total
 ```
 
 ## Contribute

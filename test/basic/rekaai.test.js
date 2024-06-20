@@ -3,23 +3,23 @@
  * @description Tests for the Reka AI API client.
  */
 
-const Reka = require('../../src/interfaces/reka.js');
-const { rekaApiKey } = require('../../src/config/config.js');
+const RekaAI = require('../../src/interfaces/rekaai.js');
+const { rekaaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
   expectedMaxLength,
-} = require('../utils/defaults.js');
-describe('Reka Basic', () => {
-  if (rekaApiKey) {
+} = require('../../src/utils/defaults.js');
+describe('RekaAI Basic', () => {
+  if (rekaaiApiKey) {
     let response;
 
     test('API Key should be set', async () => {
-      expect(typeof rekaApiKey).toBe('string');
+      expect(typeof rekaaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const reka = new Reka(rekaApiKey);
+      const reka = new RekaAI(rekaaiApiKey);
       const message = {
         model: 'reka-core',
         messages: [
@@ -40,7 +40,7 @@ describe('Reka Basic', () => {
       };
       try {
         response = await reka.sendMessage(message, options);
-        expect(typeof response).toBe('string');
+        expect(typeof response).toStrictEqual('object');
       } catch (error) {
         console.error('Test failed:', error);
         throw error;
@@ -48,7 +48,7 @@ describe('Reka Basic', () => {
     }, 30000);
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-      expect(response.length).toBeLessThan(expectedMaxLength);
+      expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
     test.skip(`API Key is not set`, () => {});

@@ -48,7 +48,7 @@
       "small": { "name": "gemini-small" }
     }
   },
-  "goose": {
+  "gooseai": {
     "url": "https://api.goose.ai/v1/engines",
     "model": {
       "default": { "name": "gpt-neo-20b", "tokens": 2048 },
@@ -83,12 +83,12 @@
   "llamacpp": {
     "url": "http://localhost:8080/completion"
   },
-  "mistral": {
+  "mistralai": {
     "url": "https://api.mistral.ai/v1/chat/completions",
     "model": {
       "default": { "name": "mistral-large-latest", "tokens": 32768 },
       "large": { "name": "mistral-large-latest", "tokens": 32768 },
-      "small": { "name": "mistral-small", "tokens": 32768 }
+      "small": { "name": "mistralai-small", "tokens": 32768 }
     }
   },
   "perplexity": {
@@ -99,12 +99,49 @@
       "small": { "name": "llama-3-sonar-small-32k-online", "tokens": 28000 }
     }
   },
-  "reka": {
+  "rekaai": {
     "url": "https://api.reka.ai/v1/chat",
     "model": {
       "default": { "name": "reka-core" },
       "large": { "name": "reka-core" },
       "small": { "name": "reka-edge" }
+    }
+  },
+  "cloudflareai": {
+    "url": "https://api.cloudflare.com/client/v4/accounts",
+    "model": {
+      "default": { "name": "@cf/meta/llama-3-8b-instruct", "tokens": 4096 },
+      "large": { "name": "@hf/thebloke/llama-2-13b-chat-awq", "tokens": 8192 },
+      "small": {
+        "name": "@cf/tinyllama/tinyllama-1.1b-chat-v1.0",
+        "tokens": 2048
+      }
+    },
+    "note": "url value is partial"
+  },
+  "fireworksai": {
+    "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "accounts/fireworks/models/llama-v3-8b-instruct",
+        "tokens": 8192
+      },
+      "large": {
+        "name": "accounts/fireworks/models/llama-v3-70b-instruct",
+        "tokens": 8192
+      },
+      "small": {
+        "name": "accounts/fireworks/models/phi-3-mini-128k-instruct",
+        "tokens": 128000
+      }
+    }
+  },
+  "friendli": {
+    "url": "https://inference.friendli.ai/v1/chat/completions",
+    "model": {
+      "default": { "name": "mixtral-8x7b-instruct-v0-1", "tokens": 32768 },
+      "large": { "name": "meta-llama-3-70b-instruct", "tokens": 8192 },
+      "small": { "name": "mistralai-7b-instruct-v0-2", "tokens": 4096 }
     }
   }
 }

@@ -1,4 +1,4 @@
-# llm-interface
+# API Keys
 
 Getting API keys for your project is a simple process. You'll need to sign-up, then visit the URLs below generate your desired API keys. However, most LLMs require a credit card.
 
@@ -20,11 +20,23 @@ The Anthropic API requires a credit card.
 
 - https://console.anthropic.com/settings/keys
 
+## CloudflareAI
+
+The Cloudflare AI API offers a free tier and and commercial accounts. A credit is not required for for the free tier.
+
+- https://dash.cloudflareai.com/profile/api-tokens
+
 ## Cohere
 
 The Cohere API offers trial keys. Trial keys are rate-limited, and cannot be used for commercial purposes.
 
 - https://dashboard.cohere.com/api-keys
+
+## Fireworks AI
+
+The Fireworks AI API offers a free developer tier and commercial accounts. A Credit is not required for the free developer tier.
+
+- https://fireworks.ai/api-keys
 
 ## Gemini
 
@@ -50,11 +62,11 @@ The Hugging Face Inference API is currently free for rate-limited, non-commercia
 
 - https://huggingface.co/settings/tokens
 
-## Mistral
+## MistralAI
 
-The Mistral API is a commercial product, but it currently does not require a credit card, and comes with a $5.00 credit.
+The MistralAI API is a commercial product, but it currently does not require a credit card, and comes with a $5.00 credit.
 
-- https://console.mistral.ai/api-keys/
+- https://console.mistralai.ai/api-keys/
 
 ## Perplexity
 

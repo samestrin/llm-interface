@@ -5,43 +5,52 @@
 
 const { LLMInterfaceSendMessage } = require('../../src/index.js');
 const config = require('../../src/config/config.js');
-const {
-  simplePrompt,
-  options,
-  expectedMaxLength,
-} = require('../utils/defaults.js');
+const { simplePrompt, options } = require('../../src/utils/defaults.js');
 
 let modules = {
   openai: config.openaiApiKey,
   anthropic: config.anthropicApiKey,
   gemini: config.geminiApiKey,
   llamacpp: config.llamaURL,
-  reka: config.rekaApiKey,
+  rekaai: config.rekaaiApiKey,
   groq: config.groqApiKey,
-  goose: config.gooseApiKey,
+  gooseai: config.gooseaiApiKey,
   cohere: config.cohereApiKey,
-  mistral: config.mistralApiKey,
+  mistralai: config.mistralaiApiKey,
   huggingface: config.huggingfaceApiKey,
   ai21: config.ai21ApiKey,
   perplexity: config.perplexityApiKey,
+  cloudflareai: [config.cloudflareaiApiKey, config.cloudflareaiAccountId],
+  fireworksai: config.fireworksaiApiKey,
 };
 
-for (const [module, apiKey] of Object.entries(modules)) {
+for (let [module, apiKey] of Object.entries(modules)) {
   if (apiKey) {
+    let accountId = false;
+    if (Array.isArray(apiKey)) {
+      [apiKey, accountId] = apiKey;
+    }
+
     describe(`LLMInterfaceSendMessage("${module}")`, () => {
       test(`API Key should be set`, () => {
         expect(typeof apiKey).toBe('string');
       });
 
+      if (accountId) {
+        test(`Account ID should be set`, () => {
+          expect(typeof accountId).toBe('string');
+        });
+      }
+
       test(`API Client should send a message and receive a response`, async () => {
         const response = await LLMInterfaceSendMessage(
           module,
-          apiKey,
+          !accountId ? apiKey : [apiKey, accountId],
           simplePrompt,
           options,
         );
 
-        expect(typeof response).toBe('string');
+        expect(typeof response).toStrictEqual('object');
       }, 30000);
     });
   } else {

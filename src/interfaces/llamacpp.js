@@ -5,11 +5,11 @@
  * @param {string} llamacppURL - The base URL for the LlamaCPP API.
  */
 
+const axios = require('axios');
+const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { getFromCache, saveToCache } = require('../utils/cache.js');
 const config = require('../config/llmProviders.json');
 const log = require('loglevel');
-
-const axios = require('axios');
-const { getFromCache, saveToCache } = require('../utils/cache');
 
 // LlamaCPP class for interacting with the LlamaCPP API
 class LlamaCPP {
@@ -81,23 +81,32 @@ class LlamaCPP {
         // Send the request to the LlamaCPP API
         const response = await this.client.post('', payload);
         // Extract the response content from the API response
-        let contents = '';
+        let responseContent = '';
         if (response.data.content) {
-          contents = response.data.content;
+          responseContent = response.data.content;
         } else if (response.data.results) {
           // Join the results content if available
-          contents = response.data.results
+          responseContent = response.data.results
             .map((result) => result.content)
             .join();
         }
+        // Attempt to repair the object if needed
+        if (interfaceOptions.attemptJsonRepair) {
+          responseContent = await parseJSON(
+            responseContent,
+            interfaceOptions.attemptJsonRepair,
+          );
+        }
+        // Build response object
+        responseContent = { results: responseContent };
 
         // Cache the response content if cache timeout is set
-        if (cacheTimeoutSeconds && contents) {
-          saveToCache(cacheKey, contents, cacheTimeoutSeconds);
+        if (cacheTimeoutSeconds && responseContent) {
+          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
         }
 
         // Return the response content
-        return contents;
+        return responseContent;
       } catch (error) {
         // Decrease the number of retry attempts
         retryAttempts--;
@@ -121,5 +130,5 @@ class LlamaCPP {
     }
   }
 }
-
+LlamaCPP.prototype.adjustModelAlias = adjustModelAlias;
 module.exports = LlamaCPP;
