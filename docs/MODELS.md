@@ -30,12 +30,6 @@ When `default` or no model is passed, the system will use the default model for 
 - `large`: Claude-3-Opus-20240229 (tokens: 200,000)
 - `small`: Claude-3-Haiku-20240307 (tokens: 200,000)
 
-### AzureAI
-
-- `default`: GPT-3.5-turbo (tokens: 16,385)
-- `large`: GPT-4.0 (tokens: 128,000)
-- `small`: GPT-3.5-turbo (tokens: 16,385)
-
 ### Cohere
 
 - `default`: Command-R (tokens: 128,000)
