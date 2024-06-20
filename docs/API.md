@@ -1,5 +1,41 @@
 # API Reference
 
+## Table of Contents
+
+1. [`LLMInterfaceSendMessage(llmProvider, apiKey, message, options, cacheTimeoutSeconds)`](#llminterfacesendmessagellmprovider-apikey-message-options-cachetimeoutseconds)
+   - [Parameters](#parameters)
+   - [Returns](#returns)
+   - [Example](#example)
+2. [Valid `llmProvider` Values](#valid-llmprovider-values)
+   - [AI21 Studio](#ai21---ai21-studio)
+   - [Anthropic](#anthropic---anthropic)
+   - [Cloudflare AI](#cloudflareai---cloudflare-ai)
+   - [Cohere](#cohere---cohere)
+   - [Fireworks AI](#fireworksai---fireworks-ai)
+   - [Google Gemini](#gemini---google-gemini)
+   - [Goose AI](#gooseai---goose-ai)
+   - [Groq](#groq---groq)
+   - [Hugging Face](#huggingface---hugging-face)
+   - [LLaMA.cpp](#llamacpp---llamacpp)
+   - [Mistral AI](#mistralai---mistral-ai)
+   - [OpenAI](#openai---openai)
+   - [Perplexity](#perplexity---perplexity)
+   - [Reka AI](#rekaai---reka-ai)
+3. [Underlying Classes](#underlying-classes)
+   - [OpenAI](#openai)
+   - [AI21](#ai21)
+   - [Anthropic](#anthropic)
+   - [Cloudflare AI](#cloudflare-ai)
+   - [Cohere](#cohere)
+   - [Gemini](#gemini)
+   - [Goose AI](#goose-ai)
+   - [Groq](#groq)
+   - [Hugging Face](#hugging-face)
+   - [Mistral AI](#mistral-ai)
+   - [Perplexity Labs](#perplexity-labs)
+   - [Reka AI](#reka-ai)
+   - [LLaMA.cpp](#llamacpp)
+
 ## LLMInterfaceSendMessage Function
 
 #### `LLMInterfaceSendMessage(llmProvider, apiKey, message, options, cacheTimeoutSeconds)`
