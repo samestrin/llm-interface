@@ -2,10 +2,7 @@
 
 ## Table of Contents
 
-1. [`LLMInterfaceSendMessage(llmProvider, apiKey, message, options, cacheTimeoutSeconds)`](#llminterfacesendmessagellmprovider-apikey-message-options-cachetimeoutseconds)
-   - [Parameters](#parameters)
-   - [Returns](#returns)
-   - [Example](#example)
+1. [LLMInterfaceSendMessage Function](#llminterfacesendmessage-function)
 2. [Valid `llmProvider` Values](#valid-llmprovider-values)
    - [AI21 Studio](#ai21---ai21-studio)
    - [Anthropic](#anthropic---anthropic)
@@ -47,7 +44,8 @@
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, message, {
@@ -91,7 +89,8 @@ The following are supported LLM providers (in alphabetical order):
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 openai
@@ -113,7 +112,8 @@ openai
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 ai21
@@ -135,7 +135,8 @@ ai21
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 anthropic
@@ -157,7 +158,8 @@ anthropic
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 cloudflareai
@@ -179,7 +181,8 @@ cloudflareai
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 cohere
@@ -201,7 +204,8 @@ cohere
   - `options`: An optional object containing `max_tokens`, `model`, and `response_format`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 gemini
@@ -223,7 +227,8 @@ gemini
   - `options`: An optional object containing `max_tokens`, and `model`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 gooseai
@@ -245,7 +250,8 @@ gooseai
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 groq
@@ -267,7 +273,8 @@ groq
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 huggingface
@@ -289,7 +296,8 @@ huggingface
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 mistralai
@@ -311,7 +319,8 @@ mistralai
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 perplexity
@@ -333,7 +342,8 @@ perplexity
   - `options`: An optional object containing `max_tokens`, `model`, and any other LLM specific values.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 rekaai
@@ -355,7 +365,8 @@ rekaai
   - `options`: An optional object containing `max_tokens`.
   - `interfaceOptions`: An optional object specifying `cacheTimeoutSeconds` (default:0), `attemptJsonRepair` (default: false), `retryAttempts` (default: 1). and `retryMultiplier` (default: 0.3).
 - **Returns:** A promise that resolves to a response JSON object.
-- **Example:**
+
+##### Example:
 
 ```javascript
 llamacpp
