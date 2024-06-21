@@ -53,6 +53,11 @@ class Gemini {
     const prompt = input.messages[input.messages.length - 1].content;
     const responseMimeType =
       responseFormat === 'json_object' ? 'application/json' : 'text/plain';
+
+    // check to see if the model is in the generationConfigOptions and remove
+
+    if (generationConfigOptions.model) delete generationConfigOptions.model;
+
     const generationConfig = {
       ...generationConfigOptions,
       maxOutputTokens: maxTokens,
