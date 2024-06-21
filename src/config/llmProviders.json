@@ -12,7 +12,7 @@
     "model": {
       "default": { "name": "jamba-instruct", "tokens": 256000 },
       "large": { "name": "jamba-instruct", "tokens": 256000 },
-      "small": { "name": "j2-light", "tokens": 2048 }
+      "small": { "name": "jamba-instruct", "tokens": 256000 }
     }
   },
   "anthropic": {
@@ -37,7 +37,7 @@
     "model": {
       "default": { "name": "command-r", "tokens": 128000 },
       "large": { "name": "command-r-plus", "tokens": 128000 },
-      "small": { "name": "medium", "tokens": 2048 }
+      "small": { "name": "command-light", "tokens": 2048 }
     }
   },
   "gemini": {
