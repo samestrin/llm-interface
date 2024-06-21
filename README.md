@@ -21,19 +21,15 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Updates
 
-**v2.0.0**
+**v2.0.2**
 
 - **New LLM Providers**: Added support for Cloudflare AI, and Fireworks AI
 - **JSON Consistency**: A breaking change has been introduced: all responses now return as valid JSON objects.
 - **JSON Repair**: Use `interfaceOptions.attemptJsonRepair` to repair invalid JSON responses when they occur.
+- **Improved Hugging Face Interface**: Refactored interface to support the undocumented chat completion endpoint.
 - **Interface Name Changes**:`reka` becomes `rekaai`, `goose` becomes `gooseai`, `mistral` becomes `mistralai`.
 - **Deprecated**: `handlers` has been removed.
-
-**v1.0.01**
-
-- **LLMInterfaceSendMessage**: Send a message to any LLM provider without creating a new instance of the `llm-interface`.
-- **Model Aliases**: Simplified model selection, `default`, `small`, and `large` model aliases now available.
-- **Major Refactor**: Improved comments, test cases, centralized LLM provider definitions.
+- **Updated LLM Model Definitions**: Revised `small` models for various providers.
 
 ## Dependencies
 

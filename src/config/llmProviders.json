@@ -45,7 +45,7 @@
     "model": {
       "default": { "name": "gemini-1.5-flash", "tokens": 1048576 },
       "large": { "name": "gemini-1.5-pro", "tokens": 1048576 },
-      "small": { "name": "gemini-small" }
+      "small": { "name": "gemini-1.5-flash", "tokens": 1048576 }
     }
   },
   "gooseai": {

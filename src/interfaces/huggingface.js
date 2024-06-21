@@ -63,16 +63,17 @@ class HuggingFace {
     // Support both styles of max tokens
     const { max_tokens = 150 } = options;
 
-    // Format the prompt by joining message contents
-    const prompt = messages.map((msg) => msg.content).join(' ');
-
     // remove max_tokens if it exists
     if (options.max_tokens) delete options.max_tokens;
 
     // Prepare the payload for the API call
     const payload = {
-      inputs: prompt,
-      parameters: { max_new_tokens: max_tokens, ...options },
+      model:
+        selectedModel ||
+        options.model ||
+        config[this.interfaceName].model.default.name,
+      messages,
+      parameters: { max_token: max_tokens, ...options },
     };
 
     // Generate a cache key based on the payload
@@ -91,16 +92,23 @@ class HuggingFace {
     while (retryAttempts >= 0) {
       try {
         // Send the request to the Hugging Face API
-        const response = await this.client.post(`${model}`, payload);
+        const response = await this.client.post(
+          `${model}/v1/chat/completions`,
+          payload,
+        );
+
         let responseContent = null;
         if (
           response &&
           response.data &&
-          response.data[0] &&
-          response.data[0].generated_text
+          response.data.choices &&
+          response.data.choices[0] &&
+          response.data.choices[0].message &&
+          response.data.choices[0].message.content
         ) {
-          responseContent = response.data[0].generated_text;
+          responseContent = response.data.choices[0].message.content.trim();
         }
+
         // Attempt to repair the object if needed
         if (interfaceOptions.attemptJsonRepair) {
           responseContent = await parseJSON(
