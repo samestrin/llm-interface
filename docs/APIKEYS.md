@@ -20,7 +20,7 @@ The Anthropic API requires a credit card.
 
 - https://console.anthropic.com/settings/keys
 
-## CloudflareAI
+## Cloudflare AI
 
 The Cloudflare AI API offers a free tier and and commercial accounts. A credit is not required for for the free tier.
 
