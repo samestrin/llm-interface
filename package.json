@@ -34,7 +34,7 @@
     "url": "git+https://github.com/samestrin/llm-interface.git"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.23.0",
+    "@anthropic-ai/sdk": "^0.24.0",
     "@google/generative-ai": "^0.13.0",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
