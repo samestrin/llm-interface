@@ -21,6 +21,10 @@ The LLM Interface project is a versatile and comprehensive wrapper designed to i
 
 ## Updates
 
+**v2.0.3**
+
+- **New LLM Providers Functions**: `LLMInterface.getAllModelNames()` and `LLMInterface.getModelConfigValue(provider, configValueKey)`.
+
 **v2.0.2**
 
 - **New LLM Providers**: Added support for Cloudflare AI, and Fireworks AI
