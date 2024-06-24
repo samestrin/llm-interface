@@ -11,7 +11,10 @@ The following guide was created to help you use `llm-interface` in your project.
    - [Groq: Message Object Prompt, Default Model, Attempt JSON Repair (Example 3)](#groq-message-object-prompt-default-model-attempt-json-repair-example-3)
 3. [The Message Object](#the-message-object)
    - [Structure of a Message Object](#structure-of-a-message-object)
-4. [Using the Underlying Classes](#using-the-underlying-classes)
+4. [Accessing LLMInterface Variables](#accessing-llminterface-variables)
+   - [LLMInterface Get All Model Names](#llminterface-get-all-model-names)
+   - [LLMInterface Get Model Configuration](#llminterface-get-model-configuration)
+5. [Using the Underlying Classes](#using-the-underlying-classes)
    - [OpenAI Interface Class](#openai-interface-class)
    - [AI21 Interface Class](#ai21-interface-class)
    - [Anthropic Interface Class](#anthropic-interface-class)
@@ -26,7 +29,7 @@ The following guide was created to help you use `llm-interface` in your project.
    - [Perplexity Interface Class](#perplexity-interface-class)
    - [Reka AI Interface Class](#reka-ai-interface-class)
    - [LLaMA.cpp Interface Class](#llamacpp-interface-class)
-5. [Simple Usage Examples](#simple-usage-examples)
+6. [Simple Usage Examples](#simple-usage-examples)
    - [OpenAI Interface (String Based Prompt)](#openai-interface-string-based-prompt)
    - [AI21 Interface (String Based Prompt)](#ai21-interface-string-based-prompt)
    - [Anthropic Interface (String Based Prompt)](#anthropic-interface-string-based-prompt)
@@ -41,7 +44,7 @@ The following guide was created to help you use `llm-interface` in your project.
    - [Perplexity Interface (String Based Prompt)](#perplexity-interface-string-based-prompt)
    - [Reka AI Interface (String Based Prompt)](#reka-ai-interface-string-based-prompt)
    - [LLaMA.cpp Interface (String Based Prompt)](#llamacpp-interface-string-based-prompt)
-6. [Advanced Usage Examples](#advanced-usage-examples)
+7. [Advanced Usage Examples](#advanced-usage-examples)
    - [OpenAI Interface (Native JSON Output)](#openai-interface-native-json-output)
    - [OpenAI Interface (Native JSON Output with Repair)](#openai-interface-native-json-output-with-repair)
    - [Groq Interface (JSON Output with Repair)](#groq-interface-json-output-with-repair)
@@ -147,7 +150,32 @@ A valid message object typically includes the following properties:
 
 Different LLMs may have their own message object rules. For example, both Anthropic and Gemini always expect the initial message to have the `user` role. Please be aware of this and structure your message objects accordingly. _`llm-interface` will attempt to auto-correct invalid objects where possible._
 
-## Using the underlying classes
+## Accessing LLMInterface Variables
+
+### LLMInterface Get All Model Names
+
+`LLMInterface.getAllModelNames` can be used to fetch all known LLM providers. The results are returned as a simple array.
+
+#### Example
+
+```javascript
+const llmProviderArray = LLMInterface.getAllModelNames();
+```
+
+### LLMInterface Get Model Configuratiuon
+
+`LLMInterface.getModelConfigValue` retrieves a configuration value for a specified provider and key. Valid configKey values are `url`, `model.default`, `model.small`, and `model.large`.
+
+#### Example
+
+```javascript
+const llmProviderDetails = LLMInterface.getModelConfigValue(
+  provider,
+  configKey,
+);
+```
+
+## Using the Underlying Classes
 
 The `LLMInterfaceSendMessage` function is a wrapper for a set of underlying interface classes. The following are examples of direct class interactions using a message object.
 
@@ -1212,29 +1240,4 @@ openai
   .catch((error) => {
     console.error(error);
   });
-```
-
-## Accessing LLMInterface Variables
-
-### LLMInterface Get All Model Names
-
-`LLMInterface.getAllModelNames` can be used to fetch all known LLM providers. The results are returned as a simple array.
-
-#### Example
-
-```javascript
-const llmProviderArray = LLMInterface.getAllModelNames();
-```
-
-### LLMInterface Get Model Configuratiuon
-
-`LLMInterface.getModelConfigValue` retrieves a configuration value for a specified provider and key. Valid configKey values are `url`, `model.default`, `model.small`, and `model.large`.
-
-#### Example
-
-```javascript
-const llmProviderDetails = LLMInterface.getModelConfigValue(
-  provider,
-  configKey,
-);
 ```
