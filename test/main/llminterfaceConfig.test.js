@@ -6,14 +6,11 @@
 const { LLMInterface } = require('../../src/index.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-const { getConfig } = require('../../src/utils/configManager.js');
-const config = getConfig();
-
 let result;
 
 describe('LLMInterface.getAllModelNames', () => {
   test('should return an array of all model names, order not important', () => {
-    const modelNames = LLMInterface.getAllModelNames(config);
+    const modelNames = LLMInterface.getAllModelNames();
 
     const expectedModelNames = [
       'openai',

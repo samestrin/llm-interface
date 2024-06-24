@@ -17,12 +17,13 @@
     }
   },
   "anthropic": {
-    "url": "",
+    "url": "https://api.anthropic.com/v1/messages",
     "model": {
       "default": { "name": "claude-3-sonnet-20240229", "tokens": 200000 },
       "large": { "name": "claude-3-opus-20240229", "tokens": 200000 },
       "small": { "name": "claude-3-haiku-20240307", "tokens": 200000 }
-    }
+    },
+    "note": "api"
   },
   "azureai": {
     "url": "https://api.openai.azure.com/chat/completions",
