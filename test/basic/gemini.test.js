@@ -11,6 +11,7 @@ const {
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('Gemini Basic', () => {
   if (geminiApiKey) {
     let response;

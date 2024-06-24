@@ -10,7 +10,7 @@ const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
 const { getSimpleMessageObject } = require('../utils/utils.js');
 const { ai21ApiKey } = require('../config/config.js');
-const { getConfig } = require('../utils/configManager.js');
+const { getConfig } = require('../../src/utils/configManager.js');
 const config = getConfig();
 
 const log = require('loglevel');

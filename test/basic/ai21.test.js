@@ -10,6 +10,7 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
 describe('AI21 Basic', () => {
   if (ai21ApiKey) {
@@ -35,7 +36,9 @@ describe('AI21 Basic', () => {
         ],
       };
 
-      response = await ai21.sendMessage(message, options);
+      try { response = await ai21.sendMessage(message, options);} catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
       expect(typeof response).toStrictEqual('object');
     });
 
