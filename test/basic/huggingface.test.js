@@ -10,6 +10,7 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
 describe('HuggingFace Basic', () => {
   if (huggingfaceApiKey) {
@@ -39,8 +40,7 @@ describe('HuggingFace Basic', () => {
 
         expect(typeof response).toStrictEqual('object');
       } catch (error) {
-        console.error('Test failed:', error);
-        throw error;
+        throw new Error(`Test failed: ${safeStringify(error)}`);
       }
     }, 30000);
 

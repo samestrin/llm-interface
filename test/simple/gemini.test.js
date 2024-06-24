@@ -10,6 +10,8 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('Gemini Simple', () => {
   if (geminiApiKey) {
     let response;
@@ -20,8 +22,12 @@ describe('Gemini Simple', () => {
     test('API Client should send a message and receive a response', async () => {
       const gemini = new Gemini(geminiApiKey);
 
-      response = await gemini.sendMessage(simplePrompt, options);
-
+      try {
+        response = await gemini.sendMessage(simplePrompt, { ...options });
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
+      console.log(simplePrompt, options);
       expect(typeof response).toStrictEqual('object');
     });
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {

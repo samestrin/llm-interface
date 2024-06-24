@@ -1213,3 +1213,28 @@ openai
     console.error(error);
   });
 ```
+
+## Accessing LLMInterface Variables
+
+### LLMInterface Get All Model Names
+
+`LLMInterface.getAllModelNames` can be used to fetch all known LLM providers. The results are returned as a simple array.
+
+#### Example
+
+```javascript
+const llmProviderArray = LLMInterface.getAllModelNames();
+```
+
+### LLMInterface Get Model Configuratiuon
+
+`LLMInterface.getModelConfigValue` retrieves a configuration value for a specified provider and key. Valid configKey values are `url`, `model.default`, `model.small`, and `model.large`.
+
+#### Example
+
+```javascript
+const llmProviderDetails = LLMInterface.getModelConfigValue(
+  provider,
+  configKey,
+);
+```

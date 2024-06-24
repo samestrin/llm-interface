@@ -10,6 +10,8 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('Groq Basic', () => {
   if (groqApiKey) {
     let response;
@@ -33,7 +35,11 @@ describe('Groq Basic', () => {
           },
         ],
       };
-      response = await groq.sendMessage(message, options);
+      try {
+        response = await groq.sendMessage(message, options);
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
 
       expect(typeof response).toStrictEqual('object');
     });

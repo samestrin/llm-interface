@@ -10,6 +10,8 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('MistralAI Simple', () => {
   if (mistralaiApiKey) {
     let response;
@@ -25,7 +27,7 @@ describe('MistralAI Simple', () => {
 
         expect(typeof response).toStrictEqual('object');
       } catch (error) {
-        throw new Error(`Test failed: ${error}`);
+        throw new Error(`Test failed: ${safeStringify(error)}`);
       }
     }, 30000);
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {

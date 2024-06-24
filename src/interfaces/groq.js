@@ -6,14 +6,12 @@
  */
 
 const GroqSDK = require('groq-sdk');
-const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const {
-  returnMessageObject,
-  returnModelByAlias,
-} = require('../utils/utils.js');
+const { getMessageObject } = require('../utils/utils.js');
 const { groqApiKey } = require('../config/config.js');
-const config = require('../config/llmProviders.json');
+const { getConfig } = require('../utils/configManager.js');
+const config = getConfig();
 const log = require('loglevel');
 
 // Groq class for interacting with the Groq API
@@ -39,20 +37,21 @@ class Groq {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === 'string' ? returnMessageObject(message) : message;
+      typeof message === 'string' ? getMessageObject(message) : message;
     const cacheTimeoutSeconds =
       typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
     let { model } = messageObject;
-    const selectedModel = returnModelByAlias(this.interfaceName, model);
+    const selectedModel = getModelByAlias(this.interfaceName, model);
 
     // Set the model and default values
     model =
       selectedModel ||
       options.model ||
       config[this.interfaceName].model.default.name;
+
     const { max_tokens = 150 } = options;
 
     // Prepare the parameters for the API call

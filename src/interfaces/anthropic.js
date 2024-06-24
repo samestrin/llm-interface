@@ -6,14 +6,12 @@
  */
 
 const AnthropicSDK = require('@anthropic-ai/sdk');
-const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const {
-  returnSimpleMessageObject,
-  returnModelByAlias,
-} = require('../utils/utils.js');
+const { getSimpleMessageObject } = require('../utils/utils.js');
 const { anthropicApiKey } = require('../config/config.js');
-const config = require('../config/llmProviders.json');
+const { getConfig } = require('../utils/configManager.js');
+const config = getConfig();
 const log = require('loglevel');
 
 // Anthropic class for interacting with the Anthropic API
@@ -39,9 +37,7 @@ class Anthropic {
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     // Convert a string message to a simple message object
     const messageObject =
-      typeof message === 'string'
-        ? returnSimpleMessageObject(message)
-        : message;
+      typeof message === 'string' ? getSimpleMessageObject(message) : message;
     // Get the cache timeout value from interfaceOptions
     const cacheTimeoutSeconds =
       typeof interfaceOptions === 'number'
@@ -51,7 +47,7 @@ class Anthropic {
     // Extract model and messages from the message object
     const { model, messages } = messageObject;
     // Get the selected model based on alias or default
-    const selectedModel = returnModelByAlias(this.interfaceName, model);
+    const selectedModel = getModelByAlias(this.interfaceName, model);
     // Set default value for max_tokens
     const { max_tokens = 150 } = options;
 

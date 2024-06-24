@@ -6,9 +6,10 @@
  */
 
 const axios = require('axios');
-const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { adjustModelAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const config = require('../config/llmProviders.json');
+const { getConfig } = require('../utils/configManager.js');
+const config = getConfig();
 const log = require('loglevel');
 
 // LlamaCPP class for interacting with the LlamaCPP API

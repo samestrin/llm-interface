@@ -1,11 +1,12 @@
 {
   "openai": {
-    "url": "",
+    "url": "https://api.openai.com/v1/chat/completions",
     "model": {
       "default": { "name": "gpt-3.5-turbo", "tokens": 16385 },
       "large": { "name": "gpt-4o", "tokens": 128000 },
       "small": { "name": "davinci-002", "tokens": 16384 }
-    }
+    },
+    "note": "api"
   },
   "ai21": {
     "url": "https://api.ai21.com/studio/v1/chat/completions",
@@ -41,12 +42,13 @@
     }
   },
   "gemini": {
-    "url": "",
+    "url": "https://generativelanguage.googleapis.com/v1/models/",
     "model": {
       "default": { "name": "gemini-1.5-flash", "tokens": 1048576 },
       "large": { "name": "gemini-1.5-pro", "tokens": 1048576 },
       "small": { "name": "gemini-1.5-flash", "tokens": 1048576 }
-    }
+    },
+    "note": "api"
   },
   "gooseai": {
     "url": "https://api.goose.ai/v1/engines",
@@ -58,12 +60,13 @@
     "note": "url value is partial"
   },
   "groq": {
-    "url": "",
+    "url": "https://api.groq.com/v1/request_manager/text_completion",
     "model": {
       "default": { "name": "llama3-8b-8192", "tokens": 8192 },
       "large": { "name": "llama3-70b-8192", "tokens": 8192 },
       "small": { "name": "gemma-7b-it", "tokens": 8192 }
-    }
+    },
+    "note": "api"
   },
   "huggingface": {
     "url": "https://api-inference.huggingface.co/models/",
@@ -136,7 +139,7 @@
       }
     }
   },
-  "friendli": {
+  "friendliai": {
     "url": "https://inference.friendli.ai/v1/chat/completions",
     "model": {
       "default": { "name": "mixtral-8x7b-instruct-v0-1", "tokens": 32768 },

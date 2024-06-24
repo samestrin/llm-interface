@@ -10,6 +10,8 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('OpenAI Simple', () => {
   if (openaiApiKey) {
     let response;
@@ -20,7 +22,11 @@ describe('OpenAI Simple', () => {
     test('API Client should send a message and receive a response', async () => {
       const openai = new OpenAI(openaiApiKey);
 
-      response = await openai.sendMessage(simplePrompt, options);
+      try {
+        response = await openai.sendMessage(simplePrompt, options);
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
       expect(typeof response).toStrictEqual('object');
     });
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {

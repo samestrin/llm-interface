@@ -10,6 +10,8 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('Perplexity Simple', () => {
   if (perplexityApiKey) {
     let response;
@@ -20,7 +22,11 @@ describe('Perplexity Simple', () => {
     test('API Client should send a message and receive a response', async () => {
       const perplixity = new Perplexity(perplexityApiKey);
 
-      response = await perplixity.sendMessage(simplePrompt, options);
+      try {
+        response = await perplixity.sendMessage(simplePrompt, options);
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
 
       expect(typeof response).toStrictEqual('object');
     });

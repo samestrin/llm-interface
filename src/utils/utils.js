@@ -3,8 +3,6 @@
  * @description Utility functions
  */
 
-const config = require('../config/llmProviders.json');
-
 /**
  * Returns a message object with the provided message and an optional system message.
  *
@@ -12,7 +10,7 @@ const config = require('../config/llmProviders.json');
  * @param {string} [systemMessage="You are a helpful assistant."] - The system's message.
  * @returns {Object} The message object.
  */
-function returnMessageObject(
+function getMessageObject(
   message,
   systemMessage = 'You are a helpful assistant.',
 ) {
@@ -36,7 +34,7 @@ function returnMessageObject(
  * @param {string} message - The user's message.
  * @returns {Object} The message object.
  */
-function returnSimpleMessageObject(message) {
+function getSimpleMessageObject(message) {
   return {
     messages: [
       {
@@ -47,25 +45,6 @@ function returnSimpleMessageObject(message) {
   };
 }
 
-/**
- * Returns the model name based on the provided alias.
- *
- * @param {string} provider - The name of the provider.
- * @param {string} model - The alias or name of the model.
- * @returns {string} The model name.
- */
-function returnModelByAlias(provider, model) {
-  if (
-    config[provider] &&
-    config[provider].model &&
-    config[provider].model[model] &&
-    config[provider].model[model].name
-  ) {
-    return config[provider].model[model].name;
-  }
-
-  return model;
-}
 let jsonrepairInstance = null;
 
 /**
@@ -110,8 +89,7 @@ async function parseJSON(json, attemptRepair) {
 }
 
 module.exports = {
-  returnMessageObject,
-  returnSimpleMessageObject,
-  returnModelByAlias,
+  getMessageObject,
+  getSimpleMessageObject,
   parseJSON,
 };

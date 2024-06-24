@@ -3,27 +3,14 @@
  * @description Entry point for the LLM interface module, dynamically loading LLMInterface for different LLM providers.
  */
 
-const modules = {
-  ai21: './interfaces/ai21',
-  anthropic: './interfaces/anthropic',
-  azureai: './interfaces/azureai',
-  cloudflareai: './interfaces/cloudflareai',
-  cohere: './interfaces/cohere',
-  fireworksai: './interfaces/fireworksai',
-  friendliai: './interfaces/friendliai',
-  gemini: './interfaces/gemini',
-  gooseai: './interfaces/gooseai',
-  groq: './interfaces/groq',
-  huggingface: './interfaces/huggingface',
-  llamacpp: './interfaces/llamacpp',
-  mistralai: './interfaces/mistralai',
-  openai: './interfaces/openai',
-  perplexity: './interfaces/perplexity',
-  rekaai: './interfaces/rekaai',
-  taskingai: './interfaces/taskingai',
-  telnyx: './interfaces/telnyx',
-  togetherai: './interfaces/togetherai',
-};
+const { getModelConfigValue, getAllModelNames } = require('./utils/config.js');
+const { getConfig } = require('./utils/configManager.js');
+const config = getConfig();
+
+const modules = Object.keys(config).reduce((acc, key) => {
+  acc[key] = `./interfaces/${key}`;
+  return acc;
+}, {});
 
 const LLMInterface = {};
 Object.keys(modules).forEach((key) => {
@@ -92,4 +79,8 @@ async function LLMInterfaceSendMessage(
   }
 }
 
-module.exports = { LLMInterface, LLMInterfaceSendMessage };
+// LLMInterface get functions
+LLMInterface.getAllModelNames = getAllModelNames;
+LLMInterface.getModelConfigValue = getModelConfigValue;
+
+module.exports = { LLMInterface, LLMInterfaceSendMessage, config };

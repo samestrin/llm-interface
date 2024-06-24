@@ -10,7 +10,9 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
 const axios = require('axios');
+
 describe('LlamaCPP Basic', () => {
   if (llamaURL) {
     let response;
@@ -52,7 +54,11 @@ describe('LlamaCPP Basic', () => {
           },
         ],
       };
-      response = await llamacpp.sendMessage(message, options);
+      try {
+        response = await llamacpp.sendMessage(message, options);
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
 
       expect(typeof response).toStrictEqual('object');
     }, 30000);

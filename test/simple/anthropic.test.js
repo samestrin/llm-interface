@@ -10,6 +10,8 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('Anthropic Simple', () => {
   if (anthropicApiKey) {
     let response;
@@ -24,7 +26,7 @@ describe('Anthropic Simple', () => {
         response = await anthropic.sendMessage(simplePrompt, options);
         expect(typeof response).toStrictEqual('object');
       } catch (error) {
-        throw new Error(`Test failed: ${error}`);
+        throw new Error(`Test failed: ${safeStringify(error)}`);
       }
     }, 30000);
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {

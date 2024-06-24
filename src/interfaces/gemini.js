@@ -6,15 +6,12 @@
  */
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const {
-  returnMessageObject,
-  returnModelByAlias,
-  parseJSON,
-} = require('../utils/utils.js');
+const { getMessageObject, parseJSON } = require('../utils/utils.js');
 const { geminiApiKey } = require('../config/config.js');
-const config = require('../config/llmProviders.json');
+const { getConfig } = require('../utils/configManager.js');
+const config = getConfig();
 const log = require('loglevel');
 
 // Gemini class for interacting with the Gemini API
@@ -75,14 +72,14 @@ class Gemini {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === 'string' ? returnMessageObject(message) : message;
+      typeof message === 'string' ? getMessageObject(message) : message;
     const cacheTimeoutSeconds =
       typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
     let { model } = messageObject;
-    const selectedModel = returnModelByAlias(this.interfaceName, model);
+    const selectedModel = getModelByAlias(this.interfaceName, model);
     let max_tokens = options.max_tokens || 150;
     let response_format = options.response_format || '';
 

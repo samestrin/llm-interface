@@ -6,17 +6,15 @@
  */
 
 const axios = require('axios');
-const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const {
-  returnSimpleMessageObject,
-  returnModelByAlias,
-} = require('../utils/utils.js');
+const { getSimpleMessageObject } = require('../utils/utils.js');
 const {
   cloudflareaiApiKey,
   cloudflareaiAccountId,
 } = require('../config/config.js');
-const config = require('../config/llmProviders.json');
+const { getConfig } = require('../utils/configManager.js');
+const config = getConfig();
 const log = require('loglevel');
 
 // CloudflareAI class for interacting with the CloudflareAI LLM API
@@ -49,9 +47,7 @@ class CloudflareAI {
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     // Convert a string message to a simple message object
     const messageObject =
-      typeof message === 'string'
-        ? returnSimpleMessageObject(message)
-        : message;
+      typeof message === 'string' ? getSimpleMessageObject(message) : message;
 
     // Get the cache timeout value from interfaceOptions
     const cacheTimeoutSeconds =
@@ -63,7 +59,7 @@ class CloudflareAI {
     const { model, lora, messages } = messageObject;
 
     // Get the selected model based on alias or default
-    let selectedModel = returnModelByAlias(this.interfaceName, model);
+    let selectedModel = getModelByAlias(this.interfaceName, model);
 
     // Set default values for temperature, max_tokens, stop_sequences, frequency_penalty, and presence_penalty
     const {

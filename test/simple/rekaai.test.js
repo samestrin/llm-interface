@@ -10,6 +10,8 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('RekaAI Simple', () => {
   if (rekaaiApiKey) {
     let response;
@@ -26,8 +28,7 @@ describe('RekaAI Simple', () => {
 
         expect(typeof response).toStrictEqual('object');
       } catch (error) {
-        console.error('Test failed:', error);
-        throw error;
+        throw new Error(`Test failed: ${safeStringify(error)}`);
       }
     }, 30000);
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {

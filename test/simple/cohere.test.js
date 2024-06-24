@@ -10,6 +10,8 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('Cohere Simple', () => {
   if (cohereApiKey) {
     let response;
@@ -20,8 +22,11 @@ describe('Cohere Simple', () => {
     test('API Client should send a message and receive a response', async () => {
       const cohere = new Cohere(cohereApiKey);
 
-      response = await cohere.sendMessage(simplePrompt, options);
-
+      try {
+        response = await cohere.sendMessage(simplePrompt, options);
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
       expect(typeof response).toStrictEqual('object');
     }, 30000);
 

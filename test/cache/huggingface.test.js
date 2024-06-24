@@ -1,3 +1,8 @@
+/**
+ * @file test/cache/huggingface.test.js
+ * @description Tests for the caching mechanism in the Hugging Face class.
+ */
+
 const HuggingFace = require('../../src/interfaces/huggingface.js');
 const { huggingfaceApiKey } = require('../../src/config/config.js');
 const {
@@ -24,11 +29,14 @@ describe('HuggingFace Caching', () => {
       ],
     };
 
-    const inputs = message.messages.map((msg) => msg.content).join(' ');
-    const cacheKey = JSON.stringify({
-      inputs: inputs,
-      parameters: { max_new_tokens: options.max_tokens },
-    });
+    const max_tokens = options.max_tokens;
+    const payload = {
+      model: message.model,
+      messages: message.messages,
+      parameters: { max_token: max_tokens },
+    };
+
+    const cacheKey = JSON.stringify(payload);
 
     const mockResponse = [{ generated_text: simplePrompt }];
 
@@ -42,9 +50,7 @@ describe('HuggingFace Caching', () => {
 
     test('API should return cached response if available', async () => {
       getFromCache.mockReturnValue(mockResponse[0].generated_text);
-
-      const testOptions = { ...options }; // Create a deep copy of options
-
+      const testOptions = { ...options };
       const response = await huggingface.sendMessage(message, testOptions, {
         cacheTimeoutSeconds: 60,
       });
@@ -55,38 +61,35 @@ describe('HuggingFace Caching', () => {
     });
 
     test('API should save response to cache if not cached', async () => {
+      const testOptions = { ...options };
+
       getFromCache.mockReturnValue(null);
-      saveToCache.mockImplementation(() => {});
 
-      huggingface.client.post = jest
-        .fn()
-        .mockResolvedValue({ data: mockResponse });
-
-      const testOptions = { ...options }; // Create a deep copy of options
-
+      const apiResponse = 'API response';
+      huggingface.client.post = jest.fn().mockResolvedValue({
+        data: { choices: [{ message: { content: apiResponse } }] },
+      });
       const response = await huggingface.sendMessage(message, testOptions, {
         cacheTimeoutSeconds: 60,
       });
 
       expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-      expect(huggingface.client.post).toHaveBeenCalledWith('gpt2', {
-        inputs: inputs,
-        parameters: { max_new_tokens: options.max_tokens }, // Ensure the correct value is expected
-      });
-      const expectedResult = { results: mockResponse[0].generated_text };
-      expect(response).toStrictEqual(expectedResult);
-      expect(saveToCache).toHaveBeenCalledWith(cacheKey, expectedResult, 60);
+      expect(response.results).toBe(apiResponse);
+      expect(saveToCache).toHaveBeenCalledWith(
+        cacheKey,
+        { results: apiResponse },
+        60,
+      );
     });
 
     test(
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {
+        const testOptions = { ...options };
         getFromCache.mockReturnValue(null);
         huggingface.client.post = jest
           .fn()
           .mockRejectedValue(new Error('API error'));
-
-        const testOptions = { ...options }; // Create a deep copy of options
 
         await expect(
           huggingface.sendMessage(message, testOptions, {

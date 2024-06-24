@@ -6,14 +6,12 @@
  */
 
 const axios = require('axios');
-const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const {
-  returnSimpleMessageObject,
-  returnModelByAlias,
-} = require('../utils/utils.js');
+const { getSimpleMessageObject } = require('../utils/utils.js');
 const { huggingfaceApiKey } = require('../config/config.js');
-const config = require('../config/llmProviders.json');
+const { getConfig } = require('../utils/configManager.js');
+const config = getConfig();
 const log = require('loglevel');
 
 // HuggingFace class for interacting with the Hugging Face API
@@ -43,16 +41,14 @@ class HuggingFace {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === 'string'
-        ? returnSimpleMessageObject(message)
-        : message;
+      typeof message === 'string' ? getSimpleMessageObject(message) : message;
     const cacheTimeoutSeconds =
       typeof interfaceOptions === 'number'
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
     let { model, messages } = messageObject;
-    const selectedModel = returnModelByAlias(this.interfaceName, model);
+    const selectedModel = getModelByAlias(this.interfaceName, model);
 
     // Set the model and default values
     model =

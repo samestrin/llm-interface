@@ -10,6 +10,8 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
 describe('GooseAI Simple', () => {
   if (gooseaiApiKey) {
     let response;
@@ -20,7 +22,11 @@ describe('GooseAI Simple', () => {
     test('API Client should send a message and receive a response', async () => {
       const goose = new GooseAI(gooseaiApiKey);
 
-      response = await goose.sendMessage(simplePrompt, options);
+      try {
+        response = await goose.sendMessage(simplePrompt, options);
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
 
       expect(typeof response).toStrictEqual('object');
     }, 30000);

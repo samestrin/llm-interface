@@ -10,6 +10,7 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
 describe('FireworksAI Basic', () => {
   if (fireworksaiApiKey) {
@@ -18,7 +19,7 @@ describe('FireworksAI Basic', () => {
     test('API Key should be set', () => {
       expect(typeof fireworksaiApiKey).toBe('string');
     });
-
+    jest;
     test('API Client should send a message and receive a response', async () => {
       const fireworksaiAI = new FireworksAI(fireworksaiApiKey);
       const message = {
@@ -35,7 +36,11 @@ describe('FireworksAI Basic', () => {
         ],
       };
 
-      response = await fireworksaiAI.sendMessage(message, options);
+      try {
+        response = await FireworksaiAI.sendMessage(message, options);
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
       expect(typeof response).toStrictEqual('object');
     });
 

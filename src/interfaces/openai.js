@@ -6,15 +6,12 @@
  */
 
 const { OpenAI: OpenAIClient } = require('openai');
-const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const {
-  returnMessageObject,
-  returnModelByAlias,
-  parseJSON,
-} = require('../utils/utils.js');
+const { getMessageObject, parseJSON } = require('../utils/utils.js');
 const { openaiApiKey } = require('../config/config.js');
-const config = require('../config/llmProviders.json');
+const { getConfig } = require('../utils/configManager.js');
+const config = getConfig();
 const log = require('loglevel');
 
 // OpenAI class for interacting with the OpenAI API
@@ -40,7 +37,7 @@ class OpenAI {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === 'string' ? returnMessageObject(message) : message;
+      typeof message === 'string' ? getMessageObject(message) : message;
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === 'number') {
       cacheTimeoutSeconds = interfaceOptions;
@@ -49,7 +46,7 @@ class OpenAI {
     }
 
     let { model, messages } = messageObject;
-    const selectedModel = returnModelByAlias(this.interfaceName, model);
+    const selectedModel = getModelByAlias(this.interfaceName, model);
 
     // Set the model and default values
     model =

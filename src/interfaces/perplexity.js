@@ -6,14 +6,12 @@
  */
 
 const axios = require('axios');
-const { adjustModelAlias } = require('../utils/adjustModelAlias.js');
+const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const {
-  returnMessageObject,
-  returnModelByAlias,
-} = require('../utils/utils.js');
+const { getMessageObject } = require('../utils/utils.js');
 const { perplexityApiKey } = require('../config/config.js');
-const config = require('../config/llmProviders.json');
+const { getConfig } = require('../utils/configManager.js');
+const config = getConfig();
 const log = require('loglevel');
 
 // Perplexity class for interacting with the Perplexity API
@@ -43,7 +41,7 @@ class Perplexity {
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
-      typeof message === 'string' ? returnMessageObject(message) : message;
+      typeof message === 'string' ? getMessageObject(message) : message;
     let cacheTimeoutSeconds;
     if (typeof interfaceOptions === 'number') {
       cacheTimeoutSeconds = interfaceOptions;
@@ -54,7 +52,7 @@ class Perplexity {
     let { model, messages } = messageObject;
 
     // Get the selected model based on alias or default
-    model = returnModelByAlias(this.interfaceName, model);
+    model = getModelByAlias(this.interfaceName, model);
 
     // Set the model and default values
     model =

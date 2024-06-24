@@ -10,6 +10,7 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
 describe('AI21 Simple', () => {
   if (ai21ApiKey) {
@@ -20,8 +21,11 @@ describe('AI21 Simple', () => {
 
     test('API Client should send a message and receive a response', async () => {
       const ai21 = new AI21(ai21ApiKey);
-      response = await ai21.sendMessage(simplePrompt, options);
-
+      try {
+        response = await ai21.sendMessage(simplePrompt, options);
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
       expect(typeof response).toStrictEqual('object');
     });
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {

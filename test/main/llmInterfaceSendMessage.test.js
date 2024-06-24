@@ -4,8 +4,10 @@
  */
 
 const { LLMInterfaceSendMessage } = require('../../src/index.js');
-const config = require('../../src/config/config.js');
 const { simplePrompt, options } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
+
+let config = require('../../src/config/config.js');
 
 let modules = {
   openai: config.openaiApiKey,
@@ -23,6 +25,11 @@ let modules = {
   cloudflareai: [config.cloudflareaiApiKey, config.cloudflareaiAccountId],
   fireworksai: config.fireworksaiApiKey,
 };
+
+const { getConfig } = require('../../src/utils/configManager.js');
+config = getConfig();
+
+let response;
 
 for (let [module, apiKey] of Object.entries(modules)) {
   if (apiKey) {
@@ -43,12 +50,16 @@ for (let [module, apiKey] of Object.entries(modules)) {
       }
 
       test(`API Client should send a message and receive a response`, async () => {
-        const response = await LLMInterfaceSendMessage(
-          module,
-          !accountId ? apiKey : [apiKey, accountId],
-          simplePrompt,
-          options,
-        );
+        try {
+          response = await LLMInterfaceSendMessage(
+            module,
+            !accountId ? apiKey : [apiKey, accountId],
+            simplePrompt,
+            options,
+          );
+        } catch (error) {
+          throw new Error(`Test failed: ${safeStringify(error)}`);
+        }
 
         expect(typeof response).toStrictEqual('object');
       }, 30000);

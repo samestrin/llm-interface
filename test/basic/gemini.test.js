@@ -10,6 +10,7 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
 describe('Gemini Basic', () => {
   if (geminiApiKey) {
     let response;
@@ -32,9 +33,13 @@ describe('Gemini Basic', () => {
           },
         ],
       };
-      response = await gemini.sendMessage(message, options);
+      try {
+        response = await gemini.sendMessage(message, options);
 
-      expect(typeof response).toStrictEqual('object');
+        expect(typeof response).toStrictEqual('object');
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
     });
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);

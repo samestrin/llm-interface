@@ -13,6 +13,7 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
 describe('CloudflareAI Basic', () => {
   if (cloudflareaiApiKey) {
@@ -41,7 +42,11 @@ describe('CloudflareAI Basic', () => {
         ],
       };
 
-      response = await cloudflareai.sendMessage(message, options);
+      try {
+        response = await cloudflareai.sendMessage(message, options);
+      } catch (error) {
+        throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
 
       expect(typeof response).toStrictEqual('object');
     }, 30000);

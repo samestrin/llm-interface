@@ -10,7 +10,7 @@ const {
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
-const { safeStringify } = require('../../src/utils/jestSerializer.js'); // Adjust the path if necessary
+const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
 describe('Anthropic Basic', () => {
   if (anthropicApiKey) {
