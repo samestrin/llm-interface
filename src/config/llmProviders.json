@@ -92,7 +92,7 @@
     "model": {
       "default": { "name": "mistral-large-latest", "tokens": 32768 },
       "large": { "name": "mistral-large-latest", "tokens": 32768 },
-      "small": { "name": "mistralai-small", "tokens": 32768 }
+      "small": { "name": "mistral-small-latest", "tokens": 32768 }
     }
   },
   "perplexity": {
