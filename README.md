@@ -84,13 +84,13 @@ then send your prompt to the LLM provider of your choice:
 
 ```javascript
 try {
-  const response = LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, 'Explain the importance of low latency LLMs.', { max_tokens: 150 });
+  const response = LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, 'Explain the importance of low latency LLMs.');
 } catch (error) {
   console.error(error);
 }
 ```
 
-or if you'd like to chat, use the message object.
+or if you'd like to chat, use the message object. You can also pass through options such as `max_tokens`.
 
 ```javascript
 const message = {
@@ -107,10 +107,6 @@ try {
   console.error(error);
 }
 ```
-
-or if you want to keep things _simple_ you can use:
-
-
 
 If you need [API Keys](/docs/APIKEYS.md), use this [starting point](/docs/APIKEYS.md). Additional [usage examples](/docs/USAGE.md) and an [API reference](/docs/API.md) are available. You may also wish to review the [test cases](/test/) for further examples.
 
