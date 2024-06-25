@@ -13,7 +13,7 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 ## Features
 
 - **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with fifteen different LLM APIs.
-- **Dynamic Module Loading**: Automatically loads and manages different LLM LLMInterfaces.
+- **Dynamic Module Loading**: Automatically loads and manages LLMInterfaces on-demand, optimizing resources.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
 - **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
