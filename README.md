@@ -129,8 +129,10 @@ npm test
 #### Test Results (v2.0.0)
 
 ```bash
-Test Suites: 43 passed, 43 total
-Tests:       172 passed, 172 total
+Test Suites: 46 passed, 46 total
+Tests:       185 passed, 185 total
+Snapshots:   0 total
+Time:        61.064 s, estimated 64 s
 ```
 
 ## Contribute

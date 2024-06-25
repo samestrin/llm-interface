@@ -21,7 +21,7 @@ describe('FireworksAI Basic', () => {
     });
     jest;
     test('API Client should send a message and receive a response', async () => {
-      const fireworksaiAI = new FireworksAI(fireworksaiApiKey);
+      const fireworks = new FireworksAI(fireworksaiApiKey);
       const message = {
         model: 'accounts/fireworks/models/phi-3-mini-128k-instruct',
         messages: [
@@ -37,7 +37,7 @@ describe('FireworksAI Basic', () => {
       };
 
       try {
-        response = await FireworksaiAI.sendMessage(message, options);
+        response = await fireworks.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }

@@ -21,7 +21,7 @@ describe('MistralAI Basic', () => {
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const mistralai = new MistralAI(mistralaiApiKey);
+      const mistral = new MistralAI(mistralaiApiKey);
       const message = {
         model: 'mistral-large-latest',
         messages: [
@@ -33,7 +33,7 @@ describe('MistralAI Basic', () => {
         ],
       };
       try {
-        response = await mistralai.sendMessage(message, options);
+        response = await mistral.sendMessage(message, options);
 
         expect(typeof response).toStrictEqual('object');
       } catch (error) {

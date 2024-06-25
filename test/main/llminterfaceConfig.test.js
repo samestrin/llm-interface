@@ -29,6 +29,7 @@ describe('LLMInterface.getAllModelNames', () => {
       'cloudflareai',
       'fireworksai',
       'friendliai',
+      'watsonxai',
       // 'taskingai',
       // 'telnyx',
       // 'togetherai',

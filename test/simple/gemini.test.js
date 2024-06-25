@@ -27,7 +27,7 @@ describe('Gemini Simple', () => {
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-      console.log(simplePrompt, options);
+
       expect(typeof response).toStrictEqual('object');
     });
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
