@@ -31,7 +31,7 @@ LLM Interface project is a versatile and comprehensive wrapper designed to inter
 
 **v2.0.2**
 
-- **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked,minimizing resource usage.
+- **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **New LLM Providers**: Added support for Cloudflare AI, and Fireworks AI.
 - **JSON Consistency**: A breaking change has been introduced: all responses now return as valid JSON objects.
 - **JSON Repair**: Use `interfaceOptions.attemptJsonRepair` to repair invalid JSON responses when they occur.
