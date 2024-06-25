@@ -12,7 +12,7 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 ## Features
 
-- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with fifteen different LLM APIs.
+- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **fifteen** different LLM APIs.
 - **Dynamic Module Loading**: Automatically loads and manages LLMInterfaces on-demand, optimizing resources.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
@@ -83,6 +83,16 @@ import { LLMInterfaceSendMessage } from 'llm-interface';
 then send your prompt to the LLM provider of your choice:
 
 ```javascript
+try {
+  const response = LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, 'Explain the importance of low latency LLMs.', { max_tokens: 150 });
+} catch (error) {
+  console.error(error);
+}
+```
+
+or if you'd like to chat, use the message object.
+
+```javascript
 const message = {
   model: 'gpt-3.5-turbo',
   messages: [
@@ -91,32 +101,16 @@ const message = {
   ],
 };
 
-LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, message, {
-  max_tokens: 150,
-})
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+try {
+  const response = LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, message, { max_tokens: 150 });
+} catch (error) {
+  console.error(error);
+}
 ```
 
 or if you want to keep things _simple_ you can use:
 
-```javascript
-LLMInterfaceSendMessage(
-  'openai',
-  process.env.OPENAI_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
+
 
 If you need [API Keys](/docs/APIKEYS.md), use this [starting point](/docs/APIKEYS.md). Additional [usage examples](/docs/USAGE.md) and an [API reference](/docs/API.md) are available. You may also wish to review the [test cases](/test/) for further examples.
 
