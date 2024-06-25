@@ -22,7 +22,7 @@ When `default` or no model is passed, the system will use the default model for 
 
 - `default`: Jamba-Instruct (tokens: 256,000)
 - `large`: Jamba-Instruct (tokens: 256,000)
-- `small`: J2-Light (tokens: 2,048)
+- `small`: Jamba-Instruct (tokens: 256,000)
 
 ### Anthropic
 
