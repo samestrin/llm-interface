@@ -23,7 +23,7 @@ LLM Interface project is a versatile and comprehensive wrapper designed to inter
 
 **v2.0.6**
 
-- **New LLM Providers**: Added support for watsonx.ai
+- **New LLM Provider**: Added support for watsonx.ai.
 
 **v2.0.3**
 
@@ -31,7 +31,8 @@ LLM Interface project is a versatile and comprehensive wrapper designed to inter
 
 **v2.0.2**
 
-- **New LLM Providers**: Added support for Cloudflare AI, and Fireworks AI
+- **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked,minimizing resource usage.
+- **New LLM Providers**: Added support for Cloudflare AI, and Fireworks AI.
 - **JSON Consistency**: A breaking change has been introduced: all responses now return as valid JSON objects.
 - **JSON Repair**: Use `interfaceOptions.attemptJsonRepair` to repair invalid JSON responses when they occur.
 - **Improved Hugging Face Interface**: Refactored interface to support the undocumented chat completion endpoint.
