@@ -80,6 +80,16 @@ The Reka AI API requires a credit card, but currently comes with a $5 credit.
 
 - https://platform.reka.ai/apikeys
 
+## watsonx.ai
+
+The watsonx.ai API is a commercial service, but it offers a free tier of service without requiring a credit card.
+
+- https://cloud.ibm.com/iam/apikeys
+
+You will also need to setup a space and get the space id:
+
+https://dataplatform.cloud.ibm.com/ml-runtime/spaces/create-space
+
 ## LLaMA.cpp
 
 Instead of an API key, you'll need a URL to use LLaMA.cpp. This is provided by LLaMA.cpp HTTP Server.

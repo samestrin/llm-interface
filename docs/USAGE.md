@@ -9,6 +9,8 @@ The following guide was created to help you use `llm-interface` in your project.
    - [OpenAI: Simple Text Prompt, Default Model (Example 1)](#openai-simple-text-prompt-default-model-example-1)
    - [Gemini: Simple Text Prompt, Default Model, Cached (Example 2)](#gemini-simple-text-prompt-default-model-cached-example-2)
    - [Groq: Message Object Prompt, Default Model, Attempt JSON Repair (Example 3)](#groq-message-object-prompt-default-model-attempt-json-repair-example-3)
+   - [Cloudflare AI: Simple Prompt, Passing Account ID (Example 4)](#cloudflare-ai-simple-prompt-passing-account-id-example-4)
+   - [watsonx.ai: Simple Prompt, Passing Space ID (Example 5)](#watsonxai-simple-prompt-passing-space-id-example-5)
 3. [The Message Object](#the-message-object)
    - [Structure of a Message Object](#structure-of-a-message-object)
 4. [Accessing LLMInterface Variables](#accessing-llminterface-variables)
@@ -65,7 +67,33 @@ or the ES6 `import` syntax:
 import { LLMInterfaceSendMessage } from 'llm-interface';
 ```
 
-Then call call the `LLMInterfaceSendMessage` function. Here are a few examples:
+Then call call the `LLMInterfaceSendMessage` function. It expects the following arguments:
+
+- `provider` (string) - A valid LLM provider, the following are valid choices:
+  - ai21
+  - anthropic
+  - cloudflareai
+  - cohere
+  - fireworksai
+  - gemini
+  - gooseai
+  - groq
+  - huggingface
+  - llamacpp
+  - mistralai
+  - openai
+  - perplexity
+  - rekaai
+  - watsonxai
+- `key` (string or array) - A valid API key, or if the provider requires a secondary value such as Cloudflare AI's Account ID or watsonx.ai's Space ID, an array containing both values. The following would be valid:
+  - apiKey
+  - [apiKey,accountId]
+  - [apiKey,spaceId]
+- `message` (string or object) - A simple string containing a single prompt, or a complex object holding an entire conversation.
+- `options` (object) - An optional object that contains any LLM provider specific options you would like to pass through. This is also useful for specifying a max_tokens or model value.
+- `interfaceOptions` (object) - An optional object that contains llm-interface specific options such as the cacheTimeoutSeconds and retryAttempts.
+
+Here are a few examples:
 
 ### OpenAI: Simple Text Prompt, Default Model (Example 1)
 
@@ -137,9 +165,47 @@ LLMInterfaceSendMessage(
   });
 ```
 
+### Cloudflare AI: Simple Prompt, Passing Account ID (Example 4)
+
+Ask Cloudflare AI for a response using a message string with the default model.
+
+```javascript
+LLMInterfaceSendMessage(
+  'cloudflareai',
+  [process.env.CLOUDFLARE_API_KEY, process.env.CLOUDFLARE_ACCOUNT_ID],
+  'Explain the importance of low latency LLMs.',
+)
+  .then((response) => {
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### watsonx.ai: Simple Prompt, Passing Space ID (Example 5)
+
+Ask watsonx.ai for a response using a message string with the default model.
+
+```javascript
+LLMInterfaceSendMessage(
+  'watsonxai',
+  [process.env.WATSONXAI_API_KEY, process.env.WATSONXAI_SPACE_ID],
+  'Explain the importance of low latency LLMs.',
+)
+  .then((response) => {
+    console.log(response.results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+## Valid `LLMInterfaceSendMessage` function
+
 ## The Message Object
 
-The message object is a critical component when interacting with the various LLM APIs through the `llm-interface` package. It contains the data that will be sent to the LLM for processing. Below is a detailed explanation of a valid message object.
+The message object is a critical component when interacting with the various LLM APIs through the `llm-interface` package. It contains the data that will be sent to the LLM for processing and allows for complex conversations. Below is a detailed explanation of a valid message object.
 
 ### Structure of a Message Object
 

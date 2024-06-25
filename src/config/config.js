@@ -21,4 +21,7 @@ module.exports = {
   cloudflareaiApiKey: process.env.CLOUDFLARE_API_KEY,
   cloudflareaiAccountId: process.env.CLOUDFLARE_ACCOUNT_ID,
   fireworksaiApiKey: process.env.FIREWORKSAI_API_KEY,
+  watsonxaiApiKey: process.env.WATSONXSAI_API_KEY,
+  watsonxaiSpaceId: process.env.WATSONXSAI_SPACE_ID,
+  friendliaiApiKey: process.env.FRIENDLIAI_API_KEY,
 };

@@ -145,7 +145,15 @@
     "model": {
       "default": { "name": "mixtral-8x7b-instruct-v0-1", "tokens": 32768 },
       "large": { "name": "meta-llama-3-70b-instruct", "tokens": 8192 },
-      "small": { "name": "mistralai-7b-instruct-v0-2", "tokens": 4096 }
+      "small": { "name": "mistral-7b-instruct-v0-2", "tokens": 4096 }
+    }
+  },
+  "watsonxai": {
+    "url": "https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-02",
+    "model": {
+      "default": { "name": "meta-llama/llama-2-13b-chat", "tokens": 4096 },
+      "large": { "name": "meta-llama/llama-3-70b-instruct", "tokens": 8192 },
+      "small": { "name": "google/flan-t5-xxl", "tokens": 512 }
     }
   }
 }

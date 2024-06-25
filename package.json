@@ -1,6 +1,6 @@
 {
   "name": "llm-interface",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "main": "src/index.js",
   "description": "A simple, unified interface for integrating and interacting with multiple Large Language Model (LLM) APIs, including OpenAI, AI21 Studio, Anthropic, Cloudflare AI, Cohere, Fireworks AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Perplexity, Reka AI, and LLaMA.cpp.",
   "type": "commonjs",
