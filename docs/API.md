@@ -77,6 +77,7 @@ The following are supported LLM providers (in alphabetical order):
 - `openai` - OpenAI
 - `perplexity` - Perplexity
 - `rekaai` - Reka AI
+- `watsonxai` - watsonx.ai
 
 ## Underlying Classes
 
