@@ -1,28 +1,28 @@
 /**
- * @file src/interfaces/friendliai.js
- * @class Friendli
- * @description Wrapper class for the FriendliAI API.
- * @param {string} apiKey - The API key for the FriendliAI API.
+ * @file src/interfaces/nvidia.js
+ * @class NVIDIA
+ * @description Wrapper class for the NVIDIA API.
+ * @param {string} apiKey - The API key for the NVIDIA API.
  */
 
 const axios = require('axios');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
 const { getSimpleMessageObject, parseJSON } = require('../utils/utils.js');
-const { friendliApiKey } = require('../config/config.js');
+const { nvidiaApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
 const log = require('loglevel');
 
-// FriendliAI class for interacting with the FriendlyAI API
-class FriendliAI {
+// NVIDIA class for interacting with the NVIDIA API
+class NVIDIA {
   /**
-   * Constructor for the FriendlyAI class.
-   * @param {string} apiKey - The API key for the FriendlyAI API.
+   * Constructor for the NVIDIA class.
+   * @param {string} apiKey - The API key for the NVIDIA API.
    */
   constructor(apiKey) {
-    this.interfaceName = 'friendliai';
-    this.apiKey = apiKey || friendliApiKey;
+    this.interfaceName = 'nvidia';
+    this.apiKey = apiKey || nvidiaApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
@@ -33,11 +33,11 @@ class FriendliAI {
   }
 
   /**
-   * Send a message to the FriendlyAI API.
+   * Send a message to the NVIDIA API.
    * @param {string|object} message - The message to send or a message object.
    * @param {object} options - Additional options for the API request.
    * @param {object} interfaceOptions - Options specific to the interface.
-   * @returns {string} The response content from the FriendlyAI API.
+   * @returns {string} The response content from the NVIDIA API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     // Convert a string message to a simple message object
@@ -97,7 +97,7 @@ class FriendliAI {
 
     while (retryAttempts >= 0) {
       try {
-        // Send the request to the FriendlyAI API
+        // Send the request to the NVIDIA API
         const response = await this.client.post('', requestBody);
 
         // Extract the response content from the API response
@@ -158,6 +158,6 @@ class FriendliAI {
 }
 
 // Adjust model alias for backwards compatibility
-FriendliAI.prototype.adjustModelAlias = adjustModelAlias;
+NVIDIA.prototype.adjustModelAlias = adjustModelAlias;
 
-module.exports = FriendliAI;
+module.exports = NVIDIA;

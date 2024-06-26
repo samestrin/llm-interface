@@ -1,28 +1,30 @@
+/* The DeepInfra class is a wrapper for interacting with the DeepInfra API, allowing users to send
+messages and receive responses with options for caching and retry mechanisms. */
 /**
- * @file src/interfaces/friendliai.js
- * @class Friendli
- * @description Wrapper class for the FriendliAI API.
- * @param {string} apiKey - The API key for the FriendliAI API.
+ * @file src/interfaces/deepinfra.js
+ * @class DeepInfra
+ * @description Wrapper class for the DeepInfra API.
+ * @param {string} apiKey - The API key for the DeepInfra API.
  */
 
 const axios = require('axios');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getSimpleMessageObject, parseJSON } = require('../utils/utils.js');
-const { friendliApiKey } = require('../config/config.js');
+const { getMessageObject, parseJSON } = require('../utils/utils.js');
+const { deepinfraApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
 const log = require('loglevel');
 
-// FriendliAI class for interacting with the FriendlyAI API
-class FriendliAI {
+// DeepInfra class for interacting with the DeepInfra API
+class DeepInfra {
   /**
-   * Constructor for the FriendlyAI class.
-   * @param {string} apiKey - The API key for the FriendlyAI API.
+   * Constructor for the DeepInfra class.
+   * @param {string} apiKey - The API key for the DeepInfra API.
    */
   constructor(apiKey) {
-    this.interfaceName = 'friendliai';
-    this.apiKey = apiKey || friendliApiKey;
+    this.interfaceName = 'deepinfra';
+    this.apiKey = apiKey || deepinfraApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
@@ -33,16 +35,16 @@ class FriendliAI {
   }
 
   /**
-   * Send a message to the FriendlyAI API.
+   * Send a message to the DeepInfra API.
    * @param {string|object} message - The message to send or a message object.
    * @param {object} options - Additional options for the API request.
    * @param {object} interfaceOptions - Options specific to the interface.
-   * @returns {string} The response content from the FriendlyAI API.
+   * @returns {string} The response content from the DeepInfra API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     // Convert a string message to a simple message object
     const messageObject =
-      typeof message === 'string' ? getSimpleMessageObject(message) : message;
+      typeof message === 'string' ? getMessageObject(message) : message;
 
     // Get the cache timeout value from interfaceOptions
     const cacheTimeoutSeconds =
@@ -97,7 +99,7 @@ class FriendliAI {
 
     while (retryAttempts >= 0) {
       try {
-        // Send the request to the FriendlyAI API
+        // Send the request to the DeepInfra API
         const response = await this.client.post('', requestBody);
 
         // Extract the response content from the API response
@@ -158,6 +160,6 @@ class FriendliAI {
 }
 
 // Adjust model alias for backwards compatibility
-FriendliAI.prototype.adjustModelAlias = adjustModelAlias;
+DeepInfra.prototype.adjustModelAlias = adjustModelAlias;
 
-module.exports = FriendliAI;
+module.exports = DeepInfra;

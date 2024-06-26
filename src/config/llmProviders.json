@@ -136,7 +136,7 @@
       },
       "small": {
         "name": "accounts/fireworks/models/phi-3-mini-128k-instruct",
-        "tokens": 128000
+        "tokens": 4096
       }
     }
   },
@@ -154,6 +154,22 @@
       "default": { "name": "meta-llama/llama-2-13b-chat", "tokens": 4096 },
       "large": { "name": "meta-llama/llama-3-70b-instruct", "tokens": 8192 },
       "small": { "name": "google/flan-t5-xxl", "tokens": 512 }
+    }
+  },
+  "nvidia": {
+    "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+    "model": {
+      "default": { "name": "nvidia/llama3-chatqa-1.5-8b", "tokens": 4096 },
+      "large": { "name": "nvidia/nemotron-4-340b-instruct", "tokens": 4096 },
+      "small": { "name": "microsoft/phi-3-mini-128k-instruct", "tokens": 4096 }
+    }
+  },
+  "deepinfra": {
+    "url": "https://api.deepinfra.com/v1/openai/chat/completions",
+    "model": {
+      "default": { "name": "openchat/openchat-3.6-8b", "tokens": 8192 },
+      "large": { "name": "nvidia/nemotron-4-340b-instruct", "tokens": 4096 },
+      "small": { "name": "microsoft/WizardLM-2-7B", "tokens": 4096 }
     }
   }
 }

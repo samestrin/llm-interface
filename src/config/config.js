@@ -24,4 +24,6 @@ module.exports = {
   watsonxaiApiKey: process.env.WATSONXSAI_API_KEY,
   watsonxaiSpaceId: process.env.WATSONXSAI_SPACE_ID,
   friendliaiApiKey: process.env.FRIENDLIAI_API_KEY,
+  nvidiaApiKey: process.env.NVIDIA_API_KEY,
+  deepinfraApiKey: process.env.DEEPINFRA_API_KEY,
 };
