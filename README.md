@@ -13,7 +13,7 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 ## Features
 
 - **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **fifteen** different LLM APIs.
-- **Dynamic Module Loading**: Automatically loads and manages LLMInterfaces on-demand, optimizing resources.
+- **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
 - **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
@@ -33,7 +33,6 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 **v2.0.2**
 
-- **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **New LLM Providers**: Added support for Cloudflare AI, and Fireworks AI.
 - **JSON Consistency**: A breaking change has been introduced: all responses now return as valid JSON objects.
 - **JSON Repair**: Use `interfaceOptions.attemptJsonRepair` to repair invalid JSON responses when they occur.
