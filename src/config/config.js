@@ -26,4 +26,5 @@ module.exports = {
   friendliaiApiKey: process.env.FRIENDLIAI_API_KEY,
   nvidiaApiKey: process.env.NVIDIA_API_KEY,
   deepinfraApiKey: process.env.DEEPINFRA_API_KEY,
+  togetheraiApiKey: process.env.TOGETHERAI_API_KEY,
 };

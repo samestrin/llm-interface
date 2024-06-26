@@ -171,5 +171,19 @@
       "large": { "name": "nvidia/nemotron-4-340b-instruct", "tokens": 4096 },
       "small": { "name": "microsoft/WizardLM-2-7B", "tokens": 4096 }
     }
+  },
+  "togetherai": {
+    "url": "https://api.together.xyz/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "deepseek-ai/deepseek-llm-67b-chat",
+        "tokens": 4096
+      },
+      "large": {
+        "name": "NousResearch/Nous-Hermes-2-Mixtral-8x22B-Instruct",
+        "tokens": 65536
+      },
+      "small": { "name": "Qwen/Qwen1.5-0.5B-Chat", "tokens": 32768 }
+    }
   }
 }
