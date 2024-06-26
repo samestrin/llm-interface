@@ -21,12 +21,12 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 - **JSON Output**: Simple to use native JSON output for OpenAI, Fireworks AI, and Gemini responses.
 - **JSON Repair**: Detect and repair invalid JSON responses. 
 
-## Latest Updates
+## Updates
 
 **v2.0.7**
 
-- **New LLM Provider**: Added support for FriendliAI
-- **Improved Test Coverage**: New FriendliAI, and watsonx.ai test cases
+- **New LLM Providers**: Added support for DeepInfra, FriendliAI, and NVIDIA
+- **Improved Test Coverage**: New DeepInfra, FriendliAI, NVIDIA, and watsonx.ai test cases
 
 **v2.0.6**
 

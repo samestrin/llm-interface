@@ -32,11 +32,21 @@ The Cohere API offers trial keys. Trial keys are rate-limited, and cannot be use
 
 - https://dashboard.cohere.com/api-keys
 
+## Deepinfra
+
+The Deepinfra API is commercial but new accounts will start with a $1.80 credit.
+
 ## Fireworks AI
 
 The Fireworks AI API offers a free developer tier and commercial accounts. A Credit is not required for the free developer tier.
 
 - https://fireworks.ai/api-keys
+
+## Friendli AI
+
+The Friendli AI API is commercial but it comes with a $5 credit.
+
+- https://suite.friendli.ai/user-settings/tokens
 
 ## Gemini
 
@@ -67,6 +77,14 @@ The Hugging Face Inference API is currently free for rate-limited, non-commercia
 The MistralAI API is a commercial product, but it currently does not require a credit card, and comes with a $5.00 credit.
 
 - https://console.mistralai.ai/api-keys/
+
+## NVIDIA
+
+The NVIDIA API comes with 1000 credits, however they run out fast. To get an API key, first navigate to a model like:
+
+- https://build.nvidia.com/meta/llama3-70b
+
+Then click "Get API Key" on the right side of the page.
 
 ## Perplexity
 
