@@ -24,6 +24,7 @@ let modules = {
   perplexity: config.perplexityApiKey,
   cloudflareai: [config.cloudflareaiApiKey, config.cloudflareaiAccountId],
   fireworksai: config.fireworksaiApiKey,
+  watsonxai: [config.watsonxaiApiKey, config.watsonxaiSpaceId],
 };
 
 const { getConfig } = require('../../src/utils/configManager.js');
@@ -33,27 +34,27 @@ let response;
 
 for (let [module, apiKey] of Object.entries(modules)) {
   if (apiKey) {
-    let accountId = false;
+    let secondaryKey = false;
     if (Array.isArray(apiKey)) {
-      [apiKey, accountId] = apiKey;
+      [apiKey, secondaryKey] = apiKey;
     }
 
     describe(`LLMInterfaceSendMessage("${module}")`, () => {
-      test(`API Key should be set`, () => {
+      test(`API Key should be set (string)`, () => {
         expect(typeof apiKey).toBe('string');
       });
 
-      if (accountId) {
-        test(`Account ID should be set`, () => {
-          expect(typeof accountId).toBe('string');
+      if (secondaryKey) {
+        test(`Secondary Key (${module === 'cloudflareai' ? 'Account ID' : 'Space ID'}) should be set (string)`, () => {
+          expect(typeof secondaryKey).toBe('string');
         });
       }
 
-      test(`API Client should send a message and receive a response`, async () => {
+      test(`LLMInterfaceSendMessage should send a message and receive a response`, async () => {
         try {
           response = await LLMInterfaceSendMessage(
             module,
-            !accountId ? apiKey : [apiKey, accountId],
+            !secondaryKey ? apiKey : [apiKey, secondaryKey],
             simplePrompt,
             options,
           );
