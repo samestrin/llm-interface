@@ -21,10 +21,10 @@ class FriendliAI {
    * @param {string} apiKey - The API key for the Friendly AI API.
    */
   constructor(apiKey) {
-    this.interfaceName = 'friendli';
+    this.interfaceName = 'friendliai';
     this.apiKey = apiKey || friendliApiKey;
     this.client = axios.create({
-      baseURL: 'https://inference.friendli.ai/v1/chat/completions', // Friendli AI API base URL
+      baseURL: config[this.interfaceName].url,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.apiKey}`,
