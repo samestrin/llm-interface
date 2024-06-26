@@ -30,6 +30,8 @@ describe('LLMInterface.getAllModelNames', () => {
       'fireworksai',
       'friendliai',
       'watsonxai',
+      'nvidia',
+      'deepinfra',
       // 'taskingai',
       // 'telnyx',
       // 'togetherai',
