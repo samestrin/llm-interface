@@ -26,10 +26,10 @@ let modules = {
   fireworksai: config.fireworksaiApiKey,
   watsonxai: [config.watsonxaiApiKey, config.watsonxaiSpaceId],
   friendliai: config.friendliaiApiKey,
-  // nvidia: config.nvidiaApiKey,
+  //nvidia: config.nvidiaApiKey,
   deepinfra: config.deepinfraApiKey,
 };
-
+modules = { nvidia: config.nvidiaApiKey };
 const { getConfig } = require('../../src/utils/configManager.js');
 config = getConfig();
 
