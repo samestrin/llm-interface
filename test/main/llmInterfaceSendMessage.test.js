@@ -25,6 +25,7 @@ let modules = {
   cloudflareai: [config.cloudflareaiApiKey, config.cloudflareaiAccountId],
   fireworksai: config.fireworksaiApiKey,
   watsonxai: [config.watsonxaiApiKey, config.watsonxaiSpaceId],
+  friendliai: config.friendliaiApiKey,
 };
 
 const { getConfig } = require('../../src/utils/configManager.js');

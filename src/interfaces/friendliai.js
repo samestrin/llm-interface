@@ -105,11 +105,11 @@ class FriendliAI {
         if (
           response &&
           response.data &&
-          response.data.results &&
-          response.data.results[0] &&
-          response.data.results[0].generatedText
+          response.data.choices &&
+          response.data.choices[0] &&
+          response.data.choices[0].message
         ) {
-          responseContent = response.data.results[0].generatedText;
+          responseContent = response.data.choices[0].message.content;
         }
 
         // Attempt to repair the object if needed

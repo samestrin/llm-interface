@@ -143,9 +143,9 @@
   "friendliai": {
     "url": "https://inference.friendli.ai/v1/chat/completions",
     "model": {
-      "default": { "name": "mixtral-8x7b-instruct-v0-1", "tokens": 32768 },
+      "default": { "name": "mixtral-8x7b-instruct-v0-1", "tokens": 4096 },
       "large": { "name": "meta-llama-3-70b-instruct", "tokens": 8192 },
-      "small": { "name": "mistral-7b-instruct-v0-2", "tokens": 4096 }
+      "small": { "name": "meta-llama-3-8b-instruct", "tokens": 4096 }
     }
   },
   "watsonxai": {

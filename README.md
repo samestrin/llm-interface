@@ -2,26 +2,31 @@
 
 [![Star on GitHub](https://img.shields.io/github/stars/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/stargazers) [![Fork on GitHub](https://img.shields.io/github/forks/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/network/members) [![Watch on GitHub](https://img.shields.io/github/watchers/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/watchers)
 
-![Version 2.0.6](https://img.shields.io/badge/Version-2.0.6-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
+![Version 2.0.7](https://img.shields.io/badge/Version-2.0.7-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
 
 ## Introduction
 
-`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, Anthropic, Cloudflare AI, Cohere, Fireworks AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Perplexity, Reka AI, watsonx.ai, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
+`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, Anthropic, Cloudflare AI, Cohere, Fireworks AI, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Perplexity, Reka AI, watsonx.ai, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
 
 This goal of `llm-interface` is to provide a single, simple, unified interface for sending messages and receiving responses from different LLM services. This will make it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
 ## Features
 
-- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **fifteen** different LLM APIs.
-- **Dynamic Module Loading**: Automatically loads and manages LLMInterfaces on-demand, optimizing resources.
+- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **sixteen** different LLM APIs.
+- **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
 - **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
 - **Graceful Retries**: Automatically retry failed prompts with increasing delays to ensure successful responses.
 - **JSON Output**: Simple to use native JSON output for OpenAI, Fireworks AI, and Gemini responses.
-- **JSON Repair**: Detect and repair invalid JSON responses.
+- **JSON Repair**: Detect and repair invalid JSON responses. 
 
-## Updates
+## Latest Updates
+
+**v2.0.7**
+
+- **New LLM Provider**: Added support for FriendliAI
+- **Improved Test Coverage**: New FriendliAI, and watsonx.ai test cases
 
 **v2.0.6**
 
@@ -31,16 +36,6 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 - **New LLM Providers Functions**: `LLMInterface.getAllModelNames()` and `LLMInterface.getModelConfigValue(provider, configValueKey)`.
 
-**v2.0.2**
-
-- **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
-- **New LLM Providers**: Added support for Cloudflare AI, and Fireworks AI.
-- **JSON Consistency**: A breaking change has been introduced: all responses now return as valid JSON objects.
-- **JSON Repair**: Use `interfaceOptions.attemptJsonRepair` to repair invalid JSON responses when they occur.
-- **Improved Hugging Face Interface**: Refactored interface to support the undocumented chat completion endpoint.
-- **Interface Name Changes**:`reka` becomes `rekaai`, `goose` becomes `gooseai`, `mistral` becomes `mistralai`.
-- **Deprecated**: `handlers` has been removed.
-- **Updated LLM Model Definitions**: Revised `small` models for various providers.
 
 ## Dependencies
 
