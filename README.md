@@ -117,11 +117,13 @@ npm test
 #### Test Results (v2.0.0)
 
 ```bash
-Test Suites: 46 passed, 46 total
-Tests:       185 passed, 185 total
+Test Suites: 52 passed, 52 total
+Tests:       2 skipped, 215 passed, 217 total
 Snapshots:   0 total
-Time:        61.064 s, estimated 64 s
+Time:        76.236 s
 ```
+
+_Note: Currently skipping NVIDIA test cases due to API key limits._
 
 ## Contribute
 
