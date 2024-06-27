@@ -30,9 +30,11 @@ describe('LLMInterface.getAllModelNames', () => {
       'fireworksai',
       'friendliai',
       'watsonxai',
-      // 'taskingai',
-      // 'telnyx',
-      // 'togetherai',
+      'nvidia',
+      'deepinfra',
+      'togetherai',
+      'monsterapi',
+      'octoai',
     ];
 
     // Sort both arrays to ensure the order doesn't affect the comparison

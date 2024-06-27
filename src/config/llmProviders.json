@@ -136,16 +136,16 @@
       },
       "small": {
         "name": "accounts/fireworks/models/phi-3-mini-128k-instruct",
-        "tokens": 128000
+        "tokens": 4096
       }
     }
   },
   "friendliai": {
     "url": "https://inference.friendli.ai/v1/chat/completions",
     "model": {
-      "default": { "name": "mixtral-8x7b-instruct-v0-1", "tokens": 32768 },
+      "default": { "name": "mixtral-8x7b-instruct-v0-1", "tokens": 4096 },
       "large": { "name": "meta-llama-3-70b-instruct", "tokens": 8192 },
-      "small": { "name": "mistral-7b-instruct-v0-2", "tokens": 4096 }
+      "small": { "name": "meta-llama-3-8b-instruct", "tokens": 4096 }
     }
   },
   "watsonxai": {
@@ -154,6 +154,64 @@
       "default": { "name": "meta-llama/llama-2-13b-chat", "tokens": 4096 },
       "large": { "name": "meta-llama/llama-3-70b-instruct", "tokens": 8192 },
       "small": { "name": "google/flan-t5-xxl", "tokens": 512 }
+    }
+  },
+  "nvidia": {
+    "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+    "model": {
+      "default": { "name": "nvidia/llama3-chatqa-1.5-8b", "tokens": 4096 },
+      "large": { "name": "nvidia/nemotron-4-340b-instruct", "tokens": 4096 },
+      "small": { "name": "microsoft/phi-3-mini-128k-instruct", "tokens": 4096 }
+    }
+  },
+  "deepinfra": {
+    "url": "https://api.deepinfra.com/v1/openai/chat/completions",
+    "model": {
+      "default": { "name": "openchat/openchat-3.6-8b", "tokens": 8192 },
+      "large": { "name": "nvidia/nemotron-4-340b-instruct", "tokens": 4096 },
+      "small": { "name": "microsoft/WizardLM-2-7B", "tokens": 4096 }
+    }
+  },
+  "togetherai": {
+    "url": "https://api.together.xyz/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "deepseek-ai/deepseek-llm-67b-chat",
+        "tokens": 4096
+      },
+      "large": {
+        "name": "NousResearch/Nous-Hermes-2-Mixtral-8x22B-Instruct",
+        "tokens": 65536
+      },
+      "small": { "name": "Qwen/Qwen1.5-0.5B-Chat", "tokens": 32768 }
+    }
+  },
+  "monsterapi": {
+    "url": "https://llm.monsterapi.ai/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "microsoft/Phi-3-mini-4k-instruct",
+        "tokens": 4096
+      },
+      "large": {
+        "name": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "tokens": 4096
+      },
+      "small": { "name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0", "tokens": 2048 }
+    }
+  },
+  "octoai": {
+    "url": "https://text.octoai.run/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "mistral-7b-instruct",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "mixtral-8x22b-instruct",
+        "tokens": 65536
+      },
+      "small": { "name": "mistral-7b-instruct", "tokens": 32768 }
     }
   }
 }

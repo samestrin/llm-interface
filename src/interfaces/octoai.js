@@ -1,19 +1,19 @@
 /**
- * @file src/interfaces/friendliai.js
- * @class Friendli
- * @description Wrapper class for the FriendliAI API.
- * @param {string} apiKey - The API key for the FriendliAI API.
+ * @file src/interfaces/octoai.js
+ * @class OctoAI
+ * @description Wrapper class for the Together AI API.
+ * @param {string} apiKey - The API key for Together AI.
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { friendliApiKey } = require('../config/config.js');
+const { togetherAIApiKey } = require('../config/config.js');
 const { getSimpleMessageObject } = require('../utils/utils.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
 
-class FriendliAI extends BaseInterface {
+class OctoAI extends BaseInterface {
   constructor(apiKey) {
-    super('friendliai', apiKey || friendliApiKey, config['friendliai'].url);
+    super('octoai', apiKey || togetherAIApiKey, config['octoai'].url);
   }
 
   createMessageObject(message) {
@@ -23,4 +23,4 @@ class FriendliAI extends BaseInterface {
   }
 }
 
-module.exports = FriendliAI;
+module.exports = OctoAI;

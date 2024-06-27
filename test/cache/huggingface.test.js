@@ -33,7 +33,7 @@ describe('HuggingFace Caching', () => {
     const payload = {
       model: message.model,
       messages: message.messages,
-      parameters: { max_token: max_tokens },
+      max_tokens: max_tokens,
     };
 
     const cacheKey = JSON.stringify(payload);

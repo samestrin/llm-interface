@@ -1,10 +1,10 @@
 /**
- * @file test/basic/ai21.test.js
- * @description Tests for the AI21 Studio API client.
+ * @file test/basic/deepinfra.test.js
+ * @description Tests for the DeepInfra API client.
  */
 
-const AI21 = require('../../src/interfaces/ai21.js');
-const { ai21ApiKey } = require('../../src/config/config.js');
+const TogetherAI = require('../../src/interfaces/togetherai.js');
+const { togetheraiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,23 +12,19 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('AI21 Basic', () => {
-  if (ai21ApiKey) {
+describe('TogetherAI Basic', () => {
+  if (togetheraiApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof ai21ApiKey).toBe('string');
+      expect(typeof togetheraiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const ai21 = new AI21(ai21ApiKey);
+      const togetherai = new TogetherAI(togetheraiApiKey);
       const message = {
-        model: 'jamba-instruct',
+        model: 'Qwen/Qwen1.5-0.5B-Chat',
         messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
           {
             role: 'user',
             content: simplePrompt,
@@ -37,7 +33,7 @@ describe('AI21 Basic', () => {
       };
 
       try {
-        response = await ai21.sendMessage(message, options);
+        response = await togetherai.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }

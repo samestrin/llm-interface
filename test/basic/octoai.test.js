@@ -1,10 +1,10 @@
 /**
- * @file test/basic/ai21.test.js
- * @description Tests for the AI21 Studio API client.
+ * @file test/basic/octoai.test.js
+ * @description Tests for the OctoAI Studio API client.
  */
 
-const AI21 = require('../../src/interfaces/ai21.js');
-const { ai21ApiKey } = require('../../src/config/config.js');
+const OctoAI = require('../../src/interfaces/octoai.js');
+const { octoaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,18 +12,18 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('AI21 Basic', () => {
-  if (ai21ApiKey) {
+describe('OctoAI Basic', () => {
+  if (octoaiApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof ai21ApiKey).toBe('string');
+      expect(typeof octoaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const ai21 = new AI21(ai21ApiKey);
+      const octoai = new OctoAI(octoaiApiKey);
       const message = {
-        model: 'jamba-instruct',
+        model: 'mistral-7b-instruct',
         messages: [
           {
             role: 'system',
@@ -37,7 +37,7 @@ describe('AI21 Basic', () => {
       };
 
       try {
-        response = await ai21.sendMessage(message, options);
+        response = await octoai.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
