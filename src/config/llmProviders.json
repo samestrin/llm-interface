@@ -185,5 +185,33 @@
       },
       "small": { "name": "Qwen/Qwen1.5-0.5B-Chat", "tokens": 32768 }
     }
+  },
+  "monsterapi": {
+    "url": "https://llm.monsterapi.ai/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "microsoft/Phi-3-mini-4k-instruct",
+        "tokens": 4096
+      },
+      "large": {
+        "name": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "tokens": 4096
+      },
+      "small": { "name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0", "tokens": 2048 }
+    }
+  },
+  "octoai": {
+    "url": "https://text.octoai.run/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "mistral-7b-instruct",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "mixtral-8x22b-instruct",
+        "tokens": 65536
+      },
+      "small": { "name": "mistral-7b-instruct", "tokens": 32768 }
+    }
   }
 }

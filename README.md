@@ -6,13 +6,13 @@
 
 ## Introduction
 
-`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, Anthropic, Cloudflare AI, Cohere, DeepInfra, Fireworks AI, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Perplexity, Reka AI, watsonx.ai, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
+`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, Anthropic, Cloudflare AI, Cohere, DeepInfra, Fireworks AI, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Monster API, Octo AI, Perplexity, Reka AI, watsonx.ai, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
 
 This goal of `llm-interface` is to provide a single, simple, unified interface for sending messages and receiving responses from different LLM services. This will make it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
 ## Features
 
-- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **seventeen** different LLM APIs.
+- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **nineteen** different LLM APIs.
 - **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
@@ -25,8 +25,8 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 **v2.0.7**
 
-- **New LLM Providers**: Added support for DeepInfra, FriendliAI, Together AI, and NVIDIA
-- **Improved Test Coverage**: New DeepInfra, FriendliAI, NVIDIA, and watsonx.ai test cases
+- **New LLM Providers**: Added support for DeepInfra, FriendliAI, Monster API, Octo AI, Together AI, and NVIDIA.
+- **Improved Test Coverage**: New DeepInfra, FriendliAI, Monster API, NVIDIA, Octo AI, Together AI, and watsonx.ai test cases.
 - **Refactor**: Improved support for OpenAI compatible APIs using new BaseInterface class.
 
 **v2.0.6**

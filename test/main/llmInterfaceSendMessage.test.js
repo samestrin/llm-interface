@@ -28,8 +28,15 @@ let modules = {
   friendliai: config.friendliaiApiKey,
   //nvidia: config.nvidiaApiKey,
   deepinfra: config.deepinfraApiKey,
+  togetherai: config.togetheraiApiKey,
+  monsterapi: config.monsterapiApiKey,
+  octoai: config.octoaiApiKey,
 };
-modules = { nvidia: config.nvidiaApiKey };
+
+modules = {
+  monsterapi: config.monsterapiApiKey,
+};
+
 const { getConfig } = require('../../src/utils/configManager.js');
 config = getConfig();
 
@@ -60,6 +67,7 @@ for (let [module, apiKey] of Object.entries(modules)) {
             !secondaryKey ? apiKey : [apiKey, secondaryKey],
             simplePrompt,
             options,
+            { retryAttempts: 1 },
           );
         } catch (error) {
           throw new Error(`Test failed: ${safeStringify(error)}`);

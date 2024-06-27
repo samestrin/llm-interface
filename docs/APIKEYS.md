@@ -44,7 +44,7 @@ The Fireworks AI API offers a free developer tier and commercial accounts. A Cre
 
 ## Friendli AI
 
-The Friendli AI API is commercial but it comes with a $5 credit.
+The Friendli AI API is commercial but it comes with a $5.00 credit.
 
 - https://suite.friendli.ai/user-settings/tokens
 
@@ -78,6 +78,12 @@ The MistralAI API is a commercial product, but it currently does not require a c
 
 - https://console.mistralai.ai/api-keys/
 
+## Monster API
+
+The Monster API is commercial but it comes with a free tier. You do not need to provide a credit card to get started.
+
+- https://monsterapi.ai/user/dashboard
+
 ## NVIDIA
 
 The NVIDIA API comes with 1000 credits, however they run out fast. To get an API key, first navigate to a model like:
@@ -85,6 +91,12 @@ The NVIDIA API comes with 1000 credits, however they run out fast. To get an API
 - https://build.nvidia.com/meta/llama3-70b
 
 Then click "Get API Key" on the right side of the page.
+
+## Octo AI
+
+The Octo AI API is commercial, but it comes with a $5.00 credit, and does not require a credit card.
+
+- https://octoai.cloud/settings
 
 ## Perplexity
 
@@ -94,9 +106,15 @@ The Perplexity API requires a credit cards.
 
 ## Reka AI
 
-The Reka AI API requires a credit card, but currently comes with a $5 credit.
+The Reka AI API requires a credit card, but currently comes with a $5.00 credit.
 
 - https://platform.reka.ai/apikeys
+
+## Together AI
+
+The Together API is commercial, but it did not require a credit card, and it came with a $5.00 credit.
+
+- https://api.together.xyz/settings/api-keys
 
 ## watsonx.ai
 
