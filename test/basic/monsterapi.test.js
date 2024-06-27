@@ -1,10 +1,10 @@
 /**
- * @file test/basic/ai21.test.js
- * @description Tests for the AI21 Studio API client.
+ * @file test/basic/monsterapi.test.js
+ * @description Tests for the MonsterAPI API client.
  */
 
-const AI21 = require('../../src/interfaces/ai21.js');
-const { ai21ApiKey } = require('../../src/config/config.js');
+const MonsterAPI = require('../../src/interfaces/monsterapi.js');
+const { monsterapiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,23 +12,19 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('AI21 Basic', () => {
-  if (ai21ApiKey) {
+describe('MonsterAPI Basic', () => {
+  if (monsterapiApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof ai21ApiKey).toBe('string');
+      expect(typeof monsterapiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const ai21 = new AI21(ai21ApiKey);
+      const monsterapi = new MonsterAPI(monsterapiApiKey);
       const message = {
-        model: 'jamba-instruct',
+        model: 'TinyLlama/TinyLlama-1.1B-Chat-v1.0',
         messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
           {
             role: 'user',
             content: simplePrompt,
@@ -37,7 +33,7 @@ describe('AI21 Basic', () => {
       };
 
       try {
-        response = await ai21.sendMessage(message, options);
+        response = await monsterapi.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
