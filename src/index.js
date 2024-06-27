@@ -3,7 +3,11 @@
  * @description Entry point for the LLM interface module, dynamically loading LLMInterface for different LLM providers.
  */
 
-const { getModelConfigValue, getAllModelNames } = require('./utils/config.js');
+const {
+  getModelConfigValue,
+  getAllModelNames,
+  setApiKey,
+} = require('./utils/config.js');
 const { getConfig } = require('./utils/configManager.js');
 const config = getConfig();
 
@@ -79,8 +83,52 @@ async function LLMInterfaceSendMessage(
   }
 }
 
+/**
+ * Sends a message to a specified LLM module and returns the response.
+ * Retrieves the API key from the configuration.
+ *
+ * @param {string} module - The name of the LLM module (e.g., "openai").
+ * @param {string} message - The message to send to the LLM.
+ * @param {object} [options={}] - Additional options for the message.
+ * @param {object} [interfaceOptions={}] - Options for initializing the interface.
+ * @returns {Promise<any>} - The response from the LLM.
+ * @throws {Error} - Throws an error if the module is not supported or if the API key is not provided.
+ */
+async function chatComplete(
+  module,
+  message,
+  options = {},
+  interfaceOptions = {},
+) {
+  if (!config[module] || !config[module].apiKey) {
+    throw new Error(
+      `Missing API key for LLM module: ${module} in config. Use LLMInterface.setApiKey('${module}', key) first.`,
+    );
+  }
+
+  const apiKey = config[module].apiKey;
+
+  return LLMInterfaceSendMessage(
+    module,
+    apiKey,
+    message,
+    options,
+    interfaceOptions,
+  );
+}
+
 // LLMInterface get functions
 LLMInterface.getAllModelNames = getAllModelNames;
 LLMInterface.getModelConfigValue = getModelConfigValue;
 
-module.exports = { LLMInterface, LLMInterfaceSendMessage, config };
+// LLMInterface set function
+LLMInterface.setApiKey = setApiKey;
+
+// LLMInterface chat function
+LLMInterface.chatComplete = chatComplete;
+
+module.exports = {
+  LLMInterface,
+  LLMInterfaceSendMessage,
+  config,
+};

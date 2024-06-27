@@ -7,6 +7,45 @@ const { getConfig, updateConfig } = require('./configManager.js');
 const config = getConfig();
 
 /**
+ * Sets the API key for a specified interface or multiple interfaces.
+ *
+ * @param {string|array} interfaceName - The name of the interface or an array of key-value pairs.
+ * @param {string} apiKey - The API key to set.
+ * @returns {boolean} - Returns true if the update was successful, otherwise false.
+ */
+
+function setApiKey(interfaceName, apiKey) {
+  if (!interfaceName) {
+    return false;
+  }
+  // check if we have an array of keys
+  if (Array.isArray(interfaceName)) {
+    let updated = 0;
+    // Loop through the object
+    Object.entries(interfaceName).forEach(([key, value]) => {
+      if (config[key] && value) {
+        config[key].apiKey = value;
+        updated++;
+      }
+    });
+    if (updated) {
+      updateConfig(config);
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    if (!config[interfaceName] || !apiKey) {
+      return false;
+    }
+
+    config[interfaceName].apiKey = apiKey;
+    updateConfig(config);
+    return true;
+  }
+}
+
+/**
  * Adjusts model alias values
  *
  * @param {string} interfaceName - The name of the interface.
@@ -117,4 +156,5 @@ module.exports = {
   getModelByAlias,
   getModelConfigValue,
   getAllModelNames,
+  setApiKey,
 };
