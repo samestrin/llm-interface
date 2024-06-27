@@ -1,10 +1,13 @@
 /**
- * @file test/basic/ai21.test.js
- * @description Tests for the AI21 Studio API client.
+ * @file test/interfaces/cloudflareai.test.js
+ * @description Tests for the CloudflareAI API client.
  */
 
-const AI21 = require('../../src/interfaces/ai21.js');
-const { ai21ApiKey } = require('../../src/config/config.js');
+const CloudflareAI = require('../../src/interfaces/cloudflareai.js');
+const {
+  cloudflareaiApiKey,
+  cloudflareaiAccountId,
+} = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,18 +15,21 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('AI21 Basic', () => {
-  if (ai21ApiKey) {
+describe('CloudflareAI Basic', () => {
+  if (cloudflareaiApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof ai21ApiKey).toBe('string');
+      expect(typeof cloudflareaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const ai21 = new AI21(ai21ApiKey);
+      const cloudflareai = new CloudflareAI(
+        cloudflareaiApiKey,
+        cloudflareaiAccountId,
+      );
       const message = {
-        model: 'jamba-instruct',
+        model: '@cf/meta/llama-3-8b-instruct', // Replace with the appropriate model name
         messages: [
           {
             role: 'system',
@@ -37,14 +43,15 @@ describe('AI21 Basic', () => {
       };
 
       try {
-        response = await ai21.sendMessage(message, options);
+        response = await cloudflareai.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-      expect(typeof response).toStrictEqual('object');
-    });
 
-    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(typeof response).toStrictEqual('object');
+    }, 30000);
+
+    test(`Response should be less than ${expectedMaxLength} characters`, () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {

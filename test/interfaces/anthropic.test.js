@@ -1,10 +1,10 @@
 /**
- * @file test/basic/deepinfra.test.js
- * @description Tests for the DeepInfra API client.
+ * @file test/interfaces/anthropic.test.js
+ * @description Tests for the Anthropic API client.
  */
 
-const DeepInfra = require('../../src/interfaces/deepinfra.js');
-const { deepinfraApiKey } = require('../../src/config/config.js');
+const Anthropic = require('../../src/interfaces/anthropic.js');
+const { anthropicApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,22 +12,26 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('DeepInfra Basic', () => {
-  if (deepinfraApiKey) {
+describe('Anthropic Basic', () => {
+  if (anthropicApiKey) {
     let response;
-
-    test('API Key should be set', () => {
-      expect(typeof deepinfraApiKey).toBe('string');
+    test('API Key should be set', async () => {
+      expect(typeof anthropicApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const deepinfra = new DeepInfra(deepinfraApiKey);
+      const anthropic = new Anthropic(anthropicApiKey);
       const message = {
-        model: 'microsoft/WizardLM-2-7B',
+        model: 'claude-3-opus-20240229',
         messages: [
           {
+            role: 'user',
+            content:
+              'You are a helpful assistant. Say OK if you understand and stop.',
+          },
+          {
             role: 'system',
-            content: 'You are a helpful assistant.',
+            content: 'OK',
           },
           {
             role: 'user',
@@ -37,12 +41,13 @@ describe('DeepInfra Basic', () => {
       };
 
       try {
-        response = await deepinfra.sendMessage(message, options);
+        response = await anthropic.sendMessage(message, options);
+
+        expect(typeof response).toStrictEqual('object');
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-      expect(typeof response).toStrictEqual('object');
-    });
+    }, 30000);
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);

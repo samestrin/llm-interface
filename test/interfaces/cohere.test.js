@@ -1,10 +1,10 @@
 /**
- * @file test/basic/anthropic.test.js
- * @description Tests for the Anthropic API client.
+ * @file test/interfaces/cohere.test.js
+ * @description Tests for the Cohere API client.
  */
 
-const Anthropic = require('../../src/interfaces/anthropic.js');
-const { anthropicApiKey } = require('../../src/config/config.js');
+const Cohere = require('../../src/interfaces/cohere.js');
+const { cohereApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,26 +12,26 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Anthropic Basic', () => {
-  if (anthropicApiKey) {
+describe('Cohere Basic', () => {
+  if (cohereApiKey) {
     let response;
+
     test('API Key should be set', async () => {
-      expect(typeof anthropicApiKey).toBe('string');
+      expect(typeof cohereApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const anthropic = new Anthropic(anthropicApiKey);
+      const cohere = new Cohere(cohereApiKey);
       const message = {
-        model: 'claude-3-opus-20240229',
+        model: 'command-r-plus',
         messages: [
           {
             role: 'user',
-            content:
-              'You are a helpful assistant. Say OK if you understand and stop.',
+            content: 'Hello.',
           },
           {
             role: 'system',
-            content: 'OK',
+            content: 'You are a helpful assistant.',
           },
           {
             role: 'user',
@@ -39,16 +39,14 @@ describe('Anthropic Basic', () => {
           },
         ],
       };
-
       try {
-        response = await anthropic.sendMessage(message, options);
-
-        expect(typeof response).toStrictEqual('object');
+        response = await cohere.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-    }, 30000);
 
+      expect(typeof response).toStrictEqual('object');
+    }, 30000);
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });

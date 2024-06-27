@@ -1,13 +1,10 @@
 /**
- * @file test/basic/cloudflareai.test.js
- * @description Tests for the CloudflareAI API client.
+ * @file test/interfaces/perplexity.test.js
+ * @description Tests for the Perplexity API client.
  */
 
-const CloudflareAI = require('../../src/interfaces/cloudflareai.js');
-const {
-  cloudflareaiApiKey,
-  cloudflareaiAccountId,
-} = require('../../src/config/config.js');
+const Perplexity = require('../../src/interfaces/perplexity.js');
+const { perplexityApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -15,21 +12,18 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('CloudflareAI Basic', () => {
-  if (cloudflareaiApiKey) {
+describe('Perplexity Basic', () => {
+  if (perplexityApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof cloudflareaiApiKey).toBe('string');
+      expect(typeof perplexityApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const cloudflareai = new CloudflareAI(
-        cloudflareaiApiKey,
-        cloudflareaiAccountId,
-      );
+      const perplixity = new Perplexity(perplexityApiKey);
       const message = {
-        model: '@cf/meta/llama-3-8b-instruct', // Replace with the appropriate model name
+        model: 'llama-3-sonar-small-32k-online',
         messages: [
           {
             role: 'system',
@@ -41,17 +35,16 @@ describe('CloudflareAI Basic', () => {
           },
         ],
       };
-
       try {
-        response = await cloudflareai.sendMessage(message, options);
+        response = await perplixity.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
 
       expect(typeof response).toStrictEqual('object');
-    }, 30000);
+    });
 
-    test(`Response should be less than ${expectedMaxLength} characters`, () => {
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {

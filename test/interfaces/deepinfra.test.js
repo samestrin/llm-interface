@@ -1,10 +1,10 @@
 /**
- * @file test/basic/reka.test.js
- * @description Tests for the Reka AI API client.
+ * @file test/interfaces/deepinfra.test.js
+ * @description Tests for the DeepInfra API client.
  */
 
-const RekaAI = require('../../src/interfaces/rekaai.js');
-const { rekaaiApiKey } = require('../../src/config/config.js');
+const DeepInfra = require('../../src/interfaces/deepinfra.js');
+const { deepinfraApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,27 +12,22 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('RekaAI Basic', () => {
-  if (rekaaiApiKey) {
+describe('DeepInfra Basic', () => {
+  if (deepinfraApiKey) {
     let response;
 
-    test('API Key should be set', async () => {
-      expect(typeof rekaaiApiKey).toBe('string');
+    test('API Key should be set', () => {
+      expect(typeof deepinfraApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const reka = new RekaAI(rekaaiApiKey);
+      const deepinfra = new DeepInfra(deepinfraApiKey);
       const message = {
-        model: 'reka-core',
+        model: 'microsoft/WizardLM-2-7B',
         messages: [
           {
-            role: 'user',
-            content:
-              'You are a helpful assistant. Say OK if you understand and stop.',
-          },
-          {
             role: 'system',
-            content: 'OK',
+            content: 'You are a helpful assistant.',
           },
           {
             role: 'user',
@@ -40,13 +35,14 @@ describe('RekaAI Basic', () => {
           },
         ],
       };
+
       try {
-        response = await reka.sendMessage(message, options);
-        expect(typeof response).toStrictEqual('object');
+        response = await deepinfra.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-    }, 30000);
+      expect(typeof response).toStrictEqual('object');
+    });
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);

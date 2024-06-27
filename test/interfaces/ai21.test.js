@@ -1,10 +1,10 @@
 /**
- * @file test/basic/groq.test.js
- * @description Tests for the Groq API client.
+ * @file test/interfaces/ai21.test.js
+ * @description Tests for the AI21 Studio API client.
  */
 
-const Groq = require('../../src/interfaces/groq.js');
-const { groqApiKey } = require('../../src/config/config.js');
+const AI21 = require('../../src/interfaces/ai21.js');
+const { ai21ApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,19 +12,23 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Groq Basic', () => {
-  if (groqApiKey) {
+describe('AI21 Basic', () => {
+  if (ai21ApiKey) {
     let response;
 
-    test('API Key should be set', async () => {
-      expect(typeof groqApiKey).toBe('string');
+    test('API Key should be set', () => {
+      expect(typeof ai21ApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const groq = new Groq(groqApiKey);
+      const ai21 = new AI21(ai21ApiKey);
       const message = {
-        model: 'llama3-8b-8192',
+        model: 'jamba-instruct',
         messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.',
+          },
           {
             role: 'user',
             content: simplePrompt,
@@ -33,11 +37,10 @@ describe('Groq Basic', () => {
       };
 
       try {
-        response = await groq.sendMessage(message, options);
+        response = await ai21.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-
       expect(typeof response).toStrictEqual('object');
     });
 

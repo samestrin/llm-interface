@@ -1,10 +1,10 @@
 /**
- * @file test/basic/deepinfra.test.js
- * @description Tests for the DeepInfra API client.
+ * @file test/interfaces/friendliai.test.js
+ * @description Tests for the FriendliAI API client.
  */
 
-const TogetherAI = require('../../src/interfaces/togetherai.js');
-const { togetheraiApiKey } = require('../../src/config/config.js');
+const FriendliAI = require('../../src/interfaces/friendliai.js');
+const { friendliaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,18 +12,18 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('TogetherAI Basic', () => {
-  if (togetheraiApiKey) {
+describe('FriendliAI Basic', () => {
+  if (friendliaiApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof togetheraiApiKey).toBe('string');
+      expect(typeof friendliaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const togetherai = new TogetherAI(togetheraiApiKey);
+      const friendliai = new FriendliAI(friendliaiApiKey);
       const message = {
-        model: 'Qwen/Qwen1.5-0.5B-Chat',
+        model: 'meta-llama-3-8b-instruct',
         messages: [
           {
             role: 'user',
@@ -33,7 +33,7 @@ describe('TogetherAI Basic', () => {
       };
 
       try {
-        response = await togetherai.sendMessage(message, options);
+        response = await friendliai.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }

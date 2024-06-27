@@ -1,10 +1,10 @@
 /**
- * @file test/basic/cohere.test.js
- * @description Tests for the Cohere API client.
+ * @file test/interfaces/octoai.test.js
+ * @description Tests for the OctoAI Studio API client.
  */
 
-const Cohere = require('../../src/interfaces/cohere.js');
-const { cohereApiKey } = require('../../src/config/config.js');
+const OctoAI = require('../../src/interfaces/octoai.js');
+const { octoaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,23 +12,19 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Cohere Basic', () => {
-  if (cohereApiKey) {
+describe('OctoAI Basic', () => {
+  if (octoaiApiKey) {
     let response;
 
-    test('API Key should be set', async () => {
-      expect(typeof cohereApiKey).toBe('string');
+    test('API Key should be set', () => {
+      expect(typeof octoaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const cohere = new Cohere(cohereApiKey);
+      const octoai = new OctoAI(octoaiApiKey);
       const message = {
-        model: 'command-r-plus',
+        model: 'mistral-7b-instruct',
         messages: [
-          {
-            role: 'user',
-            content: 'Hello.',
-          },
           {
             role: 'system',
             content: 'You are a helpful assistant.',
@@ -39,14 +35,15 @@ describe('Cohere Basic', () => {
           },
         ],
       };
+
       try {
-        response = await cohere.sendMessage(message, options);
+        response = await octoai.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-
       expect(typeof response).toStrictEqual('object');
-    }, 30000);
+    });
+
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });

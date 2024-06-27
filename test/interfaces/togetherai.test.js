@@ -1,10 +1,10 @@
 /**
- * @file test/basic/octoai.test.js
- * @description Tests for the OctoAI Studio API client.
+ * @file test/interfaces/deepinfra.test.js
+ * @description Tests for the DeepInfra API client.
  */
 
-const OctoAI = require('../../src/interfaces/octoai.js');
-const { octoaiApiKey } = require('../../src/config/config.js');
+const TogetherAI = require('../../src/interfaces/togetherai.js');
+const { togetheraiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,23 +12,19 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('OctoAI Basic', () => {
-  if (octoaiApiKey) {
+describe('TogetherAI Basic', () => {
+  if (togetheraiApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof octoaiApiKey).toBe('string');
+      expect(typeof togetheraiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const octoai = new OctoAI(octoaiApiKey);
+      const togetherai = new TogetherAI(togetheraiApiKey);
       const message = {
-        model: 'mistral-7b-instruct',
+        model: 'Qwen/Qwen1.5-0.5B-Chat',
         messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
           {
             role: 'user',
             content: simplePrompt,
@@ -37,7 +33,7 @@ describe('OctoAI Basic', () => {
       };
 
       try {
-        response = await octoai.sendMessage(message, options);
+        response = await togetherai.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }

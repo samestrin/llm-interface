@@ -1,5 +1,5 @@
 /**
- * @file test/basic/llamacpp.test.js
+ * @file test/interfaces/llamacpp.test.js
  * @description Tests for the LlamaCPP API client.
  */
 

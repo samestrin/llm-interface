@@ -1,10 +1,10 @@
 /**
- * @file test/basic/perplexity.test.js
- * @description Tests for the Perplexity API client.
+ * @file test/interfaces/mistralai.test.js
+ * @description Tests for the MistralAI API client.
  */
 
-const Perplexity = require('../../src/interfaces/perplexity.js');
-const { perplexityApiKey } = require('../../src/config/config.js');
+const MistralAI = require('../../src/interfaces/mistralai.js');
+const { mistralaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,23 +12,20 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Perplexity Basic', () => {
-  if (perplexityApiKey) {
+describe('MistralAI Basic', () => {
+  if (mistralaiApiKey) {
     let response;
 
-    test('API Key should be set', () => {
-      expect(typeof perplexityApiKey).toBe('string');
+    test('API Key should be set', async () => {
+      expect(typeof mistralaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const perplixity = new Perplexity(perplexityApiKey);
+      const mistral = new MistralAI(mistralaiApiKey);
       const message = {
-        model: 'llama-3-sonar-small-32k-online',
+        model: 'mistral-large-latest',
         messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
+          { role: 'system', content: 'You are a helpful assistant.' },
           {
             role: 'user',
             content: simplePrompt,
@@ -36,13 +33,13 @@ describe('Perplexity Basic', () => {
         ],
       };
       try {
-        response = await perplixity.sendMessage(message, options);
+        response = await mistral.sendMessage(message, options);
+
+        expect(typeof response).toStrictEqual('object');
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-
-      expect(typeof response).toStrictEqual('object');
-    });
+    }, 30000);
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);

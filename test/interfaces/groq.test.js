@@ -1,10 +1,10 @@
 /**
- * @file test/basic/gemini.test.js
- * @description Tests for the Gemini API client.
+ * @file test/interfaces/groq.test.js
+ * @description Tests for the Groq API client.
  */
 
-const Gemini = require('../../src/interfaces/gemini.js');
-const { geminiApiKey } = require('../../src/config/config.js');
+const Groq = require('../../src/interfaces/groq.js');
+const { groqApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,36 +12,35 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Gemini Basic', () => {
-  if (geminiApiKey) {
+describe('Groq Basic', () => {
+  if (groqApiKey) {
     let response;
+
     test('API Key should be set', async () => {
-      expect(typeof geminiApiKey).toBe('string');
+      expect(typeof groqApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const gemini = new Gemini(geminiApiKey);
+      const groq = new Groq(groqApiKey);
       const message = {
-        model: 'gemini-1.5-flash',
+        model: 'llama3-8b-8192',
         messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
           {
             role: 'user',
             content: simplePrompt,
           },
         ],
       };
-      try {
-        response = await gemini.sendMessage(message, options);
 
-        expect(typeof response).toStrictEqual('object');
+      try {
+        response = await groq.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
+
+      expect(typeof response).toStrictEqual('object');
     });
+
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });

@@ -1,10 +1,10 @@
 /**
- * @file test/basic/friendliai.test.js
- * @description Tests for the FriendliAI API client.
+ * @file test/simple/aimlapi.test.js
+ * @description Simplified tests for the AIMLAPI AI API client.
  */
 
-const FriendliAI = require('../../src/interfaces/friendliai.js');
-const { friendliaiApiKey } = require('../../src/config/config.js');
+const AIMLAPI = require('../../src/interfaces/aimlapi.js');
+const { aimlapiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,35 +12,24 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('FriendliAI Basic', () => {
-  if (friendliaiApiKey) {
+describe('AIMLAPI Simple', () => {
+  if (aimlapiApiKey) {
     let response;
-
     test('API Key should be set', () => {
-      expect(typeof friendliaiApiKey).toBe('string');
+      expect(typeof aimlapiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const friendliai = new FriendliAI(friendliaiApiKey);
-      const message = {
-        model: 'meta-llama-3-8b-instruct',
-        messages: [
-          {
-            role: 'user',
-            content: simplePrompt,
-          },
-        ],
-      };
-
+      const aimlapi = new AIMLAPI(aimlapiApiKey);
       try {
-        response = await friendliai.sendMessage(message, options);
+        response = await aimlapi.sendMessage(simplePrompt, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
       expect(typeof response).toStrictEqual('object');
     });
-
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      console.log(response.results);
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
