@@ -40,7 +40,6 @@
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "flat-cache": "^5.0.0",
-    "groq-sdk": "^0.5.0",
     "jsonrepair": "^3.8.0",
     "loglevel": "^1.9.1"
   },

@@ -52,6 +52,16 @@ class BaseInterface {
   }
 
   /**
+   * Method to update the message object if needed.
+   * Can be overridden by derived classes to transform the message object.
+   * @param {object} messageObject - The message object to be updated.
+   * @returns {object} The updated message object.
+   */
+  updateMessageObject(messageObject) {
+    return messageObject; // Default implementation does nothing
+  }
+
+  /**
    * Method to construct the request URL, can be overridden by derived classes.
    * @param {string} model - The model to use for the request.
    * @returns {string} The request URL.
@@ -68,7 +78,11 @@ class BaseInterface {
    * @returns {string} The response content from the API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
-    const messageObject = this.createMessageObject(message);
+    let messageObject =
+      typeof message === 'string' ? this.createMessageObject(message) : message;
+
+    // Update the message object if needed
+    messageObject = this.updateMessageObject(messageObject);
 
     const cacheTimeoutSeconds =
       typeof interfaceOptions === 'number'
@@ -78,12 +92,7 @@ class BaseInterface {
     const { model, messages } = messageObject;
     const selectedModel = getModelByAlias(this.interfaceName, model);
 
-    const {
-      temperature = 0.7,
-      max_tokens = 150,
-      stop_sequences = [''],
-      response_format = '',
-    } = options;
+    const { max_tokens = 150, response_format = '' } = options;
 
     const requestBody = {
       model:
@@ -119,6 +128,7 @@ class BaseInterface {
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(url, requestBody);
+
         let responseContent = null;
         if (
           response &&

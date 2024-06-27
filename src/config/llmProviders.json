@@ -60,7 +60,7 @@
     "note": "url value is partial"
   },
   "groq": {
-    "url": "https://api.groq.com/v1/request_manager/text_completion",
+    "url": "https://api.groq.com/openai/v1/chat/completions",
     "model": {
       "default": { "name": "llama3-8b-8192", "tokens": 8192 },
       "large": { "name": "llama3-70b-8192", "tokens": 8192 },
