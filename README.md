@@ -37,7 +37,6 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 - **New LLM Providers Functions**: `LLMInterface.getAllModelNames()` and `LLMInterface.getModelConfigValue(provider, configValueKey)`.
 
-
 ## Dependencies
 
 The project relies on several npm packages and APIs. Here are the primary dependencies:
