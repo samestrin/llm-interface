@@ -26,15 +26,11 @@ let modules = {
   fireworksai: config.fireworksaiApiKey,
   watsonxai: [config.watsonxaiApiKey, config.watsonxaiSpaceId],
   friendliai: config.friendliaiApiKey,
-  //nvidia: config.nvidiaApiKey,
+  nvidia: config.nvidiaApiKey,
   deepinfra: config.deepinfraApiKey,
   togetherai: config.togetheraiApiKey,
   monsterapi: config.monsterapiApiKey,
   octoai: config.octoaiApiKey,
-};
-
-modules = {
-  monsterapi: config.monsterapiApiKey,
 };
 
 const { getConfig } = require('../../src/utils/configManager.js');
@@ -67,7 +63,7 @@ for (let [module, apiKey] of Object.entries(modules)) {
             !secondaryKey ? apiKey : [apiKey, secondaryKey],
             simplePrompt,
             options,
-            { retryAttempts: 1 },
+            { retryAttempts: 3 },
           );
         } catch (error) {
           throw new Error(`Test failed: ${safeStringify(error)}`);

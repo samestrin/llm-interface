@@ -34,8 +34,6 @@ describe('TogetherAI Basic', () => {
 
       try {
         response = await togetherai.sendMessage(message, options);
-        console.log(response);
-        console.log(response.results.length);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
