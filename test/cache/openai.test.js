@@ -19,7 +19,7 @@ describe('OpenAI Caching', () => {
     const openai = new OpenAI(openaiApiKey);
 
     const message = {
-      model: 'gpt-3.5-turbo-0613',
+      model: 'davinci-002',
       messages: [
         { role: 'system', content: 'You are a helpful assistant.' },
         {
@@ -61,8 +61,8 @@ describe('OpenAI Caching', () => {
       getFromCache.mockReturnValue(null);
 
       const apiResponse = 'API response';
-      openai.openai.chat.completions.create = jest.fn().mockResolvedValue({
-        choices: [{ message: { content: apiResponse } }],
+      openai.client.post = jest.fn().mockResolvedValue({
+        data: { choices: [{ message: { content: apiResponse } }] },
       });
 
       const response = await openai.sendMessage(message, options, {
@@ -77,11 +77,12 @@ describe('OpenAI Caching', () => {
         60,
       );
     });
+
     test(
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {
         getFromCache.mockReturnValue(null);
-        openai.openai.chat.completions.create = jest
+        openai.client.post = jest
           .fn()
           .mockRejectedValue(new Error('API error'));
 
@@ -92,7 +93,7 @@ describe('OpenAI Caching', () => {
         ).rejects.toThrow('API error');
 
         expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-        expect(saveToCache).not.toHaveBeenCalled();
+        expect(saveToCache).not.toHaveBeenCalled(); // Corrected usage
       }),
     );
   } else {
