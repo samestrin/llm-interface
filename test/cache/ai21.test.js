@@ -19,7 +19,7 @@ describe('AI21 Caching', () => {
     const ai21 = new AI21(ai21ApiKey);
 
     const message = {
-      model: 'j1-jumbo',
+      model: 'jamba-instruct',
       messages: [
         { role: 'system', content: 'You are a helpful assistant.' },
         {

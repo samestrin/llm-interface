@@ -2,7 +2,7 @@
 
 [![Star on GitHub](https://img.shields.io/github/stars/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/stargazers) [![Fork on GitHub](https://img.shields.io/github/forks/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/network/members) [![Watch on GitHub](https://img.shields.io/github/watchers/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/watchers)
 
-![Version 2.0.7](https://img.shields.io/badge/Version-2.0.7-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
+![Version 2.0.8](https://img.shields.io/badge/Version-2.0.8-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
 
 ## Introduction
 
@@ -23,6 +23,10 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 ## Updates
 
+**v2.0.8**
+
+- **Removing Dependencies**: The removal of OpenAI and Groq SDKs results in a smaller bundle, faster installs, and reduced complexity.
+
 **v2.0.7**
 
 - **New LLM Providers**: Added support for DeepInfra, FriendliAI, Monster API, Octo AI, Together AI, and NVIDIA.
@@ -33,10 +37,6 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 - **New LLM Provider**: Added support for watsonx.ai.
 
-**v2.0.3**
-
-- **New LLM Providers Functions**: `LLMInterface.getAllModelNames()` and `LLMInterface.getModelConfigValue(provider, configValueKey)`.
-
 ## Dependencies
 
 The project relies on several npm packages and APIs. Here are the primary dependencies:
@@ -44,8 +44,6 @@ The project relies on several npm packages and APIs. Here are the primary depend
 - `axios`: For making HTTP requests (used for various HTTP AI APIs).
 - `@anthropic-ai/sdk`: SDK for interacting with the Anthropic API.
 - `@google/generative-ai`: SDK for interacting with the Google Gemini API.
-- `groq-sdk`: SDK for interacting with the Groq API.
-- `openai`: SDK for interacting with the OpenAI API.
 - `dotenv`: For managing environment variables. Used by test cases.
 - `flat-cache`: For optionally caching API responses to improve performance and reduce redundant requests.
 - `jsonrepair`: Used to repair invalid JSON responses.
