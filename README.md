@@ -23,6 +23,9 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 ## Updates
 
+**v2.0.8**
+- **Removing Dependencies**: OpenAI
+
 **v2.0.7**
 
 - **New LLM Providers**: Added support for DeepInfra, FriendliAI, Monster API, Octo AI, Together AI, and NVIDIA.
@@ -32,10 +35,6 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 **v2.0.6**
 
 - **New LLM Provider**: Added support for watsonx.ai.
-
-**v2.0.3**
-
-- **New LLM Providers Functions**: `LLMInterface.getAllModelNames()` and `LLMInterface.getModelConfigValue(provider, configValueKey)`.
 
 ## Dependencies
 

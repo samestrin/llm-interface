@@ -5,8 +5,7 @@
       "default": { "name": "gpt-3.5-turbo", "tokens": 16385 },
       "large": { "name": "gpt-4o", "tokens": 128000 },
       "small": { "name": "davinci-002", "tokens": 16384 }
-    },
-    "note": "api"
+    }
   },
   "ai21": {
     "url": "https://api.ai21.com/studio/v1/chat/completions",
