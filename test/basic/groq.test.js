@@ -26,15 +26,12 @@ describe('Groq Basic', () => {
         model: 'llama3-8b-8192',
         messages: [
           {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
-          {
             role: 'user',
             content: simplePrompt,
           },
         ],
       };
+
       try {
         response = await groq.sendMessage(message, options);
       } catch (error) {
