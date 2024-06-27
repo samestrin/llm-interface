@@ -25,7 +25,7 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 **v2.0.8**
 
-- **Removing Dependencies**: OpenAI and Groq SDK are no longer required. 
+- **Removing Dependencies**: The removal of OpenAI and Groq SDKs results in a smaller bundle, faster installs, and reduced complexity.
 
 **v2.0.7**
 
