@@ -7,7 +7,7 @@
 
 const BaseInterface = require('./baseInterface.js');
 const { writerApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
+const { getSimpleMessageObject } = require('../utils/utils.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
 
@@ -17,7 +17,20 @@ class Writer extends BaseInterface {
   }
 
   createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    return typeof message === 'string'
+      ? getSimpleMessageObject(message)
+      : message;
+  }
+
+  updateMessageObject(message) {
+    const convertedMessages = message.messages.map((msg, index) => {
+      if (msg.role === 'system') {
+        return { ...msg, role: 'assistant' };
+      }
+      return { ...msg };
+    });
+    message.messages = convertedMessages;
+    return message;
   }
 }
 
