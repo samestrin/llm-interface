@@ -40,7 +40,7 @@ The DeepInfra API is commercial but new accounts will start with a $1.80 credit.
 
 ## DeepSeek
 
-The DeepSeek API is commercial and does will require a credit card.
+The DeepSeek API is commercial and required a credit card or debit card to get started.
 
 - https://platform.deepseek.com/api_keys
 
