@@ -23,6 +23,14 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 ## Updates
 
+**v2.0.9**
+
+- **New LLM Providers**: Added support for AIML API, DeepSeek, Forefront, and Writer.
+- **New LLMInterface Methods**: `LLMInterface.setApiKey`, `LLMInterface.chatComplete`, and `LLMInterface.sendMessage`.
+
+// LLMInterface chat functions
+ = chatComplete;
+LLMInterface.sendMessage = LLMInterfaceSendMessage;
 **v2.0.8**
 
 - **Removing Dependencies**: The removal of OpenAI and Groq SDKs results in a smaller bundle, faster installs, and reduced complexity.
@@ -32,10 +40,6 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 - **New LLM Providers**: Added support for DeepInfra, FriendliAI, Monster API, Octo AI, Together AI, and NVIDIA.
 - **Improved Test Coverage**: New DeepInfra, FriendliAI, Monster API, NVIDIA, Octo AI, Together AI, and watsonx.ai test cases.
 - **Refactor**: Improved support for OpenAI compatible APIs using new BaseInterface class.
-
-**v2.0.6**
-
-- **New LLM Provider**: Added support for watsonx.ai.
 
 ## Dependencies
 
