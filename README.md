@@ -2,7 +2,7 @@
 
 [![Star on GitHub](https://img.shields.io/github/stars/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/stargazers) [![Fork on GitHub](https://img.shields.io/github/forks/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/network/members) [![Watch on GitHub](https://img.shields.io/github/watchers/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/watchers)
 
-![Version 2.0.8](https://img.shields.io/badge/Version-2.0.8-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
+![Version 2.0.9](https://img.shields.io/badge/Version-2.0.9-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
 
 ## Introduction
 
@@ -27,7 +27,8 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 - **New LLM Providers**: Added support for AIML API (_currently not respecting option values_), DeepSeek, Forefront, Ollama, and Writer.
 - **New LLMInterface Methods**: `LLMInterface.setApiKey`, `LLMInterface.chatComplete`, and `LLMInterface.sendMessage`.
-- **New Beta Feature**: Streaming support available at interface class level for: AI21 Studio, AIML API, DeepInfra, DeepSeek, Fireworks AI, Forefront, FriendliAI, Groq, Hugging Face, Mistral AI, Monster API, NVIDIA, Octo AI, OpenAI, Perplexity, Together AI, and Writer. (Example: OpenAI.streamMessage(message, options))
+- **Beta Feature**: Streaming support available at the interface class level for: AI21 Studio, AIML API, DeepInfra, DeepSeek, Fireworks AI, FriendliAI, Groq, Hugging Face, LLaMa.CPP, Mistral AI, Monster API, NVIDIA,
+Octo AI, OpenAI, Perplexity, Together AI, and Writer.
 
 **v2.0.8**
 
