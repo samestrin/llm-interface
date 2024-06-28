@@ -6,20 +6,20 @@
 
 ## Introduction
 
-`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, Anthropic, Cloudflare AI, Cohere, DeepInfra, Fireworks AI, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Monster API, Octo AI, Perplexity, Reka AI, watsonx.ai, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
+`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, AIML API, Anthropic, Cloudflare AI, Cohere, DeepInfra, Fireworks AI, Forefront, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Monster API, Octo AI, Perplexity, Reka AI, watsonx.ai, Writer, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
 
 This goal of `llm-interface` is to provide a single, simple, unified interface for sending messages and receiving responses from different LLM services. This will make it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
 ## Features
 
-- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **19 different LLM APIs**.
+- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **22 different LLM APIs**.
 - **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
 - **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
 - **Graceful Retries**: Automatically retry failed prompts with increasing delays to ensure successful responses.
 - **JSON Output**: Simple to use native JSON output for OpenAI, Fireworks AI, and Gemini responses.
-- **JSON Repair**: Detect and repair invalid JSON responses. 
+- **JSON Repair**: Detect and repair invalid JSON responses.
 
 ## Updates
 
@@ -111,7 +111,7 @@ The project includes tests for each LLM handler. To run the tests, use the follo
 npm test
 ```
 
-#### Current Test Results 
+#### Current Test Results
 
 ```bash
 Test Suites: 52 passed, 52 total
