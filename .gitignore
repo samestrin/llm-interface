@@ -132,3 +132,4 @@ dist
 /src/cache
 .prettier*
 
+.DS_STORE
