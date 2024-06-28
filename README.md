@@ -6,13 +6,13 @@
 
 ## Introduction
 
-`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, AIML API, Anthropic, Cloudflare AI, Cohere, DeepInfra, Fireworks AI, Forefront, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Monster API, Octo AI, Perplexity, Reka AI, watsonx.ai, Writer, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
+`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, AIML API, Anthropic, Cloudflare AI, Cohere, DeepInfra, Fireworks AI, Forefront, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Monster API, Octo AI, Ollama, Perplexity, Reka AI, watsonx.ai, Writer, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
 
 This goal of `llm-interface` is to provide a single, simple, unified interface for sending messages and receiving responses from different LLM services. This will make it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
 ## Features
 
-- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **22 different LLM APIs**.
+- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **23 different LLM APIs** (21 hosted LLM providers and 2 local LLM providers).
 - **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
@@ -25,8 +25,9 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 **v2.0.9**
 
-- **New LLM Providers**: Added support for AIML API, DeepSeek, Forefront, and Writer.
+- **New LLM Providers**: Added support for AIML API (_currently not respecting option values_), DeepSeek, Forefront, Ollama, and Writer.
 - **New LLMInterface Methods**: `LLMInterface.setApiKey`, `LLMInterface.chatComplete`, and `LLMInterface.sendMessage`.
+- **New Beta Feature**: Streaming support available at interface class level for: AI21 Studio, AIML API, DeepInfra, DeepSeek, Fireworks AI, Forefront, FriendliAI, Groq, Hugging Face, Mistral AI, Monster API, NVIDIA, Octo AI, OpenAI, Perplexity, Together AI, and Writer. (Example: OpenAI.streamMessage(message, options))
 
 **v2.0.8**
 
