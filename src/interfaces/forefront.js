@@ -21,4 +21,5 @@ class Forefront extends BaseInterface {
   }
 }
 
+
 module.exports = Forefront;
