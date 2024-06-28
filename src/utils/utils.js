@@ -88,8 +88,19 @@ async function parseJSON(json, attemptRepair) {
   }
 }
 
+/**
+ * Returns a promise that resolves after a specified delay in milliseconds.
+ *
+ * @param {number} ms - The number of milliseconds to delay.
+ * @returns {Promise<void>} A promise that resolves after the delay.
+ */
+async function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 module.exports = {
   getMessageObject,
   getSimpleMessageObject,
   parseJSON,
+  delay,
 };

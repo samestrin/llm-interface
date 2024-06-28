@@ -1,10 +1,10 @@
 /**
- * @file test/simple/forefront.test.js
- * @description Simplified tests for the Forefront AI API client.
+ * @file test/simple/replicate.test.js
+ * @description Simplified tests for the Replicate API client.
  */
 
-const Forefront = require('../../src/interfaces/forefront.js');
-const { forefrontApiKey } = require('../../src/config/config.js');
+const Replicate = require('../../src/interfaces/replicate.js');
+const { replicateApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,17 +12,17 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Forefront Simple', () => {
-  if (forefrontApiKey) {
+describe('Replicate Simple', () => {
+  if (replicateApiKey) {
     let response;
     test('API Key should be set', () => {
-      expect(typeof forefrontApiKey).toBe('string');
+      expect(typeof replicateApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const forefront = new Forefront(forefrontApiKey);
+      const replicate = new Replicate(replicateApiKey);
       try {
-        response = await forefront.sendMessage(simplePrompt, options);
+        response = await replicate.sendMessage(simplePrompt, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }

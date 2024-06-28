@@ -31,4 +31,5 @@ module.exports = {
   octoaiApiKey: process.env.OCTOAI_API_KEY,
   aimlapiApiKey: process.env.AIMLAPI_API_KEY,
   forefrontApiKey: process.env.FOREFRONT_API_KEY,
+  replicateApiKey: process.env.REPLICATE_API_KEY,
 };

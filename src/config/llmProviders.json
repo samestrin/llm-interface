@@ -380,18 +380,18 @@
     }
   },
   "forefront": {
-    "url": "https://api.aimlapi.com/chat/completions",
+    "url": "https://api.forefront.ai/v1/chat/completions",
     "model": {
       "default": {
         "name": "forefront/Mistral-7B-Instruct-v0.2-chatml",
         "tokens": 16384
       },
       "large": {
-        "name": "forefront/Mistral-7B-Instruct-v0.1",
+        "name": "forefront/Mistral-7B-Instruct-v0.2-chatml",
         "tokens": 4096
       },
       "small": {
-        "name": "openchat/openchat-3.5-1210",
+        "name": "forefront/Mistral-7B-Instruct-v0.2-chatml",
         "tokens": 32768
       }
     }
@@ -431,19 +431,19 @@
     }
   },
   "replicate": {
-    "url": "https://api.replicate.com/v1/models/",
+    "url": "https://api.replicate.com/v1/models",
     "model": {
       "default": {
-        "name": "",
+        "name": "mistralai/mistral-7b-instruct-v0.2",
         "tokens": 32768
       },
       "large": {
-        "name": "",
+        "name": "meta/meta-llama-3-70b-instruct",
         "tokens": 32768
       },
       "small": {
-        "name": "",
-        "tokens": 32768
+        "name": "mixtral-8x7b-instruct-v0.1",
+        "tokens": 2048
       }
     }
   }

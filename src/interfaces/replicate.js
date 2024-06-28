@@ -1,27 +1,27 @@
 /**
- * @file src/interfaces/azureai.js
- * @class AzureAI
- * @description Wrapper class for the AzureAI API.
- * @param {string} apiKey - The API key for the AzureAI API.
+ * @file src/interfaces/replicate.js
+ * @class Replicate
+ * @description Wrapper class for the Replicate API.
+ * @param {string} apiKey - The API key for the Replicate API.
  */
 const axios = require('axios');
+const { delay } = require('../utils/utils.js');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { azureOpenAIApiKey } = require('../config/config.js');
+const { replicateOpenAIApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
 const log = require('loglevel');
 
-// AzureAI class for interacting with the Azure OpenAI API
-class AzureAI {
+// Replicate class for interacting with the Replicate API
+class Replicate {
   /**
-   * Constructor for the AzureAI class.
-   * @param {string} apiKey - The API key for the Azure OpenAI API.
+   * Constructor for the Replicate class.
+   * @param {string} apiKey - The API key for the Replicate API.
    */
   constructor(apiKey) {
-    this.interfaceName = 'azureai';
-    this.apiKey = apiKey || azureOpenAIApiKey;
+    this.interfaceName = 'replicate';
+    this.apiKey = apiKey || replicateOpenAIApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
@@ -32,17 +32,13 @@ class AzureAI {
   }
 
   /**
-   * Send a message to the Azure OpenAI API.
+   * Send a message to the Replicate API.
    * @param {string|object} message - The message to send or a message object.
    * @param {object} options - Additional options for the API request.
    * @param {object} interfaceOptions - Options specific to the interface.
-   * @returns {string} The response content from the Azure OpenAI API.
+   * @returns {string} The response content from the Replicate API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
-    // Convert a string message to a simple message object
-    const messageObject =
-      typeof message === 'string' ? getSimpleMessageObject(message) : message;
-
     // Get the cache timeout value from interfaceOptions
     const cacheTimeoutSeconds =
       typeof interfaceOptions === 'number'
@@ -50,34 +46,31 @@ class AzureAI {
         : interfaceOptions.cacheTimeoutSeconds;
 
     // Extract model and messages from the message object
-    const { model, messages } = messageObject;
+    const { model } = message;
 
     // Get the selected model based on alias or default
     const selectedModel = getModelByAlias(this.interfaceName, model);
 
     // Set default values for temperature, max_tokens, and stop_sequences
-    const {
-      temperature = 0.7,
-      max_tokens = 150,
-      stop_sequences = ['<|endoftext|>'],
-      response_format = '',
-    } = options;
+    const { max_tokens = 150 } = options;
+
+    // Format the prompt based on the input type
+    let prompt;
+    if (typeof message === 'string') {
+      prompt = message;
+    } else {
+      // Join message contents to format the prompt
+      prompt = message.messages.map((message) => message.content).join(' ');
+    }
 
     // Prepare the request body for the API call
     const requestBody = {
-      model:
-        selectedModel ||
-        options.model ||
-        config[this.interfaceName].model.default.name,
-      messages,
-      max_tokens,
-      ...options,
+      input: {
+        prompt,
+        max_new_tokens: max_tokens,
+        ...options,
+      },
     };
-
-    // Add response_format if specified
-    if (response_format) {
-      requestBody.response_format = { type: response_format };
-    }
 
     // Generate a cache key based on the request body
     const cacheKey = JSON.stringify(requestBody);
@@ -96,23 +89,23 @@ class AzureAI {
 
     while (retryAttempts >= 0) {
       try {
-        // Send the request to the Azure OpenAI API
+        // Send the request to the Replicate API
         const response = await this.client.post(
-          '?api-version=' + selectedModel,
+          `/${selectedModel}/predictions`,
           requestBody,
         );
 
         // Extract the response content from the API response
         let responseContent = null;
-        if (
-          response &&
-          response.data &&
-          response.data.results &&
-          response.data.results[0] &&
-          response.data.results[0].generatedText
-        ) {
-          responseContent = response.data.results[0].generatedText;
+        if (response.data && response.data.urls && response.data.urls.get) {
+          responseContent = await this.getPredictionData(
+            response.data.urls.get,
+            interfaceOptions,
+          );
         }
+
+        // Merge results array
+        responseContent = responseContent.join('');
 
         // Attempt to repair the object if needed
         if (interfaceOptions.attemptJsonRepair) {
@@ -143,17 +136,51 @@ class AzureAI {
 
         // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
 
-        // Wait for the specified delay before retrying
-        await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }
     }
   }
+
+  /**
+   * Get prediction data from a URL.
+   * @param {string} url - The URL to fetch the prediction data from.
+   * @returns {object} The prediction data.
+   */
+  async getPredictionData(url, interfaceOptions) {
+    let attempt = 0;
+    const maxAttempts = 5;
+    const baseDelay = 500;
+
+    while (attempt < maxAttempts) {
+      try {
+        const results = await this.client.get(url);
+        const status = results.data.status;
+
+        if (status === 'succeeded') {
+          return results.data.output;
+        } else if (status === 'failed' || status === 'canceled') {
+          return false;
+        } else if (status === 'starting' || status === 'processing') {
+          // Calculate the progressive delay
+          let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
+          const delayTime = (attempt + 1) * retryMultiplier * 1000;
+          await delay(delayTime);
+          attempt++;
+        }
+      } catch (error) {
+        console.error('Error fetching prediction data:', error);
+        return false;
+      }
+    }
+
+    return false;
+  }
 }
 
 // Adjust model alias for backwards compatibility
-AzureAI.prototype.adjustModelAlias = adjustModelAlias;
+Replicate.prototype.adjustModelAlias = adjustModelAlias;
 
-module.exports = AzureAI;
+module.exports = Replicate;

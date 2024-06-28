@@ -118,6 +118,14 @@ The Reka AI API requires a credit card, but currently comes with a $5.00 credit.
 
 - https://platform.reka.ai/apikeys
 
+## Replicate
+
+The Replicate API is commercial but it does offer a free tier that you can use without providing a credit card.
+
+- https://replicate.com/
+
+After you login, you will need to click "Dashboard", then "Run a model".
+
 ## Together AI
 
 The Together API is commercial, but it did not require a credit card, and it came with a $5.00 credit.

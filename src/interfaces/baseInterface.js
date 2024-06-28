@@ -107,7 +107,7 @@ class BaseInterface {
     if (response_format) {
       requestBody.response_format = { type: response_format };
     }
-    console.log(requestBody);
+
     const cacheKey = JSON.stringify(requestBody);
 
     if (cacheTimeoutSeconds) {
@@ -119,8 +119,8 @@ class BaseInterface {
 
     const url = this.getRequestUrl(
       selectedModel ||
-      options.model ||
-      config[this.interfaceName].model.default.name,
+        options.model ||
+        config[this.interfaceName].model.default.name,
     );
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
@@ -173,17 +173,17 @@ class BaseInterface {
     }
   }
 
-
   /**
-     * Stream a message to the API.
-     * @param {string|object} message - The message to send or a message object.
-     * @param {object} options - Additional options for the API request.
-     * @param {object} interfaceOptions - Options specific to the interface.
-     * @returns {Promise} The Axios response stream.
-     */
+   * Stream a message to the API.
+   * @param {string|object} message - The message to send or a message object.
+   * @param {object} options - Additional options for the API request.
+   * @param {object} interfaceOptions - Options specific to the interface.
+   * @returns {Promise} The Axios response stream.
+   */
   async streamMessage(message, options = {}, interfaceOptions = {}) {
     // Create the message object if a string is provided, otherwise use the provided object
-    let messageObject = typeof message === 'string' ? this.createMessageObject(message) : message;
+    let messageObject =
+      typeof message === 'string' ? this.createMessageObject(message) : message;
 
     // Update the message object if needed
     messageObject = this.updateMessageObject(messageObject);
@@ -197,7 +197,10 @@ class BaseInterface {
 
     // Construct the request body with model, messages, max_tokens, and additional options
     const requestBody = {
-      model: selectedModel || options.model || config[this.interfaceName].model.default.name,
+      model:
+        selectedModel ||
+        options.model ||
+        config[this.interfaceName].model.default.name,
       messages,
       max_tokens,
       ...options,
@@ -209,13 +212,16 @@ class BaseInterface {
     }
 
     // Construct the request URL
-    const url = this.getRequestUrl(selectedModel || options.model || config[this.interfaceName].model.default.name);
+    const url = this.getRequestUrl(
+      selectedModel ||
+        options.model ||
+        config[this.interfaceName].model.default.name,
+    );
 
     // Return the Axios POST request with response type set to 'stream'
     return this.client.post(url, requestBody, { responseType: 'stream' });
   }
 }
-
 
 // Adjust model alias for backwards compatibility
 BaseInterface.prototype.adjustModelAlias = adjustModelAlias;
