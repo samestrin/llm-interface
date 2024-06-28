@@ -130,6 +130,37 @@ class LlamaCPP {
       }
     }
   }
+  /**
+   * Stream a message to the API.
+   * @param {string|object} message - The message to send or a message object.
+   * @param {object} options - Additional options for the API request.
+   * @returns {Promise} The Axios response stream.
+   */
+  async streamMessage(prompt, options = {}) {
+    // Set default value for max_tokens
+    const { max_tokens = 150 } = options;
+
+    // Format the prompt based on the input type
+    let formattedPrompt;
+    if (typeof prompt === 'string') {
+      formattedPrompt = prompt;
+    } else {
+      // Join message contents to format the prompt
+      formattedPrompt = prompt.messages
+        .map((message) => message.content)
+        .join(' ');
+    }
+
+    // Prepare the payload for the API call
+    const payload = {
+      prompt: formattedPrompt,
+      n_predict: max_tokens,
+      stream: true,
+    };
+
+    // Return the Axios POST request with response type set to 'stream'
+    return this.client.post('', payload, { responseType: 'stream' });
+  }
 }
 LlamaCPP.prototype.adjustModelAlias = adjustModelAlias;
 module.exports = LlamaCPP;

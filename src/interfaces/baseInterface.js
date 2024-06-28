@@ -107,7 +107,7 @@ class BaseInterface {
     if (response_format) {
       requestBody.response_format = { type: response_format };
     }
-    console.log(requestBody);
+
     const cacheKey = JSON.stringify(requestBody);
 
     if (cacheTimeoutSeconds) {
@@ -122,14 +122,13 @@ class BaseInterface {
         options.model ||
         config[this.interfaceName].model.default.name,
     );
-    console.log(url);
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(url, requestBody);
-        console.log(response.data);
+
         let responseContent = null;
         if (
           response &&
@@ -179,7 +178,6 @@ class BaseInterface {
    * Stream a message to the API.
    * @param {string|object} message - The message to send or a message object.
    * @param {object} options - Additional options for the API request.
-   * @param {object} interfaceOptions - Options specific to the interface.
    * @returns {Promise} The Axios response stream.
    */
   async streamMessage(message, options = {}) {
@@ -206,6 +204,7 @@ class BaseInterface {
       messages,
       max_tokens,
       ...options,
+      stream: true,
     };
 
     // Include response_format in the request body if specified
