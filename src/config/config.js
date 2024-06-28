@@ -30,4 +30,5 @@ module.exports = {
   monsterapiApiKey: process.env.MONSTERAPI_API_KEY,
   octoaiApiKey: process.env.OCTOAI_API_KEY,
   aimlapiApiKey: process.env.AIMLAPI_API_KEY,
+  forefrontApiKey: process.env.FOREFRONT_API_KEY,
 };

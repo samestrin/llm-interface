@@ -2,69 +2,141 @@
   "openai": {
     "url": "https://api.openai.com/v1/chat/completions",
     "model": {
-      "default": { "name": "gpt-3.5-turbo", "tokens": 16385 },
-      "large": { "name": "gpt-4o", "tokens": 128000 },
-      "small": { "name": "davinci-002", "tokens": 16384 }
+      "default": {
+        "name": "gpt-3.5-turbo",
+        "tokens": 16385
+      },
+      "large": {
+        "name": "gpt-4o",
+        "tokens": 128000
+      },
+      "small": {
+        "name": "davinci-002",
+        "tokens": 16384
+      }
     }
   },
   "ai21": {
     "url": "https://api.ai21.com/studio/v1/chat/completions",
     "model": {
-      "default": { "name": "jamba-instruct", "tokens": 256000 },
-      "large": { "name": "jamba-instruct", "tokens": 256000 },
-      "small": { "name": "jamba-instruct", "tokens": 256000 }
+      "default": {
+        "name": "jamba-instruct",
+        "tokens": 256000
+      },
+      "large": {
+        "name": "jamba-instruct",
+        "tokens": 256000
+      },
+      "small": {
+        "name": "jamba-instruct",
+        "tokens": 256000
+      }
     }
   },
   "anthropic": {
     "url": "https://api.anthropic.com/v1/messages",
     "model": {
-      "default": { "name": "claude-3-sonnet-20240229", "tokens": 200000 },
-      "large": { "name": "claude-3-opus-20240229", "tokens": 200000 },
-      "small": { "name": "claude-3-haiku-20240307", "tokens": 200000 }
+      "default": {
+        "name": "claude-3-sonnet-20240229",
+        "tokens": 200000
+      },
+      "large": {
+        "name": "claude-3-opus-20240229",
+        "tokens": 200000
+      },
+      "small": {
+        "name": "claude-3-haiku-20240307",
+        "tokens": 200000
+      }
     },
     "note": "api"
   },
   "azureai": {
     "url": "https://api.openai.azure.com/chat/completions",
     "model": {
-      "default": { "name": "gpt-35-turbo", "tokens": 16385 },
-      "large": { "name": "gpt-4o", "tokens": 128000 },
-      "small": { "name": "gpt-35-turbo", "tokens": 16385 }
+      "default": {
+        "name": "gpt-35-turbo",
+        "tokens": 16385
+      },
+      "large": {
+        "name": "gpt-4o",
+        "tokens": 128000
+      },
+      "small": {
+        "name": "gpt-35-turbo",
+        "tokens": 16385
+      }
     },
     "note": "url value is partial"
   },
   "cohere": {
     "url": "https://api.cohere.ai/chat",
     "model": {
-      "default": { "name": "command-r", "tokens": 128000 },
-      "large": { "name": "command-r-plus", "tokens": 128000 },
-      "small": { "name": "command-light", "tokens": 2048 }
+      "default": {
+        "name": "command-r",
+        "tokens": 128000
+      },
+      "large": {
+        "name": "command-r-plus",
+        "tokens": 128000
+      },
+      "small": {
+        "name": "command-light",
+        "tokens": 2048
+      }
     }
   },
   "gemini": {
     "url": "https://generativelanguage.googleapis.com/v1/models/",
     "model": {
-      "default": { "name": "gemini-1.5-flash", "tokens": 1048576 },
-      "large": { "name": "gemini-1.5-pro", "tokens": 1048576 },
-      "small": { "name": "gemini-1.5-flash", "tokens": 1048576 }
+      "default": {
+        "name": "gemini-1.5-flash",
+        "tokens": 1048576
+      },
+      "large": {
+        "name": "gemini-1.5-pro",
+        "tokens": 1048576
+      },
+      "small": {
+        "name": "gemini-1.5-flash",
+        "tokens": 1048576
+      }
     },
     "note": "api"
   },
   "gooseai": {
     "url": "https://api.goose.ai/v1/engines",
     "model": {
-      "default": { "name": "gpt-neo-20b", "tokens": 2048 },
-      "large": { "name": "gpt-neo-20b", "tokens": 2048 },
-      "small": { "name": "gpt-neo-125m", "tokens": 2048 }
+      "default": {
+        "name": "gpt-neo-20b",
+        "tokens": 2048
+      },
+      "large": {
+        "name": "gpt-neo-20b",
+        "tokens": 2048
+      },
+      "small": {
+        "name": "gpt-neo-125m",
+        "tokens": 2048
+      }
     },
     "note": "url value is partial"
   },
   "groq": {
     "url": "https://api.groq.com/openai/v1/chat/completions",
     "model": {
-      "default": { "name": "llama3-8b-8192", "tokens": 8192 },
-      "large": { "name": "llama3-70b-8192", "tokens": 8192 },
-      "small": { "name": "gemma-7b-it", "tokens": 8192 }
+      "default": {
+        "name": "llama3-8b-8192",
+        "tokens": 8192
+      },
+      "large": {
+        "name": "llama3-70b-8192",
+        "tokens": 8192
+      },
+      "small": {
+        "name": "gemma-7b-it",
+        "tokens": 8192
+      }
     }
   },
   "huggingface": {
@@ -78,7 +150,10 @@
         "name": "meta-llama/Meta-Llama-3-8B-Instruct",
         "tokens": 8192
       },
-      "small": { "name": "microsoft/Phi-3-mini-4k-instruct", "tokens": 4096 }
+      "small": {
+        "name": "microsoft/Phi-3-mini-4k-instruct",
+        "tokens": 4096
+      }
     },
     "note": "url value is partial"
   },
@@ -88,32 +163,62 @@
   "mistralai": {
     "url": "https://api.mistral.ai/v1/chat/completions",
     "model": {
-      "default": { "name": "mistral-large-latest", "tokens": 32768 },
-      "large": { "name": "mistral-large-latest", "tokens": 32768 },
-      "small": { "name": "mistral-small-latest", "tokens": 32768 }
+      "default": {
+        "name": "mistral-large-latest",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "mistral-large-latest",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "mistral-small-latest",
+        "tokens": 32768
+      }
     }
   },
   "perplexity": {
     "url": "https://api.perplexity.ai/chat/completions",
     "model": {
-      "default": { "name": "llama-3-sonar-large-32k-online", "tokens": 28000 },
-      "large": { "name": "llama-3-sonar-large-32k-online", "tokens": 28000 },
-      "small": { "name": "llama-3-sonar-small-32k-online", "tokens": 28000 }
+      "default": {
+        "name": "llama-3-sonar-large-32k-online",
+        "tokens": 28000
+      },
+      "large": {
+        "name": "llama-3-sonar-large-32k-online",
+        "tokens": 28000
+      },
+      "small": {
+        "name": "llama-3-sonar-small-32k-online",
+        "tokens": 28000
+      }
     }
   },
   "rekaai": {
     "url": "https://api.reka.ai/v1/chat",
     "model": {
-      "default": { "name": "reka-core" },
-      "large": { "name": "reka-core" },
-      "small": { "name": "reka-edge" }
+      "default": {
+        "name": "reka-core"
+      },
+      "large": {
+        "name": "reka-core"
+      },
+      "small": {
+        "name": "reka-edge"
+      }
     }
   },
   "cloudflareai": {
     "url": "https://api.cloudflare.com/client/v4/accounts",
     "model": {
-      "default": { "name": "@cf/meta/llama-3-8b-instruct", "tokens": 4096 },
-      "large": { "name": "@hf/thebloke/llama-2-13b-chat-awq", "tokens": 8192 },
+      "default": {
+        "name": "@cf/meta/llama-3-8b-instruct",
+        "tokens": 4096
+      },
+      "large": {
+        "name": "@hf/thebloke/llama-2-13b-chat-awq",
+        "tokens": 8192
+      },
       "small": {
         "name": "@cf/tinyllama/tinyllama-1.1b-chat-v1.0",
         "tokens": 2048
@@ -141,33 +246,69 @@
   "friendliai": {
     "url": "https://inference.friendli.ai/v1/chat/completions",
     "model": {
-      "default": { "name": "mixtral-8x7b-instruct-v0-1", "tokens": 4096 },
-      "large": { "name": "meta-llama-3-70b-instruct", "tokens": 8192 },
-      "small": { "name": "meta-llama-3-8b-instruct", "tokens": 4096 }
+      "default": {
+        "name": "mixtral-8x7b-instruct-v0-1",
+        "tokens": 4096
+      },
+      "large": {
+        "name": "meta-llama-3-70b-instruct",
+        "tokens": 8192
+      },
+      "small": {
+        "name": "meta-llama-3-8b-instruct",
+        "tokens": 4096
+      }
     }
   },
   "watsonxai": {
     "url": "https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-02",
     "model": {
-      "default": { "name": "meta-llama/llama-2-13b-chat", "tokens": 4096 },
-      "large": { "name": "meta-llama/llama-3-70b-instruct", "tokens": 8192 },
-      "small": { "name": "google/flan-t5-xxl", "tokens": 512 }
+      "default": {
+        "name": "meta-llama/llama-2-13b-chat",
+        "tokens": 4096
+      },
+      "large": {
+        "name": "meta-llama/llama-3-70b-instruct",
+        "tokens": 8192
+      },
+      "small": {
+        "name": "google/flan-t5-xxl",
+        "tokens": 512
+      }
     }
   },
   "nvidia": {
     "url": "https://integrate.api.nvidia.com/v1/chat/completions",
     "model": {
-      "default": { "name": "nvidia/llama3-chatqa-1.5-8b", "tokens": 4096 },
-      "large": { "name": "nvidia/nemotron-4-340b-instruct", "tokens": 4096 },
-      "small": { "name": "microsoft/phi-3-mini-128k-instruct", "tokens": 4096 }
+      "default": {
+        "name": "nvidia/llama3-chatqa-1.5-8b",
+        "tokens": 4096
+      },
+      "large": {
+        "name": "nvidia/nemotron-4-340b-instruct",
+        "tokens": 4096
+      },
+      "small": {
+        "name": "microsoft/phi-3-mini-128k-instruct",
+        "tokens": 4096
+      }
     }
   },
   "deepinfra": {
     "url": "https://api.deepinfra.com/v1/openai/chat/completions",
     "model": {
-      "default": { "name": "openchat/openchat-3.6-8b", "tokens": 8192 },
-      "large": { "name": "nvidia/nemotron-4-340b-instruct", "tokens": 4096 },
-      "small": { "name": "microsoft/WizardLM-2-7B", "tokens": 4096 }
+      "default": {
+        "name": "openchat/openchat-3.6-8b",
+        "tokens": 8192
+      },
+      "large": {
+        "name": "nvidia/nemotron-4-340b-instruct",
+        "tokens": 4096
+      },
+      "small": {
+        "name": "microsoft/WizardLM-2-7B",
+        "tokens": 4096
+      }
     }
   },
   "togetherai": {
@@ -181,7 +322,10 @@
         "name": "NousResearch/Nous-Hermes-2-Mixtral-8x22B-Instruct",
         "tokens": 65536
       },
-      "small": { "name": "Qwen/Qwen1.5-0.5B-Chat", "tokens": 32768 }
+      "small": {
+        "name": "Qwen/Qwen1.5-0.5B-Chat",
+        "tokens": 32768
+      }
     }
   },
   "monsterapi": {
@@ -195,7 +339,10 @@
         "name": "meta-llama/Meta-Llama-3-8B-Instruct",
         "tokens": 4096
       },
-      "small": { "name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0", "tokens": 2048 }
+      "small": {
+        "name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "tokens": 2048
+      }
     }
   },
   "octoai": {
@@ -209,7 +356,10 @@
         "name": "mixtral-8x22b-instruct",
         "tokens": 65536
       },
-      "small": { "name": "mistral-7b-instruct", "tokens": 32768 }
+      "small": {
+        "name": "mistral-7b-instruct",
+        "tokens": 32768
+      }
     }
   },
   "aimlapi": {
@@ -223,7 +373,44 @@
         "name": "Qwen/Qwen1.5-72B-Chat",
         "tokens": 4096
       },
-      "small": { "name": "Qwen/Qwen1.5-0.5B-Chat", "tokens": 32768 }
+      "small": {
+        "name": "Qwen/Qwen1.5-0.5B-Chat",
+        "tokens": 32768
+      }
+    }
+  },
+  "forefront": {
+    "url": "https://api.aimlapi.com/chat/completions",
+    "model": {
+      "default": {
+        "name": "forefront/Mistral-7B-Instruct-v0.2-chatml",
+        "tokens": 16384
+      },
+      "large": {
+        "name": "forefront/Mistral-7B-Instruct-v0.1",
+        "tokens": 4096
+      },
+      "small": {
+        "name": "openchat/openchat-3.5-1210",
+        "tokens": 32768
+      }
+    }
+  },
+  "deepseek": {
+    "url": "https://api.deepseek.com",
+    "model": {
+      "default": {
+        "name": "deekseek-chat",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "deekseek-chat",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "deekseek-chat",
+        "tokens": 32768
+      }
     }
   }
 }

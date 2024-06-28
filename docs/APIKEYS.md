@@ -32,9 +32,17 @@ The Cohere API offers trial keys. Trial keys are rate-limited, and cannot be use
 
 - https://dashboard.cohere.com/api-keys
 
-## Deepinfra
+## DeepInfra
 
-The Deepinfra API is commercial but new accounts will start with a $1.80 credit.
+The DeepInfra API is commercial but new accounts will start with a $1.80 credit.
+
+- https://deepinfra.com/dash/api_keys
+
+## DeepSeek
+
+The DeepSeek API is commercial and does will require a credit card.
+
+- https://platform.deepseek.com/api_keys
 
 ## Fireworks AI
 
