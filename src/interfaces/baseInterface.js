@@ -122,13 +122,14 @@ class BaseInterface {
         options.model ||
         config[this.interfaceName].model.default.name,
     );
+    console.log(url);
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(url, requestBody);
-
+        console.log(response.data);
         let responseContent = null;
         if (
           response &&
@@ -181,7 +182,7 @@ class BaseInterface {
    * @param {object} interfaceOptions - Options specific to the interface.
    * @returns {Promise} The Axios response stream.
    */
-  async streamMessage(message, options = {}, interfaceOptions = {}) {
+  async streamMessage(message, options = {}) {
     // Create the message object if a string is provided, otherwise use the provided object
     let messageObject =
       typeof message === 'string' ? this.createMessageObject(message) : message;
