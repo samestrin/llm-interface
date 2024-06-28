@@ -124,8 +124,9 @@ LLMInterface.getModelConfigValue = getModelConfigValue;
 // LLMInterface set function
 LLMInterface.setApiKey = setApiKey;
 
-// LLMInterface chat function
+// LLMInterface chat functions
 LLMInterface.chatComplete = chatComplete;
+LLMInterface.sendMessage = LLMInterfaceSendMessage;
 
 module.exports = {
   LLMInterface,
