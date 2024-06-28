@@ -6,14 +6,14 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { togetherAIApiKey } = require('../config/config.js');
+const { octoaiAIApiKey } = require('../config/config.js');
 const { getSimpleMessageObject } = require('../utils/utils.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
 
 class OctoAI extends BaseInterface {
   constructor(apiKey) {
-    super('octoai', apiKey || togetherAIApiKey, config['octoai'].url);
+    super('octoai', apiKey || octoaiAIApiKey, config['octoai'].url);
   }
 
   createMessageObject(message) {
