@@ -4,11 +4,10 @@
  * @description Wrapper class for the Gemini API.
  * @param {string} apiKey - The API key for the Gemini API.
  */
-
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getMessageObject, parseJSON } = require('../utils/utils.js');
+const { getMessageObject, parseJSON, delay } = require('../utils/utils.js');
 const { geminiApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
@@ -151,9 +150,9 @@ class Gemini {
 
         // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
 
-        await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }
     }

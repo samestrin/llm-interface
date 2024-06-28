@@ -8,7 +8,7 @@
 const axios = require('axios');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
+const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const {
   cloudflareaiApiKey,
   cloudflareaiAccountId,
@@ -152,10 +152,9 @@ class CloudflareAI {
 
         // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
 
-        // Wait for the specified delay before retrying
-        await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }
     }

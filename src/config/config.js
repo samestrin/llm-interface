@@ -32,4 +32,5 @@ module.exports = {
   aimlapiApiKey: process.env.AIMLAPI_API_KEY,
   forefrontApiKey: process.env.FOREFRONT_API_KEY,
   replicateApiKey: process.env.REPLICATE_API_KEY,
+  writerApiKey: process.env.WRITER_API_KEY,
 };

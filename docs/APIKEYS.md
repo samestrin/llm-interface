@@ -50,6 +50,12 @@ The Fireworks AI API offers a free developer tier and commercial accounts. A Cre
 
 - https://fireworks.ai/api-keys
 
+## Forefront
+
+The Forefront API is commercial but it comes with $20 free credit.
+
+- https://platform.forefront.ai/app/api-keys
+
 ## Friendli AI
 
 The Friendli AI API is commercial but it comes with a $5.00 credit.

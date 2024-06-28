@@ -417,15 +417,15 @@
     "url": "https://api.writer.com/v1/chat",
     "model": {
       "default": {
-        "name": "palmyra-x-002-32kt",
+        "name": "palmyra-x-002-32k",
         "tokens": 32768
       },
       "large": {
-        "name": "palmyra-x-002-32kt",
+        "name": "palmyra-x-002-32k",
         "tokens": 32768
       },
       "small": {
-        "name": "palmyra-x-002-32kt",
+        "name": "palmyra-x-002-32k",
         "tokens": 32768
       }
     }
