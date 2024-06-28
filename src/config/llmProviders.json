@@ -397,18 +397,18 @@
     }
   },
   "deepseek": {
-    "url": "https://api.deepseek.com",
+    "url": "https://api.deepseek.com/chat/completions",
     "model": {
       "default": {
-        "name": "deekseek-chat",
+        "name": "deepseek-chat",
         "tokens": 32768
       },
       "large": {
-        "name": "deekseek-chat",
+        "name": "deepseek-chat",
         "tokens": 32768
       },
       "small": {
-        "name": "deekseek-chat",
+        "name": "deepseek-chat",
         "tokens": 32768
       }
     }
