@@ -1,10 +1,10 @@
 /**
- * @file test/interfaces/octoai.test.js
- * @description Tests for the OctoAI Studio API client.
+ * @file test/interfaces/nvidia.test.js
+ * @description Tests for the NVIDIA API client.
  */
 
-const OctoAI = require('../../src/interfaces/octoai.js');
-const { octoaiApiKey } = require('../../src/config/config.js');
+const NVIDIA = require('../../src/interfaces/nvidia.js');
+const { nvidiaApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -14,25 +14,21 @@ const { safeStringify } = require('../../src/utils/jestSerializer.js');
 const { Readable } = require('stream');
 
 let response = '';
-let model = 'mistral-7b-instruct';
+let model = 'meta-llama-3-8b-instruct';
 
-describe('OctoAI Interface', () => {
-  if (octoaiApiKey) {
+describe('NVIDIA Interface', () => {
+  if (nvidiaApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof octoaiApiKey).toBe('string');
+      expect(typeof nvidiaApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const octoai = new OctoAI(octoaiApiKey);
+      const nvidia = new NVIDIA(nvidiaApiKey);
       const message = {
         model,
         messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
           {
             role: 'user',
             content: simplePrompt,
@@ -41,7 +37,7 @@ describe('OctoAI Interface', () => {
       };
 
       try {
-        response = await octoai.sendMessage(message, options);
+        response = await nvidia.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
@@ -49,7 +45,7 @@ describe('OctoAI Interface', () => {
     });
 
     test('API Client should stream a message and receive a response stream', async () => {
-      const octoai = new OctoAI(octoaiApiKey);
+      const nvidia = new NVIDIA(nvidiaApiKey);
       const message = {
         model,
         messages: [
@@ -65,7 +61,7 @@ describe('OctoAI Interface', () => {
       };
 
       try {
-        const stream = await octoai.streamMessage(message, options);
+        const stream = await nvidia.streamMessage(message, options);
 
         expect(stream).toBeDefined();
         expect(stream).toHaveProperty('data');

@@ -11,8 +11,12 @@ const {
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
+const { Readable } = require('stream');
 
-describe('MistralAI Basic', () => {
+let response = '';
+let model = 'mistral-small-latest';
+
+describe('MistralAI Interface', () => {
   if (mistralaiApiKey) {
     let response;
 
@@ -23,7 +27,7 @@ describe('MistralAI Basic', () => {
     test('API Client should send a message and receive a response', async () => {
       const mistral = new MistralAI(mistralaiApiKey);
       const message = {
-        model: 'mistral-large-latest',
+        model,
         messages: [
           { role: 'system', content: 'You are a helpful assistant.' },
           {
@@ -38,6 +42,56 @@ describe('MistralAI Basic', () => {
         expect(typeof response).toStrictEqual('object');
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
+      }
+    }, 30000);
+
+    test('API Client should stream a message and receive a response stream', async () => {
+      const mistralai = new MistralAI(mistralaiApiKey);
+      const message = {
+        model,
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.',
+          },
+          {
+            role: 'user',
+            content: simplePrompt,
+          },
+        ],
+      };
+
+      try {
+        const stream = await mistralai.streamMessage(message, options);
+
+        expect(stream).toBeDefined();
+        expect(stream).toHaveProperty('data');
+
+        let data = '';
+        const readableStream = new Readable().wrap(stream.data);
+
+        await new Promise((resolve, reject) => {
+          readableStream.on('data', (chunk) => {
+            data += chunk;
+          });
+
+          readableStream.on('end', () => {
+            try {
+              expect(typeof data).toBe('string');
+              resolve();
+            } catch (error) {
+              reject(
+                new Error(`Invalid string received: ${safeStringify(error)}`),
+              );
+            }
+          });
+
+          readableStream.on('error', (error) => {
+            reject(new Error(`Stream error: ${safeStringify(error)}`));
+          });
+        });
+      } catch (error) {
+        throw new Error(`Stream test failed: ${safeStringify(error)}`);
       }
     }, 30000);
 

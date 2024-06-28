@@ -1,10 +1,10 @@
 /**
- * @file test/interfaces/octoai.test.js
- * @description Tests for the OctoAI Studio API client.
+ * @file test/interfaces/deepinfra.test.js
+ * @description Tests for the DeepInfra API client.
  */
 
-const OctoAI = require('../../src/interfaces/octoai.js');
-const { octoaiApiKey } = require('../../src/config/config.js');
+const Writer = require('../../src/interfaces/writer.js');
+const { writerApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -14,25 +14,21 @@ const { safeStringify } = require('../../src/utils/jestSerializer.js');
 const { Readable } = require('stream');
 
 let response = '';
-let model = 'mistral-7b-instruct';
+let model = 'palmyra-x-002-32k';
 
-describe('OctoAI Interface', () => {
-  if (octoaiApiKey) {
+describe('Writer Interface', () => {
+  if (writerApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof octoaiApiKey).toBe('string');
+      expect(typeof writerApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const octoai = new OctoAI(octoaiApiKey);
+      const writer = new Writer(writerApiKey);
       const message = {
         model,
         messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
           {
             role: 'user',
             content: simplePrompt,
@@ -41,7 +37,7 @@ describe('OctoAI Interface', () => {
       };
 
       try {
-        response = await octoai.sendMessage(message, options);
+        response = await writer.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
@@ -49,14 +45,10 @@ describe('OctoAI Interface', () => {
     });
 
     test('API Client should stream a message and receive a response stream', async () => {
-      const octoai = new OctoAI(octoaiApiKey);
+      const writer = new Writer(writerApiKey);
       const message = {
         model,
         messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
           {
             role: 'user',
             content: simplePrompt,
@@ -65,7 +57,7 @@ describe('OctoAI Interface', () => {
       };
 
       try {
-        const stream = await octoai.streamMessage(message, options);
+        const stream = await writer.streamMessage(message, options);
 
         expect(stream).toBeDefined();
         expect(stream).toHaveProperty('data');

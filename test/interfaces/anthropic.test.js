@@ -12,7 +12,10 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Anthropic Basic', () => {
+let response = '';
+let model = 'claude-3-opus-20240229';
+
+describe('Anthropic Interface', () => {
   if (anthropicApiKey) {
     let response;
     test('API Key should be set', async () => {
@@ -22,7 +25,7 @@ describe('Anthropic Basic', () => {
     test('API Client should send a message and receive a response', async () => {
       const anthropic = new Anthropic(anthropicApiKey);
       const message = {
-        model: 'claude-3-opus-20240229',
+        model,
         messages: [
           {
             role: 'user',

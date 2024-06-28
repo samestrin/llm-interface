@@ -12,7 +12,10 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Gemini Basic', () => {
+let response = '';
+let model = 'gemini-1.5-flash';
+
+describe('Gemini Interface', () => {
   if (geminiApiKey) {
     let response;
     test('API Key should be set', async () => {
@@ -22,7 +25,7 @@ describe('Gemini Basic', () => {
     test('API Client should send a message and receive a response', async () => {
       const gemini = new Gemini(geminiApiKey);
       const message = {
-        model: 'gemini-1.5-flash',
+        model,
         messages: [
           {
             role: 'system',

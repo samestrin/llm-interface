@@ -12,7 +12,10 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Cohere Basic', () => {
+let response = '';
+let model = 'command-r';
+
+describe('Cohere Interface', () => {
   if (cohereApiKey) {
     let response;
 
@@ -23,7 +26,7 @@ describe('Cohere Basic', () => {
     test('API Client should send a message and receive a response', async () => {
       const cohere = new Cohere(cohereApiKey);
       const message = {
-        model: 'command-r-plus',
+        model,
         messages: [
           {
             role: 'user',

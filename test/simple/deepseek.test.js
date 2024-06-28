@@ -32,6 +32,6 @@ describe('DeepSeek Simple', () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
-    test.skip(`API Key is not set`, () => { });
+    test.skip(`API Key is not set`, () => {});
   }
 });

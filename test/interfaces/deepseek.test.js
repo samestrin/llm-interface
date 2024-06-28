@@ -1,10 +1,10 @@
 /**
- * @file test/interfaces/octoai.test.js
- * @description Tests for the OctoAI Studio API client.
+ * @file test/interfaces/deepseek.test.js
+ * @description Tests for the DeepSeek API client.
  */
 
-const OctoAI = require('../../src/interfaces/octoai.js');
-const { octoaiApiKey } = require('../../src/config/config.js');
+const DeepSeek = require('../../src/interfaces/deepseek.js');
+const { deepseekApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -14,18 +14,18 @@ const { safeStringify } = require('../../src/utils/jestSerializer.js');
 const { Readable } = require('stream');
 
 let response = '';
-let model = 'mistral-7b-instruct';
+let model = 'deepseek-chat';
 
-describe('OctoAI Interface', () => {
-  if (octoaiApiKey) {
+describe('DeepSeek Interface', () => {
+  if (deepseekApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof octoaiApiKey).toBe('string');
+      expect(typeof deepseekApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const octoai = new OctoAI(octoaiApiKey);
+      const deepseek = new DeepSeek(deepseekApiKey);
       const message = {
         model,
         messages: [
@@ -41,7 +41,7 @@ describe('OctoAI Interface', () => {
       };
 
       try {
-        response = await octoai.sendMessage(message, options);
+        response = await deepseek.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
@@ -49,7 +49,7 @@ describe('OctoAI Interface', () => {
     });
 
     test('API Client should stream a message and receive a response stream', async () => {
-      const octoai = new OctoAI(octoaiApiKey);
+      const deepseek = new DeepSeek(deepseekApiKey);
       const message = {
         model,
         messages: [
@@ -65,8 +65,7 @@ describe('OctoAI Interface', () => {
       };
 
       try {
-        const stream = await octoai.streamMessage(message, options);
-
+        const stream = await deepseek.streamMessage(message, options);
         expect(stream).toBeDefined();
         expect(stream).toHaveProperty('data');
 

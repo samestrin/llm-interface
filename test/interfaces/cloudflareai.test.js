@@ -15,7 +15,10 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('CloudflareAI Basic', () => {
+let response = '';
+let model = '@cf/meta/llama-3-8b-instruct';
+
+describe('CloudflareAI Interface', () => {
   if (cloudflareaiApiKey) {
     let response;
 
@@ -29,7 +32,7 @@ describe('CloudflareAI Basic', () => {
         cloudflareaiAccountId,
       );
       const message = {
-        model: '@cf/meta/llama-3-8b-instruct', // Replace with the appropriate model name
+        model,
         messages: [
           {
             role: 'system',

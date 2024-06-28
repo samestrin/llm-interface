@@ -12,7 +12,10 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('RekaAI Basic', () => {
+let response = '';
+let model = 'reka-edge';
+
+describe('RekaAI Interface', () => {
   if (rekaaiApiKey) {
     let response;
 
@@ -23,7 +26,7 @@ describe('RekaAI Basic', () => {
     test('API Client should send a message and receive a response', async () => {
       const reka = new RekaAI(rekaaiApiKey);
       const message = {
-        model: 'reka-core',
+        model,
         messages: [
           {
             role: 'user',

@@ -12,7 +12,10 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('MonsterAPI Basic', () => {
+let response = '';
+let model = 'TinyLlama/TinyLlama-1.1B-Chat-v1.0';
+
+describe('MonsterAPI Interface', () => {
   if (monsterapiApiKey) {
     let response;
 
@@ -23,7 +26,7 @@ describe('MonsterAPI Basic', () => {
     test('API Client should send a message and receive a response', async () => {
       const monsterapi = new MonsterAPI(monsterapiApiKey);
       const message = {
-        model: 'TinyLlama/TinyLlama-1.1B-Chat-v1.0',
+        model,
         messages: [
           {
             role: 'user',

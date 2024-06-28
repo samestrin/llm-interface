@@ -1,10 +1,10 @@
 /**
- * @file test/interfaces/goose.test.js
- * @description Tests for the Goose AI API client.
+ * @file test/interfaces/forefront.test.js
+ * @description Tests for the Forefront API client.
  */
 
-const GooseAI = require('../../src/interfaces/gooseai.js');
-const { gooseaiApiKey } = require('../../src/config/config.js');
+const Forefront = require('../../src/interfaces/forefront.js');
+const { forefrontApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -13,18 +13,18 @@ const {
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
 let response = '';
-let model = 'gpt-j-6b';
+let model = 'forefront/Mistral-7B-Instruct-v0.2-chatml';
 
-describe('Goose AI Interface', () => {
-  if (gooseaiApiKey) {
+describe('Forefront Interface', () => {
+  if (forefrontApiKey) {
     let response;
 
-    test('API Key should be set', async () => {
-      expect(typeof gooseaiApiKey).toBe('string');
+    test('API Key should be set', () => {
+      expect(typeof forefrontApiKey).toBe('string');
     });
-
+    jest;
     test('API Client should send a message and receive a response', async () => {
-      const goose = new GooseAI(gooseaiApiKey);
+      const forefront = new Forefront(forefrontApiKey);
       const message = {
         model,
         messages: [
@@ -38,14 +38,14 @@ describe('Goose AI Interface', () => {
           },
         ],
       };
+
       try {
-        response = await goose.sendMessage(message, options);
+        response = await forefront.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-
       expect(typeof response).toStrictEqual('object');
-    }, 30000);
+    });
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);

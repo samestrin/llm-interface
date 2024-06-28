@@ -69,6 +69,6 @@ describe('Ollama Simple', () => {
       }
     });
   } else {
-    test.skip(`API Key is not set`, () => {});
+    test.skip(`URL is not set`, () => {});
   }
 });
