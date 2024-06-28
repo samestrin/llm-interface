@@ -414,18 +414,35 @@
     }
   },
   "writer": {
-    "url": "https://api.writer.com",
+    "url": "https://api.writer.com/v1/chat",
     "model": {
       "default": {
-        "name": "palmyra-x-002-instruct",
+        "name": "palmyra-x-002-32kt",
         "tokens": 32768
       },
       "large": {
-        "name": "palmyra-x-002-instruct",
+        "name": "palmyra-x-002-32kt",
         "tokens": 32768
       },
       "small": {
-        "name": "palmyra-x-002-instruct",
+        "name": "palmyra-x-002-32kt",
+        "tokens": 32768
+      }
+    }
+  },
+  "replicate": {
+    "url": "https://api.replicate.com/v1/models/",
+    "model": {
+      "default": {
+        "name": "",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "",
         "tokens": 32768
       }
     }
