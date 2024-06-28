@@ -1,14 +1,21 @@
 /**
- * @file index.js
+ * @file /src/index.js
  * @description Entry point for the LLM interface module, dynamically loading LLMInterface for different LLM providers.
  */
 
 const {
-  getModelConfigValue,
   getAllModelNames,
   setApiKey,
+  getModelConfigValue,
 } = require('./utils/config.js');
 const { getConfig } = require('./utils/configManager.js');
+const {
+  LLMInterfaceSendMessage,
+  LLMInterfaceStreamMessage,
+  LLMInterfaceSendMessageWithConfig,
+  LLMInterfaceStreamMessageWithConfig,
+} = require('./utils/message.js');
+
 const config = getConfig();
 
 const modules = Object.keys(config).reduce((acc, key) => {
@@ -30,93 +37,6 @@ Object.keys(modules).forEach((key) => {
   });
 });
 
-const LLMInstances = {}; // Persistent LLM instances
-
-/**
- * Sends a message to a specified LLM module and returns the response.
- * Reuses existing LLM instances for the given module and API key to optimize resource usage.
- *
- * @param {string} module - The name of the LLM module (e.g., "openai").
- * @param {string|array} apiKey - The API key for the LLM or an array containing the API key and user ID.
- * @param {string} message - The message to send to the LLM.
- * @param {object} [options={}] - Additional options for the message.
- * @param {object} [interfaceOptions={}] - Options for initializing the interface.
- * @returns {Promise<any>} - The response from the LLM.
- * @throws {Error} - Throws an error if the module is not supported or if the API key is not provided.
- */
-async function LLMInterfaceSendMessage(
-  module,
-  apiKey,
-  message,
-  options = {},
-  interfaceOptions = {},
-) {
-  if (!LLMInterface[module]) {
-    throw new Error(`Unsupported LLM module: ${module}`);
-  }
-
-  if (!apiKey) {
-    throw new Error(`Missing API key for LLM module: ${module}`);
-  }
-
-  let userId;
-  if (Array.isArray(apiKey)) {
-    [apiKey, userId] = apiKey;
-  }
-
-  LLMInstances[module] = LLMInstances[module] || {};
-
-  if (!LLMInstances[module][apiKey]) {
-    LLMInstances[module][apiKey] = userId
-      ? new LLMInterface[module](apiKey, userId)
-      : new LLMInterface[module](apiKey);
-  }
-
-  const llmInstance = LLMInstances[module][apiKey];
-
-  try {
-    return await llmInstance.sendMessage(message, options, interfaceOptions);
-  } catch (error) {
-    throw new Error(
-      `Failed to send message using LLM module ${module}: ${error.message}`,
-    );
-  }
-}
-
-/**
- * Sends a message to a specified LLM module and returns the response.
- * Retrieves the API key from the configuration.
- *
- * @param {string} module - The name of the LLM module (e.g., "openai").
- * @param {string} message - The message to send to the LLM.
- * @param {object} [options={}] - Additional options for the message.
- * @param {object} [interfaceOptions={}] - Options for initializing the interface.
- * @returns {Promise<any>} - The response from the LLM.
- * @throws {Error} - Throws an error if the module is not supported or if the API key is not provided.
- */
-async function chatComplete(
-  module,
-  message,
-  options = {},
-  interfaceOptions = {},
-) {
-  if (!config[module] || !config[module].apiKey) {
-    throw new Error(
-      `Missing API key for LLM module: ${module} in config. Use LLMInterface.setApiKey('${module}', key) first.`,
-    );
-  }
-
-  const apiKey = config[module].apiKey;
-
-  return LLMInterfaceSendMessage(
-    module,
-    apiKey,
-    message,
-    options,
-    interfaceOptions,
-  );
-}
-
 // LLMInterface get functions
 LLMInterface.getAllModelNames = getAllModelNames;
 LLMInterface.getModelConfigValue = getModelConfigValue;
@@ -125,11 +45,12 @@ LLMInterface.getModelConfigValue = getModelConfigValue;
 LLMInterface.setApiKey = setApiKey;
 
 // LLMInterface chat functions
-LLMInterface.chatComplete = chatComplete;
-LLMInterface.sendMessage = LLMInterfaceSendMessage;
+LLMInterface.streamMessage = LLMInterfaceStreamMessageWithConfig;
+LLMInterface.sendMessage = LLMInterfaceSendMessageWithConfig;
 
 module.exports = {
   LLMInterface,
   LLMInterfaceSendMessage,
+  LLMInterfaceStreamMessage,
   config,
 };
