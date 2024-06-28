@@ -29,7 +29,6 @@ describe('AIMLAPI Simple', () => {
       expect(typeof response).toStrictEqual('object');
     });
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-      console.log(response.results);
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {
