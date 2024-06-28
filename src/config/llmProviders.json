@@ -412,5 +412,22 @@
         "tokens": 32768
       }
     }
+  },
+  "writer": {
+    "url": "https://api.writer.com",
+    "model": {
+      "default": {
+        "name": "palmyra-x-002-instruct",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "palmyra-x-002-instruct",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "palmyra-x-002-instruct",
+        "tokens": 32768
+      }
+    }
   }
 }
