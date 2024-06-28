@@ -107,7 +107,7 @@ class BaseInterface {
     if (response_format) {
       requestBody.response_format = { type: response_format };
     }
-
+    console.log(requestBody);
     const cacheKey = JSON.stringify(requestBody);
 
     if (cacheTimeoutSeconds) {

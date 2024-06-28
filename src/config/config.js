@@ -29,4 +29,5 @@ module.exports = {
   togetheraiApiKey: process.env.TOGETHERAI_API_KEY,
   monsterapiApiKey: process.env.MONSTERAPI_API_KEY,
   octoaiApiKey: process.env.OCTOAI_API_KEY,
+  aimlapiApiKey: process.env.AIMLAPI_API_KEY,
 };

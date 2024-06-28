@@ -65,8 +65,7 @@
       "default": { "name": "llama3-8b-8192", "tokens": 8192 },
       "large": { "name": "llama3-70b-8192", "tokens": 8192 },
       "small": { "name": "gemma-7b-it", "tokens": 8192 }
-    },
-    "note": "api"
+    }
   },
   "huggingface": {
     "url": "https://api-inference.huggingface.co/models/",
@@ -211,6 +210,20 @@
         "tokens": 65536
       },
       "small": { "name": "mistral-7b-instruct", "tokens": 32768 }
+    }
+  },
+  "aimlapi": {
+    "url": "https://api.aimlapi.com/chat/completions",
+    "model": {
+      "default": {
+        "name": "gpt-3.5-turbo-16k",
+        "tokens": 16384
+      },
+      "large": {
+        "name": "Qwen/Qwen1.5-72B-Chat",
+        "tokens": 4096
+      },
+      "small": { "name": "Qwen/Qwen1.5-0.5B-Chat", "tokens": 32768 }
     }
   }
 }
