@@ -11,8 +11,9 @@ const {
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
+const { Readable } = require('stream');
 
-describe('AI21 Basic', () => {
+describe('AI21 Interface', () => {
   if (ai21ApiKey) {
     let response;
 
@@ -42,6 +43,51 @@ describe('AI21 Basic', () => {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
       expect(typeof response).toStrictEqual('object');
+    });
+
+    test('API Client should stream a message and receive a response stream', async () => {
+      const ai21 = new AI21(ai21ApiKey);
+      const message = {
+        model: 'jamba-instruct',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.',
+          },
+          {
+            role: 'user',
+            content: simplePrompt,
+          },
+        ],
+      };
+
+      try {
+        const stream = await ai21.streamMessage(message, options);
+        expect(stream).toBeDefined();
+        expect(stream).toHaveProperty('data');
+
+        let data = '';
+        const readableStream = new Readable().wrap(stream.data);
+
+        readableStream.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        readableStream.on('end', () => {
+          try {
+            const json = JSON.parse(data);
+            expect(typeof json).toBe('object');
+          } catch (error) {
+            throw new Error(`Invalid JSON received: ${safeStringify(error)}`);
+          }
+        });
+
+        readableStream.on('error', (error) => {
+          throw new Error(`Stream error: ${safeStringify(error)}`);
+        });
+      } catch (error) {
+        throw new Error(`Stream test failed: ${safeStringify(error)}`);
+      }
     });
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {

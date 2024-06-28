@@ -1,10 +1,10 @@
 /**
- * @file llamacpp.test.js
- * @description Simplified tests for the LLamaCPP API client.
+ * @file ollamacpp.test.js
+ * @description Simplified tests for the Ollama API client.
  */
 
-const LLamaCPP = require('../../src/interfaces/llamacpp.js');
-const { llamaURL } = require('../../src/config/config.js');
+const Ollama = require('../../src/interfaces/ollama.js');
+const { ollamaURL } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -16,17 +16,17 @@ const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
 let response = '';
 let responseString = '';
-let testString = '<h1>llama.cpp</h1>';
+let testString = 'Ollama is running';
 
-describe('LLamaCPP Simple', () => {
-  if (llamaURL) {
+describe('Ollama Simple', () => {
+  if (ollamaURL) {
     test('URL should be set', async () => {
-      expect(typeof llamaURL).toBe('string');
+      expect(typeof ollamaURL).toBe('string');
     });
 
     test('URL loading test', async () => {
       try {
-        const fullUrl = llamaURL;
+        const fullUrl = ollamaURL;
         const parsedUrl = new URL(fullUrl);
 
         const baseUrl = `${parsedUrl.protocol}//${parsedUrl.hostname}${
@@ -45,10 +45,10 @@ describe('LLamaCPP Simple', () => {
 
     test('API Client should send a message and receive a response', async () => {
       if (responseString.includes(testString)) {
-        const llamacpp = new LLamaCPP(llamaURL);
+        const ollamacpp = new Ollama(ollamaURL);
 
         try {
-          response = await llamacpp.sendMessage(simplePrompt, options);
+          response = await ollamacpp.sendMessage(simplePrompt, options);
         } catch (error) {
           throw new Error(
             `Failed to load URL: ${safeStringify(error.message)}`,
