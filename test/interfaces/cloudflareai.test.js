@@ -1,10 +1,13 @@
 /**
- * @file test/basic/cohere.test.js
- * @description Tests for the Cohere API client.
+ * @file test/interfaces/cloudflareai.test.js
+ * @description Tests for the CloudflareAI API client.
  */
 
-const Cohere = require('../../src/interfaces/cohere.js');
-const { cohereApiKey } = require('../../src/config/config.js');
+const CloudflareAI = require('../../src/interfaces/cloudflareai.js');
+const {
+  cloudflareaiApiKey,
+  cloudflareaiAccountId,
+} = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,23 +15,25 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Cohere Basic', () => {
-  if (cohereApiKey) {
+let response = '';
+let model = '@cf/meta/llama-3-8b-instruct';
+
+describe('CloudflareAI Interface', () => {
+  if (cloudflareaiApiKey) {
     let response;
 
-    test('API Key should be set', async () => {
-      expect(typeof cohereApiKey).toBe('string');
+    test('API Key should be set', () => {
+      expect(typeof cloudflareaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const cohere = new Cohere(cohereApiKey);
+      const cloudflareai = new CloudflareAI(
+        cloudflareaiApiKey,
+        cloudflareaiAccountId,
+      );
       const message = {
-        model: 'command-r-plus',
+        model,
         messages: [
-          {
-            role: 'user',
-            content: 'Hello.',
-          },
           {
             role: 'system',
             content: 'You are a helpful assistant.',
@@ -39,15 +44,17 @@ describe('Cohere Basic', () => {
           },
         ],
       };
+
       try {
-        response = await cohere.sendMessage(message, options);
+        response = await cloudflareai.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
 
       expect(typeof response).toStrictEqual('object');
     }, 30000);
-    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+
+    test(`Response should be less than ${expectedMaxLength} characters`, () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });
   } else {

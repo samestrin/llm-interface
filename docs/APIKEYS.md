@@ -32,15 +32,29 @@ The Cohere API offers trial keys. Trial keys are rate-limited, and cannot be use
 
 - https://dashboard.cohere.com/api-keys
 
-## Deepinfra
+## DeepInfra
 
-The Deepinfra API is commercial but new accounts will start with a $1.80 credit.
+The DeepInfra API is commercial but new accounts will start with a $1.80 credit.
+
+- https://deepinfra.com/dash/api_keys
+
+## DeepSeek
+
+The DeepSeek API is commercial and required a credit card or debit card to get started.
+
+- https://platform.deepseek.com/api_keys
 
 ## Fireworks AI
 
 The Fireworks AI API offers a free developer tier and commercial accounts. A Credit is not required for the free developer tier.
 
 - https://fireworks.ai/api-keys
+
+## Forefront
+
+The Forefront API is commercial but it comes with $20 free credit.
+
+- https://platform.forefront.ai/app/api-keys
 
 ## Friendli AI
 
@@ -109,6 +123,14 @@ The Perplexity API requires a credit cards.
 The Reka AI API requires a credit card, but currently comes with a $5.00 credit.
 
 - https://platform.reka.ai/apikeys
+
+## Replicate
+
+The Replicate API is commercial but it does offer a free tier that you can use without providing a credit card.
+
+- https://replicate.com/
+
+After you login, you will need to click "Dashboard", then "Run a model".
 
 ## Together AI
 

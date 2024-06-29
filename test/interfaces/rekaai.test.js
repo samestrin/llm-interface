@@ -1,10 +1,10 @@
 /**
- * @file test/basic/gemini.test.js
- * @description Tests for the Gemini API client.
+ * @file test/interfaces/reka.test.js
+ * @description Tests for the Reka AI API client.
  */
 
-const Gemini = require('../../src/interfaces/gemini.js');
-const { geminiApiKey } = require('../../src/config/config.js');
+const RekaAI = require('../../src/interfaces/rekaai.js');
+const { rekaaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,21 +12,30 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Gemini Basic', () => {
-  if (geminiApiKey) {
+let response = '';
+let model = 'reka-edge';
+
+describe('RekaAI Interface', () => {
+  if (rekaaiApiKey) {
     let response;
+
     test('API Key should be set', async () => {
-      expect(typeof geminiApiKey).toBe('string');
+      expect(typeof rekaaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const gemini = new Gemini(geminiApiKey);
+      const reka = new RekaAI(rekaaiApiKey);
       const message = {
-        model: 'gemini-1.5-flash',
+        model,
         messages: [
           {
+            role: 'user',
+            content:
+              'You are a helpful assistant. Say OK if you understand and stop.',
+          },
+          {
             role: 'system',
-            content: 'You are a helpful assistant.',
+            content: 'OK',
           },
           {
             role: 'user',
@@ -35,13 +44,13 @@ describe('Gemini Basic', () => {
         ],
       };
       try {
-        response = await gemini.sendMessage(message, options);
-
+        response = await reka.sendMessage(message, options);
         expect(typeof response).toStrictEqual('object');
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-    });
+    }, 30000);
+
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });

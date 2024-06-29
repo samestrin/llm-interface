@@ -1,10 +1,10 @@
 /**
- * @file test/basic/monsterapi.test.js
- * @description Tests for the MonsterAPI API client.
+ * @file test/simple/forefront.test.js
+ * @description Simplified tests for the Forefront AI API client.
  */
 
-const MonsterAPI = require('../../src/interfaces/monsterapi.js');
-const { monsterapiApiKey } = require('../../src/config/config.js');
+const Forefront = require('../../src/interfaces/forefront.js');
+const { forefrontApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,34 +12,22 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('MonsterAPI Basic', () => {
-  if (monsterapiApiKey) {
+describe('Forefront Simple', () => {
+  if (forefrontApiKey) {
     let response;
-
     test('API Key should be set', () => {
-      expect(typeof monsterapiApiKey).toBe('string');
+      expect(typeof forefrontApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const monsterapi = new MonsterAPI(monsterapiApiKey);
-      const message = {
-        model: 'TinyLlama/TinyLlama-1.1B-Chat-v1.0',
-        messages: [
-          {
-            role: 'user',
-            content: simplePrompt,
-          },
-        ],
-      };
-
+      const forefront = new Forefront(forefrontApiKey);
       try {
-        response = await monsterapi.sendMessage(message, options);
+        response = await forefront.sendMessage(simplePrompt, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
       expect(typeof response).toStrictEqual('object');
     });
-
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });

@@ -1,10 +1,10 @@
 /**
- * @file test/basic/deepinfra.test.js
- * @description Tests for the DeepInfra API client.
+ * @file test/interfaces/forefront.test.js
+ * @description Tests for the Forefront API client.
  */
 
-const DeepInfra = require('../../src/interfaces/deepinfra.js');
-const { deepinfraApiKey } = require('../../src/config/config.js');
+const Forefront = require('../../src/interfaces/forefront.js');
+const { forefrontApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,18 +12,21 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('DeepInfra Basic', () => {
-  if (deepinfraApiKey) {
+let response = '';
+let model = 'forefront/Mistral-7B-Instruct-v0.2-chatml';
+
+describe('Forefront Interface', () => {
+  if (forefrontApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof deepinfraApiKey).toBe('string');
+      expect(typeof forefrontApiKey).toBe('string');
     });
-
+    jest;
     test('API Client should send a message and receive a response', async () => {
-      const deepinfra = new DeepInfra(deepinfraApiKey);
+      const forefront = new Forefront(forefrontApiKey);
       const message = {
-        model: 'microsoft/WizardLM-2-7B',
+        model,
         messages: [
           {
             role: 'system',
@@ -37,7 +40,7 @@ describe('DeepInfra Basic', () => {
       };
 
       try {
-        response = await deepinfra.sendMessage(message, options);
+        response = await forefront.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }

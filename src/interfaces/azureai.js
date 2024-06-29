@@ -7,7 +7,7 @@
 const axios = require('axios');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
+const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const { azureOpenAIApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
@@ -23,7 +23,7 @@ class AzureAI {
     this.interfaceName = 'azureai';
     this.apiKey = apiKey || azureOpenAIApiKey;
     this.client = axios.create({
-      baseURL: 'https://api.openai.azure.com', // Azure OpenAI API base URL
+      baseURL: config[this.interfaceName].url,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.apiKey}`,
@@ -50,7 +50,12 @@ class AzureAI {
         : interfaceOptions.cacheTimeoutSeconds;
 
     // Extract model and messages from the message object
-    const { model, messages } = messageObject;
+    let { model, messages } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
 
     // Get the selected model based on alias or default
     const selectedModel = getModelByAlias(this.interfaceName, model);
@@ -80,7 +85,7 @@ class AzureAI {
     }
 
     // Generate a cache key based on the request body
-    const cacheKey = JSON.stringify(requestBody);
+    const cacheKey = JSON.stringify({ requestBody, interfaceOptions });
 
     // Check if a cached response exists for the request
     if (cacheTimeoutSeconds) {
@@ -143,10 +148,9 @@ class AzureAI {
 
         // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
 
-        // Wait for the specified delay before retrying
-        await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }
     }

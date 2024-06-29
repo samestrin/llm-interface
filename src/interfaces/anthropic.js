@@ -8,7 +8,7 @@
 const AnthropicSDK = require('@anthropic-ai/sdk');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
+const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const { anthropicApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
@@ -45,7 +45,13 @@ class Anthropic {
         : interfaceOptions.cacheTimeoutSeconds;
 
     // Extract model and messages from the message object
-    const { model, messages } = messageObject;
+    let { model, messages } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
+
     // Get the selected model based on alias or default
     const selectedModel = getModelByAlias(this.interfaceName, model);
     // Set default value for max_tokens
@@ -132,9 +138,9 @@ class Anthropic {
 
         // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
-        // Wait for the specified delay before retrying
-        await new Promise((resolve) => setTimeout(resolve, delay));
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
+
         currentRetry++;
       }
     }

@@ -31,9 +31,12 @@ describe('Groq Caching', () => {
 
     // Convert the message structure for caching
     const cacheKey = JSON.stringify({
-      model: message.model,
-      messages: message.messages,
-      max_tokens: options.max_tokens,
+      requestBody: {
+        model: message.model,
+        messages: message.messages,
+        max_tokens: options.max_tokens,
+      },
+      interfaceOptions: { cacheTimeoutSeconds: 60 },
     });
 
     afterEach(() => {
@@ -61,9 +64,11 @@ describe('Groq Caching', () => {
       getFromCache.mockReturnValue(null);
 
       const apiResponse = 'API response';
-      groq.groq.chat.completions.create = jest.fn().mockResolvedValue({
-        choices: [{ message: { content: apiResponse } }],
-      });
+      groq.client = {
+        post: jest.fn().mockResolvedValue({
+          data: { choices: [{ message: { content: apiResponse } }] },
+        }),
+      };
 
       const response = await groq.sendMessage(message, options, {
         cacheTimeoutSeconds: 60,
@@ -77,13 +82,14 @@ describe('Groq Caching', () => {
         60,
       );
     });
+
     test(
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {
         getFromCache.mockReturnValue(null);
-        groq.groq.chat.completions.create = jest
-          .fn()
-          .mockRejectedValue(new Error('API error'));
+        groq.client = {
+          post: jest.fn().mockRejectedValue(new Error('API error')),
+        };
 
         await expect(
           groq.sendMessage(message, options, {

@@ -1,10 +1,10 @@
 /**
- * @file test/basic/deepinfra.test.js
- * @description Tests for the DeepInfra API client.
+ * @file test/simple/aimlapi.test.js
+ * @description Simplified tests for the AIMLAPI AI API client.
  */
 
-const TogetherAI = require('../../src/interfaces/togetherai.js');
-const { togetheraiApiKey } = require('../../src/config/config.js');
+const AIMLAPI = require('../../src/interfaces/aimlapi.js');
+const { aimlapiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,34 +12,22 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('TogetherAI Basic', () => {
-  if (togetheraiApiKey) {
+describe('AIMLAPI Simple', () => {
+  if (aimlapiApiKey) {
     let response;
-
     test('API Key should be set', () => {
-      expect(typeof togetheraiApiKey).toBe('string');
+      expect(typeof aimlapiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const togetherai = new TogetherAI(togetheraiApiKey);
-      const message = {
-        model: 'Qwen/Qwen1.5-0.5B-Chat',
-        messages: [
-          {
-            role: 'user',
-            content: simplePrompt,
-          },
-        ],
-      };
-
+      const aimlapi = new AIMLAPI(aimlapiApiKey);
       try {
-        response = await togetherai.sendMessage(message, options);
+        response = await aimlapi.sendMessage(simplePrompt, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
       expect(typeof response).toStrictEqual('object');
     });
-
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });

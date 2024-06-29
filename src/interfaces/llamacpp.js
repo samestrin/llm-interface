@@ -6,6 +6,7 @@
  */
 
 const axios = require('axios');
+const { delay } = require('../utils/utils.js');
 const { adjustModelAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
 const { getConfig } = require('../utils/configManager.js');
@@ -122,13 +123,43 @@ class LlamaCPP {
 
         // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
 
-        // Wait for the specified delay before retrying
-        await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }
     }
+  }
+  /**
+   * Stream a message to the API.
+   * @param {string|object} message - The message to send or a message object.
+   * @param {object} options - Additional options for the API request.
+   * @returns {Promise} The Axios response stream.
+   */
+  async streamMessage(prompt, options = {}) {
+    // Set default value for max_tokens
+    const { max_tokens = 150 } = options;
+
+    // Format the prompt based on the input type
+    let formattedPrompt;
+    if (typeof prompt === 'string') {
+      formattedPrompt = prompt;
+    } else {
+      // Join message contents to format the prompt
+      formattedPrompt = prompt.messages
+        .map((message) => message.content)
+        .join(' ');
+    }
+
+    // Prepare the payload for the API call
+    const payload = {
+      prompt: formattedPrompt,
+      n_predict: max_tokens,
+      stream: true,
+    };
+
+    // Return the Axios POST request with response type set to 'stream'
+    return this.client.post('', payload, { responseType: 'stream' });
   }
 }
 LlamaCPP.prototype.adjustModelAlias = adjustModelAlias;

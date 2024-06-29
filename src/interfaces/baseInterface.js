@@ -11,7 +11,7 @@
 const axios = require('axios');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { parseJSON } = require('../utils/utils.js');
+const { parseJSON, delay } = require('../utils/utils.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
 const log = require('loglevel');
@@ -89,16 +89,19 @@ class BaseInterface {
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
-    const { model, messages } = messageObject;
+    let { model, messages } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
+
     const selectedModel = getModelByAlias(this.interfaceName, model);
 
     const { max_tokens = 150, response_format = '' } = options;
 
     const requestBody = {
-      model:
-        selectedModel ||
-        options.model ||
-        config[this.interfaceName].model.default.name,
+      model: selectedModel,
       messages,
       max_tokens,
       ...options,
@@ -108,7 +111,7 @@ class BaseInterface {
       requestBody.response_format = { type: response_format };
     }
 
-    const cacheKey = JSON.stringify(requestBody);
+    const cacheKey = JSON.stringify({ requestBody, interfaceOptions });
 
     if (cacheTimeoutSeconds) {
       const cachedResponse = getFromCache(cacheKey);
@@ -117,11 +120,7 @@ class BaseInterface {
       }
     }
 
-    const url = this.getRequestUrl(
-      selectedModel ||
-        options.model ||
-        config[this.interfaceName].model.default.name,
-    );
+    const url = this.getRequestUrl(selectedModel);
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
@@ -164,13 +163,62 @@ class BaseInterface {
           throw error;
         }
 
+        // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
 
-        await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }
     }
+  }
+
+  /**
+   * Stream a message to the API.
+   * @param {string|object} message - The message to send or a message object.
+   * @param {object} options - Additional options for the API request.
+   * @returns {Promise} The Axios response stream.
+   */
+  async streamMessage(message, options = {}) {
+    // Create the message object if a string is provided, otherwise use the provided object
+    let messageObject =
+      typeof message === 'string' ? this.createMessageObject(message) : message;
+
+    // Update the message object if needed
+    messageObject = this.updateMessageObject(messageObject);
+
+    // Extract model and messages from the message object
+    let { model, messages } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
+
+    const selectedModel = getModelByAlias(this.interfaceName, model);
+
+    // Set default values for max_tokens and response_format
+    const { max_tokens = 150, response_format = '' } = options;
+
+    // Construct the request body with model, messages, max_tokens, and additional options
+    const requestBody = {
+      model: selectedModel,
+      messages,
+      max_tokens,
+      ...options,
+      stream: true,
+    };
+
+    // Include response_format in the request body if specified
+    if (response_format) {
+      requestBody.response_format = { type: response_format };
+    }
+
+    // Construct the request URL
+    const url = this.getRequestUrl(selectedModel);
+
+    // Return the Axios POST request with response type set to 'stream'
+    return this.client.post(url, requestBody, { responseType: 'stream' });
   }
 }
 

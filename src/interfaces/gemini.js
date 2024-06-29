@@ -4,11 +4,10 @@
  * @description Wrapper class for the Gemini API.
  * @param {string} apiKey - The API key for the Gemini API.
  */
-
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getMessageObject, parseJSON } = require('../utils/utils.js');
+const { getMessageObject, parseJSON, delay } = require('../utils/utils.js');
 const { geminiApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
@@ -79,10 +78,16 @@ class Gemini {
         : interfaceOptions.cacheTimeoutSeconds;
 
     let { model } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+
     const selectedModel = getModelByAlias(this.interfaceName, model);
     let max_tokens = options.max_tokens || 150;
     let response_format = options.response_format || '';
 
+    if (options.model) delete options.model;
     if (options.max_tokens) delete options.max_tokens;
     if (options.response_format) delete options.response_format;
 
@@ -104,6 +109,7 @@ class Gemini {
       history,
       prompt,
       generationConfig,
+      interfaceOptions,
     });
     if (cacheTimeoutSeconds) {
       const cachedResponse = getFromCache(cacheKey);
@@ -127,7 +133,7 @@ class Gemini {
         const response = await result.response;
         let text = await response.text();
 
-        if (response_format === 'json_object') {
+        if (interfaceOptions.attemptJsonRepair) {
           text = await parseJSON(text, interfaceOptions.attemptJsonRepair);
         }
 
@@ -151,9 +157,9 @@ class Gemini {
 
         // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
 
-        await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }
     }

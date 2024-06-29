@@ -8,7 +8,7 @@
 const axios = require('axios');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
+const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const { cohereApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
@@ -71,11 +71,12 @@ class Cohere {
       max_tokens = 150,
     } = options;
 
-    // Prepare the payload for the API call
+    // Finalize the model name
     model =
       selectedModel ||
       options.model ||
       config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
 
     let payload, chatHistory;
 
@@ -160,9 +161,9 @@ class Cohere {
 
         // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
 
-        await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }
     }

@@ -14,6 +14,16 @@ const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
 const suppressLogs = require('../../src/utils/suppressLogs.js');
 jest.mock('../../src/utils/cache.js');
 
+// Helper function to convert system roles to assistant roles
+const convertSystemToAssistant = (messages) => {
+  return messages.map((message) => {
+    if (message.role === 'system') {
+      return { ...message, role: 'assistant' };
+    }
+    return message;
+  });
+};
+
 describe('RekaAI Caching', () => {
   if (rekaaiApiKey) {
     const reka = new RekaAI(rekaaiApiKey);
@@ -30,17 +40,10 @@ describe('RekaAI Caching', () => {
     };
 
     // Convert the message structure for caching
-    const convertedMessages = message.messages.map((msg, index) => {
-      if (msg.role === 'system') {
-        return { ...msg, role: 'assistant' };
-      }
-      return { ...msg, role: 'user' };
-    });
-
     const cacheKey = JSON.stringify({
-      messages: convertedMessages,
-      model: 'reka-core',
-      max_tokens: options.max_tokens, // Include the default value for max_tokens
+      messages: convertSystemToAssistant(message.messages),
+      model: message.model,
+      max_tokens: options.max_tokens,
       stream: false,
     });
 
@@ -89,6 +92,7 @@ describe('RekaAI Caching', () => {
         60,
       );
     });
+
     test(
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {

@@ -1,9 +1,9 @@
 /**
  * @file llamacpp.test.js
- * @description Simplified tests for the LlamaCPP API client.
+ * @description Simplified tests for the LLamaCPP API client.
  */
 
-const LlamaCPP = require('../../src/interfaces/llamacpp.js');
+const LLamaCPP = require('../../src/interfaces/llamacpp.js');
 const { llamaURL } = require('../../src/config/config.js');
 const {
   simplePrompt,
@@ -15,8 +15,10 @@ const axios = require('axios');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
 let response = '';
+let responseString = '';
+let testString = '<h1>llama.cpp</h1>';
 
-describe('LlamaCPP Simple', () => {
+describe('LLamaCPP Simple', () => {
   if (llamaURL) {
     test('URL should be set', async () => {
       expect(typeof llamaURL).toBe('string');
@@ -32,16 +34,18 @@ describe('LlamaCPP Simple', () => {
         }/`;
 
         response = await axios.get(baseUrl);
+        responseString = response.data;
 
         expect(response.status).toBe(200);
-        expect(response.data).toContain('<h1>llama.cpp</h1>');
+        expect(response.data).toContain(testString);
       } catch (error) {
         throw new Error(`Failed to load URL: ${safeStringify(error.message)}`);
       }
     });
-    if (response.includes('<h1>llama.cpp</h1>')) {
-      test('API Client should send a message and receive a response', async () => {
-        const llamacpp = new LlamaCPP(llamaURL);
+
+    test('API Client should send a message and receive a response', async () => {
+      if (responseString.includes(testString)) {
+        const llamacpp = new LLamaCPP(llamaURL);
 
         try {
           response = await llamacpp.sendMessage(simplePrompt, options);
@@ -52,15 +56,19 @@ describe('LlamaCPP Simple', () => {
         }
 
         expect(typeof response).toStrictEqual('object');
-      }, 30000);
+      } else {
+        throw new Error(`Test string not found in response: ${responseString}`);
+      }
+    }, 30000);
 
-      test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      if (response && response.results) {
         expect(response.results.length).toBeLessThan(expectedMaxLength);
-      });
-    } else {
-      test.skip(`API Client is not available`, () => {});
-    }
+      } else {
+        throw new Error(`Response or response.results is undefined`);
+      }
+    });
   } else {
-    test.skip(`API Key is not set`, () => {});
+    test.skip(`URL is not set`, () => {});
   }
 });

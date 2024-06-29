@@ -36,7 +36,10 @@ describe('HuggingFace Caching', () => {
       max_tokens: max_tokens,
     };
 
-    const cacheKey = JSON.stringify(payload);
+    const cacheKey = JSON.stringify({
+      requestBody: payload,
+      interfaceOptions: { cacheTimeoutSeconds: 60 },
+    });
 
     const mockResponse = [{ generated_text: simplePrompt }];
 

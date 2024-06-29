@@ -1,10 +1,10 @@
 /**
- * @file test/basic/fireworksai.test.js
- * @description Tests for the FireworksAI API client.
+ * @file test/interfaces/monsterapi.test.js
+ * @description Tests for the MonsterAPI API client.
  */
 
-const FireworksAI = require('../../src/interfaces/fireworksai.js');
-const { fireworksaiApiKey } = require('../../src/config/config.js');
+const MonsterAPI = require('../../src/interfaces/monsterapi.js');
+const { monsterapiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,23 +12,22 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('FireworksAI Basic', () => {
-  if (fireworksaiApiKey) {
+let response = '';
+let model = 'TinyLlama/TinyLlama-1.1B-Chat-v1.0';
+
+describe('MonsterAPI Interface', () => {
+  if (monsterapiApiKey) {
     let response;
 
     test('API Key should be set', () => {
-      expect(typeof fireworksaiApiKey).toBe('string');
+      expect(typeof monsterapiApiKey).toBe('string');
     });
-    jest;
+
     test('API Client should send a message and receive a response', async () => {
-      const fireworks = new FireworksAI(fireworksaiApiKey);
+      const monsterapi = new MonsterAPI(monsterapiApiKey);
       const message = {
-        model: 'accounts/fireworks/models/phi-3-mini-128k-instruct',
+        model,
         messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
           {
             role: 'user',
             content: simplePrompt,
@@ -37,7 +36,7 @@ describe('FireworksAI Basic', () => {
       };
 
       try {
-        response = await fireworks.sendMessage(message, options);
+        response = await monsterapi.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }

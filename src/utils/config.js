@@ -7,6 +7,45 @@ const { getConfig, updateConfig } = require('./configManager.js');
 const config = getConfig();
 
 /**
+ * Sets the API key for a specified interface or multiple interfaces.
+ *
+ * @param {string|object} interfaceNames - The name of the interface (string) or an object containing interface names as keys and API keys as values.
+ * @param {string} [apiKey] - The API key to set (only required when interfaceNames is a string).
+ * @returns {boolean} - Returns true if the update was successful, otherwise false.
+ */
+function setApiKey(interfaceNames, apiKey) {
+  if (!interfaceNames) {
+    return false;
+  }
+
+  if (typeof interfaceNames === 'string') {
+    if (!config[interfaceNames] || !apiKey) {
+      return false;
+    }
+
+    config[interfaceNames].apiKey = apiKey;
+  } else if (typeof interfaceNames === 'object') {
+    for (const [interfaceName, keyValue] of Object.entries(interfaceNames)) {
+      if (!config[interfaceName]) {
+        continue; // Skip if the interface name is invalid
+      }
+
+      config[interfaceName].apiKey = keyValue;
+    }
+  } else {
+    // Invalid input type
+    return false;
+  }
+
+  try {
+    return updateConfig(config);
+  } catch (error) {
+    console.error('Error updating config:', error);
+    return false;
+  }
+}
+
+/**
  * Adjusts model alias values
  *
  * @param {string} interfaceName - The name of the interface.
@@ -54,6 +93,9 @@ function getModelConfigValue(modelName, key) {
   switch (key) {
     case 'url':
       result = modelConfig.url !== undefined ? modelConfig.url : false;
+      break;
+    case 'apiKey':
+      result = modelConfig.apiKey !== undefined ? modelConfig.apiKey : false;
       break;
     case 'model.default':
       result =
@@ -117,4 +159,5 @@ module.exports = {
   getModelByAlias,
   getModelConfigValue,
   getAllModelNames,
+  setApiKey,
 };

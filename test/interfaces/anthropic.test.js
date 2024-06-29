@@ -1,10 +1,10 @@
 /**
- * @file test/basic/mistralai.test.js
- * @description Tests for the MistralAI API client.
+ * @file test/interfaces/anthropic.test.js
+ * @description Tests for the Anthropic API client.
  */
 
-const MistralAI = require('../../src/interfaces/mistralai.js');
-const { mistralaiApiKey } = require('../../src/config/config.js');
+const Anthropic = require('../../src/interfaces/anthropic.js');
+const { anthropicApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,28 +12,39 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('MistralAI Basic', () => {
-  if (mistralaiApiKey) {
-    let response;
+let response = '';
+let model = 'claude-3-opus-20240229';
 
+describe('Anthropic Interface', () => {
+  if (anthropicApiKey) {
+    let response;
     test('API Key should be set', async () => {
-      expect(typeof mistralaiApiKey).toBe('string');
+      expect(typeof anthropicApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const mistral = new MistralAI(mistralaiApiKey);
+      const anthropic = new Anthropic(anthropicApiKey);
       const message = {
-        model: 'mistral-large-latest',
+        model,
         messages: [
-          { role: 'system', content: 'You are a helpful assistant.' },
+          {
+            role: 'user',
+            content:
+              'You are a helpful assistant. Say OK if you understand and stop.',
+          },
+          {
+            role: 'system',
+            content: 'OK',
+          },
           {
             role: 'user',
             content: simplePrompt,
           },
         ],
       };
+
       try {
-        response = await mistral.sendMessage(message, options);
+        response = await anthropic.sendMessage(message, options);
 
         expect(typeof response).toStrictEqual('object');
       } catch (error) {

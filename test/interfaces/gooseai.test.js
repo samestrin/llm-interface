@@ -1,10 +1,10 @@
 /**
- * @file test/basic/perplexity.test.js
- * @description Tests for the Perplexity API client.
+ * @file test/interfaces/goose.test.js
+ * @description Tests for the Goose AI API client.
  */
 
-const Perplexity = require('../../src/interfaces/perplexity.js');
-const { perplexityApiKey } = require('../../src/config/config.js');
+const GooseAI = require('../../src/interfaces/gooseai.js');
+const { gooseaiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,18 +12,21 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('Perplexity Basic', () => {
-  if (perplexityApiKey) {
+let response = '';
+let model = 'gpt-j-6b';
+
+describe('Goose AI Interface', () => {
+  if (gooseaiApiKey) {
     let response;
 
-    test('API Key should be set', () => {
-      expect(typeof perplexityApiKey).toBe('string');
+    test('API Key should be set', async () => {
+      expect(typeof gooseaiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const perplixity = new Perplexity(perplexityApiKey);
+      const goose = new GooseAI(gooseaiApiKey);
       const message = {
-        model: 'llama-3-sonar-small-32k-online',
+        model,
         messages: [
           {
             role: 'system',
@@ -36,13 +39,13 @@ describe('Perplexity Basic', () => {
         ],
       };
       try {
-        response = await perplixity.sendMessage(message, options);
+        response = await goose.sendMessage(message, options);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
 
       expect(typeof response).toStrictEqual('object');
-    });
+    }, 30000);
 
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);

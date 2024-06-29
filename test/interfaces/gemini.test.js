@@ -1,10 +1,10 @@
 /**
- * @file test/basic/ai21.test.js
- * @description Tests for the AI21 Studio API client.
+ * @file test/interfaces/gemini.test.js
+ * @description Tests for the Gemini API client.
  */
 
-const AI21 = require('../../src/interfaces/ai21.js');
-const { ai21ApiKey } = require('../../src/config/config.js');
+const Gemini = require('../../src/interfaces/gemini.js');
+const { geminiApiKey } = require('../../src/config/config.js');
 const {
   simplePrompt,
   options,
@@ -12,18 +12,20 @@ const {
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
 
-describe('AI21 Basic', () => {
-  if (ai21ApiKey) {
-    let response;
+let response = '';
+let model = 'gemini-1.5-flash';
 
-    test('API Key should be set', () => {
-      expect(typeof ai21ApiKey).toBe('string');
+describe('Gemini Interface', () => {
+  if (geminiApiKey) {
+    let response;
+    test('API Key should be set', async () => {
+      expect(typeof geminiApiKey).toBe('string');
     });
 
     test('API Client should send a message and receive a response', async () => {
-      const ai21 = new AI21(ai21ApiKey);
+      const gemini = new Gemini(geminiApiKey);
       const message = {
-        model: 'jamba-instruct',
+        model,
         messages: [
           {
             role: 'system',
@@ -35,15 +37,14 @@ describe('AI21 Basic', () => {
           },
         ],
       };
-
       try {
-        response = await ai21.sendMessage(message, options);
+        response = await gemini.sendMessage(message, options);
+
+        expect(typeof response).toStrictEqual('object');
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
-      expect(typeof response).toStrictEqual('object');
     });
-
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
     });

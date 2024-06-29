@@ -6,9 +6,10 @@
  */
 
 const axios = require('axios');
+
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getMessageObject } = require('../utils/utils.js');
+const { getMessageObject, delay } = require('../utils/utils.js');
 const { watsonxaiApiKey, watsonxaiSpaceId } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const config = getConfig();
@@ -93,9 +94,12 @@ class watsonxai {
     const { max_tokens = 150, space_id } = options;
     let { model } = messageObject;
 
-    model = getModelByAlias(this.interfaceName, model);
+    // Set the model and default values
     model =
       model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
+
+    model = getModelByAlias(this.interfaceName, model);
 
     const formattedPrompt = messages
       .map((message) => message.content)
@@ -159,10 +163,11 @@ class watsonxai {
           throw error;
         }
 
+        // Calculate the delay for the next retry attempt
         let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delay = (currentRetry + 1) * retryMultiplier * 1000;
+        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
+        await delay(delayTime);
 
-        await new Promise((resolve) => setTimeout(resolve, delay));
         currentRetry++;
       }
     }

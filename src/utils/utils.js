@@ -69,6 +69,15 @@ async function getJsonRepairInstance() {
  * @returns {Promise<object|null>} - The parsed or repaired JSON object, or null if parsing and repair both fail.
  */
 async function parseJSON(json, attemptRepair) {
+  const subString = '```';
+  const regex = new RegExp(subString, 'ig'); // Added 'g' flag for global replacement
+
+  if (typeof json === 'string' && attemptRepair && regex.test(json)) {
+    json = json.replace(/```javascript/gi, ''); // Replace all occurrences of '```javascript'
+    json = json.replace(/```/gi, ''); // Replace all occurrences of '```'
+    json = json.trim();
+  }
+
   try {
     const parsed = JSON.parse(json);
     return parsed;
@@ -88,8 +97,19 @@ async function parseJSON(json, attemptRepair) {
   }
 }
 
+/**
+ * Returns a promise that resolves after a specified delay in milliseconds.
+ *
+ * @param {number} ms - The number of milliseconds to delay.
+ * @returns {Promise<void>} A promise that resolves after the delay.
+ */
+async function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 module.exports = {
   getMessageObject,
   getSimpleMessageObject,
   parseJSON,
+  delay,
 };
