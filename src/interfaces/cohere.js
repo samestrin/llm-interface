@@ -71,11 +71,12 @@ class Cohere {
       max_tokens = 150,
     } = options;
 
-    // Prepare the payload for the API call
+    // Finalize the model name
     model =
       selectedModel ||
       options.model ||
       config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
 
     let payload, chatHistory;
 

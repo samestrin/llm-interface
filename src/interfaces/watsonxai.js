@@ -94,9 +94,12 @@ class watsonxai {
     const { max_tokens = 150, space_id } = options;
     let { model } = messageObject;
 
-    model = getModelByAlias(this.interfaceName, model);
+    // Set the model and default values
     model =
       model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
+
+    model = getModelByAlias(this.interfaceName, model);
 
     const formattedPrompt = messages
       .map((message) => message.content)

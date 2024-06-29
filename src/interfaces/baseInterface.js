@@ -89,16 +89,19 @@ class BaseInterface {
         ? interfaceOptions
         : interfaceOptions.cacheTimeoutSeconds;
 
-    const { model, messages } = messageObject;
+    let { model, messages } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
+
     const selectedModel = getModelByAlias(this.interfaceName, model);
 
     const { max_tokens = 150, response_format = '' } = options;
 
     const requestBody = {
-      model:
-        selectedModel ||
-        options.model ||
-        config[this.interfaceName].model.default.name,
+      model: selectedModel,
       messages,
       max_tokens,
       ...options,
@@ -117,11 +120,7 @@ class BaseInterface {
       }
     }
 
-    const url = this.getRequestUrl(
-      selectedModel ||
-        options.model ||
-        config[this.interfaceName].model.default.name,
-    );
+    const url = this.getRequestUrl(selectedModel);
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
@@ -190,6 +189,12 @@ class BaseInterface {
 
     // Extract model and messages from the message object
     const { model, messages } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
+
     const selectedModel = getModelByAlias(this.interfaceName, model);
 
     // Set default values for max_tokens and response_format
@@ -197,10 +202,7 @@ class BaseInterface {
 
     // Construct the request body with model, messages, max_tokens, and additional options
     const requestBody = {
-      model:
-        selectedModel ||
-        options.model ||
-        config[this.interfaceName].model.default.name,
+      model: selectedModel,
       messages,
       max_tokens,
       ...options,
@@ -213,11 +215,7 @@ class BaseInterface {
     }
 
     // Construct the request URL
-    const url = this.getRequestUrl(
-      selectedModel ||
-        options.model ||
-        config[this.interfaceName].model.default.name,
-    );
+    const url = this.getRequestUrl(selectedModel);
 
     // Return the Axios POST request with response type set to 'stream'
     return this.client.post(url, requestBody, { responseType: 'stream' });

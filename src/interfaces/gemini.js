@@ -78,10 +78,16 @@ class Gemini {
         : interfaceOptions.cacheTimeoutSeconds;
 
     let { model } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+
     const selectedModel = getModelByAlias(this.interfaceName, model);
     let max_tokens = options.max_tokens || 150;
     let response_format = options.response_format || '';
 
+    if (options.model) delete options.model;
     if (options.max_tokens) delete options.max_tokens;
     if (options.response_format) delete options.response_format;
 

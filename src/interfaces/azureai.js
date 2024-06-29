@@ -50,7 +50,12 @@ class AzureAI {
         : interfaceOptions.cacheTimeoutSeconds;
 
     // Extract model and messages from the message object
-    const { model, messages } = messageObject;
+    let { model, messages } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
 
     // Get the selected model based on alias or default
     const selectedModel = getModelByAlias(this.interfaceName, model);

@@ -56,7 +56,12 @@ class CloudflareAI {
         : interfaceOptions.cacheTimeoutSeconds;
 
     // Extract model, lora, and messages from the message object
-    const { model, lora, messages } = messageObject;
+    let { model, lora, messages } = messageObject;
+
+    // Finalize the model name
+    model =
+      model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
 
     // Get the selected model based on alias or default
     let selectedModel = getModelByAlias(this.interfaceName, model);

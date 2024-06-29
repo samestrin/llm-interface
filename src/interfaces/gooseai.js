@@ -51,12 +51,13 @@ class GooseAI {
     const { max_tokens = 150 } = options;
     let { model } = messageObject;
 
-    // Get the selected model based on alias or default
-    model = getModelByAlias(this.interfaceName, model);
-
     // Set the model and default values
     model =
       model || options.model || config[this.interfaceName].model.default.name;
+    if (options.model) delete options.model;
+
+    // Get the selected model based on alias or default
+    model = getModelByAlias(this.interfaceName, model);
 
     // Format the prompt by joining message contents
     const formattedPrompt = messages

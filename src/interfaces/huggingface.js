@@ -9,6 +9,7 @@ const BaseInterface = require('./baseInterface.js');
 const { huggingfaceApiKey } = require('../config/config.js');
 const { getSimpleMessageObject } = require('../utils/utils.js');
 const { getConfig } = require('../utils/configManager.js');
+const { getModelByAlias } = require('../utils/config.js');
 const config = getConfig();
 
 class HuggingFace extends BaseInterface {
@@ -27,6 +28,7 @@ class HuggingFace extends BaseInterface {
   }
 
   getRequestUrl(model) {
+    model = getModelByAlias('huggingface', model);
     return `${model}/v1/chat/completions`;
   }
 }
