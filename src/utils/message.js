@@ -49,10 +49,8 @@ async function LLMInterfaceSendMessage(
       ? new LLMInterface[module](apiKey, userId)
       : new LLMInterface[module](apiKey);
   }
-
-  const llmInstance = LLMInstances[module][apiKey];
-
   try {
+    const llmInstance = LLMInstances[module][apiKey];
     return await llmInstance.sendMessage(message, options, interfaceOptions);
   } catch (error) {
     throw new Error(
