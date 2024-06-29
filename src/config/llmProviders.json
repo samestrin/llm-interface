@@ -442,7 +442,7 @@
         "tokens": 32768
       },
       "small": {
-        "name": "mixtral-8x7b-instruct-v0.1",
+        "name": "mistralai/mistral-7b-instruct-v0.2",
         "tokens": 2048
       }
     }
