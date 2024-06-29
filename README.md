@@ -27,9 +27,9 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 - **New LLM Providers**: Added support for AIML API (_currently not respecting option values_), DeepSeek, Forefront, Ollama, Replicate, and Writer.
 - **New LLMInterface Methods**: `LLMInterface.setApiKey`, `LLMInterface.sendMesage`, and `LLMInterface.streamMessage`.
-- **New Interface Function**: `LLMInterfaceStreamMessage`
 - **Streaming**: Streaming support available for: AI21 Studio, AIML API, DeepInfra, DeepSeek, Fireworks AI, FriendliAI, Groq, Hugging Face, LLaMa.CPP, Mistral AI, Monster API, NVIDIA,
 Octo AI, Ollama, OpenAI, Perplexity, Together AI, and Writer.
+- **New Interface Function**: `LLMInterfaceStreamMessage`
 - **Test Coverage**: 100% test coverage for all interface classes.
 - **Examples**: New usage [examples](/examples).
 
