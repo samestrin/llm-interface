@@ -97,9 +97,8 @@ async function LLMInterfaceStreamMessage(
       : new LLMInterface[module](apiKey);
   }
 
-  const llmInstance = LLMInstances[module][apiKey];
-
   try {
+    const llmInstance = LLMInstances[module][apiKey];
     return await llmInstance.streamMessage(message, options);
   } catch (error) {
     throw new Error(
