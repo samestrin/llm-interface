@@ -47,7 +47,7 @@ describe('LlamaCPP Interface', () => {
     test('API Client should send a message and receive a response', async () => {
       const llamacpp = new LlamaCPP(llamaURL);
       const message = {
-        model: 'some-llamacpp-model',
+        model,
         messages: [
           {
             role: 'system',
