@@ -18,7 +18,7 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
 - **Response Caching**: Efficiently caches LLM responses to reduce costs and enhance performance.
 - **Graceful Retries**: Automatically retry failed prompts with increasing delays to ensure successful responses.
-- **JSON Output**: Simple to use native JSON output for OpenAI, Fireworks AI, and Gemini responses.
+- **JSON Output**: Simple to use native JSON output for various LLM providers  including OpenAI, Fireworks AI, Google Gemini, anre more.
 - **JSON Repair**: Detect and repair invalid JSON responses.
 
 ## Updates
