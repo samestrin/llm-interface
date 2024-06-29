@@ -16,7 +16,7 @@ const apiKey = process.env.GROQ_API_KEY;
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  let prompt = `${simplePrompt} Retun 5 results.\n\nProvide the response as a JSON object.\n\nFollow this output format, only responding with the JSON object and nothing else:\n\n{title, reason}`;
+  let prompt = `${simplePrompt} Return 5 results.\n\nProvide the response as a JSON object.\n\nFollow this output format, only responding with the JSON object and nothing else:\n\n{title, reason}`;
 
   console.log('JSON Repair:');
   console.log();
@@ -40,7 +40,7 @@ async function exampleUsage() {
     console.log(response.results);
     console.log();
   } catch (error) {
-    console.error('Error processing LLMInferface.sendMessage:', error);
+    console.error('Error processing LLMInterface.sendMessage:', error);
   }
 }
 

@@ -35,7 +35,7 @@ async function exampleUsage() {
     console.log(response.results);
     console.log();
   } catch (error) {
-    console.error('Error processing LLMInferface.sendMessage:', error);
+    console.error('Error processing LLMInterface.sendMessage:', error);
   }
 }
 
