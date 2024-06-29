@@ -6,13 +6,13 @@
 
 ## Introduction
 
-`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, AIML API, Anthropic, Cloudflare AI, Cohere, DeepInfra, Fireworks AI, Forefront, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Monster API, Octo AI, Ollama, Perplexity, Reka AI, watsonx.ai, Writer, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
+`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, AIML API, Anthropic, Cloudflare AI, Cohere, DeepInfra, Fireworks AI, Forefront, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Monster API, Octo AI, Ollama, Perplexity, Reka AI, Replicate, watsonx.ai, Writer, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
 
 This goal of `llm-interface` is to provide a single, simple, unified interface for sending messages and receiving responses from different LLM services. This will make it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
 ## Features
 
-- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **23 different LLM APIs** (21 hosted LLM providers and 2 local LLM providers).
+- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **24 different LLM APIs** (22 hosted LLM providers and 2 local LLM providers).
 - **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
@@ -31,6 +31,7 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 - **Beta Feature**: Streaming support available at the interface class level for: AI21 Studio, AIML API, DeepInfra, DeepSeek, Fireworks AI, FriendliAI, Groq, Hugging Face, LLaMa.CPP, Mistral AI, Monster API, NVIDIA,
 Octo AI, Ollama, OpenAI, Perplexity, Together AI, and Writer.
 - **Test Coverage**: 100% test coverage for all interface classes.
+- **Examples**: New usage [examples](/examples).
 
 **v2.0.8**
 
@@ -113,10 +114,10 @@ npm test
 #### Current Test Results
 
 ```bash
-Test Suites: 52 passed, 52 total
-Tests:       2 skipped, 215 passed, 217 total
+Test Suites: 1 skipped, 65 passed, 65 of 66 total
+Tests:       2 skipped, 291 passed, 293 total
 Snapshots:   0 total
-Time:        76.236 s
+Time:        103.293 s, estimated 121 s
 ```
 
 _Note: Currently skipping NVIDIA test cases due to API key limits._
