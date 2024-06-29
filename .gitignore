@@ -133,3 +133,4 @@ dist
 .prettier*
 
 .DS_STORE
+cache/
