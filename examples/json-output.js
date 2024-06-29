@@ -1,7 +1,6 @@
 /**
- * @file examples/native-json-output.js
- * @description Example showing JSON repair. To do this, I will a larger result set then can be returned based on token size, this will result in
- * a response containing an invalid JSON object. We aren't using native JSON mode because generally that will provide some level of JSON validation.
+ * @file examples/json-output.js
+ * @description Example showing JSON output. To do this, I will specify my JSON output requirements through my prompt.
  */
 const { LLMInterface } = require('llm-interface');
 const { simplePrompt, options } = require('../src/utils/defaults.js');

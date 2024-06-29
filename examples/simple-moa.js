@@ -1,6 +1,6 @@
 /**
  * @file examples/simple-moa.js
- * @description Example showing Mixture of Agents (MoA) concept to improve response quality.
+ * @description Example showing Mixture of Agents (MoA) concept to improve response quality. (https://www.together.ai/blog/together-moa)
  */
 
 const { LLMInterface } = require('llm-interface');

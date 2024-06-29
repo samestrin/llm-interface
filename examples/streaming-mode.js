@@ -1,6 +1,6 @@
 /**
  * @file examples/streaming-mode.js
- * @description Example showing the new streaming functionality
+ * @description Example showing the new beta streaming functionality.
  */
 const { LLMInterface } = require('llm-interface');
 const { Readable } = require('stream');

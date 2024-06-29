@@ -1,6 +1,7 @@
 /**
  * @file examples/native-json-output.js
- * @description Example showing native JSON output
+ * @description Example showing native JSON output. I will specify my JSON requirements in my prompt, and also specify native JSON mode. This will have
+ * the added benefit of server side JSON validation, however this can return a null response when the result set is too large for the response token.
  */
 const { LLMInterface } = require('llm-interface');
 const { simplePrompt, options } = require('../src/utils/defaults.js');
