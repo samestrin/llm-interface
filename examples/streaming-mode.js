@@ -72,11 +72,23 @@ async function exampleUsage() {
   try {
     console.log('Process Stream');
     console.log();
+
+    const stream = await LLMInterface.sendMessage(interface, simplePrompt, {
+      stream: true,
+      ...options,
+    });
+
+    /*
+    or
+
     const stream = await LLMInterface.streamMessage(
       interface,
       simplePrompt,
       options,
     );
+
+    */
+
     const result = await processStream(stream.data);
     console.log();
     console.log('Concatenated Content');
