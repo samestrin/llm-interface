@@ -29,6 +29,10 @@ async function LLMInterfaceSendMessage(
   options = {},
   interfaceOptions = {},
 ) {
+  if (options.stream) {
+    return await LLMInterfaceStreamMessage(module, apiKey, message, options);
+  }
+
   if (!LLMInterface[module]) {
     throw new Error(`Unsupported LLM module: ${module}`);
   }
