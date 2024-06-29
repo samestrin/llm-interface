@@ -3,6 +3,11 @@
  * @description Message related functions both non streamed and streamed. Includes wrapper that don't require the API key each time.
  */
 
+const { LLMInterface } = require('./llmInterface.js');
+const { getConfig } = require('./configManager.js');
+
+const config = getConfig();
+
 const LLMInstances = {}; // Persistent LLM instances
 
 /**
@@ -160,6 +165,7 @@ async function LLMInterfaceStreamMessageWithConfig(
 }
 
 module.exports = {
+  LLMInterface,
   LLMInterfaceSendMessage,
   LLMInterfaceStreamMessage,
   LLMInterfaceSendMessageWithConfig,
