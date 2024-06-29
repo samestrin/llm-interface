@@ -73,7 +73,7 @@ class Replicate {
     };
 
     // Generate a cache key based on the request body
-    const cacheKey = JSON.stringify(requestBody);
+    const cacheKey = JSON.stringify({ requestBody, interfaceOptions });
 
     // Check if a cached response exists for the request
     if (cacheTimeoutSeconds) {

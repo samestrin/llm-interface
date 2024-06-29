@@ -108,7 +108,7 @@ class BaseInterface {
       requestBody.response_format = { type: response_format };
     }
 
-    const cacheKey = JSON.stringify(requestBody);
+    const cacheKey = JSON.stringify({ requestBody, interfaceOptions });
 
     if (cacheTimeoutSeconds) {
       const cachedResponse = getFromCache(cacheKey);

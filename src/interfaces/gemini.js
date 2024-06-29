@@ -103,6 +103,7 @@ class Gemini {
       history,
       prompt,
       generationConfig,
+      interfaceOptions,
     });
     if (cacheTimeoutSeconds) {
       const cachedResponse = getFromCache(cacheKey);
@@ -126,7 +127,7 @@ class Gemini {
         const response = await result.response;
         let text = await response.text();
 
-        if (response_format === 'json_object') {
+        if (interfaceOptions.attemptJsonRepair) {
           text = await parseJSON(text, interfaceOptions.attemptJsonRepair);
         }
 
