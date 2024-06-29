@@ -156,7 +156,6 @@ describe('LLMInterface.setApiKey followed by LLMInterface.sendMessage and LLMInt
           readableStream.on('end', () => {
             try {
               expect(typeof data).toBe('string');
-              console.log(data);
               resolve();
             } catch (error) {
               reject(

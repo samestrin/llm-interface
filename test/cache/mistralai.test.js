@@ -31,9 +31,12 @@ describe('MistralAI Caching', () => {
 
     // Convert the message structure for caching
     const cacheKey = JSON.stringify({
-      model: message.model,
-      messages: message.messages,
-      max_tokens: options.max_tokens,
+      requestBody: {
+        model: message.model,
+        messages: message.messages,
+        max_tokens: options.max_tokens,
+      },
+      interfaceOptions: { cacheTimeoutSeconds: 60 },
     });
 
     afterEach(() => {

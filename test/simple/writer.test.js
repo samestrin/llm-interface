@@ -32,7 +32,6 @@ describe('Writer Simple', () => {
     });
     test(`Response should be less than ${expectedMaxLength} characters`, async () => {
       expect(response.results.length).toBeLessThan(expectedMaxLength);
-      console.log(response.results);
     });
   } else {
     test.skip(`API Key is not set`, () => {});

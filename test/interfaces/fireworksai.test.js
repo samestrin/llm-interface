@@ -11,7 +11,7 @@ const {
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
-
+const { Readable } = require('stream');
 let response = '';
 let model = 'accounts/fireworks/models/phi-3-mini-128k-instruct';
 
@@ -48,7 +48,7 @@ describe('FireworksAI Interface', () => {
     });
 
     test('API Client should stream a message and receive a response stream', async () => {
-      const fireworks = new FireworksAI(fireworksApiKey);
+      const fireworks = new FireworksAI(fireworksaiApiKey);
       const message = {
         model,
         messages: [

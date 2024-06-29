@@ -37,6 +37,7 @@ describe('Gemini Caching', () => {
         ],
         prompt: simplePrompt,
         generationConfig: { maxOutputTokens: maxTokens },
+        interfaceOptions: { cacheTimeoutSeconds: 60 },
       });
 
     afterEach(() => {
