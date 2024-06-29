@@ -2,6 +2,7 @@
  * @file examples/simple-moa.js
  * @description Example showing Mixture of Agents (MoA) concept to improve response quality.
  */
+
 const { LLMInterface } = require('llm-interface');
 const { simplePrompt } = require('../src/utils/defaults.js');
 
@@ -18,6 +19,21 @@ LLMInterface.setApiKey({
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
+  let controlResponse;
+
+  try {
+    controlResponse = await LLMInterface.sendMessage(
+      'gemini',
+      simplePrompt,
+      {
+        max_tokens: 1024,
+      },
+      { cacheTimeoutSeconds: 86400 },
+    );
+  } catch (error) {
+    console.error('Error processing Control LLMInterface.sendMessage:', error);
+  }
+
   let stepsString = '';
 
   let proposerPrompt = `Given the prompt "${simplePrompt}" explain how you would respond, process wise. Show the process steps you could delegate while compressing the work into 3 steps, only include the brainstorming/research steps, not the answer.
@@ -56,42 +72,67 @@ Follow this output format, only responding with the JSON object and nothing else
     console.error('Error processing Proposer LLMInterface.sendMessage:', error);
   }
 
-  const aggregators = ['huggingface', 'groq'];
-  const aggregatorResponse = [];
+  const moas = ['huggingface', 'groq'];
+  const moaResponse = [];
 
   // Array to keep track of which interfaces have been queried
   const queriedInterfaces = {};
 
-  for (const aggregatorInterfaceName of aggregators) {
+  for (const moaInterfaceName of moas) {
     try {
       // Check if this interface has already been queried
-      if (!queriedInterfaces[aggregatorInterfaceName]) {
-        console.log(`${aggregatorInterfaceName}:`);
-
-        const aggregatorPrompt = `Given the prompt "${simplePrompt}"
+      if (!queriedInterfaces[moaInterfaceName]) {
+        console.log(`Querying ${moaInterfaceName}.`);
+        const moaPrompt = `Given the prompt "${simplePrompt}"
 
 ${stepsString}
 `;
 
         const response = await LLMInterface.sendMessage(
-          aggregatorInterfaceName,
-          aggregatorPrompt,
+          moaInterfaceName,
+          moaPrompt,
           { max_tokens: 4096 },
           { cacheTimeoutSeconds: 86400 },
         );
 
-        aggregatorResponse.push(response.results);
-        queriedInterfaces[aggregatorInterfaceName] = true; // Mark as queried
+        moaResponse.push(response.results);
+        queriedInterfaces[moaInterfaceName] = true; // Mark as queried
       }
     } catch (error) {
       console.error(
-        `Error processing ${aggregatorInterfaceName} LLMInterface.sendMessage:`,
+        `Error processing ${moaInterfaceName} LLMInterface.sendMessage:`,
         error,
       );
     }
   }
 
-  console.log(aggregatorResponse.length);
+  // aggregator
+  const aggregatorPrompt = `Synthesize a single high quality answer for the prompt "${simplePrompt}" based on:
+
+  ${moaResponse.join('\n\n')}`;
+
+  console.log('Control Result:');
+  console.log(controlResponse.results);
+  console.log();
+
+  console.log('MOA Result:');
+  try {
+    const aggregatorResponse = await LLMInterface.sendMessage(
+      'gemini',
+      aggregatorPrompt,
+      {
+        max_tokens: 1024,
+      },
+      { cacheTimeoutSeconds: 86400 },
+    );
+
+    console.log(
+      `> ${aggregatorResponse.results.replaceAll('\n\n', '\n>\n> ')}`,
+    );
+  } catch (error) {
+    console.error('Error processing Proposer LLMInterface.sendMessage:', error);
+  }
+
   console.log();
 }
 
