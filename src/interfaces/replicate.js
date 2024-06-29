@@ -46,7 +46,7 @@ class Replicate {
         : interfaceOptions.cacheTimeoutSeconds;
 
     // Extract model and messages from the message object
-    const { model } = message;
+    let { model } = message;
 
     // Set the model and default values
     model =
@@ -68,6 +68,7 @@ class Replicate {
       prompt = message.messages.map((message) => message.content).join(' ');
     }
 
+    if (options.max_tokens) delete options.max_tokens;
     // Prepare the request body for the API call
     const requestBody = {
       input: {

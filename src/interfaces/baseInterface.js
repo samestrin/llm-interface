@@ -188,7 +188,7 @@ class BaseInterface {
     messageObject = this.updateMessageObject(messageObject);
 
     // Extract model and messages from the message object
-    const { model, messages } = messageObject;
+    let { model, messages } = messageObject;
 
     // Finalize the model name
     model =
