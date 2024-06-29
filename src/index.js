@@ -4,38 +4,18 @@
  */
 
 const {
-  getAllModelNames,
-  setApiKey,
-  getModelConfigValue,
-} = require('./utils/config.js');
-const { getConfig } = require('./utils/configManager.js');
-const {
+  LLMInterface,
   LLMInterfaceSendMessage,
   LLMInterfaceStreamMessage,
   LLMInterfaceSendMessageWithConfig,
   LLMInterfaceStreamMessageWithConfig,
 } = require('./utils/message.js');
 
-const config = getConfig();
-
-const modules = Object.keys(config).reduce((acc, key) => {
-  acc[key] = `./interfaces/${key}`;
-  return acc;
-}, {});
-
-const LLMInterface = {};
-Object.keys(modules).forEach((key) => {
-  Object.defineProperty(LLMInterface, key, {
-    get: function () {
-      if (!this[`_${key}`]) {
-        this[`_${key}`] = require(modules[key]);
-      }
-      return this[`_${key}`];
-    },
-    enumerable: true,
-    configurable: true,
-  });
-});
+const {
+  getAllModelNames,
+  setApiKey,
+  getModelConfigValue,
+} = require('./utils/config.js');
 
 // LLMInterface get functions
 LLMInterface.getAllModelNames = getAllModelNames;
@@ -52,5 +32,4 @@ module.exports = {
   LLMInterface,
   LLMInterfaceSendMessage,
   LLMInterfaceStreamMessage,
-  config,
 };
