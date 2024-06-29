@@ -5,8 +5,15 @@
 
 const { LLMInterface } = require('../../src/index.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
+const {
+  simplePrompt,
+  options,
+  expectedMaxLength,
+} = require('../../src/utils/defaults.js');
+let config = require('../../src/config/config.js');
+const { Readable } = require('stream');
 
-let result;
+let response;
 
 describe('LLMInterface.getAllModelNames', () => {
   test('should return an array of all model names, order not important', () => {
@@ -15,6 +22,12 @@ describe('LLMInterface.getAllModelNames', () => {
     const expectedModelNames = [
       'openai',
       'ai21',
+      'aimlapi',
+      'deepseek',
+      'forefront',
+      'ollama',
+      'replicate',
+      'writer',
       'anthropic',
       'azureai',
       'cohere',
@@ -79,12 +92,92 @@ describe('LLMInterface.getModelConfigValue', () => {
   testCases.forEach(({ llmProvider, key, expectedValue }) => {
     test(`should return the correct value for ${llmProvider} and key ${key}`, () => {
       try {
-        result = LLMInterface.getModelConfigValue(llmProvider, key);
+        response = LLMInterface.getModelConfigValue(llmProvider, key);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
 
-      expect(result).toEqual(expectedValue);
+      expect(response).toEqual(expectedValue);
     });
   });
+});
+
+describe('LLMInterface.setApiKey and getModelConfigValue', () => {
+  test('should set and get a single API key', () => {
+    LLMInterface.setApiKey('openai', 'sk-YOUR_OPENAI_API_KEY_HERE');
+    const apiKey = LLMInterface.getModelConfigValue('openai', 'apiKey');
+    expect(apiKey).toBe('sk-YOUR_OPENAI_API_KEY_HERE');
+  });
+
+  test('should set and get multiple API keys', () => {
+    LLMInterface.setApiKey({
+      openai: 'sk-YOUR_OPENAI_API_KEY_HERE',
+      gemini: 'gemini_YOUR_GEMINI_API_KEY_HERE',
+    });
+
+    const openaiKey = LLMInterface.getModelConfigValue('openai', 'apiKey');
+    const geminiKey = LLMInterface.getModelConfigValue('gemini', 'apiKey');
+
+    expect(openaiKey).toBe('sk-YOUR_OPENAI_API_KEY_HERE');
+    expect(geminiKey).toBe('gemini_YOUR_GEMINI_API_KEY_HERE');
+  });
+});
+
+describe('LLMInterface.setApiKey followed by LLMInterface.sendMessage and LLMInterface.streamMessage (using Groq)', () => {
+  if (config.groqApiKey) {
+    beforeAll(() => {
+      LLMInterface.setApiKey('groq', config.groqApiKey);
+    });
+
+    test('LLMInterface.sendMessage should send a message and receive a response', async () => {
+      response = await LLMInterface.sendMessage('groq', simplePrompt, options);
+      expect(typeof response).toBe('object');
+    }, 30000);
+
+    test('LLMInterface.streamMessage should stream a message and receive a response stream', async () => {
+      try {
+        const stream = await LLMInterface.streamMessage(
+          'groq',
+          simplePrompt,
+          options,
+        );
+
+        expect(stream).toBeDefined();
+        expect(stream).toHaveProperty('data');
+
+        let data = '';
+        const readableStream = new Readable().wrap(stream.data);
+
+        await new Promise((resolve, reject) => {
+          readableStream.on('data', (chunk) => {
+            data += chunk;
+          });
+
+          readableStream.on('end', () => {
+            try {
+              expect(typeof data).toBe('string');
+              console.log(data);
+              resolve();
+            } catch (error) {
+              reject(
+                new Error(`Invalid string received: ${safeStringify(error)}`),
+              );
+            }
+          });
+
+          readableStream.on('error', (error) => {
+            reject(new Error(`Stream error: ${safeStringify(error)}`));
+          });
+        });
+      } catch (error) {
+        throw new Error(`Stream test failed: ${safeStringify(error)}`);
+      }
+    }, 30000);
+
+    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+      expect(response.results.length).toBeLessThan(expectedMaxLength);
+    });
+  } else {
+    test.skip(`OpenAI API Key is not set`, () => {});
+  }
 });
