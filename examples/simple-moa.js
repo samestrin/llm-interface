@@ -77,7 +77,8 @@ Follow this output format, only responding with the JSON object and nothing else
 
   // Array to keep track of which interfaces have been queried
   const queriedInterfaces = {};
-
+  console.log();
+  console.log('Starting MoA:');
   for (const moaInterfaceName of moas) {
     try {
       // Check if this interface has already been queried
@@ -105,6 +106,7 @@ ${stepsString}
       );
     }
   }
+  console.log();
 
   // aggregator
   const aggregatorPrompt = `Synthesize a single high quality answer for the prompt "${simplePrompt}" based on:
