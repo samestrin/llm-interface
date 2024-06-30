@@ -35,8 +35,8 @@
     "url": "git+https://github.com/samestrin/llm-interface.git"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.24.0",
-    "@google/generative-ai": "^0.13.0",
+    "@anthropic-ai/sdk": "^0.24.2",
+    "@google/generative-ai": "^0.14.0",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "flat-cache": "^5.0.0",
@@ -47,10 +47,10 @@
     "@babel/core": "^7.24.7",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/preset-env": "^7.24.7",
-    "@eslint/js": "^9.5.0",
+    "@eslint/js": "^9.6.0",
     "babel-jest": "^29.7.0",
     "debug": "^4.3.5",
-    "eslint": "^9.5.0",
+    "eslint": "^9.6.0",
     "globals": "^15.6.0",
     "jest": "^29.7.0",
     "prettier": "^3.3.2"
