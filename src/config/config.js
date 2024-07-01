@@ -35,4 +35,9 @@ module.exports = {
   watsonxaiApiKey: process.env.WATSONXSAI_API_KEY,
   watsonxaiSpaceId: process.env.WATSONXSAI_SPACE_ID,
   writerApiKey: process.env.WRITER_API_KEY,
+  neetsaiApiKey: process.env.NEETSAI_API_KEY,
+  ailayerApiKey: process.env.AILAYER_API_KEY,
+  corcelApiKey: process.env.CORCEL_API_KEY,
+  shuttleaiApiKey: process.env.SHUTTLEAI_API_KEY,
+  siliconflowApiKey: process.env.SILICONFLOW_API_KEY,
 };

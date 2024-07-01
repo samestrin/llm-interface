@@ -467,5 +467,92 @@
         "tokens": 16385
       }
     }
+  },
+  "neetsai": {
+    "url": "https://api.neets.ai/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "Neets-7B",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "mistralai/Mixtral-8X7B-Instruct-v0.1",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "Neets-7B",
+        "tokens": 16385
+      }
+    }
+  },
+  "corcel": {
+    "url": "https://api.corcel.io/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "llama-3",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "gpt-4o",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "llama-3",
+        "tokens": 16385
+      }
+    }
+  },
+  "shuttleai",
+  {
+    "url": "https://api.shuttleai.app/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "shuttle-turbo",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "shuttle-2-turbo",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "gpt-3.5-turbo-0125",
+        "tokens": 16385
+      }
+    }
+  },
+  "siliconflow",
+  {
+    "url": "https://api.siliconflow.cn/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "deepseek-ai/DeepSeek-V2-Chat",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "Qwen/Qwen1.5-110B-Chat",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "Qwen/Qwen2-1.5B-Instruct",
+        "tokens": 16385
+      }
+    }
+  },
+  "ailayer",
+  {
+    "url": "https://api.ailayer.ai/api/ailayer/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "Llama-2-70b",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "Qwen/Qwen1.5-72B-Chat",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "alpaca-7b",
+        "tokens": 16385
+      }
+    }
   }
-}
