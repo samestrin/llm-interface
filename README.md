@@ -12,7 +12,7 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 ## Features
 
-- **Unified Interface**: `LLMInterfaceSendMessage` is a single, consistent interface to interact with **24 different LLM APIs** (22 hosted LLM providers and 2 local LLM providers).
+- **Unified Interface**: `LLMInterface.sendMessage` is a single, consistent interface to interact with **24 different LLM APIs** (22 hosted LLM providers and 2 local LLM providers).
 - **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
