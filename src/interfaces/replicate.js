@@ -7,9 +7,10 @@
 const axios = require('axios');
 const { delay } = require('../utils/utils.js');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { getFromCache, saveToCache } = require('../utils/cache.js');
+const { CacheManager } = require('../utils/cacheManager.js');
 const { replicateOpenAIApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
+const { RequestError, GetPredictionError } = require('../utils/errors.js');
 const config = getConfig();
 const log = require('loglevel');
 
@@ -19,7 +20,7 @@ class Replicate {
    * Constructor for the Replicate class.
    * @param {string} apiKey - The API key for the Replicate API.
    */
-  constructor(apiKey) {
+  constructor(apiKey, cacheConfig = {}) {
     this.interfaceName = 'replicate';
     this.apiKey = apiKey || replicateOpenAIApiKey;
     this.client = axios.create({
@@ -29,6 +30,26 @@ class Replicate {
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
+
+    // Instantiate CacheManager with appropriate configuration
+    if (cacheConfig.cache && cacheConfig.config) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheOptions: config,
+      });
+    } else if (cacheConfig.cache && cacheConfig.path) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheDir: cacheConfig.path,
+      });
+    } else {
+      this.cache = new CacheManager({
+        cacheType: 'simple-cache',
+        cacheDir: cacheConfig.path,
+      });
+    }
+
+    this.predictionResults = [];
   }
 
   /**
@@ -83,7 +104,7 @@ class Replicate {
 
     // Check if a cached response exists for the request
     if (cacheTimeoutSeconds) {
-      const cachedResponse = getFromCache(cacheKey);
+      const cachedResponse = await this.cache.getFromCache(cacheKey);
       if (cachedResponse) {
         return cachedResponse;
       }
@@ -123,7 +144,11 @@ class Replicate {
 
         // Cache the response content if cache timeout is set
         if (cacheTimeoutSeconds && responseContent) {
-          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+          await this.cache.saveToCache(
+            cacheKey,
+            responseContent,
+            cacheTimeoutSeconds,
+          );
         }
 
         // Return the response content
@@ -133,11 +158,8 @@ class Replicate {
         retryAttempts--;
         if (retryAttempts < 0) {
           // Log any errors and throw the error
-          log.error(
-            'Response data:',
-            error.response ? error.response.data : null,
-          );
-          throw error;
+          log.error('Error:', error.response ? error.response.data : null);
+          throw new RequestError(`Unable to connect to ${url}`);
         }
 
         // Calculate the delay for the next retry attempt
@@ -153,35 +175,42 @@ class Replicate {
   /**
    * Get prediction data from a URL.
    * @param {string} url - The URL to fetch the prediction data from.
+   * @param {object} interfaceOptions - interfaceOptions (used for progressive retry)
+   * @param {number} maxAttempts - The number of attempts
+   * @param {number} baseDelay - The baseDelay used by the progressive retry
    * @returns {object} The prediction data.
    */
-  async getPredictionData(url, interfaceOptions) {
+  async getPredictionData(
+    url,
+    interfaceOptions,
+    maxAttempts = 10,
+    baseDelay = 250,
+  ) {
     let attempt = 0;
-    const maxAttempts = 5;
-    const baseDelay = 500;
+    const uniqueId = Math.random().toString(36).substr(2, 9); // Generate a unique ID for each call
 
     while (attempt < maxAttempts) {
       try {
-        const results = await this.client.get(url);
-        const status = results.data.status;
+        this.predictionResults[url] = await this.client.get(url);
+        const status = this.predictionResults[url].data.status;
 
         if (status === 'succeeded') {
-          return results.data.output;
+          return this.predictionResults[url].data.output;
         } else if (status === 'failed' || status === 'canceled') {
           return false;
         } else if (status === 'starting' || status === 'processing') {
           // Calculate the progressive delay
           let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-          const delayTime = (attempt + 1) * retryMultiplier * 1000;
+          const delayTime = (attempt + 1) * retryMultiplier * 1000 + baseDelay;
           await delay(delayTime);
           attempt++;
         }
       } catch (error) {
-        console.error('Error fetching prediction data:', error);
-        return false;
+        throw new GetPredictionError('Failed to get prediction:', error);
       }
     }
 
+    console.log(`ID ${uniqueId} - Max attempts reached without success`);
     return false;
   }
 }

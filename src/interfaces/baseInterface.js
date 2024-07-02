@@ -10,9 +10,10 @@
 
 const axios = require('axios');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { getFromCache, saveToCache } = require('../utils/cache.js');
+const { CacheManager } = require('../utils/cacheManager.js');
 const { parseJSON, delay } = require('../utils/utils.js');
 const { getConfig } = require('../utils/configManager.js');
+const { RequestError } = require('../utils/errors.js');
 const config = getConfig();
 const log = require('loglevel');
 
@@ -25,7 +26,7 @@ class BaseInterface {
    * @param {string} baseURL - The base URL for the API.
    * @param {object} headers - Additional headers for the API requests.
    */
-  constructor(interfaceName, apiKey, baseURL, headers = {}) {
+  constructor(interfaceName, apiKey, baseURL, headers = {}, cacheConfig = {}) {
     this.interfaceName = interfaceName;
     this.apiKey = apiKey;
     this.client = axios.create({
@@ -36,8 +37,25 @@ class BaseInterface {
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
-  }
 
+    // Instantiate CacheManager with appropriate configuration
+    if (cacheConfig.cache && cacheConfig.config) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheOptions: config,
+      });
+    } else if (cacheConfig.cache && cacheConfig.path) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheDir: cacheConfig.path,
+      });
+    } else {
+      this.cache = new CacheManager({
+        cacheType: 'simple-cache',
+        cacheDir: cacheConfig.path,
+      });
+    }
+  }
   /**
    * Method to be implemented by derived classes to create the appropriate message object.
    * @abstract
@@ -71,6 +89,15 @@ class BaseInterface {
   }
 
   /**
+   * Method to adjust options, can be overridden by derived classes.
+   * @param {object} optons - The optons to use for the request.
+   * @returns {object} The request URL.
+   */
+  adjustOptions(options) {
+    return options;
+  }
+
+  /**
    * Send a message to the API.
    * @param {string|object} message - The message to send or a message object.
    * @param {object} options - Additional options for the API request.
@@ -100,12 +127,18 @@ class BaseInterface {
 
     const { max_tokens = 150, response_format = '' } = options;
 
+    // Adjust options
+    options = this.adjustOptions(options);
+
     const requestBody = {
       model: selectedModel,
       messages,
       max_tokens,
       ...options,
     };
+
+    // log the requestBody for debugging
+    log.log(requestBody);
 
     if (response_format) {
       requestBody.response_format = { type: response_format };
@@ -114,7 +147,8 @@ class BaseInterface {
     const cacheKey = JSON.stringify({ requestBody, interfaceOptions });
 
     if (cacheTimeoutSeconds) {
-      const cachedResponse = getFromCache(cacheKey);
+      const cachedResponse = await this.cache.getFromCache(cacheKey);
+
       if (cachedResponse) {
         return cachedResponse;
       }
@@ -123,7 +157,11 @@ class BaseInterface {
     const url = this.getRequestUrl(selectedModel);
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
+
     let currentRetry = 0;
+
+    const thisUrl = this.client.defaults.baseURL + url;
+
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(url, requestBody);
@@ -149,18 +187,19 @@ class BaseInterface {
         responseContent = { results: responseContent };
 
         if (cacheTimeoutSeconds && responseContent) {
-          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+          await this.cache.saveToCache(
+            cacheKey,
+            responseContent,
+            cacheTimeoutSeconds,
+          );
         }
 
         return responseContent;
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          log.error(
-            'Response data:',
-            error.response ? error.response.data : null,
-          );
-          throw error;
+          log.error('Error:', error.response ? error.response.data : null);
+          throw new RequestError(`Unable to connect to ${thisUrl}`);
         }
 
         // Calculate the delay for the next retry attempt

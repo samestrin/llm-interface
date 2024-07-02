@@ -6,10 +6,11 @@
  */
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { getFromCache, saveToCache } = require('../utils/cache.js');
+const { CacheManager } = require('../utils/cacheManager.js');
 const { getMessageObject, parseJSON, delay } = require('../utils/utils.js');
 const { geminiApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
+const { RequestError } = require('../utils/errors.js');
 const config = getConfig();
 const log = require('loglevel');
 
@@ -19,10 +20,28 @@ class Gemini {
    * Constructor for the Gemini class.
    * @param {string} apiKey - The API key for the Gemini API.
    */
-  constructor(apiKey) {
+  constructor(apiKey, cacheConfig = {}) {
     this.interfaceName = 'gemini';
     this.apiKey = apiKey || geminiApiKey;
     this.genAI = new GoogleGenerativeAI(this.apiKey);
+
+    // Instantiate CacheManager with appropriate configuration
+    if (cacheConfig.cache && cacheConfig.config) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheOptions: config,
+      });
+    } else if (cacheConfig.cache && cacheConfig.path) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheDir: cacheConfig.path,
+      });
+    } else {
+      this.cache = new CacheManager({
+        cacheType: 'simple-cache',
+        cacheDir: cacheConfig.path,
+      });
+    }
   }
 
   /**
@@ -112,7 +131,7 @@ class Gemini {
       interfaceOptions,
     });
     if (cacheTimeoutSeconds) {
-      const cachedResponse = getFromCache(cacheKey);
+      const cachedResponse = await this.cache.getFromCache(cacheKey);
       if (cachedResponse) {
         return cachedResponse;
       }
@@ -141,18 +160,19 @@ class Gemini {
         const responseContent = { results: text };
 
         if (cacheTimeoutSeconds && responseContent) {
-          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+          await this.cache.saveToCache(
+            cacheKey,
+            responseContent,
+            cacheTimeoutSeconds,
+          );
         }
 
         return responseContent;
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          log.error(
-            'Response data:',
-            error.response ? error.response.data : null,
-          );
-          throw error;
+          log.error('Error:', error.response ? error.response.data : null);
+          throw new RequestError(`Unable to connect Google Gemini SDK`);
         }
 
         // Calculate the delay for the next retry attempt

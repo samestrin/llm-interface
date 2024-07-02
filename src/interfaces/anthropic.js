@@ -7,10 +7,12 @@
 
 const AnthropicSDK = require('@anthropic-ai/sdk');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { getFromCache, saveToCache } = require('../utils/cache.js');
+const { CacheManager } = require('../utils/cacheManager.js');
 const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const { anthropicApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
+const { RequestError } = require('../utils/errors.js');
+
 const config = getConfig();
 const log = require('loglevel');
 
@@ -20,11 +22,29 @@ class Anthropic {
    * Constructor for the Anthropic class.
    * @param {string} apiKey - The API key for the Anthropic API.
    */
-  constructor(apiKey) {
+  constructor(apiKey, cacheConfig = {}) {
     this.interfaceName = 'anthropic';
     this.anthropic = new AnthropicSDK({
       apiKey: apiKey || anthropicApiKey,
     });
+
+    // Instantiate CacheManager with appropriate configuration
+    if (cacheConfig.cache && cacheConfig.config) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheOptions: config,
+      });
+    } else if (cacheConfig.cache && cacheConfig.path) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheDir: cacheConfig.path,
+      });
+    } else {
+      this.cache = new CacheManager({
+        cacheType: 'simple-cache',
+        cacheDir: cacheConfig.path,
+      });
+    }
   }
 
   /**
@@ -83,7 +103,7 @@ class Anthropic {
     const cacheKey = JSON.stringify(params);
     // Check if a cached response exists for the request
     if (cacheTimeoutSeconds) {
-      const cachedResponse = getFromCache(cacheKey);
+      const cachedResponse = await this.cache.getFromCache(cacheKey);
       if (cachedResponse) {
         return cachedResponse;
       }
@@ -119,7 +139,11 @@ class Anthropic {
 
         // Cache the response content if cache timeout is set
         if (cacheTimeoutSeconds && responseContent) {
-          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+          await this.cache.saveToCache(
+            cacheKey,
+            responseContent,
+            cacheTimeoutSeconds,
+          );
         }
 
         // Return the response content
@@ -129,11 +153,8 @@ class Anthropic {
         retryAttempts--;
         if (retryAttempts < 0) {
           // Log any errors and throw the error
-          log.error(
-            'Response data:',
-            error.response ? error.response.data : null,
-          );
-          throw error;
+          log.error('Error:', error.response ? error.response.data : null);
+          throw new RequestError(`Unable to connect using Anthropic SDK`);
         }
 
         // Calculate the delay for the next retry attempt

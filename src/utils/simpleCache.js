@@ -1,3 +1,8 @@
+/**
+ * @file test/utils/simpleCache.js
+ * @description Utility class SimpleCache
+ */
+
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -40,7 +45,7 @@ class SimpleCache {
     const cacheFilePath = this.getCacheFilePath(key);
     if (this.locks.has(cacheFilePath)) {
       // Wait until the file is unlocked
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       return this.getFromCache(key);
     }
 
@@ -67,7 +72,7 @@ class SimpleCache {
     const data = {
       value: this.serialize(value),
       expiry: ttl ? Date.now() + ttl * 1000 : null,
-      isJson: typeof value === 'object' && value !== null // Flag to indicate if the data is JSON
+      isJson: typeof value === 'object' && value !== null, // Flag to indicate if the data is JSON
     };
 
     try {
@@ -114,7 +119,10 @@ class SimpleCache {
   }
 
   startCleanupInterval(interval) {
-    this.cleanupInterval = setInterval(() => this.clearExpiredEntries(), interval);
+    this.cleanupInterval = setInterval(
+      () => this.clearExpiredEntries(),
+      interval,
+    );
   }
 
   stopCleanupInterval() {
@@ -163,4 +171,4 @@ class SimpleCache {
   }
 }
 
-module.exports = EnhancedCache;
+module.exports = SimpleCache;

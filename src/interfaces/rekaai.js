@@ -8,10 +8,11 @@
 const axios = require('axios');
 
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { getFromCache, saveToCache } = require('../utils/cache.js');
+const { CacheManager } = require('../utils/cacheManager.js');
 const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const { rekaaiApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
+const { RequestError } = require('../utils/errors.js');
 const config = getConfig();
 const log = require('loglevel');
 
@@ -21,7 +22,7 @@ class RekaAI {
    * Constructor for the RekaAI class.
    * @param {string} apiKey - The API key for Reka AI.
    */
-  constructor(apiKey) {
+  constructor(apiKey, cacheConfig = {}) {
     this.interfaceName = 'rekaai';
     this.apiKey = apiKey || rekaaiApiKey;
     this.client = axios.create({
@@ -31,6 +32,23 @@ class RekaAI {
         'X-Api-Key': this.apiKey,
       },
     });
+    // Instantiate CacheManager with appropriate configuration
+    if (cacheConfig.cache && cacheConfig.config) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheOptions: config,
+      });
+    } else if (cacheConfig.cache && cacheConfig.path) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheDir: cacheConfig.path,
+      });
+    } else {
+      this.cache = new CacheManager({
+        cacheType: 'simple-cache',
+        cacheDir: cacheConfig.path,
+      });
+    }
   }
 
   /**
@@ -81,7 +99,7 @@ class RekaAI {
     // Generate a cache key based on the modified message
     const cacheKey = JSON.stringify(modifiedMessage);
     if (cacheTimeoutSeconds) {
-      const cachedResponse = getFromCache(cacheKey);
+      const cachedResponse = await this.cache.getFromCache(cacheKey);
       if (cachedResponse) {
         return cachedResponse;
       }
@@ -112,7 +130,11 @@ class RekaAI {
         responseContent = { results: responseContent };
 
         if (cacheTimeoutSeconds && responseContent) {
-          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+          await this.cache.saveToCache(
+            cacheKey,
+            responseContent,
+            cacheTimeoutSeconds,
+          );
         }
 
         return responseContent;

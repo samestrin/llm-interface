@@ -1,39 +1,37 @@
 /**
- * @file src/interfaces/watsonxai.js
- * @class WatsonX
- * @description Wrapper class for the watsonx.ai API.
- * @param {string} apiKey - The API key for the watsonx.ai API.
+ * @file src/interfaces/lamina.js
+ * @class Lamina
+ * @description Wrapper class for the Lamina API.
+ * @param {string} apiKey - The API key for the Lamina API.
  */
 
 const axios = require('axios');
-
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
 const { CacheManager } = require('../utils/cacheManager.js');
 const { getMessageObject, delay } = require('../utils/utils.js');
-const { watsonxaiApiKey, watsonxaiSpaceId } = require('../config/config.js');
+const { laminaApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
-const { RequestError } = require('../utils/errors.js');
+const { InitError, RequestError } = require('../utils/errors.js');
 const config = getConfig();
 const log = require('loglevel');
 
-// WatsonX class for interacting with the watsonx.ai API
-class WatsonxAI {
+// Lamina class for interacting with the Lamina API
+class Lamina {
   /**
-   * Constructor for the WatsonX class.
-   * @param {string} apiKey - The API key for the watsonx.ai API.
+   * Constructor for the Lamina class.
+   * @param {string} apiKey - The API key for the Lamina API.
    */
-  constructor(apiKey, spaceId, cacheConfig = {}) {
-    this.interfaceName = 'watsonxai';
-    this.apiKey = apiKey || watsonxaiApiKey;
-    this.spaceId = spaceId || watsonxaiSpaceId;
-    this.bearerToken = null;
-    this.tokenExpiration = null;
+  constructor(apiKey, cacheConfig = {}) {
+    this.interfaceName = 'lamina';
+    this.apiKey = apiKey || laminaApiKey;
     this.client = axios.create({
       baseURL: config[this.interfaceName].url,
       headers: {
         'Content-type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
       },
     });
+
     // Instantiate CacheManager with appropriate configuration
     if (cacheConfig.cache && cacheConfig.config) {
       this.cache = new CacheManager({
@@ -54,53 +52,13 @@ class WatsonxAI {
   }
 
   /**
-   * Get a bearer token using the provided API key.
-   * If a valid token exists and is not expired, reuse it.
-   * Otherwise, refresh the token.
-   * @returns {Promise<void>}
-   */
-  async getBearerToken() {
-    if (this.bearerToken && this.tokenExpiration > Date.now() / 1000) {
-      return; // Token is still valid
-    }
-
-    try {
-      const response = await axios.post(
-        'https://iam.cloud.ibm.com/identity/token',
-        null,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          params: {
-            grant_type: 'urn:ibm:params:oauth:grant-type:apikey',
-            apikey: this.apiKey,
-          },
-        },
-      );
-
-      this.bearerToken = response.data.access_token;
-      this.tokenExpiration = response.data.expiration;
-      this.client.defaults.headers.Authorization = `Bearer ${this.bearerToken}`;
-    } catch (error) {
-      log.error(
-        'Failed to get bearer token:',
-        error.response ? error.response.data : error.message,
-      );
-      throw new RequestError(`Unable to connect to ${url}`);
-    }
-  }
-
-  /**
-   * Send a message to the watsonx.ai API.
+   * Send a message to the Lamina API.
    * @param {string|object} message - The message to send or a message object.
    * @param {object} options - Additional options for the API request.
    * @param {object} interfaceOptions - Options specific to the interface.
-   * @returns {Promise<string>} The response content from the watsonx.ai API.
+   * @returns {string} The response content from the Lamina API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
-    await this.getBearerToken(); // Ensure the bearer token is valid
-
     const messageObject =
       typeof message === 'string' ? getMessageObject(message) : message;
     const cacheTimeoutSeconds =
@@ -109,30 +67,33 @@ class WatsonxAI {
         : interfaceOptions.cacheTimeoutSeconds;
 
     const { messages } = messageObject;
-    const { max_tokens = 150, space_id } = options;
+    const { max_tokens = 150 } = options;
     let { model } = messageObject;
 
     // Set the model and default values
     model =
       model || options.model || config[this.interfaceName].model.default.name;
     if (options.model) delete options.model;
+    if (options.max_tokens) delete options.max_tokens;
 
+    // Get the selected model based on alias or default
     model = getModelByAlias(this.interfaceName, model);
 
+    // Format the prompt by joining message contents
     const formattedPrompt = messages
       .map((message) => message.content)
       .join(' ');
 
+    // Prepare the payload for the API call
     const payload = {
-      model_id: model,
-      input: formattedPrompt,
-      parameters: {
-        max_new_tokens: max_tokens,
-        time_limit: options.time_limit || 1000,
-      },
-      space_id: space_id || this.spaceId,
+      prompt: formattedPrompt,
+      model_name: model,
+      output_type: { answer: 'str' },
+      max_tokens,
+      ...options,
     };
 
+    // Generate a cache key based on the payload
     const cacheKey = JSON.stringify(payload);
     if (cacheTimeoutSeconds) {
       const cachedResponse = await this.cache.getFromCache(cacheKey);
@@ -141,29 +102,30 @@ class WatsonxAI {
       }
     }
 
+    // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
+
+    const thisUrl = this.client.defaults.baseURL;
+
     while (retryAttempts >= 0) {
       try {
-        const url = '';
-        const response = await this.client.post(url, payload);
-        let responseContent = null;
-        if (
-          response &&
-          response.data &&
-          response.data.results &&
-          response.data.results[0] &&
-          response.data.results[0].generated_text
-        ) {
-          responseContent = response.data.results[0].generated_text.trim();
-        }
+        // Send the request to the Lamina API
 
+        const response = await this.client.post('', payload);
+
+        let responseContent = null;
+        if (response && response.data && response.data.answer) {
+          responseContent = response.data.answer.trim();
+        }
+        // Attempt to repair the object if needed
         if (interfaceOptions.attemptJsonRepair) {
           responseContent = await parseJSON(
             responseContent,
             interfaceOptions.attemptJsonRepair,
           );
         }
+        // Build response object
         responseContent = { results: responseContent };
 
         if (cacheTimeoutSeconds && responseContent) {
@@ -179,7 +141,7 @@ class WatsonxAI {
         retryAttempts--;
         if (retryAttempts < 0) {
           log.error('Error:', error.response ? error.response.data : null);
-          throw new RequestError(`Unable to connect to ${url}`);
+          throw new RequestError(`Unable to connect to ${thisUrl}`);
         }
 
         // Calculate the delay for the next retry attempt
@@ -191,8 +153,24 @@ class WatsonxAI {
       }
     }
   }
+
+  def create_llama3_prompt(user_prompt, system_prompt = ""):
+    llama3_header = "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n"
+  llama3_middle = "<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n"
+  llama3_footer = "<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
+      return llama3_header + system_prompt + llama3_middle + user_prompt + llama3_footer
+
+createLlama3Prompt(userPrompt, systemPrompt = '') {
+  const llama3Header = '<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n';
+  const llama3Middle = '<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n';
+  const llama3Footer = '<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n';
+
+  return (
+    llama3Header + systemPrompt + llama3Middle + userPrompt + llama3Footer
+  );
+}
 }
 
-WatsonxAI.prototype.adjustModelAlias = adjustModelAlias;
+Lamina.prototype.adjustModelAlias = adjustModelAlias;
 
-module.exports = WatsonxAI;
+module.exports = Lamina;

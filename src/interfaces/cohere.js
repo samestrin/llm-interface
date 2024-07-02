@@ -7,10 +7,11 @@
 
 const axios = require('axios');
 const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { getFromCache, saveToCache } = require('../utils/cache.js');
+const { CacheManager } = require('../utils/cacheManager.js');
 const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const { cohereApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
+const { RequestError } = require('../utils/errors.js');
 const config = getConfig();
 const log = require('loglevel');
 
@@ -20,7 +21,7 @@ class Cohere {
    * Constructor for the Cohere class.
    * @param {string} apiKey - The API key for the Cohere API.
    */
-  constructor(apiKey) {
+  constructor(apiKey, cacheConfig = {}) {
     this.interfaceName = 'cohere';
     this.apiKey = apiKey || cohereApiKey;
     this.client = axios.create({
@@ -30,6 +31,24 @@ class Cohere {
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
+
+    // Instantiate CacheManager with appropriate configuration
+    if (cacheConfig.cache && cacheConfig.config) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheOptions: config,
+      });
+    } else if (cacheConfig.cache && cacheConfig.path) {
+      this.cache = new CacheManager({
+        cacheType: cacheConfig.cache,
+        cacheDir: cacheConfig.path,
+      });
+    } else {
+      this.cache = new CacheManager({
+        cacheType: 'simple-cache',
+        cacheDir: cacheConfig.path,
+      });
+    }
   }
 
   /**
@@ -117,7 +136,7 @@ class Cohere {
     // Generate a cache key based on the payload
     const cacheKey = JSON.stringify(payload);
     if (cacheTimeoutSeconds) {
-      const cachedResponse = getFromCache(cacheKey);
+      const cachedResponse = await this.cache.getFromCache(cacheKey);
       if (cachedResponse) {
         return cachedResponse;
       }
@@ -126,6 +145,9 @@ class Cohere {
     // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
+
+    const thisUrl = this.client.defaults.baseURL;
+
     while (retryAttempts >= 0) {
       try {
         // Send the request to the Cohere API
@@ -145,18 +167,19 @@ class Cohere {
         responseContent = { results: responseContent };
 
         if (cacheTimeoutSeconds && responseContent) {
-          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
+          this.cache.saveToCache(
+            cacheKey,
+            responseContent,
+            cacheTimeoutSeconds,
+          );
         }
 
         return responseContent;
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          log.error(
-            'Response data:',
-            error.response ? error.response.data : null,
-          );
-          throw error;
+          log.error('Error:', error.response ? error.response.data : null);
+          throw new RequestError(`Unable to connect to ${thisUrl}`);
         }
 
         // Calculate the delay for the next retry attempt
