@@ -1,6 +1,6 @@
 /**
  * @file test/utils/streamMessageUtil.js
- * @description Utility functions for Jest log suppression.
+ * @description Utility functions streaming messages
  */
 
 const { getModelByAlias } = require('./config.js');
