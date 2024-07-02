@@ -5,16 +5,19 @@
 
 const Anthropic = require('../../src/interfaces/anthropic.js');
 const { anthropicApiKey } = require('../../src/config/config.js');
+
 const {
   simplePrompt,
   options,
   expectedMaxLength,
 } = require('../../src/utils/defaults.js');
-const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+const { CacheManager } = require('../../src/utils/cacheManager.js');
 const suppressLogs = require('../../src/utils/suppressLogs.js');
-jest.mock('../../src/utils/cache.js');
 
-describe('Anthropic Caching', () => {
+// Mock the CacheManager methods
+jest.mock('../../src/utils/cacheManager.js');
+
+describe('Anthropic Cache Testing', () => {
   if (anthropicApiKey) {
     const anthropic = new Anthropic(anthropicApiKey);
 
@@ -29,7 +32,7 @@ describe('Anthropic Caching', () => {
       ],
     };
 
-    const options = { max_tokens: 150 };
+    const max_tokens = options.max_tokens;
 
     // Convert the message structure for caching
     const convertedMessages = message.messages.map((msg, index) => {
@@ -45,32 +48,48 @@ describe('Anthropic Caching', () => {
     const cacheKey = JSON.stringify({
       model: message.model,
       messages: convertedMessages,
-      max_tokens: options.max_tokens,
+      max_tokens: max_tokens,
     });
 
-    afterEach(() => {
+    const mockResponse = { results: simplePrompt };
+
+    beforeEach(() => {
       jest.clearAllMocks();
+      CacheManager.prototype.getFromCache.mockResolvedValue(mockResponse);
     });
 
     test('API Key should be set', async () => {
       expect(typeof anthropicApiKey).toBe('string');
     });
 
+    test('Verify CacheManager methods are mocked', async () => {
+      expect(CacheManager.prototype.getFromCache).toBeDefined();
+      expect(CacheManager.prototype.saveToCache).toBeDefined();
+      expect(jest.isMockFunction(CacheManager.prototype.getFromCache)).toBe(
+        true,
+      );
+      expect(jest.isMockFunction(CacheManager.prototype.saveToCache)).toBe(
+        true,
+      );
+    });
+
     test('API should return cached response if available', async () => {
-      const cachedResponse = 'Cached response';
-      getFromCache.mockReturnValue(cachedResponse);
+      const cachedResponse = { results: 'Cached response' };
+      CacheManager.prototype.getFromCache.mockResolvedValue(cachedResponse);
 
       const response = await anthropic.sendMessage(message, options, {
         cacheTimeoutSeconds: 60,
       });
 
-      expect(getFromCache).toHaveBeenCalledWith(cacheKey);
+      expect(CacheManager.prototype.getFromCache).toHaveBeenCalledWith(
+        cacheKey,
+      );
       expect(response).toStrictEqual(cachedResponse);
-      expect(saveToCache).not.toHaveBeenCalled();
+      expect(CacheManager.prototype.saveToCache).not.toHaveBeenCalled();
     });
 
     test('API should save response to cache if not cached', async () => {
-      getFromCache.mockReturnValue(null);
+      CacheManager.prototype.getFromCache.mockResolvedValue(null);
 
       const apiResponse = 'API response';
       anthropic.anthropic.messages.create = jest.fn().mockResolvedValue({
@@ -81,18 +100,21 @@ describe('Anthropic Caching', () => {
         cacheTimeoutSeconds: 60,
       });
 
-      expect(getFromCache).toHaveBeenCalledWith(cacheKey);
+      expect(CacheManager.prototype.getFromCache).toHaveBeenCalledWith(
+        cacheKey,
+      );
       expect(response.results).toBe(apiResponse);
-      expect(saveToCache).toHaveBeenCalledWith(
+      expect(CacheManager.prototype.saveToCache).toHaveBeenCalledWith(
         cacheKey,
         { results: apiResponse },
         60,
       );
     });
+
     test(
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {
-        getFromCache.mockReturnValue(null);
+        CacheManager.prototype.getFromCache.mockResolvedValue(null);
         anthropic.anthropic.messages.create = jest
           .fn()
           .mockRejectedValue(new Error('API error'));
@@ -103,11 +125,13 @@ describe('Anthropic Caching', () => {
           }),
         ).rejects.toThrow('API error');
 
-        expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-        expect(saveToCache).not.toHaveBeenCalled();
+        expect(CacheManager.prototype.getFromCache).toHaveBeenCalledWith(
+          cacheKey,
+        );
+        expect(CacheManager.prototype.saveToCache).not.toHaveBeenCalled();
       }),
     );
   } else {
-    test.skip(`${module} API Key is not set`, () => {});
+    test.skip(`Anthropic API Key is not set`, () => {});
   }
 });

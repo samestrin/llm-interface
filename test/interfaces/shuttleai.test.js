@@ -3,17 +3,13 @@
  * @description Tests for the DeepInfra API client.
  */
 
-const DeepInfra = require('../../src/interfaces/deepinfra.js');
-const { deepinfraApiKey } = require('../../src/config/config.js');
+const ShuttleAI = require('../../src/interfaces/shuttleai.js');
+const { shuttleaiApiKey } = require('../../src/config/config.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
 const message = {
   messages: [
-    {
-      role: 'system',
-      content: 'You are a helpful assistant.',
-    },
     {
       role: 'user',
       content: simplePrompt,
@@ -22,9 +18,10 @@ const message = {
 };
 
 runTests(
-  DeepInfra,
-  deepinfraApiKey,
-  'DeepInfra',
-  'microsoft/WizardLM-2-7B',
+  ShuttleAI,
+  shuttleaiApiKey,
+  'ShuttleAI',
+  'wizardlm-2-70b',
   message,
+  false,
 );

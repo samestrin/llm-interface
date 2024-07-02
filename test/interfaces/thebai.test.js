@@ -1,10 +1,10 @@
 /**
- * @file test/interfaces/perplexity.test.js
- * @description Tests for the Perplexity API client.
+ * @file test/interfaces/ai21.test.js
+ * @description Tests for the TheBAI interface class.
  */
 
-const Perplexity = require('../../src/interfaces/perplexity.js');
-const { perplexityApiKey } = require('../../src/config/config.js');
+const TheBAI = require('../../src/interfaces/thebai.js');
+const { thebaiApiKey } = require('../../src/config/config.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
@@ -22,9 +22,11 @@ const message = {
 };
 
 runTests(
-  Perplexity,
-  perplexityApiKey,
-  'Perplexity',
-  'llama-3-sonar-small-32k-online',
+  TheBAI,
+  thebaiApiKey,
+  'TheBAI',
+  'llama-2-7b-chat',
   message,
+  false,
+  false,
 );

@@ -5,14 +5,12 @@
 
 const RekaAI = require('../../src/interfaces/rekaai.js');
 const { rekaaiApiKey } = require('../../src/config/config.js');
-const {
-  simplePrompt,
-  options,
-  expectedMaxLength,
-} = require('../../src/utils/defaults.js');
-const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+const { simplePrompt, options } = require('../../src/utils/defaults.js');
+const { CacheManager } = require('../../src/utils/cacheManager.js');
 const suppressLogs = require('../../src/utils/suppressLogs.js');
-jest.mock('../../src/utils/cache.js');
+
+// Mock the CacheManager methods
+jest.mock('../../src/utils/cacheManager.js');
 
 // Helper function to convert system roles to assistant roles
 const convertSystemToAssistant = (messages) => {
@@ -55,21 +53,34 @@ describe('RekaAI Caching', () => {
       expect(typeof rekaaiApiKey).toBe('string');
     });
 
+    test('Verify CacheManager methods are mocked', async () => {
+      expect(CacheManager.prototype.getFromCache).toBeDefined();
+      expect(CacheManager.prototype.saveToCache).toBeDefined();
+      expect(jest.isMockFunction(CacheManager.prototype.getFromCache)).toBe(
+        true,
+      );
+      expect(jest.isMockFunction(CacheManager.prototype.saveToCache)).toBe(
+        true,
+      );
+    });
+
     test('API should return cached response if available', async () => {
       const cachedResponse = { results: 'Cached response' };
-      getFromCache.mockReturnValue(cachedResponse);
+      CacheManager.prototype.getFromCache.mockResolvedValue(cachedResponse);
 
       const response = await reka.sendMessage(message, options, {
         cacheTimeoutSeconds: 60,
       });
 
-      expect(getFromCache).toHaveBeenCalledWith(cacheKey);
+      expect(CacheManager.prototype.getFromCache).toHaveBeenCalledWith(
+        cacheKey,
+      );
       expect(response).toStrictEqual(cachedResponse);
-      expect(saveToCache).not.toHaveBeenCalled();
+      expect(CacheManager.prototype.saveToCache).not.toHaveBeenCalled();
     });
 
     test('API should save response to cache if not cached', async () => {
-      getFromCache.mockReturnValue(null);
+      CacheManager.prototype.getFromCache.mockResolvedValue(null);
 
       const apiResponse = 'API response';
       reka.client.post = jest.fn().mockResolvedValue({
@@ -84,9 +95,11 @@ describe('RekaAI Caching', () => {
         cacheTimeoutSeconds: 60,
       });
 
-      expect(getFromCache).toHaveBeenCalledWith(cacheKey);
+      expect(CacheManager.prototype.getFromCache).toHaveBeenCalledWith(
+        cacheKey,
+      );
       expect(response.results).toBe(apiResponse);
-      expect(saveToCache).toHaveBeenCalledWith(
+      expect(CacheManager.prototype.saveToCache).toHaveBeenCalledWith(
         cacheKey,
         { results: apiResponse },
         60,
@@ -96,7 +109,7 @@ describe('RekaAI Caching', () => {
     test(
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {
-        getFromCache.mockReturnValue(null);
+        CacheManager.prototype.getFromCache.mockResolvedValue(null);
         reka.client.post = jest.fn().mockRejectedValue(new Error('API error'));
 
         await expect(
@@ -105,11 +118,13 @@ describe('RekaAI Caching', () => {
           }),
         ).rejects.toThrow('API error');
 
-        expect(getFromCache).toHaveBeenCalledWith(cacheKey);
-        expect(saveToCache).not.toHaveBeenCalled();
+        expect(CacheManager.prototype.getFromCache).toHaveBeenCalledWith(
+          cacheKey,
+        );
+        expect(CacheManager.prototype.saveToCache).not.toHaveBeenCalled();
       }),
     );
   } else {
-    test.skip(`${module} API Key is not set`, () => {});
+    test.skip('RekaAI API Key is not set', () => {});
   }
 });

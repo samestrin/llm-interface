@@ -1,10 +1,10 @@
 /**
- * @file test/interfaces/perplexity.test.js
- * @description Tests for the Perplexity API client.
+ * @file test/interfaces/anyscale.test.js
+ * @description Tests for the Anyscale interface class.
  */
 
-const Perplexity = require('../../src/interfaces/perplexity.js');
-const { perplexityApiKey } = require('../../src/config/config.js');
+const Anyscale = require('../../src/interfaces/anyscale.js');
+const { anyscaleApiKey } = require('../../src/config/config.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
@@ -22,9 +22,9 @@ const message = {
 };
 
 runTests(
-  Perplexity,
-  perplexityApiKey,
-  'Perplexity',
-  'llama-3-sonar-small-32k-online',
+  Anyscale,
+  anyscaleApiKey,
+  'Anyscale',
+  'mistralai/Mistral-7B-Instruct-v0.1',
   message,
 );

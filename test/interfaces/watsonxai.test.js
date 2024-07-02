@@ -1,6 +1,6 @@
 /**
- * @file test/simple/watsonxai.test.js
- * @description Simplified tests for the watsonx.ai API client.
+ * @file test/interfaces/watsonxai.test.js
+ * @description Tests for the WatsonxAI API client.
  */
 
 const WatsonxAI = require('../../src/interfaces/watsonxai.js');
@@ -11,9 +11,20 @@ const {
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
+const message = {
+  messages: [
+    {
+      role: 'user',
+      content: simplePrompt,
+    },
+  ],
+};
+
 runTests(
   WatsonxAI,
   [watsonxaiApiKey, watsonxaiProjectId],
   'WatsonxAI',
-  simplePrompt,
+  'google/flan-t5-xxl',
+  message,
+  false,
 );

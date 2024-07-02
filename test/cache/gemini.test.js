@@ -5,18 +5,18 @@
 
 const Gemini = require('../../src/interfaces/gemini.js');
 const { geminiApiKey } = require('../../src/config/config.js');
-const {
-  simplePrompt,
-  options,
-  expectedMaxLength,
-} = require('../../src/utils/defaults.js');
-const { getFromCache, saveToCache } = require('../../src/utils/cache.js');
+const { simplePrompt, options } = require('../../src/utils/defaults.js');
+const { CacheManager } = require('../../src/utils/cacheManager.js');
 const suppressLogs = require('../../src/utils/suppressLogs.js');
-jest.mock('../../src/utils/cache.js');
 
-describe('Gemini Caching', () => {
+// Mock the CacheManager methods
+jest.mock('../../src/utils/cacheManager.js');
+
+describe('Gemini Cache Testing', () => {
   if (geminiApiKey) {
     const gemini = new Gemini(geminiApiKey);
+
+    const max_tokens = options.max_tokens;
 
     const message = {
       model: 'gemini-1.5-flash',
@@ -48,46 +48,70 @@ describe('Gemini Caching', () => {
       expect(typeof geminiApiKey).toBe('string');
     });
 
+    test('Verify CacheManager methods are mocked', async () => {
+      expect(CacheManager.prototype.getFromCache).toBeDefined();
+      expect(CacheManager.prototype.saveToCache).toBeDefined();
+      expect(jest.isMockFunction(CacheManager.prototype.getFromCache)).toBe(
+        true,
+      );
+      expect(jest.isMockFunction(CacheManager.prototype.saveToCache)).toBe(
+        true,
+      );
+    });
+
     test('API should return cached response if available', async () => {
-      const cachedResponse = 'Cached response';
-      getFromCache.mockReturnValue(cachedResponse);
+      const cachedResponse = { results: 'Cached response' };
+      CacheManager.prototype.getFromCache.mockResolvedValue(cachedResponse);
+
+      const cacheKey = createCacheKey(max_tokens);
 
       const response = await gemini.sendMessage(
         message,
         { ...options },
-        { cacheTimeoutSeconds: 60 },
+        {
+          cacheTimeoutSeconds: 60,
+        },
       );
 
-      expect(getFromCache).toHaveBeenCalledWith(createCacheKey(100));
+      expect(CacheManager.prototype.getFromCache).toHaveBeenCalledWith(
+        cacheKey,
+      );
       expect(response).toStrictEqual(cachedResponse);
-      expect(saveToCache).not.toHaveBeenCalled();
+      expect(CacheManager.prototype.saveToCache).not.toHaveBeenCalled();
     });
 
     test('API should save response to cache if not cached', async () => {
-      getFromCache.mockReturnValue(null);
+      CacheManager.prototype.getFromCache.mockResolvedValue(null);
 
       const apiResponse = 'API response';
-      const genAI = {
+      gemini.genAI = {
         getGenerativeModel: jest.fn().mockReturnValue({
           startChat: jest.fn().mockReturnValue({
             sendMessage: jest.fn().mockResolvedValue({
-              response: { text: jest.fn().mockResolvedValue(apiResponse) },
+              response: {
+                text: jest.fn().mockResolvedValue(apiResponse),
+              },
             }),
           }),
         }),
       };
-      gemini.genAI = genAI;
+
+      const cacheKey = createCacheKey(max_tokens);
 
       const response = await gemini.sendMessage(
         message,
         { ...options },
-        { cacheTimeoutSeconds: 60 },
+        {
+          cacheTimeoutSeconds: 60,
+        },
       );
 
-      expect(getFromCache).toHaveBeenCalledWith(createCacheKey(100));
+      expect(CacheManager.prototype.getFromCache).toHaveBeenCalledWith(
+        cacheKey,
+      );
       expect(response.results).toBe(apiResponse);
-      expect(saveToCache).toHaveBeenCalledWith(
-        createCacheKey(100),
+      expect(CacheManager.prototype.saveToCache).toHaveBeenCalledWith(
+        cacheKey,
         { results: apiResponse },
         60,
       );
@@ -96,30 +120,29 @@ describe('Gemini Caching', () => {
     test(
       'Should respond with prompt API error messaging',
       suppressLogs(async () => {
-        getFromCache.mockReturnValue(null);
+        CacheManager.prototype.getFromCache.mockResolvedValue(null);
         const apiError = new Error('API error');
-        const genAI = {
+        gemini.genAI = {
           getGenerativeModel: jest.fn().mockReturnValue({
             startChat: jest.fn().mockReturnValue({
               sendMessage: jest.fn().mockRejectedValue(apiError),
             }),
           }),
         };
-        gemini.genAI = genAI;
+
+        const cacheKey = createCacheKey(max_tokens);
 
         await expect(
-          gemini.sendMessage(
-            message,
-            { ...options },
-            { cacheTimeoutSeconds: 60 },
-          ),
+          gemini.sendMessage(message, options, { cacheTimeoutSeconds: 60 }),
         ).rejects.toThrow('API error');
 
-        expect(getFromCache).toHaveBeenCalledWith(createCacheKey(100));
-        expect(saveToCache).not.toHaveBeenCalled();
+        expect(CacheManager.prototype.getFromCache).toHaveBeenCalledWith(
+          cacheKey,
+        );
+        expect(CacheManager.prototype.saveToCache).not.toHaveBeenCalled();
       }),
     );
   } else {
-    test.skip(`${module} API Key is not set`, () => {});
+    test.skip('Gemini API Key is not set', () => {});
   }
 });
