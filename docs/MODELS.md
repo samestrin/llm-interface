@@ -1,16 +1,63 @@
 # Models
 
-`llm-prepare` provides three different model aliases for each LLM provider. If a model is not specified, `llm-prepare` will always use the `default`.
+## Table of Contents
+
+1. [Model Aliases](#model-aliases)
+2. [Default Aliases](#default-aliases)
+  - [AI21 Studio](#ai21-studio)
+  - [AIML API](#aiml-api)
+  - [Anyscale](#anyscale)
+  - [Anthropic](#anthropic)
+  - [Bigmodel](#bigmodel)
+  - [Cloudflare AI](#cloudflare-ai)
+  - [Cohere](#cohere)
+  - [Corcel](#corcel)
+  - [DeepInfra](#deepinfra)
+  - [Deepseek](#deepseek)
+  - [Fireworks AI](#fireworks-ai)
+  - [Forefront](#forefront)
+  - [Friendli AI](#friendli-ai)
+  - [Google Gemini](#google-gemini)
+  - [Goose AI](#goose-ai)
+  - [Groq](#groq)
+  - [Hugging Face](#hugging-face)
+  - [Hyperbee AI](#hyperbee-ai)
+  - [Lamini](#lamini)
+  - [LLaMA.cpp](#llamacpp)
+  - [Mistral AI](#mistral-ai)
+  - [Monster API](#monster-api)
+  - [Neets AI](#neets-ai)
+  - [Novita AI](#novita-ai)
+  - [NVIDIA](#nvidia)
+  - [Octo AI](#octo-ai)
+  - [Ollama](#ollama)
+  - [OpenAI](#openai)
+  - [Perplexity](#perplexity)
+  - [Reka AI](#reka-ai)
+  - [Replicate](#replicate)
+  - [Shuttle AI](#shuttle-ai)
+  - [TheB.AI](#thebai)
+  - [Together AI](#together-ai)
+  - [watsonx.ai](#watsonxai)
+  - [Writer](#writer)
 
 ## Model Aliases
 
-To make using `llm-interface` easier, you can take advantage of model aliases:
+To make using `llm-interface` easier to use, you can take advantage of model aliases:
 
 - `default`
 - `large`
 - `small`
 
 When `default` or no model is passed, the system will use the default model for the LLM provider. If you'd prefer to specify your model by size instead of name, pass `large` or `small`.
+
+Aliases can simplify working with multiple LLM providers letting you call different providers with the same model names out of the box. If you are unhappy with the defaults, you can always set your own:
+
+```javascript
+LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
+```
+
+## Default Aliases
 
 ### OpenAI
 

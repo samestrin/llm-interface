@@ -15,14 +15,16 @@ const {
   getAllModelNames,
   setApiKey,
   getModelConfigValue,
+  setModelAlias,
 } = require('./utils/config.js');
 
 // LLMInterface get functions
 LLMInterface.getAllModelNames = getAllModelNames;
 LLMInterface.getModelConfigValue = getModelConfigValue;
 
-// LLMInterface set function
+// LLMInterface set functions
 LLMInterface.setApiKey = setApiKey;
+LLMInterface.setModelAlias = setModelAlias;
 
 // LLMInterface chat functions
 LLMInterface.streamMessage = LLMInterfaceStreamMessageWithConfig;

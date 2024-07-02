@@ -6,13 +6,13 @@
 
 ## Introduction
 
-`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **AI21 Studio, AIML API, Anyscale, Anthropic, Bigmodel, Cloudflare AI, Cohere, Corcel, DeepInfra, Deepseek, Fireworks AI, Forefront, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Hyperbee AI, Lamini, LLaMA.cpp, Mistral AI, Monster API, Neets AI, Novita AI, NVIDIA, Octo AI, Ollama, OpenAI, Perplexity, Reka AI, Replicate, Shuttle AI, SiliconFlow, TheB.AI, Together AI, watsonx.ai, and Writer**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
+`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **AI21 Studio, AIML API, Anyscale, Anthropic, Bigmodel, Cloudflare AI, Cohere, Corcel, DeepInfra, Deepseek, Fireworks AI, Forefront, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Hyperbee AI, Lamini, LLaMA.cpp, Mistral AI, Monster API, Neets AI, Novita AI, NVIDIA, Octo AI, Ollama, OpenAI, Perplexity, Reka AI, Replicate, Shuttle AI, TheB.AI, Together AI, watsonx.ai, and Writer**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
 
 This goal of `llm-interface` is to provide a single, simple, unified interface for sending messages and receiving responses from different LLM services. This will make it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
 ## Features
 
-- **Unified Interface**: `LLMInterface.sendMessage` is a single, consistent interface to interact with **37 different LLM APIs** (35 hosted LLM providers and 2 local LLM providers).
+- **Unified Interface**: `LLMInterface.sendMessage` is a single, consistent interface to interact with **36 different LLM APIs** (34 hosted LLM providers and 2 local LLM providers).
 - **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
