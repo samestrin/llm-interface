@@ -48,42 +48,42 @@
   - [watsonx.ai](#watsonxai)
   - [Writer](#writer)
 - [Underlying Classes](#underlying-classes)
-  - [AI21 Studio](#ai21-studio-class)
-  - [AIML API](#aiml-api-class)
-  - [Anyscale](#anyscale-class)
-  - [Anthropic](#anthropic-class)
-  - [Bigmodel](#bigmodel-class)
-  - [Cloudflare AI](#cloudflare-ai-class)
-  - [Cohere](#cohere-class)
-  - [Corcel](#corcel-class)
-  - [DeepInfra](#deepinfra-class)
-  - [Deepseek](#deepseek-class)
-  - [Fireworks AI](#fireworks-ai-class)
-  - [Forefront](#forefront-class)
-  - [Friendli AI](#friendli-ai-class)
-  - [Google Gemini](#google-gemini-class)
-  - [Goose AI](#goose-ai-class)
-  - [Groq](#groq-class)
-  - [Hugging Face](#hugging-face-class)
-  - [Hyperbee AI](#hyperbee-ai-class)
-  - [Lamini](#lamini-class)
-  - [LLaMA.cpp](#llamacpp-class)
-  - [Mistral AI](#mistral-ai-class)
-  - [Monster API](#monster-api-class)
-  - [Neets AI](#neets-ai-class)
-  - [Novita AI](#novita-ai-class)
-  - [NVIDIA](#nvidia-class)
-  - [Octo AI](#octo-ai-class)
-  - [Ollama](#ollama-class)
-  - [OpenAI](#openai-class)
-  - [Perplexity Labs](#perplexity-labs-class)
-  - [Reka AI](#reka-ai-class)
-  - [Replicate](#replicate-class)
-  - [Shuttle AI](#shuttle-ai-class)
-  - [TheB.AI](#thebai-class)
-  - [Together AI](#together-ai-class)
-  - [watsonx.ai](#watsonxai-class)
-  - [Writer](#writer-class)
+  - [AI21 Studio Class](#ai21-studio-class)
+  - [AIML API Class](#aiml-api-class)
+  - [Anyscale Class](#anyscale-class)
+  - [Anthropic Class](#anthropic-class)
+  - [Bigmodel Class](#bigmodel-class)
+  - [Cloudflare AI Class](#cloudflare-ai-class)
+  - [Cohere Class](#cohere-class)
+  - [Corcel Class](#corcel-class)
+  - [DeepInfra Class](#deepinfra-class)
+  - [Deepseek Class](#deepseek-class)
+  - [Fireworks AI Class](#fireworks-ai-class)
+  - [Forefront Class](#forefront-class)
+  - [Friendli AI Class](#friendli-ai-class)
+  - [Google Gemini Class](#google-gemini-class)
+  - [Goose AI Class](#goose-ai-class)
+  - [Groq Class](#groq-class)
+  - [Hugging Face Class](#hugging-face-class)
+  - [Hyperbee AI Class](#hyperbee-ai-class)
+  - [Lamini Class](#lamini-class)
+  - [LLaMA.cpp Class](#llamacpp-class)
+  - [Mistral AI Class](#mistral-ai-class)
+  - [Monster API Class](#monster-api-class)
+  - [Neets AI Class](#neets-ai-class)
+  - [Novita AI Class](#novita-ai-class)
+  - [NVIDIA Class](#nvidia-class)
+  - [Octo AI Class](#octo-ai-class)
+  - [Ollama Class](#ollama-class)
+  - [OpenAI Class](#openai-class)
+  - [Perplexity Labs Class](#perplexity-labs-class)
+  - [Reka AI Class](#reka-ai-class)
+  - [Replicate Class](#replicate-class)
+  - [Shuttle AI Class](#shuttle-ai-class)
+  - [TheB.AI Class](#thebai-class)
+  - [Together AI Class](#together-ai-class)
+  - [watsonx.ai Class](#watsonxai-class)
+  - [Writer Class](#writer-class)
 
 
 ## LLMInterface.setApiKey Function
@@ -292,7 +292,7 @@ The following are supported LLM providers (in alphabetical order):
 
 ## Underlying Classes
 
-### AI21 Studio
+### AI21 Studio Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -303,8 +303,7 @@ The following are supported LLM providers (in alphabetical order):
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 ai21
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -315,7 +314,7 @@ ai21
   });
 ```
 
-### AIML API
+### AIML API Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -326,8 +325,7 @@ ai21
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 aimlapi
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -338,7 +336,7 @@ aimlapi
   });
 ```
 
-### Anyscale
+### Anyscale Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -349,8 +347,7 @@ aimlapi
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 anyscale
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -361,7 +358,7 @@ anyscale
   });
 ```
 
-### Anthropic
+### Anthropic Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -372,8 +369,7 @@ anyscale
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 anthropic
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -384,7 +380,7 @@ anthropic
   });
 ```
 
-### Bigmodel
+### Bigmodel Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -395,8 +391,7 @@ anthropic
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 bigmodel
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -407,7 +402,7 @@ bigmodel
   });
 ```
 
-### Cloudflare AI
+### Cloudflare AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -418,8 +413,7 @@ bigmodel
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 cloudflareai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -430,7 +424,7 @@ cloudflareai
   });
 ```
 
-### Cohere
+### Cohere Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -441,8 +435,7 @@ cloudflareai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 cohere
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -453,7 +446,7 @@ cohere
   });
 ```
 
-### Corcel
+### Corcel Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -464,8 +457,7 @@ cohere
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 corcel
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -476,7 +468,7 @@ corcel
   });
 ```
 
-### DeepInfra
+### DeepInfra Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -487,8 +479,7 @@ corcel
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 deepinfra
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -499,7 +490,7 @@ deepinfra
   });
 ```
 
-### Deepseek
+### Deepseek Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -510,8 +501,7 @@ deepinfra
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 deepseek
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -522,7 +512,7 @@ deepseek
   });
 ```
 
-### Fireworks AI
+### Fireworks AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -533,8 +523,7 @@ deepseek
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 fireworksai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -545,7 +534,7 @@ fireworksai
   });
 ```
 
-### Forefront
+### Forefront Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -556,8 +545,7 @@ fireworksai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 forefront
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -568,7 +556,7 @@ forefront
   });
 ```
 
-### Friendli AI
+### Friendli AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -579,8 +567,7 @@ forefront
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 friendliai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -591,7 +578,7 @@ friendliai
   });
 ```
 
-### Google Gemini
+### Google Gemini Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -602,8 +589,7 @@ friendliai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 gemini
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
@@ -614,7 +600,7 @@ gemini
   });
 ```
 
-### Goose AI
+### Goose AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -625,8 +611,7 @@ gemini
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 gooseai
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
@@ -637,7 +622,7 @@ gooseai
   });
 ```
 
-### Groq
+### Groq Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -648,8 +633,7 @@ gooseai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 groq
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
@@ -660,7 +644,7 @@ groq
   });
 ```
 
-### Hugging Face
+### Hugging Face Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -671,8 +655,7 @@ groq
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 huggingface
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
@@ -683,7 +666,7 @@ huggingface
   });
 ```
 
-### Hyperbee AI
+### Hyperbee AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -694,8 +677,7 @@ huggingface
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 hyperbeeai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -706,7 +688,7 @@ hyperbeeai
   });
 ```
 
-### Lamini
+### Lamini Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -717,8 +699,7 @@ hyperbeeai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 lamini
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -729,7 +710,7 @@ lamini
   });
 ```
 
-### LLaMA.cpp
+### LLaMA.cpp Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -741,7 +722,7 @@ lamini
 
 ##### Example:
 
-```javascriptjavascript
+```javascript
 llamacpp
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
@@ -752,7 +733,7 @@ llamacpp
   });
 ```
 
-### Mistral AI
+### Mistral AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -763,8 +744,7 @@ llamacpp
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 mistralai
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
@@ -775,7 +755,7 @@ mistralai
   });
 ```
 
-### Monster API
+### Monster API Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -786,8 +766,7 @@ mistralai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 monsterapi
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -798,7 +777,7 @@ monsterapi
   });
 ```
 
-### Neets AI
+### Neets AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -809,8 +788,7 @@ monsterapi
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 neetsai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -821,7 +799,7 @@ neetsai
   });
 ```
 
-### Novita AI
+### Novita AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -832,8 +810,7 @@ neetsai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 novitaai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -844,7 +821,7 @@ novitaai
   });
 ```
 
-### NVIDIA
+### NVIDIA Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -855,8 +832,7 @@ novitaai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 nvidia
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -867,7 +843,7 @@ nvidia
   });
 ```
 
-### Octo AI
+### Octo AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -878,8 +854,7 @@ nvidia
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 octoai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -890,7 +865,7 @@ octoai
   });
 ```
 
-### Ollama
+### Ollama Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -901,8 +876,7 @@ octoai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 ollama
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -913,7 +887,7 @@ ollama
   });
 ```
 
-### OpenAI
+### OpenAI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -924,8 +898,7 @@ ollama
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 openai
   .sendMessage(message, { max_tokens: 150, response_format: 'json_object' })
   .then((response) => {
@@ -936,7 +909,7 @@ openai
   });
 ```
 
-### Perplexity Labs
+### Perplexity Labs Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -947,8 +920,7 @@ openai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 perplexity
   .sendMessage(message, { max_tokens: 100 })
   .then((response) => {
@@ -959,7 +931,7 @@ perplexity
   });
 ```
 
-### Reka AI
+### Reka AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -970,8 +942,7 @@ perplexity
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 rekaai
   .sendMessage(message, {})
   .then((response) => {
@@ -982,7 +953,7 @@ rekaai
   });
 ```
 
-### Replicate
+### Replicate Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -993,8 +964,7 @@ rekaai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 replicate
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -1005,7 +975,7 @@ replicate
   });
 ```
 
-### Shuttle AI
+### Shuttle AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -1016,8 +986,7 @@ replicate
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 shuttleai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -1028,7 +997,7 @@ shuttleai
   });
 ```
 
-### TheB.AI
+### TheB.AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -1039,8 +1008,7 @@ shuttleai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 thebai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -1051,7 +1019,7 @@ thebai
   });
 ```
 
-### Together AI
+### Together AI Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -1062,8 +1030,7 @@ thebai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 togetherai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -1074,7 +1041,7 @@ togetherai
   });
 ```
 
-### watsonx.ai
+### watsonx.ai Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -1085,8 +1052,7 @@ togetherai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 watsonxai
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
@@ -1097,7 +1063,7 @@ watsonxai
   });
 ```
 
-### Writer
+### Writer Class
 
 #### `sendMessage(message, options, cacheTimeoutSeconds)`
 
@@ -1108,8 +1074,7 @@ watsonxai
 - **Returns:** A promise that resolves to a response JSON object.
 
 ##### Example:
-
-```javascriptjavascript
+```javascript
 writer
   .sendMessage(message, { max_tokens: 150 })
   .then((response) => {
