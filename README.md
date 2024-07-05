@@ -24,10 +24,11 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 ## Updates
 
 **v2.0.10**
+
 - **New LLM Providers**: Anyscale, Bigmodel, Corcel, Deepseek, Hyperbee AI, Lamini, Neets AI, Novita AI, NVIDIA, Shuttle AI, TheB.AI, and Together AI.
 - **Caching**: Supports multiple caches: `simple-cache`, `flat-cache`, and `cache-manager`. _`flat-cache` is now an optional package._
 - **Logging**: Improved logging with the `loglevel`.
-- **More Examples**: [LangChain Integration](/examples/langchain), [Mixture-of-Authorities (MoA)](/examples/moa), and [more](/examples).
+- **More Examples**: [LangChain integration](/examples/langchain), [Mixture-of-Authorities (MoA)](/examples/moa), [caching](/examples/caching), [interfaceOptions](/examples/interfaceOptions), and [more](/examples/misc).
 
 **v2.0.9**
 
@@ -136,13 +137,13 @@ npm test
 #### Current Test Results
 
 ```bash
-Test Suites: 1 skipped, 65 passed, 65 of 66 total
-Tests:       2 skipped, 291 passed, 293 total
+Test Suites: 9 skipped, 93 passed, 93 of 102 total
+Tests:       32 skipped, 458 passed, 490 total
 Snapshots:   0 total
-Time:        103.293 s, estimated 121 s
+Time:        153.963 s
 ```
 
-_Note: Currently skipping NVIDIA test cases due to API key limits._
+_Note: Currently skipping Corcel and NVIDIA test cases due to API issues._
 
 ## Contribute
 
