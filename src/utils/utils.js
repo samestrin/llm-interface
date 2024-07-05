@@ -3,6 +3,8 @@
  * @description Utility functions
  */
 
+const crypto = require('crypto');
+
 /**
  * Returns a message object with the provided message and an optional system message.
  *
@@ -69,6 +71,7 @@ async function getJsonRepairInstance() {
  * @returns {Promise<object|null>} - The parsed or repaired JSON object, or null if parsing and repair both fail.
  */
 async function parseJSON(json, attemptRepair) {
+  const original = json;
   const subString = '```';
   const regex = new RegExp(subString, 'ig'); // Added 'g' flag for global replacement
 
@@ -89,10 +92,10 @@ async function parseJSON(json, attemptRepair) {
         const reparsed = JSON.parse(repaired);
         return reparsed;
       } catch (importError) {
-        return null;
+        return original;
       }
     } else {
-      return null;
+      return original;
     }
   }
 }
@@ -107,9 +110,30 @@ async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+/**
+ * Creates a unique cache key based on the provided key object.
+ * @param {object} key - The key object containing relevant information to generate the cache key.
+ * @returns {string} - The generated cache key.
+ */
+function createCacheKey(key = {}) {
+  let cacheKey = {
+    module: key.module || key.interfaceName || key.interface,
+    apiKey: key.apiKey,
+    message: key.message || key.simplePrompt || key.prompt,
+    ...key.options,
+    ...key.interfaceOptions,
+  };
+
+  return crypto
+    .createHash('md5')
+    .update(JSON.stringify(cacheKey))
+    .digest('hex');
+}
+
 module.exports = {
   getMessageObject,
   getSimpleMessageObject,
   parseJSON,
   delay,
+  createCacheKey,
 };

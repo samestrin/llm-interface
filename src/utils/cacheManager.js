@@ -24,21 +24,26 @@ class CacheManager {
   /**
    * Generates a hashed file path for the cache key.
    * @param {string} key - The cache key.
+   * @param {boolean} shouldHash - Should the key be hashed.
    * @returns {string} - The hashed file path.
    */
-  getCacheFilePath(key) {
-    return this.crypto.createHash('md5').update(key).digest('hex');
+  getCacheFilePath(key, shouldHash = false) {
+    if (!shouldHash) {
+      return key;
+    } else {
+      if (!this.crypto) this.crypto = require('crypto');
+      return this.crypto.createHash('md5').update(key).digest('hex');
+    }
   }
 
   /**
    * Loads the appropriate cache instance based on the cache type.
-   * @returns {object} - The cache instance.
+   * @returns {Promise<object>} - The cache instance.
    * @throws {Error} - Throws an error if the cache type is unsupported.
    */
-  loadCacheInstance() {
-    // load libraries
+  async loadCacheInstance() {
+    // Load libraries conditionally
     if (!this.path) this.path = require('path');
-    if (!this.crypto) this.crypto = require('crypto');
 
     // Set cacheDir
     let cacheDir;
@@ -55,18 +60,20 @@ class CacheManager {
         this.cacheInstance = flatCache.load(cacheId, cacheDir);
       } else if (this.cacheType === 'cache-manager') {
         const cacheManager = require('cache-manager');
-        this.cacheInstance = cacheManager.caching(this.cacheOptions);
+        this.cacheInstance = await cacheManager.caching(this.cacheOptions);
       } else if (this.cacheType === 'simple-cache') {
-        const SimpleCache = require('./simpleCache');
+        const SimpleCache = require('./simpleCache.js');
         this.cacheInstance = new SimpleCache({
           cacheDir,
           ...this.cacheOptions,
         });
+      } else if (this.cacheType === 'memory-cache') {
+        const MemoryCache = require('./memoryCache.js'); // Import the MemoryCache singleton
+        this.cacheInstance = MemoryCache;
       } else {
         throw new Error('Unsupported cache type');
       }
     }
-    return this.cacheInstance;
   }
 
   /**
@@ -75,20 +82,26 @@ class CacheManager {
    * @returns {Promise<any>} - The cached data or null if not found or expired.
    */
   async getFromCache(key) {
-    const cache = this.loadCacheInstance();
     const hashedKey = this.getCacheFilePath(key);
-    if (this.cacheType === 'flat-cache') {
-      const cachedData = cache.getKey(hashedKey);
-      if (cachedData && cachedData.ttl && Date.now() > cachedData.ttl) {
-        cache.removeKey(hashedKey);
-        cache.save(true);
-        return null;
+    try {
+      if (this.cacheType === 'flat-cache') {
+        const cachedData = this.cacheInstance.getKey(hashedKey);
+        if (cachedData && cachedData.ttl && Date.now() > cachedData.ttl) {
+          this.cacheInstance.removeKey(hashedKey);
+          this.cacheInstance.save(true);
+          return null;
+        }
+        return cachedData ? cachedData.data : null;
+      } else if (this.cacheType === 'cache-manager') {
+        return await this.cacheInstance.get(hashedKey);
+      } else if (this.cacheType === 'simple-cache') {
+        return await this.cacheInstance.getFromCache(hashedKey);
+      } else if (this.cacheType === 'memory-cache') {
+        return await this.cacheInstance.get(hashedKey);
       }
-      return cachedData ? cachedData.data : null;
-    } else if (this.cacheType === 'cache-manager') {
-      return await cache.get(hashedKey);
-    } else if (this.cacheType === 'simple-cache') {
-      return await cache.getFromCache(hashedKey);
+    } catch (error) {
+      console.error(error);
+      return null;
     }
   }
 
@@ -100,21 +113,48 @@ class CacheManager {
    * @returns {Promise<void>}
    */
   async saveToCache(key, data, ttl) {
-    const cache = this.loadCacheInstance();
     const hashedKey = this.getCacheFilePath(key);
-    if (this.cacheType === 'flat-cache') {
-      const cacheData = { data };
-      if (ttl) {
-        cacheData.ttl = Date.now() + ttl * 1000; // Convert TTL to milliseconds
+    try {
+      if (this.cacheType === 'flat-cache') {
+        const cacheData = { data };
+        if (ttl) {
+          cacheData.ttl = Date.now() + ttl * 1000; // Convert TTL to milliseconds
+        }
+        this.cacheInstance.setKey(hashedKey, cacheData);
+        this.cacheInstance.save(true);
+      } else if (this.cacheType === 'cache-manager') {
+        await this.cacheInstance.set(hashedKey, data, { ttl });
+      } else if (this.cacheType === 'simple-cache') {
+        await this.cacheInstance.saveToCache(hashedKey, data, ttl);
+      } else if (this.cacheType === 'memory-cache') {
+        await this.cacheInstance.set(hashedKey, data);
       }
-      cache.setKey(hashedKey, cacheData);
-      cache.save(true);
-    } else if (this.cacheType === 'cache-manager') {
-      await cache.set(hashedKey, data, { ttl });
-    } else if (this.cacheType === 'simple-cache') {
-      await cache.saveToCache(hashedKey, data, ttl);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  /**
+   * Flushes a specific key from the cache.
+   * @param {string} key - The cache key to flush.
+   * @returns {Promise<void>}
+   */
+  async flushCache(key) {
+    const hashedKey = this.getCacheFilePath(key);
+    try {
+      if (this.cacheType === 'flat-cache') {
+        this.cacheInstance.removeKey(hashedKey);
+        this.cacheInstance.save(true);
+      } else if (this.cacheType === 'cache-manager') {
+        await this.cacheInstance.del(hashedKey);
+      } else if (this.cacheType === 'simple-cache') {
+        await this.cacheInstance.deleteFromCache(hashedKey);
+      } else if (this.cacheType === 'memory-cache') {
+        return await this.cacheInstance.delete(hashedKey);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 }
-
 module.exports = { CacheManager };

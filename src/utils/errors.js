@@ -12,6 +12,13 @@ class InitError extends Error {
   }
 }
 
+class SendMessageError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'SendMessageError';
+  }
+}
+
 class StreamError extends Error {
   constructor(message) {
     super(message);
@@ -26,4 +33,18 @@ class GetPredictionError extends Error {
   }
 }
 
-module.exports = { RequestError, InitError, StreamError, GetPredictionError };
+class LLMInterfaceError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'LLMInterfaceError';
+  }
+}
+
+module.exports = {
+  RequestError,
+  InitError,
+  SendMessageError,
+  StreamError,
+  GetPredictionError,
+  LLMInterfaceError,
+};

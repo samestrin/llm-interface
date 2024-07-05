@@ -4,8 +4,9 @@
  */
 
 const { getConfig, updateConfig } = require('./configManager.js');
+const { CacheManager } = require('./cacheManager.js');
 const config = getConfig();
-
+let cacheInstance = [];
 /**
  * Sets the API key for a specified interface or multiple interfaces.
  *
@@ -46,7 +47,7 @@ function setApiKey(interfaceNames, apiKey) {
 }
 
 /**
- * Adjusts model alias values
+ * Set model alias values
  *
  * @param {string} interfaceName - The name of the interface.
  * @param {string} alias - The model alias to update (e.g., "default", "large", "small").
@@ -54,7 +55,7 @@ function setApiKey(interfaceNames, apiKey) {
  * @param {number} [tokens=null] - The optional token limit for the new model.
  * @returns {boolean} - Returns true if the update was successful, otherwise false.
  */
-function adjustModelAlias(interfaceName, alias, name, tokens = null) {
+function setModelAlias(interfaceName, alias, name, tokens = null) {
   if (
     !interfaceName ||
     !config[interfaceName] ||
@@ -134,30 +135,58 @@ function getAllModelNames() {
 /**
  * Get the model name based on the provided alias.
  *
- * @param {string} provider - The name of the provider.
+ * @param {string} interfaceName - The name of the interfaceName.
  * @param {string} model - The alias or name of the model.
  * @returns {string} The model name.
  */
-function getModelByAlias(provider, model) {
+function getModelByAlias(interfaceName, model) {
   if (model === undefined || model === null || model === '') {
     model = 'default';
   }
   if (
-    config[provider] &&
-    config[provider].model &&
-    config[provider].model[model] &&
-    config[provider].model[model].name
+    config[interfaceName] &&
+    config[interfaceName].model &&
+    config[interfaceName].model[model] &&
+    config[interfaceName].model[model].name
   ) {
-    return config[provider].model[model].name;
+    return config[interfaceName].model[model].name;
   }
 
   return model;
 }
 
+function configureCache(cacheConfig = {}) {
+  const cacheType = cacheConfig.cache || 'simple-cache';
+  if (cacheInstance[cacheType]) return cacheInstance[cacheType];
+
+  // Instantiate CacheManager with appropriate configuration
+  if (cacheConfig.cache && cacheConfig.config) {
+    cacheInstance[cacheType] = new CacheManager({
+      cacheType,
+      cacheOptions: cacheConfig.config,
+    });
+  } else if (cacheConfig.path) {
+    cacheInstance[cacheType] = new CacheManager({
+      cacheType,
+      cacheDir: cacheConfig.path,
+    });
+  } else {
+    cacheInstance[cacheType] = new CacheManager({
+      cacheType,
+    });
+  }
+
+  cacheInstance[cacheType].loadCacheInstance();
+  if (this) this.cacheManagerInstance = cacheInstance[cacheType];
+
+  return cacheInstance[cacheType];
+}
+
 module.exports = {
-  adjustModelAlias,
   getModelByAlias,
   getModelConfigValue,
   getAllModelNames,
   setApiKey,
+  setModelAlias,
+  configureCache,
 };

@@ -7,12 +7,7 @@ const { getModelByAlias } = require('./config.js');
 const { getConfig } = require('./configManager.js');
 const config = getConfig();
 
-async function streamMessageUtil(
-  instance,
-  message,
-  options = {},
-  interfaceOptions = {},
-) {
+async function streamMessageUtil(instance, message, options = {}) {
   // Create the message object if a string is provided, otherwise use the provided object
   let messageObject =
     typeof message === 'string'
@@ -27,7 +22,7 @@ async function streamMessageUtil(
   const selectedModel = getModelByAlias(instance.interfaceName, model);
 
   // Set default values for max_tokens and response_format
-  const { max_tokens = 150, response_format = '' } = options;
+  const { max_tokens = 150 } = options;
 
   // Construct the request body with model, messages, max_tokens, and additional options
   const requestBody = {
@@ -40,16 +35,11 @@ async function streamMessageUtil(
     ...options,
   };
 
-  // Include response_format in the request body if specified
-  if (response_format) {
-    requestBody.response_format = { type: response_format };
-  }
-
   // Construct the request URL
   const url = instance.getRequestUrl(
     selectedModel ||
-      options.model ||
-      config[instance.interfaceName].model.default.name,
+    options.model ||
+    config[instance.interfaceName].model.default.name,
   );
 
   // Return the Axios POST request with response type set to 'stream'

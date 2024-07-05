@@ -38,11 +38,14 @@ class SimpleCache {
 
   getCacheFilePath(key) {
     const hashedKey = crypto.createHash('md5').update(key).digest('hex');
-    return path.join(this.cacheDir, `${hashedKey}.json`);
+    const filenameWithPath = path.join(this.cacheDir, `${hashedKey}.json`);
+
+    return filenameWithPath;
   }
 
   async getFromCache(key) {
     const cacheFilePath = this.getCacheFilePath(key);
+
     if (this.locks.has(cacheFilePath)) {
       // Wait until the file is unlocked
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -57,9 +60,14 @@ class SimpleCache {
           this.cache.delete(key);
           return null;
         }
+        if (data.isJson) {
+          data.value = JSON.parse(data.value);
+        }
+
         this.cache.set(key, data.value);
         return data.value;
       }
+
       return null;
     } catch (error) {
       console.error('Error reading from cache:', error);
@@ -98,8 +106,8 @@ class SimpleCache {
     try {
       if (fs.existsSync(cacheFilePath)) {
         await unlinkAsync(cacheFilePath);
+        this.cache.delete(key);
       }
-      this.cache.delete(key);
     } catch (error) {
       console.error('Error deleting from cache:', error);
     }
