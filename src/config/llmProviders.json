@@ -11,7 +11,7 @@
         "tokens": 128000
       },
       "small": {
-        "name": "davinci-002",
+        "name": "gpt-3.5-turbo",
         "tokens": 16384
       }
     }
@@ -158,7 +158,25 @@
     "note": "url value is partial"
   },
   "llamacpp": {
-    "url": "http://localhost:8080/completion"
+    "url": "http://localhost:8080/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "gpt-3.5-turbo",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "gpt-3.5-turbo",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "gpt-3.5-turbo",
+        "tokens": 16385
+      },
+      "agent": {
+        "name": "openhermes",
+        "tokens": 16385
+      }
+    }
   },
   "mistralai": {
     "url": "https://api.mistral.ai/v1/chat/completions",
@@ -302,7 +320,7 @@
         "tokens": 8192
       },
       "large": {
-        "name": "nvidia/nemotron-4-340b-instruct",
+        "name": "nvidia/Nemotron-4-340B-Instruct",
         "tokens": 4096
       },
       "small": {
@@ -340,7 +358,7 @@
         "tokens": 4096
       },
       "small": {
-        "name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "name": "microsoft/Phi-3-mini-4k-instruct",
         "tokens": 2048
       }
     }
@@ -455,15 +473,11 @@
         "tokens": 32768
       },
       "large": {
-        "name": "llama-3-70b-instruct",
+        "name": "llama3",
         "tokens": 32768
       },
       "small": {
-        "name": "gpt-3.5-turbo",
-        "tokens": 16385
-      },
-      "agent": {
-        "name": "openhermes",
+        "name": "llama3",
         "tokens": 16385
       }
     }
@@ -502,16 +516,15 @@
       }
     }
   },
-  "shuttleai",
-  {
+  "shuttleai": {
     "url": "https://api.shuttleai.app/v1/chat/completions",
     "model": {
       "default": {
-        "name": "shuttle-turbo",
+        "name": "shuttle-2-turbo",
         "tokens": 32768
       },
       "large": {
-        "name": "shuttle-2-turbo",
+        "name": "wizardlm-2-70b",
         "tokens": 32768
       },
       "small": {
@@ -520,8 +533,7 @@
       }
     }
   },
-  "siliconflow",
-  {
+  "siliconflow": {
     "url": "https://api.siliconflow.cn/v1/chat/completions",
     "model": {
       "default": {
@@ -538,8 +550,7 @@
       }
     }
   },
-  "ailayer",
-  {
+  "ailayer": {
     "url": "https://api.ailayer.ai/api/ailayer/v1/chat/completions",
     "model": {
       "default": {
@@ -555,4 +566,107 @@
         "tokens": 16385
       }
     }
+  },
+  "anyscale": {
+    "url": "https://api.endpoints.anyscale.com/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "mistralai/Mixtral-8x22B-Instruct-v0.1",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "meta-llama/Llama-3-70b-chat-hf",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "mistralai/Mistral-7B-Instruct-v0.1",
+        "tokens": 16385
+      }
+    }
+  },
+  "lamini": {
+    "url": "https://api.lamini.ai/v1/completions",
+    "model": {
+      "default": {
+        "name": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "meta-llama/Meta-Llama-3-8B-Instruct",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "microsoft/phi-2",
+        "tokens": 16385
+      }
+    }
+  },
+  "thebai": {
+    "url": "https://api.theb.ai/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "gpt-4-turbo",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "llama-3-70b-chat",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "llama-2-7b-chat",
+        "tokens": 16385
+      }
+    }
+  },
+  "hyperbeeai": {
+    "url": "https://api.hyperbee.ai/v1/chat/completions",
+    "model": {
+      "default": {
+        "name": "hive",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "gpt-4o",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "small-bee-en",
+        "tokens": 16385
+      }
+    }
+  },
+  "novitaai": {
+    "url": "https://api.novita.ai/v3/openai/chat/completions",
+    "model": {
+      "default": {
+        "name": "meta-llama/llama-3-8b-instruct",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "meta-llama/llama-3-70b-instruct",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "meta-llama/llama-3-8b-instruct",
+        "tokens": 16385
+      }
+    }
+  },
+  "bigmodel": {
+    "url": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+    "model": {
+      "default": {
+        "name": "glm-4",
+        "tokens": 32768
+      },
+      "large": {
+        "name": "glm-4-alltools",
+        "tokens": 32768
+      },
+      "small": {
+        "name": "glm-4",
+        "tokens": 16385
+      }
+    }
   }
+}

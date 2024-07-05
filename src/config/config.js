@@ -40,4 +40,10 @@ module.exports = {
   corcelApiKey: process.env.CORCEL_API_KEY,
   shuttleaiApiKey: process.env.SHUTTLEAI_API_KEY,
   siliconflowApiKey: process.env.SILICONFLOW_API_KEY,
+  anyscaleApiKey: process.env.ANYSCALE_API_KEY,
+  laminiApiKey: process.env.LAMINI_API_KEY,
+  thebaiApiKey: process.env.THEBAI_API_KEY,
+  hyperbeeaiApiKey: process.env.HYPERBEEAI_API_KEY,
+  novitaaiApiKey: process.env.NOVITAAI_API_KEY,
+  bigmodelApiKey: process.env.BIGMODEL_API_KEY,
 };
