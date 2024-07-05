@@ -1,209 +1,280 @@
-# Usage
-
-The following guide was created to help you use `llm-interface` in your project. It assumes you have already installed the `llm-interface` NPM package.
+# LLM Interface Usage Documentation
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
-2. [Using the `LLMInterfaceSendMessage` Function](#using-the-llminterfacesendmessage-function)
-   - [OpenAI: Simple Text Prompt, Default Model (Example 1)](#openai-simple-text-prompt-default-model-example-1)
-   - [Gemini: Simple Text Prompt, Default Model, Cached (Example 2)](#gemini-simple-text-prompt-default-model-cached-example-2)
-   - [Groq: Message Object Prompt, Default Model, Attempt JSON Repair (Example 3)](#groq-message-object-prompt-default-model-attempt-json-repair-example-3)
-   - [Cloudflare AI: Simple Prompt, Passing Account ID (Example 4)](#cloudflare-ai-simple-prompt-passing-account-id-example-4)
-   - [watsonx.ai: Simple Prompt, Passing Space ID (Example 5)](#watsonxai-simple-prompt-passing-space-id-example-5)
-3. [The Message Object](#the-message-object)
-   - [Structure of a Message Object](#structure-of-a-message-object)
-4. [Accessing LLMInterface Variables](#accessing-llminterface-variables)
-   - [LLMInterface Get All Model Names](#llminterface-get-all-model-names)
-   - [LLMInterface Get Model Configuration](#llminterface-get-model-configuration)
-5. [Using the Underlying Classes](#using-the-underlying-classes)
-   - [OpenAI Interface Class](#openai-interface-class)
-   - [AI21 Interface Class](#ai21-interface-class)
-   - [Anthropic Interface Class](#anthropic-interface-class)
-   - [Cloudflare AI Interface Class](#cloudflare-ai-interface-class)
-   - [Cohere Interface Class](#cohere-interface-class)
-   - [Fireworks AI Interface Class](#fireworks-ai-interface-class)
-   - [Gemini Interface Class](#gemini-interface-class)
-   - [Goose AI Interface Class](#goose-ai-interface-class)
-   - [Groq Interface Class](#groq-interface-class)
-   - [Hugging Face Interface Class](#hugging-face-interface-class)
-   - [Mistral AI Interface Class](#mistral-ai-interface-class)
-   - [Perplexity Interface Class](#perplexity-interface-class)
-   - [Reka AI Interface Class](#reka-ai-interface-class)
-   - [LLaMA.cpp Interface Class](#llamacpp-interface-class)
-6. [Simple Usage Examples](#simple-usage-examples)
-   - [OpenAI Interface (String Based Prompt)](#openai-interface-string-based-prompt)
-   - [AI21 Interface (String Based Prompt)](#ai21-interface-string-based-prompt)
-   - [Anthropic Interface (String Based Prompt)](#anthropic-interface-string-based-prompt)
-   - [Cloudflare AI Interface (String Based Prompt)](#cloudflare-ai-interface-string-based-prompt)
-   - [Cohere Interface (String Based Prompt)](#cohere-interface-string-based-prompt)
-   - [Fireworks AI Interface (String Based Prompt)](#fireworks-ai-interface-string-based-prompt)
-   - [Gemini Interface (String Based Prompt)](#gemini-interface-string-based-prompt)
-   - [Goose AI Interface (String Based Prompt)](#goose-ai-interface-string-based-prompt)
-   - [Groq Interface (String Based Prompt)](#groq-interface-string-based-prompt)
-   - [Hugging Face Interface (String Based Prompt)](#hugging-face-interface-string-based-prompt)
-   - [Mistral AI Interface (String Based Prompt)](#mistral-ai-interface-string-based-prompt)
-   - [Perplexity Interface (String Based Prompt)](#perplexity-interface-string-based-prompt)
-   - [Reka AI Interface (String Based Prompt)](#reka-ai-interface-string-based-prompt)
-   - [LLaMA.cpp Interface (String Based Prompt)](#llamacpp-interface-string-based-prompt)
-7. [Advanced Usage Examples](#advanced-usage-examples)
-   - [OpenAI Interface (Native JSON Output)](#openai-interface-native-json-output)
-   - [OpenAI Interface (Native JSON Output with Repair)](#openai-interface-native-json-output-with-repair)
-   - [Groq Interface (JSON Output with Repair)](#groq-interface-json-output-with-repair)
-   - [OpenAI Interface (Cached)](#openai-interface-cached)
-   - [OpenAI Interface (Graceful Retry)](#openai-interface-graceful-retry)
+- [LLMInterface](#llminterface)
+  - [getAllModelNames()](#getallmodelnames)
+  - [getModelConfigValue(interfaceName, key)](#getmodelconfigvalueinterfacename-key)
+  - [setApiKey(interfaceNames, apiKey)](#setapikeyinterfacenames-apikey)
+  - [setModelAlias(interfaceName, alias, name, tokens = null)](#setmodelaliasinterfacename-alias-name-tokens--null)
+  - [configureCache(cacheConfig = {})](#configurecachecacheconfig--)
+  - [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](#sendmessageinterfacename-message-options---interfaceoptions--)
+  - [streamMessage(interfaceName, message, options = {})](#streammessageinterfacename-message-options--)
+  - [Supported Interface Names](#supported-interface-names)
+- [LLMInterfaceSendMessage](#llminterfacesendmessage)
+  - [LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})](#llminterfacesendmessageinterfacename-apikey-message-options---interfaceoptions--)
+- [LLMInterfaceStreamMessage](#llminterfacestreammessage)
+  - [LLMInterfaceStreamMessage(interfaceName, apiKey, message, options = {})](#llminterfacestreammessageinterfacename-apikey-message-options--)
+- [Message Object](#message-object)
+  - [Structure of a Message Object](#structure-of-a-message-object)
+- [Options Object](#options-object)
+  - [Structure of an Options Object](#structure-of-an-options-object)
+- [Interface Options Object](#interface-options-object)
+  - [Structure of an Interface Options Object](#structure-of-an-interface-options-object)
+- [Caching](#caching)
+   - [Simple Cache](#simple-cache)
+     - [Example Usage](#example-usage-1)
+   - [Flat Cache](#flat-cache)
+     - [Installation](#installation-1)
+     - [Example Usage](#example-usage-2)
+   - [Cache Manager](#cache-manager)
+     - [Installation](#installation-2)
+     - [Example Usage](#example-usage-3)
+     - [Advanced Backends](#advanced-backends)
+       - [Redis](#redis)
+       - [Memcached](#memcached)
+       - [MongoDB](#mongodb)
+   - [Memory Cache](#memory-cache)
+     - [Example Usage](#example-usage-4)
+- [Examples](#examples)
 
-## Using the `LLMInterfaceSendMessage` function
+## LLMInterface
 
-The `LLMInterfaceSendMessage` function gives you a single interface to all of the LLM providers available. To start, include the LLMInterface from the `llm-interface` package. You can do this using either the CommonJS `require` syntax:
+To use the `LLMInterface.*` functions, first import `LLMInterface`. You can do this using either the CommonJS `require` syntax:
 
-```javascript
-const { LLMInterfaceSendMessage } = require('llm-interface');
+```javascriptjavascript
+const { LLMInterface } = require('llm-interface');
+
 ```
 
 or the ES6 `import` syntax:
 
+```javascriptjavascript
+import { LLMInterface } from 'llm-interface';
+
+```
+
+### getAllModelNames()
+
+Retrieves a sorted list of all model names available in the configuration.
+
+```javascriptjavascript
+const modelNames = LLMInterface.getAllModelNames();
+console.log(modelNames);
+
+```
+
+### getModelConfigValue(interfaceName, key)
+
+Retrieves a specific configuration value for a given model.
+
+- `interfaceName` (String): The name of the model.
+- `key` (String): The configuration key to retrieve.
+
+```javascriptjavascript
+const apiKey = LLMInterface.getModelConfigValue('openai', 'apiKey');
+console.log(apiKey);
+
+```
+
+### setApiKey(interfaceNames, apiKey)
+
+Sets the API key for one or multiple interfaces.
+
+- `interfaceNames` (String|Object): The name of the interface or an object mapping interface names to API keys.
+- `apiKey` (String): The API key.
+
+```javascriptjavascript
+LLMInterface.setApiKey('openai', 'your-api-key');
+// or
+LLMInterface.setApiKey({ openai: 'your-api-key', cohere: 'another-api-key' });
+
+```
+
+### setModelAlias(interfaceName, alias, name, tokens = null)
+
+Sets an alias for a model within a specific interface.
+
+- `interfaceName` (String): The name of the interface.
+- `alias` (String): The alias to set.
+- `name` (String): The model name.
+- `tokens` (Number, optional): The token limit for the model.
+
+```javascriptjavascript
+LLMInterface.setModelAlias('openai', 'default', 'gpt-3.5-turbo', 4096);
+
+```
+
+### configureCache(cacheConfig = {})
+
+Configures the cache system for the interface.
+
+- `cacheConfig` (Object): Configuration options for the cache.
+
+```javascriptjavascript
+LLMInterface.configureCache({ cache: 'simple-cache', path: './cache' });
+
+```
+
+### sendMessage(interfaceName, message, options = {}, interfaceOptions = {})
+
+Sends a message to a specified interface and returns the response. _The specified interface must aleady have its API key set, or it must be passed using the array format._
+
+- `interfaceName` (String|Array): The name of the LLM interface or an array containing the name of the LLM interface and the API key.
+- `message` (String|Object): The message to send.
+- `options` (Object, optional): Additional options for the message.
+- `interfaceOptions` (Object, optional): Interface-specific options.
+
+```javascriptjavascript
+try {
+  const response = await LLMInterface.sendMessage('openai', 'Hello, world!', { max_tokens: 100 });
+  console.log(response.results);
+} catch (error) {
+  console.error(error.message)
+}
+// or
+try {
+  const response = await LLMInterface.sendMessage(['openai', 'your-api-key'], 'Hello, world!', { max_tokens: 100 });
+  console.log(response.results);
+} catch (error) {
+  console.error(error.message)
+}
+
+```
+
+### streamMessage(interfaceName, message, options = {})
+
+Streams a message to a specified interface and returns the response stream.
+
+- `interfaceName` (String): The name of the LLM interface.
+- `message` (String|Object): The message to send.
+- `options` (Object, optional): Additional options for the message.
+
+```javascriptjavascript
+try {
+  const stream = await LLMInterface.streamMessage('openai', 'Hello, world!', { max_tokens: 100 });
+  const result = await processStream(stream.data);
+} catch (error) {
+  console.error(error.message)
+}
 ```javascript
+_processStream(stream) is defined in the [streaming mode example](/examples/misc/streaming-mode.js)._
+
+### Supported Interface Names
+
+The following are supported LLM providers (in alphabetical order):
+
+- `ai21` - AI21 Studio
+- `aimlapi` - AIML API
+- `anyscale` - Anyscale
+- `anthropic` - Anthropic
+- `bigmodel` - Bigmodel
+- `cloudflareai` - Cloudflare AI
+- `cohere` - Cohere
+- `corcel` - Corcel
+- `deepinfra` - DeepInfra
+- `deepseek` - Deepseek
+- `fireworksai` - Fireworks AI
+- `forefront` - Forefront
+- `friendliai` - Friendli AI
+- `gemini` - Google Gemini
+- `gooseai` - Goose AI
+- `groq` - Groq
+- `huggingface` - Hugging Face
+- `hyperbeeai` - Hyperbee AI
+- `lamini` - Lamini
+- `llamacpp` - LLaMA.cpp
+- `mistralai` - Mistral AI
+- `monsterapi` - Monster API
+- `neetsai` - Neets AI
+- `novitaai` - Novita AI
+- `nvidia` - NVIDIA
+- `octoai` - Octo AI
+- `ollama` - Ollama
+- `openai` - OpenAI
+- `perplexity` - Perplexity
+- `rekaai` - Reka AI
+- `replicate` - Replicate
+- `shuttleai` - Shuttle AI
+- `thebai` - TheB.AI
+- `togetherai` - Together AI
+- `watsonxai` - watsonx.ai
+- `writer` - Writer
+
+_This is regularly updated! :)_
+
+## LLMInterfaceSendMessage
+
+To use the `LLMInterfaceSendMessage` function, first import `LLMInterfaceSendMessage`. You can do this using either the CommonJS `require` syntax:
+
+```javascriptjavascript
+const { LLMInterfaceSendMessage } = require('llm-interface');
+
+```
+
+or the ES6 `import` syntax:
+
+```javascriptjavascript
 import { LLMInterfaceSendMessage } from 'llm-interface';
+
 ```
 
-Then call call the `LLMInterfaceSendMessage` function. It expects the following arguments:
+### LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})
 
-- `provider` (string) - A valid LLM provider, the following are valid choices:
-  - ai21
-  - anthropic
-  - cloudflareai
-  - cohere
-  - fireworksai
-  - gemini
-  - gooseai
-  - groq
-  - huggingface
-  - llamacpp
-  - mistralai
-  - openai
-  - perplexity
-  - rekaai
-  - watsonxai
-- `key` (string or array) - A valid API key, or if the provider requires a secondary value such as Cloudflare AI's Account ID or watsonx.ai's Space ID, an array containing both values. The following would be valid:
-  - apiKey
-  - [apiKey,accountId]
-  - [apiKey,spaceId]
-- `message` (string or object) - A simple string containing a single prompt, or a complex object holding an entire conversation.
-- `options` (object) - An optional object that contains any LLM provider specific options you would like to pass through. This is also useful for specifying a max_tokens or model value.
-- `interfaceOptions` (object) - An optional object that contains llm-interface specific options such as the cacheTimeoutSeconds and retryAttempts.
+Sends a message using the specified LLM interface.
 
-Here are a few examples:
+- `interfaceName` (String): The name of the LLM interface.
+- `apiKey` (String): The API key.
+- `message` (String|Object): The message to send.
+- `options` (Object, optional): Additional options for the message.
+- `interfaceOptions` (Object, optional): Interface-specific options.
 
-### OpenAI: Simple Text Prompt, Default Model (Example 1)
+```javascriptjavascript
+try {
+  const response = await LLMInterfaceSendMessage('openai', 'your-api-key', 'Hello, world!', { max_tokens: 100 });
+  console.log(response.results);
+} catch (error) {
+  console.error(error.message)
+}
 
-Ask OpenAi for a response using a message string with the default model, and default response token limit (150).
+```
 
+## LLMInterfaceStreamMessage
+
+To use the `LLMInterfaceStreamMessage` function, first import `LLMInterfaceStreamMessage`. You can do this using either the CommonJS `require` syntax:
+
+```javascriptjavascript
+const { LLMInterfaceStreamMessage } = require('llm-interface');
+
+```
+
+or the ES6 `import` syntax:
+
+```javascriptjavascript
+import { LLMInterfaceStreamMessage } from 'llm-interface';
+
+```
+
+### LLMInterfaceStreamMessage(interfaceName, apiKey, message, options = {})
+
+Streams a message using the specified LLM interface.
+
+- `interfaceName` (String): The name of the LLM interface.
+- `apiKey` (String): The API key.
+- `message` (String|Object): The message to send.
+- `options` (Object, optional): Additional options for the message.
+
+```javascriptjavascript
+try {}
+  const stream = await LLMInterfaceStreamMessage('openai', 'your-api-key', 'Hello, world!', { max_tokens: 100 });
+  const result = await processStream(stream.data);
+} catch (error) {
+  console.error(error.message)
+}
 ```javascript
-LLMInterfaceSendMessage(
-  'openai',
-  openAiApikey,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
+_processStream(stream) is defined in the [streaming mode example](/examples/misc/streaming-mode.js)._
 
-### Gemini: Simple Text Prompt, Default Model, Cached (Example 2)
-
-Ask gemini for a response using a message string with the default model and limit the response to 250 tokens; cache the results for a day (86400 seconds).
-
-```javascript
-LLMInterfaceSendMessage(
-  'gemini',
-  geminiApikey,
-  'Explain the importance of low latency LLMs.',
-  { max_tokens: 250 },
-  { cacheTimeoutSeconds: 86400 },
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Groq: Message Object Prompt, Default Model, Attempt JSON Repair (Example 3)
-
-Ask groq for a JSON response using a message object with the largest model limit the response to 1024 tokens; repair the results if needed.
-
-```javascript
-const message = {
-  model: 'large',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    {
-      role: 'user',
-      content:
-        'Explain the importance of low latency LLMs. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}]. Only return the JSON element, nothing else.',
-    },
-  ],
-};
-
-LLMInterfaceSendMessage(
-  'groq',
-  process.env.GROQ_API_KEY,
-  message,
-  { max_tokens: 1024 },
-  { attemptJsonRepair: true },
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Cloudflare AI: Simple Prompt, Passing Account ID (Example 4)
-
-Ask Cloudflare AI for a response using a message string with the default model.
-
-```javascript
-LLMInterfaceSendMessage(
-  'cloudflareai',
-  [process.env.CLOUDFLARE_API_KEY, process.env.CLOUDFLARE_ACCOUNT_ID],
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### watsonx.ai: Simple Prompt, Passing Space ID (Example 5)
-
-Ask watsonx.ai for a response using a message string with the default model.
-
-```javascript
-LLMInterfaceSendMessage(
-  'watsonxai',
-  [process.env.WATSONXAI_API_KEY, process.env.WATSONXAI_SPACE_ID],
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-## Valid `LLMInterfaceSendMessage` function
-
-## The Message Object
+## Message Object
 
 The message object is a critical component when interacting with the various LLM APIs through the `llm-interface` package. It contains the data that will be sent to the LLM for processing and allows for complex conversations. Below is a detailed explanation of a valid message object.
 
@@ -216,1094 +287,210 @@ A valid message object typically includes the following properties:
 
 Different LLMs may have their own message object rules. For example, both Anthropic and Gemini always expect the initial message to have the `user` role. Please be aware of this and structure your message objects accordingly. _`llm-interface` will attempt to auto-correct invalid objects where possible._
 
-## Accessing LLMInterface Variables
+## Options Object
 
-### LLMInterface Get All Model Names
+The options object is an optional component that lets you send LLM provider specific parameters. While paramter names are fairly consistent, they can vary slightly, so its important to pay attention. However, `max_token` is a special value, and is automatically normalized.
 
-`LLMInterface.getAllModelNames` can be used to fetch all known LLM providers. The results are returned as a simple array.
+### Structure of an Options Object
 
-#### Example
+A valid `options` object can contain any number of LLM provider specific parameters, however it always contains the default `options.max_tokens` value of 150:
 
-```javascript
-const llmProviderArray = LLMInterface.getAllModelNames();
+- `max_tokens` (default: 150)
+
+Two other common values of interest are:
+
+- `stream` (default: false)
+- `response_format` (default: null)
+
+If `options.stream` is true, then a LLMInterface.sendMessage() or LLMInterfaceSendMessage() call becomes a LLMInterface.streamMessage() call.
+
+If `options.response_format` is set to "json_object", along with including a JSON schema in the prompt, many LLM providers will return a valid JSON object. _Not all providers support this feature._
+
+```javascriptjavascript
+const options = {
+  max_tokens: 1024,
+  temperature: 0.3 // Lower values are more deterministic, Higher are more creative
+}
+
 ```
 
-### LLMInterface Get Model Configuratiuon
+## Interface Options Object
 
-`LLMInterface.getModelConfigValue` retrieves a configuration value for a specified provider and key. Valid configKey values are `url`, `model.default`, `model.small`, and `model.large`.
+The `interfaceOptions` is an optional component when interacting with the various LLM APIs through the `llm-interface` package. It contains interface-specific configuration.
 
-#### Example
+### Structure of an Interface Options Object
 
-```javascript
-const llmProviderDetails = LLMInterface.getModelConfigValue(
-  provider,
-  configKey,
-);
-```
+A valid `interfaceOptions` object can contain any of the following properties:
 
-## Using the Underlying Classes
+- `retryAttempts` (default: 1)
+- `retryMultiplier` (default: 0.3)
+- `cacheTimeoutSeconds` (default: false)
+- `attemptJsonRepair` (default: false)
+- `includeOriginalResponse` (default: false)
 
-The `LLMInterfaceSendMessage` function is a wrapper for a set of underlying interface classes. The following are examples of direct class interactions using a message object.
-
-### OpenAI Interface
-
-The OpenAI interface allows you to send messages to the OpenAI API.
-
-#### Example
-
-```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
-const message = {
-  model: 'gpt-3.5-turbo',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
+```javascriptjavascript
+const interfaceOptions = {
+  retryAttempts: 3,
+  retryMultiplier: 0.5, // llm-interface uses progressive delays, Lower values are faster
+  cacheTimeoutSeconds: 60,
+  attemptJsonRepair: true,
+  includeOriginalResponse: true
 };
 
-openai
-  .sendMessage(message, { max_tokens: 150 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
 ```
 
-### AI21 Interface
+## Caching
 
-The AI21 interface allows you to send messages to the AI21 API.
+Caching is an essential feature that can significantly improve the performance of your application by reducing the number of requests made to the LLM APIs. The `llm-interface` package supports various caching mechanisms, each with its own use case and configuration options. Below are examples showing how to use different caching strategies.
 
-#### Example
+### Simple Cache
+
+Simple Cache uses the default cache engine provided by the `llm-interface` package. It is suitable for basic caching needs without additional dependencies.
+
+#### Example Usage
+
+Here's how to configure the Simple Cache:
 
 ```javascript
-const ai21 = new LLMInterface.ai21(process.env.AI21_API_KEY);
+LLMInterface.configureCache({ cache: 'simple-cache' });
 
-const message = {
-  model: 'jamba-instruct',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-ai21
-  .sendMessage(message, { max_tokens: 150 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
 ```
 
-### Anthropic Interface
+### Flat Cache
 
-The Anthropic interface allows you to send messages to the Anthropic API.
+Flat Cache is a simple and efficient in-memory cache that uses a file-based storage. It is ideal for lightweight caching needs and is easy to set up.
 
-#### Example
+#### Installation
+
+Before using the Flat Cache, install the necessary package:
 
 ```javascript
-const anthropic = new LLMInterface.anthropic(process.env.ANTHROPIC_API_KEY);
+npm install flat-cache
 
-const message = {
-  model: 'claude-3-opus-20240229',
-  messages: [
-    {
-      role: 'user',
-      content:
-        'You are a helpful assistant. Say OK if you understand and stop.',
+```
+
+#### Example Usage
+
+Here's how to configure the Flat Cache:
+
+```javascript
+LLMInterface.configureCache({ cache: 'flat-cache' });
+
+```
+
+### Cache Manager
+
+Cache Manager is a well-known package that supports many backends for caching. It allows you to use various storage systems for caching, such as in-memory, Redis, and file system-based caches. This flexibility makes it a robust choice for different caching needs.
+
+#### Installation
+
+Before using Cache Manager, install the necessary packages:
+
+```javascript
+npm install cache-manager@4.0.0 cache-manager-fs-hash
+
+```
+
+#### Example Usage
+
+Here's how to configure the Cache Manager with a file system-based backend:
+
+```javascript
+const fsStore = require('cache-manager-fs-hash');
+
+LLMInterface.configureCache({
+  cache: 'cache-manager',
+  config: {
+    store: fsStore,
+    options: {
+      path: '../../cache', // Path to the directory where cache files will be stored
+      ttl: 60 * 60, // Time to live in seconds (1 hour)
+      subdirs: true, // Create subdirectories to reduce the number of files per directory
+      zip: false, // Compress files to save space
     },
-    { role: 'system', content: 'OK' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
+  },
+});
 
-anthropic
-  .sendMessage(message, { max_tokens: 150 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
 ```
 
-### Cloudflare AI Interface
+#### Advanced Backends
 
-The CloudflareAI interface allows you to send messages to the Cloudflare AI API.
+Cache Manager also supports advanced backends like Redis, Memcached, and MongoDB. Here are examples of how to configure each:
 
-#### Example
-
-```javascript
-const cloudflareai = new LLMInterface.cloudflareai(
-  process.env.CLOUDFLARE_API_KEY,
-  process.env.CLOUDFLARE_ACCOUNT_ID,
-);
-
-const message = {
-  model: '@cf/meta/llama-3-8b-instruct',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-cloudflareai
-  .sendMessage(message, { max_tokens: 100 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Cohere Interface
-
-The Cohere interface allows you to send messages to the Cohere API.
-
-#### Example
+- **Redis**
 
 ```javascript
-const cohere = new LLMInterface.cohere(process.env.COHERE_API_KEY);
+const redisStore = require('cache-manager-redis-store');
 
-const message = {
-  model: 'gpt-neo-20b',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-cohere
-  .sendMessage(message, { max_tokens: 100 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Fireworks AI Interface
-
-The Fireworks AI interface allows you to send messages to the Fireworks AI API.
-
-#### Example
-
-```javascript
-const fireworksai = new LLMInterface.fireworksai(
-  process.env.FIREWORKSAI_API_KEY,
-);
-
-const message = {
-  model: 'accounts/fireworks/models/phi-3-mini-128k-instruct',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-fireworksai
-  .sendMessage(message, { max_tokens: 100 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Gemini Interface
-
-The Gemini interface allows you to send messages to the Google Gemini API.
-
-#### Example
-
-```javascript
-const gemini = new LLMInterface.gemini(process.env.GEMINI_API_KEY);
-
-const message = {
-  model: 'gemini-1.5-flash',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-gemini
-  .sendMessage(message, { max_tokens: 100 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Goose AI Interface
-
-The Goose AI interface allows you to send messages to the Goose AI API.
-
-#### Example
-
-```javascript
-const gooseai = new LLMInterface.gooseai(process.env.GOOSEAI_API_KEY);
-
-const message = {
-  model: 'gpt-neo-20b',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-gooseai
-  .sendMessage(message, { max_tokens: 100 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Groq Interface
-
-The Groq interface allows you to send messages to the Groq API.
-
-#### Example
-
-```javascript
-const groq = new LLMInterface.groq(process.env.GROQ_API_KEY);
-
-const message = {
-  model: 'llama3-8b-8192',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-groq
-  .sendMessage(message, { max_tokens: 100 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### HuggingFace Interface
-
-The HuggingFace interface allows you to send messages to the HuggingFace API.
-
-#### Example
-
-```javascript
-const huggingface = new LLMInterface.huggingface(
-  process.env.HUGGINGFACE_API_KEY,
-);
-
-const message = {
-  model: 'claude-3-opus-20240229',
-  messages: [
-    {
-      role: 'user',
-      content:
-        'You are a helpful assistant. Say OK if you understand and stop.',
+LLMInterface.configureCache({
+  cache: 'cache-manager',
+  config: {
+    store: redisStore,
+    options: {
+      host: 'localhost', // Redis server host
+      port: 6379, // Redis server port
+      ttl: 60 * 60, // Time to live in seconds (1 hour)
     },
-    { role: 'system', content: 'OK' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
+  },
+});
 
-huggingface
-  .sendMessage(message, { max_tokens: 150 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
 ```
 
-### Mistral AI Interface
-
-The Mistral AI interface allows you to send messages to the Mistral AI API.
-
-#### Example
+- **Memcached**
 
 ```javascript
-const mistralai = new LLMInterface.mistralai(process.env.MISTRALAI_API_KEY);
+const memcachedStore = require('cache-manager-memcached-store');
 
-const message = {
-  model: 'llama3-8b-8192',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-mistralai
-  .sendMessage(message, { max_tokens: 100 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Perplexity Interface
-
-The Perplexity interface allows you to send messages to the Perplexity API.
-
-#### Example
-
-```javascript
-const perplexity = new LLMInterface.perplexity(process.env.PERPLEXITY_API_KEY);
-
-const message = {
-  model: 'claude-3-opus-20240229',
-  messages: [
-    {
-      role: 'user',
-      content:
-        'You are a helpful assistant. Say OK if you understand and stop.',
+LLMInterface.configureCache({
+  cache: 'cache-manager',
+  config: {
+    store: memcachedStore,
+    options: {
+      servers: '127.0.0.1:11211', // Memcached server address
+      ttl: 60 * 60, // Time to live in seconds (1 hour)
     },
-    { role: 'system', content: 'OK' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
+  },
+});
 
-perplexity
-  .sendMessage(message, { max_tokens: 150 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
 ```
 
-### Reka AI Interface
-
-The Reka AI interface allows you to send messages to the Reka AI REST API.
-
-#### Example
+- **MongoDB**
 
 ```javascript
-const rekaai = new LLMInterface.rekaai(process.env.REKAAI_API_KEY);
+const mongoStore = require('cache-manager-mongodb');
 
-const message = {
-  model: 'reka-core',
-  messages: [
-    {
-      role: 'user',
-      content:
-        'You are a helpful assistant. Say OK if you understand and stop.',
+LLMInterface.configureCache({
+  cache: 'cache-manager',
+  config: {
+    store: mongoStore,
+    options: {
+      uri: 'mongodb://localhost:27017/cache', // MongoDB connection URI
+      collection: 'cacheCollection', // MongoDB collection name
+      ttl: 60 * 60, // Time to live in seconds (1 hour)
     },
-    { role: 'system', content: 'OK' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
+  },
+});
 
-rekaai
-  .sendMessage(message, {})
-  .then((response) => console.log('Response:', response))
-  .catch((error) => console.error('Error:', error));
 ```
 
-### LLaMA.cpp Interface
+### Memory Cache
 
-The LLaMA.cpp interface allows you to send messages to the LLaMA.cpp API; this is exposed by the [LLaMA.cpp HTTP Server](https://github.com/ggerganov/llama.cpp/tree/master/examples/server).
+Memory Cache stores responses in memory for quick retrieval during subsequent requests within the specified time-to-live (TTL).
 
-#### Example
+#### Example Usage
 
 ```javascript
-const llamacpp = new LLMInterface.llamacpp(process.env.LLAMACPP_URL);
+LLMInterface.configureCache({ cache: 'flat-cache' });
 
-const message = {
-  model: 'some-llamacpp-model',
-  messages: [
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-llamacpp
-  .sendMessage(message, { max_tokens: 100 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
 ```
 
-## Simple Usage Examples
-
-The following example demonstrates simplified use of `llm-interface`.
-
-### OpenAI Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'openai',
-  openAiApikey,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
-openai
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### AI21 Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'ai21',
-  process.env.AI21_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const ai21 = new LLMInterface.ai21(process.env.AI21_API_KEY);
-
-ai21
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Anthropic Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'anthropic',
-  process.env.ANTHROPIC_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const anthropic = new LLMInterface.anthropic(process.env.ANTHROPIC_API_KEY);
-
-anthropic
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Cloudflare AI Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'cloudflareai',
-  [process.env.CLOUDFLARE_API_KEY, process.env.CLOUDFLARE_ACCOUNT_ID],
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const cloudflareai = new LLMInterface.cloudflareai(
-  process.env.CLOUDFLARE_API_KEY,
-);
-
-cloudflareai
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Cohere Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'cohere',
-  process.env.COHERE_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const cohere = new LLMInterface.cohere(process.env.COHERE_API_KEY);
-
-cohere
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Fireworks AI Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'fireworksai',
-  process.env.FIREWORKSAI_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const fireworksai = new LLMInterface.fireworksai(
-  process.env.FIREWORKSAI_API_KEY,
-);
-
-fireworksai
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Gemini Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'gemini',
-  process.env.GEMINI_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const gemini = new LLMInterface.gemini(process.env.GEMINI_API_KEY);
-
-gemini
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Goose AI Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'goose',
-  process.env.GOOSEAI_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const goose = new LLMInterface.gooseai(process.env.GOOSEAI_API_KEY);
-
-goose
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Groq Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'groq',
-  process.env.GROQ_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const groq = new LLMInterface.groq(process.env.GROQ_API_KEY);
-
-groq
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### HuggingFace Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'huggingface',
-  process.env.HUGGINGFACE_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const huggingface = new LLMInterface.huggingface(
-  process.env.HUGGINGFACE_API_KEY,
-);
-
-huggingface
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Mistral AI Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'mistralai',
-  process.env.MISTRALAI_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const mistralai = new LLMInterface.mistralai(process.env.MISTRALAI_API_KEY);
-
-mistralai
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Perplexity Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'perplexity',
-  process.env.PERPLEXITY_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const perplexity = new LLMInterface.perplexity(process.env.PERPLEXITY_API_KEY);
-
-perplexity
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Reka AI Interface (String Based Prompt)
-
-This simplified example uses a string based prompt with the default model.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'reka',
-  process.env.REKAAI_API_KEY,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const reka = new LLMInterface.rekaai(process.env.REKAAI_API_KEY);
-
-reka
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### LLaMA.cpp Interface (String Based Prompt)
-
-This simplified example uses a string based prompt. The model is set at the LLaMA.cpp web server level.
-
-#### Example
-
-```javascript
-LLMInterfaceSendMessage(
-  'llamacpp',
-  process.env.LLAMACPP_URL,
-  'Explain the importance of low latency LLMs.',
-)
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-or
-
-```javascript
-const llamacpp = new LLMInterface.llamacpp(process.env.LLAMACPP_URL);
-
-llamacpp
-  .sendMessage('Explain the importance of low latency LLMs.')
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-## Advanced Usage Examples
-
-The following examples highlight some of the advanced features of `llm-interface`. Keep in mind you can mix and match _interfaceOptions_. The following are currently supported: `attemptJsonRepair` (default: false), `cacheTimeoutSeconds` (default: 0), `retryAttempts` (default: 1), and `retryMultiplier` (default: 0.3),
-
-To maximize performance `llm-interface` will only load dependencies when invoked through interfaceOptions.
-
-### OpenAI Interface (Native JSON Output)
-
-Some interfaces allows you request the response back in JSON, currently **OpenAI**, **FireworksAI**, and **Gemini** are supported. To take advantage of this feature be sure to include text like "Return the results as a JSON object." and provide a desired output format like "Follow this format: [{reason, reasonDescription}]." \_It's important to provide a large enough max_token size to hold the entire JSON structure returned or it will not validate, and the response will return null.) In this example we use OpenAI and request a valid JSON object.
-
-#### Example
-
-```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
-const message = {
-  model: 'gpt-3.5-turbo',
-  messages: [
-    {
-      role: 'system',
-      content: 'You are a helpful assistant.',
-    },
-    {
-      role: 'user',
-      content:
-        'Explain the importance of low latency LLMs. Limit the result to two items. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}].',
-    },
-  ],
-};
-
-openai
-  .sendMessage(message, { max_tokens: 150, response_format: 'json_object' })
-  .then((response) => {
-    console.log(JSON.stringify(response.results));
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### OpenAI Interface (Native JSON Output with Repair)
-
-When working with JSON, you may encounter invalid JSON responses. Instead of retrying your prompt you can have `llm-interface` detect the condition and attempt to repair the object.
-
-#### Example
-
-```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
-const message = {
-  model: 'gpt-3.5-turbo',
-  messages: [
-    {
-      role: 'system',
-      content: 'You are a helpful assistant.',
-    },
-    {
-      role: 'user',
-      content:
-        'Explain the importance of low latency LLMs. Limit the result to two items. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}].',
-    },
-  ],
-};
-
-openai
-  .sendMessage(
-    message,
-    { max_tokens: 150, response_format: 'json_object' },
-    { attemptJsonRepair: true },
-  )
-  .then((response) => {
-    console.log(JSON.stringify(response.results));
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### Groq Interface (JSON Output with Repair)
-
-When using LLMs without a native JSON response_format, you may encounter badly formed JSON response. Again, instead of retrying your prompt you can have `llm-interface` detect the condition and attempt to repair the object.
-
-#### Example
-
-```javascript
-const groq = new LLMInterface.groq(process.env.GROQ_API_KEY);
-
-const message = {
-  model: 'llama3-8b-8192',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    {
-      role: 'user',
-      content:
-        'Explain the importance of low latency LLMs. Return the results as a JSON object. Follow this format: [{reason, reasonDescription}]. Only return the JSON element, nothing else.',
-    },
-  ],
-};
-
-groq
-  .sendMessage(message, { max_tokens: 150 }, { attemptJsonRepair: true })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### OpenAI Interface (Cached)
-
-To reduce operational costs and improve performance you can optionally specify a cache timeout in seconds. In this example we use OpenAI and store the results for 86400 seconds or one day.
-
-#### Example
-
-```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
-const message = {
-  model: 'gpt-3.5-turbo',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-openai
-  .sendMessage(message, { max_tokens: 150 }, { cacheTimeoutSeconds: 86400 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-### OpenAI Interface (Graceful Retry)
-
-You can gracefully retry your requests. In this example we use OpenAI and up to 3 times if needed.
-
-#### Example
-
-```javascript
-const openai = new LLMInterface.openai(process.env.OPENAI_API_KEY);
-
-const message = {
-  model: 'gpt-3.5-turbo',
-  messages: [
-    { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Explain the importance of low latency LLMs.' },
-  ],
-};
-
-openai
-  .sendMessage(message, { max_tokens: 150 }, { retryAttempts: 3 })
-  .then((response) => {
-    console.log(response.results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
+## Examples
+
+Various [examples](/examples) are available, in alphabetical order they are:
+
+- [Caching](/examples/caching)
+- [Interface Options](/examples/interface-options)
+- [JSON](/examples/json)
+- [Langchain.js](/examples/langchain)
+- [Miscellaneous](/examples/misc)
+- [Mixture of Agents (MoA)](/examples/moa)
