@@ -1,6 +1,6 @@
 /**
- * @file test/interfaces/deepinfra.test.js
- * @description Tests for the DeepInfra API client.
+ * @file test/interfaces/writer.test.js
+ * @description Tests for the Writer API client.
  */
 
 const Writer = require('../../src/interfaces/writer.js');

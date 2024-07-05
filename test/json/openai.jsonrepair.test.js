@@ -3,13 +3,9 @@
  * @description Tests for the OpenAI API client JSON output.
  */
 
-const OpenAI = require('../../src/interfaces/openai.js');
+const { LLMInterface } = require('../../src/index.js');
 const { openaiApiKey } = require('../../src/config/config.js');
-const {
-  simplePrompt,
-  options,
-  expectedMaxLength,
-} = require('../../src/utils/defaults.js');
+const { simplePrompt, options } = require('../../src/utils/defaults.js');
 
 describe('OpenAI JSON', () => {
   if (openaiApiKey) {
@@ -18,7 +14,6 @@ describe('OpenAI JSON', () => {
     });
 
     test('API Client should send a message and receive a JSON response', async () => {
-      const openai = new OpenAI(openaiApiKey);
       const message = {
         model: 'gpt-3.5-turbo',
         messages: [
@@ -32,7 +27,9 @@ describe('OpenAI JSON', () => {
           },
         ],
       };
-      const response = await openai.sendMessage(
+
+      const response = await LLMInterface.sendMessage(
+        ['openai', openaiApiKey],
         message,
         {
           max_tokens: options.max_tokens,

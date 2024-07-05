@@ -17,4 +17,10 @@ const message = {
   ],
 };
 
-runTests(NovitaAI, novitaaiApiKey, 'NovitaAI', 'alpaca-7b', message);
+runTests(
+  NovitaAI,
+  novitaaiApiKey,
+  'NovitaAI',
+  'meta-llama/llama-3-8b-instruct',
+  message,
+);

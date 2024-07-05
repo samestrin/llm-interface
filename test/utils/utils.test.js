@@ -67,22 +67,12 @@ describe('Utils', () => {
     test('should parse JSON string correctly', async () => {
       const jsonString = '{"name": "John"}';
       const expected = { name: 'John' };
-      await expect(parseJSON(jsonString, false)).resolves.toStrictEqual(
-        expected,
-      );
+      await expect(parseJSON(jsonString)).resolves.toStrictEqual(expected);
     });
 
-    test('should repair and parse invalid JSON string if attemptRepair is true', async () => {
-      const jsonString = "{name: 'John'}";
-      const expected = { name: 'John' };
-      await expect(parseJSON(jsonString, true)).resolves.toStrictEqual(
-        expected,
-      );
-    });
-
-    test('should return null for invalid JSON string if attemptRepair is false', async () => {
+    test('should return the original string for invalid JSON', async () => {
       const jsonString = '{name';
-      await expect(parseJSON(jsonString, false)).resolves.toBeNull();
+      await expect(parseJSON(jsonString)).resolves.toStrictEqual(jsonString);
     });
   });
 });

@@ -21,6 +21,7 @@ runTests(
   MonsterAPI,
   monsterapiApiKey,
   'MonsterAPI',
-  'TinyLlama/TinyLlama-1.1B-Chat-v1.0',
+  'microsoft/Phi-3-mini-4k-instruct',
   message,
+  true,
 );
