@@ -1,22 +1,29 @@
-const { Chain } = require('langchain');
-const GroqModel = require('./groqModel');
+/**
+ * @file examples/langchain/langchain.js
+ * @description Example showing a custom HuggingFace model that is compatible with langchain. To run this example, you will first need to run "npm install langchain".
+ * This example uses a PromptTemplate to format the response.
+ */
 
-const apiKey = process.env.GROQ_API_KEY;
-const groqModel = new GroqModel(apiKey);
+require('dotenv').config({ path: '../../.env' });
 
-// Define a chain that uses the custom Groq model
-const chain = new Chain([
-  {
-    call: async (input) => {
-      const response = await groqModel.call(input, { max_tokens: 1024 });
-      return response.results;
-    },
-  },
-]);
+const apiKey = process.env.HUGGINGFACE_API_KEY;
 
-async function handleQuery(query) {
-  const response = await chain.call(query);
-  console.log("Chatbot response:", response);
+// custom model using llm-interface
+const HuggingFaceModel = require('./models/huggingfaceModel');
+const model = new HuggingFaceModel(apiKey);
+
+async function exampleUsage() {
+  const { PromptTemplate } = await import('@langchain/core/prompts');
+
+  const template = 'What is the capital of {country}?';
+  const promptTemplate = new PromptTemplate({
+    template,
+    inputVariables: ['country'],
+  });
+
+  const question = await promptTemplate.format({ country: 'France' });
+  const response = await model.call(question);
+  console.log(response); // Output: Paris
 }
 
-handleQuery("How can I integrate Groq with LangChain.js?");
+exampleUsage();

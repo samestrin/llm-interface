@@ -26,7 +26,7 @@ Follow this output format, only responding with the JSON object and nothing else
 [steps[{step}]`;
 
   console.log('Prompt:');
-  console.log(`> ${proposerPrompt.replaceAll('\n\n', '\n>\n> ')}`);
+  console.log(`> ${proposerPrompt.replaceAll('\n', '\n> ')}`);
   console.log();
 
   try {
@@ -43,7 +43,7 @@ Follow this output format, only responding with the JSON object and nothing else
 
     const jsonData = proposerResponse.results[1];
     const stepsString = jsonData.map((step) => step.step).join('\n\n');
-    console.log(`> ${stepsString.replaceAll('\n\n', '\n>\n> ')}`);
+    console.log(`> ${stepsString.replaceAll('\n', '\n> ')}`);
 
     return stepsString;
   } catch (error) {
@@ -177,7 +177,7 @@ async function exampleUsage() {
   console.log('MOA Result:');
   const aggregatorResponse = await getAggregatorResponse(moaResponses);
   if (aggregatorResponse) {
-    console.log(`> ${aggregatorResponse.replaceAll('\n\n', '\n>\n> ')}`);
+    console.log(`> ${aggregatorResponse.replaceAll('\n', '\n> ')}`);
   }
 
   console.log();

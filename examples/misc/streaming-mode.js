@@ -1,12 +1,12 @@
 /**
- * @file examples/streaming-mode.js
+ * @file examples/misc/streaming-mode.js
  * @description Example showing the new beta streaming functionality.
  */
-const { LLMInterface } = require('llm-interface');
-const { Readable } = require('stream');
-const { simplePrompt, options } = require('../src/utils/defaults.js');
 
-require('dotenv').config({ path: '../.env' });
+const { Readable } = require('stream');
+const { simplePrompt, options } = require('../../src/utils/defaults.js');
+const { LLMInterface } = require('../../src/index.js');
+require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
 const interface = 'groq';

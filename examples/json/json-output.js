@@ -1,11 +1,12 @@
 /**
- * @file examples/json-output.js
- * @description Example showing JSON output. To do this, I will specify my JSON output requirements through my prompt.
+ * @file examples/json/json-output.js
+ * @description Example showing JSON output. This is accomplished by specifying JSON output requirements through the prompt.
  */
-const { LLMInterface } = require('llm-interface');
-const { simplePrompt, options } = require('../src/utils/defaults.js');
 
-require('dotenv').config({ path: '../.env' });
+const { LLMInterface } = require('../../src/index.js');
+const { simplePrompt } = require('../../src/utils/defaults.js');
+
+require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
 const interface = 'huggingface';
@@ -20,7 +21,7 @@ async function exampleUsage() {
   console.log('JSON Output (Prompt Based):');
   console.log();
   console.log('Prompt:');
-  console.log(`> ${prompt.replaceAll('\n\n', '\n>\n> ')}`);
+  console.log(`> ${prompt.replaceAll('\n', '\n> ')}`);
   console.log();
 
   LLMInterface.setApiKey(interface, apiKey);
@@ -30,7 +31,12 @@ async function exampleUsage() {
       max_tokens: 1024,
     });
 
-    console.log('Repaired JSON Result:');
+    // since this isn't native, and we aren't repairing it, we can't guarantee the response element will be valid JSON'
+    if (response.results && typeof response.results !== 'object') {
+      response.results = JSON.parse(response.results);
+    }
+
+    console.log('JSON Result:');
     console.log(response.results);
     console.log();
   } catch (error) {

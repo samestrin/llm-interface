@@ -1,13 +1,13 @@
 /**
- * @file examples/native-json-output.js
- * @description Example showing JSON repair. To do this, I will specify my JSON output requirements through my prompt, and I will request a
- * larger result set then can be returned based on token size using a prompt, this will result in a response containing an invalid JSON object. I
- * will then repair the response using the attemptJsonRepair interfaceOption.
+ * @file examples/json/native-json-output.js
+ * @description Example showing JSON repair. In this example, an invalid JSON response is forced. This is accomplished by specifying JSON output requirements through the prompt, and requesting a
+ * larger result set then can be returned based on token size. The invalid response can be repaired by setting interfaceOptions.attemptJsonRepair to true.
  */
-const { LLMInterface } = require('llm-interface');
-const { simplePrompt, options } = require('../src/utils/defaults.js');
 
-require('dotenv').config({ path: '../.env' });
+const { LLMInterface } = require('../../src/index.js');
+const { simplePrompt } = require('../../src/utils/defaults.js');
+
+require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
 const interface = 'groq';
@@ -22,7 +22,7 @@ async function exampleUsage() {
   console.log('JSON Repair:');
   console.log();
   console.log('Prompt:');
-  console.log(`> ${prompt.replaceAll('\n\n', '\n>\n> ')}`);
+  console.log(`> ${prompt.replaceAll('\n', '\n> ')}`);
   console.log();
 
   LLMInterface.setApiKey(interface, apiKey);
