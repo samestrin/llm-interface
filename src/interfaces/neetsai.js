@@ -13,7 +13,9 @@ const config = getConfig();
 
 class NeetsAI extends BaseInterface {
   constructor(apiKey) {
-    super('neetsai', apiKey || neetsaiApiKey, config['neetsai'].url, { "X-API-Key": apiKey || neetsaiApiKey });
+    super('neetsai', apiKey || neetsaiApiKey, config['neetsai'].url, {
+      'X-API-Key': apiKey || neetsaiApiKey,
+    });
   }
 
   createMessageObject(message) {

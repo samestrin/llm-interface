@@ -13,7 +13,11 @@ const config = getConfig();
 
 class SiliconFlow extends BaseInterface {
   constructor(apiKey) {
-    super('siliconflow', apiKey || siliconflowApiKey, config['siliconflow'].url);
+    super(
+      'siliconflow',
+      apiKey || siliconflowApiKey,
+      config['siliconflow'].url,
+    );
   }
 
   createMessageObject(message) {

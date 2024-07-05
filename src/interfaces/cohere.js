@@ -6,8 +6,7 @@
  */
 
 const axios = require('axios');
-const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { CacheManager } = require('../utils/cacheManager.js');
+const { getModelByAlias } = require('../utils/config.js');
 const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const { cohereApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
@@ -21,7 +20,7 @@ class Cohere {
    * Constructor for the Cohere class.
    * @param {string} apiKey - The API key for the Cohere API.
    */
-  constructor(apiKey, cacheConfig = {}) {
+  constructor(apiKey) {
     this.interfaceName = 'cohere';
     this.apiKey = apiKey || cohereApiKey;
     this.client = axios.create({
@@ -31,24 +30,6 @@ class Cohere {
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
-
-    // Instantiate CacheManager with appropriate configuration
-    if (cacheConfig.cache && cacheConfig.config) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheOptions: config,
-      });
-    } else if (cacheConfig.cache && cacheConfig.path) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheDir: cacheConfig.path,
-      });
-    } else {
-      this.cache = new CacheManager({
-        cacheType: 'simple-cache',
-        cacheDir: cacheConfig.path,
-      });
-    }
   }
 
   /**
@@ -61,10 +42,6 @@ class Cohere {
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
       typeof message === 'string' ? getSimpleMessageObject(message) : message;
-    const cacheTimeoutSeconds =
-      typeof interfaceOptions === 'number'
-        ? interfaceOptions
-        : interfaceOptions.cacheTimeoutSeconds;
 
     let { model, messages } = messageObject;
     const selectedModel = getModelByAlias(this.interfaceName, model);
@@ -133,15 +110,6 @@ class Cohere {
       };
     }
 
-    // Generate a cache key based on the payload
-    const cacheKey = JSON.stringify(payload);
-    if (cacheTimeoutSeconds) {
-      const cachedResponse = await this.cache.getFromCache(cacheKey);
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-    }
-
     // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
@@ -156,30 +124,48 @@ class Cohere {
         if (response && response.data && response.data.text) {
           responseContent = response.data.text;
         }
+
         // Attempt to repair the object if needed
-        if (interfaceOptions.attemptJsonRepair) {
+        if (
+          responseContent &&
+          options.response_format === 'json_object' &&
+          typeof responseContent === 'string'
+        ) {
+          try {
+            responseContent = JSON.parse(responseContent);
+          } catch {
+            responseContent = await parseJSON(
+              responseContent,
+              interfaceOptions.attemptJsonRepair,
+            );
+          }
+        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
           responseContent = await parseJSON(
             responseContent,
             interfaceOptions.attemptJsonRepair,
           );
         }
-        // Build response object
-        responseContent = { results: responseContent };
 
-        if (cacheTimeoutSeconds && responseContent) {
-          this.cache.saveToCache(
-            cacheKey,
-            responseContent,
-            cacheTimeoutSeconds,
-          );
+        if (responseContent) {
+          // Build response object
+          responseContent = { results: responseContent };
+
+          // optionally include the original llm api response
+          if (interfaceOptions.includeOriginalResponse) {
+            responseContent.originalResponse = response.data;
+          }
+
+          return responseContent;
         }
-
-        return responseContent;
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
           log.error('Error:', error.response ? error.response.data : null);
-          throw new RequestError(`Unable to connect to ${thisUrl}`);
+          throw new RequestError(
+            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
+            error.message,
+            error.stack,
+          );
         }
 
         // Calculate the delay for the next retry attempt
@@ -192,7 +178,5 @@ class Cohere {
     }
   }
 }
-
-Cohere.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = Cohere;

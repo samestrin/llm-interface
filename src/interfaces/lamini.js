@@ -1,76 +1,71 @@
 /**
- * @file src/interfaces/anthropic.js
- * @class Anthropic
- * @description Wrapper class for the Anthropic API.
- * @param {string} apiKey - The API key for the Anthropic API.
+ * @file src/interfaces/lamini.js
+ * @class Lamini
+ * @description Wrapper class for the Lamini API.
+ * @param {string} apiKey - The API key for the Lamini API.
  */
 
-const AnthropicSDK = require('@anthropic-ai/sdk');
+const axios = require('axios');
 const { getModelByAlias } = require('../utils/config.js');
-const { getSimpleMessageObject, delay } = require('../utils/utils.js');
-const { anthropicApiKey } = require('../config/config.js');
+const { getMessageObject, delay } = require('../utils/utils.js');
+const { laminiApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
-const { RequestError } = require('../utils/errors.js');
-
+const { InitError, RequestError } = require('../utils/errors.js');
 const config = getConfig();
 const log = require('loglevel');
 
-// Anthropic class for interacting with the Anthropic API
-class Anthropic {
+// Lamini class for interacting with the Lamini API
+class Lamini {
   /**
-   * Constructor for the Anthropic class.
-   * @param {string} apiKey - The API key for the Anthropic API.
+   * Constructor for the Lamini class.
+   * @param {string} apiKey - The API key for the Lamini API.
    */
   constructor(apiKey) {
-    this.interfaceName = 'anthropic';
-    this.anthropic = new AnthropicSDK({
-      apiKey: apiKey || anthropicApiKey,
+    this.interfaceName = 'lamini';
+    this.apiKey = apiKey || laminiApiKey;
+    this.client = axios.create({
+      baseURL: config[this.interfaceName].url,
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+      },
     });
   }
 
   /**
-   * Send a message to the Anthropic API.
+   * Send a message to the Lamini API.
    * @param {string|object} message - The message to send or a message object.
    * @param {object} options - Additional options for the API request.
    * @param {object} interfaceOptions - Options specific to the interface.
-   * @returns {string} The response content from the Anthropic API.
+   * @returns {string} The response content from the Lamini API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
-    // Convert a string message to a simple message object
     const messageObject =
-      typeof message === 'string' ? getSimpleMessageObject(message) : message;
+      typeof message === 'string' ? getMessageObject(message) : message;
 
-    // Extract model and messages from the message object
-    let { model, messages } = messageObject;
+    const { messages } = messageObject;
+    const { max_tokens = 150 } = options;
+    let { model } = messageObject;
 
-    // Finalize the model name
+    // Set the model and default values
     model =
       model || options.model || config[this.interfaceName].model.default.name;
     if (options.model) delete options.model;
+    if (options.max_tokens) delete options.max_tokens;
 
     // Get the selected model based on alias or default
-    const selectedModel = getModelByAlias(this.interfaceName, model);
-    // Set default value for max_tokens
-    const { max_tokens = 150 } = options;
+    model = getModelByAlias(this.interfaceName, model);
 
-    // Convert messages to the format expected by the Anthropic API
-    const convertedMessages = messages.map((msg, index) => {
-      if (index === 0) {
-        return { ...msg, role: 'user' };
-      }
-      if (msg.role === 'system') {
-        return { ...msg, role: 'assistant' };
-      }
-      return { ...msg, role: index % 2 === 0 ? 'user' : 'assistant' };
-    });
+    // Format the prompt by joining message contents
+    const formattedPrompt = messages
+      .map((message) => message.content)
+      .join(' ');
 
-    // Prepare the parameters for the API call
-    const params = {
-      model:
-        selectedModel ||
-        options.model ||
-        config[this.interfaceName].model.default.name,
-      messages: convertedMessages,
+    // Prepare the payload for the API call
+    const payload = {
+      prompt: formattedPrompt,
+      model_name: model,
+      output_type: { answer: 'str' },
       max_tokens,
       ...options,
     };
@@ -78,19 +73,18 @@ class Anthropic {
     // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
+
+    const thisUrl = this.client.defaults.baseURL;
+
     while (retryAttempts >= 0) {
+      const response = await this.client.post('', payload);
+
       try {
-        // Send the request to the Anthropic API
-        const response = await this.anthropic.messages.create(params);
-        // Extract the response content from the API response
+        // Send the request to the Lamini API
+
         let responseContent = null;
-        if (
-          response &&
-          response.content &&
-          response.content[0] &&
-          response.content[0].text
-        ) {
-          responseContent = response.content[0].text;
+        if (response && response.data && response.data.answer) {
+          responseContent = response.data.answer.trim();
         }
 
         // Attempt to repair the object if needed
@@ -123,18 +117,17 @@ class Anthropic {
             responseContent.originalResponse = response.data;
           }
 
-          // Return the response content
           return responseContent;
         }
       } catch (error) {
-        // Decrease the number of retry attempts
         retryAttempts--;
         if (retryAttempts < 0) {
-          // Log any errors and throw the error
-          log.error('Error:', error.response ? error.response.data : null);
-
+          log.error(
+            'Error:',
+            error.response ? error.response.data : error.message,
+          );
           throw new RequestError(
-            `Unable to connect using Anthropic SDK (${retryAttempts + 1} attempts`,
+            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
             error.message,
             error.stack,
           );
@@ -151,4 +144,4 @@ class Anthropic {
   }
 }
 
-module.exports = Anthropic;
+module.exports = Lamini;

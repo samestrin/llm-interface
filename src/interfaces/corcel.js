@@ -13,7 +13,9 @@ const config = getConfig();
 
 class Corcel extends BaseInterface {
   constructor(apiKey) {
-    super('corcel', apiKey || corcelApiKey, config['corcel'].url, { "Authorization": apiKey || corcelApiKey });
+    super('corcel', apiKey || corcelApiKey, config['corcel'].url, {
+      Authorization: apiKey || corcelApiKey,
+    });
   }
 
   createMessageObject(message) {

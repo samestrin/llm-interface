@@ -7,8 +7,7 @@
 
 const axios = require('axios');
 
-const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { CacheManager } = require('../utils/cacheManager.js');
+const { getModelByAlias } = require('../utils/config.js');
 const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const { rekaaiApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
@@ -22,7 +21,7 @@ class RekaAI {
    * Constructor for the RekaAI class.
    * @param {string} apiKey - The API key for Reka AI.
    */
-  constructor(apiKey, cacheConfig = {}) {
+  constructor(apiKey) {
     this.interfaceName = 'rekaai';
     this.apiKey = apiKey || rekaaiApiKey;
     this.client = axios.create({
@@ -32,23 +31,6 @@ class RekaAI {
         'X-Api-Key': this.apiKey,
       },
     });
-    // Instantiate CacheManager with appropriate configuration
-    if (cacheConfig.cache && cacheConfig.config) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheOptions: config,
-      });
-    } else if (cacheConfig.cache && cacheConfig.path) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheDir: cacheConfig.path,
-      });
-    } else {
-      this.cache = new CacheManager({
-        cacheType: 'simple-cache',
-        cacheDir: cacheConfig.path,
-      });
-    }
   }
 
   /**
@@ -61,12 +43,6 @@ class RekaAI {
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
       typeof message === 'string' ? getSimpleMessageObject(message) : message;
-    let cacheTimeoutSeconds;
-    if (typeof interfaceOptions === 'number') {
-      cacheTimeoutSeconds = interfaceOptions;
-    } else {
-      cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
-    }
 
     let { model } = messageObject;
 
@@ -96,15 +72,6 @@ class RekaAI {
       stream: false,
     };
 
-    // Generate a cache key based on the modified message
-    const cacheKey = JSON.stringify(modifiedMessage);
-    if (cacheTimeoutSeconds) {
-      const cachedResponse = await this.cache.getFromCache(cacheKey);
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-    }
-
     // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
@@ -119,25 +86,39 @@ class RekaAI {
         if (response.data?.responses?.[0]?.message?.content) {
           responseContent = response.data.responses[0].message.content;
         }
+
         // Attempt to repair the object if needed
-        if (interfaceOptions.attemptJsonRepair) {
+        if (
+          responseContent &&
+          options.response_format === 'json_object' &&
+          typeof responseContent === 'string'
+        ) {
+          try {
+            responseContent = JSON.parse(responseContent);
+          } catch {
+            responseContent = await parseJSON(
+              responseContent,
+              interfaceOptions.attemptJsonRepair,
+            );
+          }
+        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
           responseContent = await parseJSON(
             responseContent,
             interfaceOptions.attemptJsonRepair,
           );
         }
-        // Build response object
-        responseContent = { results: responseContent };
 
-        if (cacheTimeoutSeconds && responseContent) {
-          await this.cache.saveToCache(
-            cacheKey,
-            responseContent,
-            cacheTimeoutSeconds,
-          );
+        if (responseContent) {
+          // Build response object
+          responseContent = { results: responseContent };
+
+          // optionally include the original llm api response
+          if (interfaceOptions.includeOriginalResponse) {
+            responseContent.originalResponse = response.data;
+          }
+
+          return responseContent;
         }
-
-        return responseContent;
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
@@ -146,7 +127,11 @@ class RekaAI {
             'API Error:',
             error.response ? error.response.data : error.message,
           );
-          throw new Error(error.response ? error.response.data : error.message);
+          throw new RequestError(
+            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
+            error.message,
+            error.stack,
+          );
         }
 
         // Calculate the delay for the next retry attempt
@@ -159,5 +144,5 @@ class RekaAI {
     }
   }
 }
-RekaAI.prototype.adjustModelAlias = adjustModelAlias;
+
 module.exports = RekaAI;

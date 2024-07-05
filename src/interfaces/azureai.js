@@ -5,8 +5,7 @@
  * @param {string} apiKey - The API key for the AzureAI API.
  */
 const axios = require('axios');
-const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { CacheManager } = require('../utils/cacheManager.js');
+const { getModelByAlias } = require('../utils/config.js');
 const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const { azureOpenAIApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
@@ -21,7 +20,7 @@ class AzureAI {
    * Constructor for the AzureAI class.
    * @param {string} apiKey - The API key for the Azure OpenAI API.
    */
-  constructor(apiKey, cacheConfig = {}) {
+  constructor(apiKey) {
     this.interfaceName = 'azureai';
     this.apiKey = apiKey || azureOpenAIApiKey;
     this.client = axios.create({
@@ -31,24 +30,6 @@ class AzureAI {
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
-
-    // Instantiate CacheManager with appropriate configuration
-    if (cacheConfig.cache && cacheConfig.config) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheOptions: config,
-      });
-    } else if (cacheConfig.cache && cacheConfig.path) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheDir: cacheConfig.path,
-      });
-    } else {
-      this.cache = new CacheManager({
-        cacheType: 'simple-cache',
-        cacheDir: cacheConfig.path,
-      });
-    }
   }
 
   /**
@@ -62,12 +43,6 @@ class AzureAI {
     // Convert a string message to a simple message object
     const messageObject =
       typeof message === 'string' ? getSimpleMessageObject(message) : message;
-
-    // Get the cache timeout value from interfaceOptions
-    const cacheTimeoutSeconds =
-      typeof interfaceOptions === 'number'
-        ? interfaceOptions
-        : interfaceOptions.cacheTimeoutSeconds;
 
     // Extract model and messages from the message object
     let { model, messages } = messageObject;
@@ -104,17 +79,6 @@ class AzureAI {
       requestBody.response_format = { type: response_format };
     }
 
-    // Generate a cache key based on the request body
-    const cacheKey = JSON.stringify({ requestBody, interfaceOptions });
-
-    // Check if a cached response exists for the request
-    if (cacheTimeoutSeconds) {
-      const cachedResponse = await this.cache.getFromCache(cacheKey);
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-    }
-
     // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
@@ -143,31 +107,49 @@ class AzureAI {
         }
 
         // Attempt to repair the object if needed
-        if (interfaceOptions.attemptJsonRepair) {
-          responseContent = JSON.parse(responseContent);
-        }
-
-        // Build response object
-        responseContent = { results: responseContent };
-
-        // Cache the response content if cache timeout is set
-        if (cacheTimeoutSeconds && responseContent) {
-          await this.cache.saveToCache(
-            cacheKey,
+        if (
+          responseContent &&
+          options.response_format === 'json_object' &&
+          typeof responseContent === 'string'
+        ) {
+          try {
+            responseContent = JSON.parse(responseContent);
+          } catch {
+            responseContent = await parseJSON(
+              responseContent,
+              interfaceOptions.attemptJsonRepair,
+            );
+          }
+        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
+          responseContent = await parseJSON(
             responseContent,
-            cacheTimeoutSeconds,
+            interfaceOptions.attemptJsonRepair,
           );
         }
 
-        // Return the response content
-        return responseContent;
+        if (responseContent) {
+          // Build response object
+          responseContent = { results: responseContent };
+
+          // optionally include the original llm api response
+          if (interfaceOptions.includeOriginalResponse) {
+            responseContent.originalResponse = response.data;
+          }
+
+          // Return the response content
+          return responseContent;
+        }
       } catch (error) {
         // Decrease the number of retry attempts
         retryAttempts--;
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error('Error:', error.response ? error.response.data : null);
-          throw new RequestError(`Unable to connect to ${thisUrl}`);
+          throw new RequestError(
+            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
+            error.message,
+            error.stack,
+          );
         }
 
         // Calculate the delay for the next retry attempt
@@ -180,8 +162,5 @@ class AzureAI {
     }
   }
 }
-
-// Adjust model alias for backwards compatibility
-AzureAI.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = AzureAI;

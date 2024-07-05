@@ -9,11 +9,10 @@
  */
 
 const axios = require('axios');
-const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { CacheManager } = require('../utils/cacheManager.js');
+const { getModelByAlias } = require('../utils/config.js');
 const { parseJSON, delay } = require('../utils/utils.js');
 const { getConfig } = require('../utils/configManager.js');
-const { RequestError } = require('../utils/errors.js');
+const { LLMInterfaceError, RequestError } = require('../utils/errors.js');
 const config = getConfig();
 const log = require('loglevel');
 
@@ -26,7 +25,7 @@ class BaseInterface {
    * @param {string} baseURL - The base URL for the API.
    * @param {object} headers - Additional headers for the API requests.
    */
-  constructor(interfaceName, apiKey, baseURL, headers = {}, cacheConfig = {}) {
+  constructor(interfaceName, apiKey, baseURL, headers = {}) {
     this.interfaceName = interfaceName;
     this.apiKey = apiKey;
     this.client = axios.create({
@@ -37,24 +36,6 @@ class BaseInterface {
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
-
-    // Instantiate CacheManager with appropriate configuration
-    if (cacheConfig.cache && cacheConfig.config) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheOptions: config,
-      });
-    } else if (cacheConfig.cache && cacheConfig.path) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheDir: cacheConfig.path,
-      });
-    } else {
-      this.cache = new CacheManager({
-        cacheType: 'simple-cache',
-        cacheDir: cacheConfig.path,
-      });
-    }
   }
   /**
    * Method to be implemented by derived classes to create the appropriate message object.
@@ -64,8 +45,8 @@ class BaseInterface {
    * @throws {Error} If the method is not implemented by a subclass.
    */
   createMessageObject(message) {
-    throw new Error(
-      'createMessageObject method must be implemented by subclass',
+    throw new LLMInterfaceError(
+      `createMessageObject method must be implemented by subclass`,
     );
   }
 
@@ -105,16 +86,12 @@ class BaseInterface {
    * @returns {string} The response content from the API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
+    // Create the message object if a string is provided, otherwise use the provided object
     let messageObject =
       typeof message === 'string' ? this.createMessageObject(message) : message;
 
     // Update the message object if needed
     messageObject = this.updateMessageObject(messageObject);
-
-    const cacheTimeoutSeconds =
-      typeof interfaceOptions === 'number'
-        ? interfaceOptions
-        : interfaceOptions.cacheTimeoutSeconds;
 
     let { model, messages } = messageObject;
 
@@ -144,16 +121,6 @@ class BaseInterface {
       requestBody.response_format = { type: response_format };
     }
 
-    const cacheKey = JSON.stringify({ requestBody, interfaceOptions });
-
-    if (cacheTimeoutSeconds) {
-      const cachedResponse = await this.cache.getFromCache(cacheKey);
-
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-    }
-
     const url = this.getRequestUrl(selectedModel);
 
     let retryAttempts = interfaceOptions.retryAttempts || 0;
@@ -165,7 +132,6 @@ class BaseInterface {
     while (retryAttempts >= 0) {
       try {
         const response = await this.client.post(url, requestBody);
-
         let responseContent = null;
         if (
           response &&
@@ -177,29 +143,50 @@ class BaseInterface {
           responseContent = response.data.choices[0].message.content;
         }
 
-        if (interfaceOptions.attemptJsonRepair) {
+        // Attempt to repair the object if needed
+        if (
+          responseContent &&
+          options.response_format === 'json_object' &&
+          typeof responseContent === 'string'
+        ) {
+          try {
+            responseContent = JSON.parse(responseContent);
+          } catch {
+            responseContent = await parseJSON(
+              responseContent,
+              interfaceOptions.attemptJsonRepair,
+            );
+          }
+        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
           responseContent = await parseJSON(
             responseContent,
             interfaceOptions.attemptJsonRepair,
           );
         }
 
-        responseContent = { results: responseContent };
+        if (responseContent) {
+          responseContent = { results: responseContent };
 
-        if (cacheTimeoutSeconds && responseContent) {
-          await this.cache.saveToCache(
-            cacheKey,
-            responseContent,
-            cacheTimeoutSeconds,
-          );
+          // optionally include the original llm api response
+          if (interfaceOptions.includeOriginalResponse) {
+            responseContent.originalResponse = response.data;
+          }
+
+          return responseContent;
         }
-
-        return responseContent;
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
-          log.error('Error:', error.response ? error.response.data : null);
-          throw new RequestError(`Unable to connect to ${thisUrl}`);
+          log.error('Error:', {
+            url: thisUrl,
+            error: error.response ? error.response.data : null,
+          });
+
+          throw new RequestError(
+            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
+            error.message,
+            error.stack,
+          );
         }
 
         // Calculate the delay for the next retry attempt
@@ -260,8 +247,5 @@ class BaseInterface {
     return this.client.post(url, requestBody, { responseType: 'stream' });
   }
 }
-
-// Adjust model alias for backwards compatibility
-BaseInterface.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = BaseInterface;

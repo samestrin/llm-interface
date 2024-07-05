@@ -5,8 +5,7 @@
  * @param {string} apiKey - The API key for the Gemini API.
  */
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { CacheManager } = require('../utils/cacheManager.js');
+const { getModelByAlias } = require('../utils/config.js');
 const { getMessageObject, parseJSON, delay } = require('../utils/utils.js');
 const { geminiApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
@@ -20,28 +19,10 @@ class Gemini {
    * Constructor for the Gemini class.
    * @param {string} apiKey - The API key for the Gemini API.
    */
-  constructor(apiKey, cacheConfig = {}) {
+  constructor(apiKey) {
     this.interfaceName = 'gemini';
     this.apiKey = apiKey || geminiApiKey;
     this.genAI = new GoogleGenerativeAI(this.apiKey);
-
-    // Instantiate CacheManager with appropriate configuration
-    if (cacheConfig.cache && cacheConfig.config) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheOptions: config,
-      });
-    } else if (cacheConfig.cache && cacheConfig.path) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheDir: cacheConfig.path,
-      });
-    } else {
-      this.cache = new CacheManager({
-        cacheType: 'simple-cache',
-        cacheDir: cacheConfig.path,
-      });
-    }
   }
 
   /**
@@ -91,10 +72,6 @@ class Gemini {
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
       typeof message === 'string' ? getMessageObject(message) : message;
-    const cacheTimeoutSeconds =
-      typeof interfaceOptions === 'number'
-        ? interfaceOptions
-        : interfaceOptions.cacheTimeoutSeconds;
 
     let { model } = messageObject;
 
@@ -122,21 +99,6 @@ class Gemini {
       options,
     );
 
-    // Generate a cache key based on the input data
-    const cacheKey = JSON.stringify({
-      model,
-      history,
-      prompt,
-      generationConfig,
-      interfaceOptions,
-    });
-    if (cacheTimeoutSeconds) {
-      const cachedResponse = await this.cache.getFromCache(cacheKey);
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-    }
-
     // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
@@ -150,29 +112,49 @@ class Gemini {
         const result = await chat.sendMessage(prompt);
         // Get the response from the model
         const response = await result.response;
-        let text = await response.text();
+        let responseContent = await response.text();
 
-        if (interfaceOptions.attemptJsonRepair) {
-          text = await parseJSON(text, interfaceOptions.attemptJsonRepair);
-        }
-
-        // Build response object
-        const responseContent = { results: text };
-
-        if (cacheTimeoutSeconds && responseContent) {
-          await this.cache.saveToCache(
-            cacheKey,
+        // Attempt to repair the object if needed
+        if (
+          responseContent &&
+          response_format === 'json_object' &&
+          typeof responseContent === 'string'
+        ) {
+          try {
+            responseContent = JSON.parse(responseContent);
+          } catch {
+            responseContent = await parseJSON(
+              responseContent,
+              interfaceOptions.attemptJsonRepair,
+            );
+          }
+        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
+          responseContent = await parseJSON(
             responseContent,
-            cacheTimeoutSeconds,
+            interfaceOptions.attemptJsonRepair,
           );
         }
 
-        return responseContent;
+        if (responseContent) {
+          // Build response object
+          responseContent = { results: responseContent };
+
+          // optionally include the original llm api response
+          if (interfaceOptions.includeOriginalResponse) {
+            //responseContent.originalResponse = response; @todo not implemented yet
+          }
+
+          return responseContent;
+        }
       } catch (error) {
         retryAttempts--;
         if (retryAttempts < 0) {
           log.error('Error:', error.response ? error.response.data : null);
-          throw new RequestError(`Unable to connect Google Gemini SDK`);
+          throw new RequestError(
+            `Unable to connect Google Gemini SDK (${retryAttempts + 1} attempts`,
+            error.message,
+            error.stack,
+          );
         }
 
         // Calculate the delay for the next retry attempt
@@ -185,7 +167,5 @@ class Gemini {
     }
   }
 }
-
-Gemini.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = Gemini;

@@ -6,8 +6,7 @@
  */
 
 const axios = require('axios');
-const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { CacheManager } = require('../utils/cacheManager.js');
+const { getModelByAlias } = require('../utils/config.js');
 const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const {
   cloudflareaiApiKey,
@@ -24,7 +23,7 @@ class CloudflareAI {
    * Constructor for the CloudflareAI class.
    * @param {string} apiKey - The API key for the CloudflareAI LLM API.
    */
-  constructor(apiKey, accountId, cacheConfig = {}) {
+  constructor(apiKey, accountId) {
     this.interfaceName = 'cloudflareai';
 
     this.apiKey = apiKey || cloudflareaiApiKey;
@@ -36,24 +35,6 @@ class CloudflareAI {
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
-
-    // Instantiate CacheManager with appropriate configuration
-    if (cacheConfig.cache && cacheConfig.config) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheOptions: config,
-      });
-    } else if (cacheConfig.cache && cacheConfig.path) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheDir: cacheConfig.path,
-      });
-    } else {
-      this.cache = new CacheManager({
-        cacheType: 'simple-cache',
-        cacheDir: cacheConfig.path,
-      });
-    }
   }
 
   /**
@@ -67,12 +48,6 @@ class CloudflareAI {
     // Convert a string message to a simple message object
     const messageObject =
       typeof message === 'string' ? getSimpleMessageObject(message) : message;
-
-    // Get the cache timeout value from interfaceOptions
-    const cacheTimeoutSeconds =
-      typeof interfaceOptions === 'number'
-        ? interfaceOptions
-        : interfaceOptions.cacheTimeoutSeconds;
 
     // Extract model, lora, and messages from the message object
     let { model, lora, messages } = messageObject;
@@ -109,21 +84,6 @@ class CloudflareAI {
       ...options,
     };
 
-    // Append the model name to the cache key
-    let cacheKeyFromRequestBody = requestBody;
-    cacheKeyFromRequestBody.model = selectedModel;
-
-    // Generate a cache key based on cacheKeyFromRequestBody
-    const cacheKey = JSON.stringify(cacheKeyFromRequestBody);
-
-    // Check if a cached response exists for the request
-    if (cacheTimeoutSeconds) {
-      const cachedResponse = await this.cache.getFromCache(cacheKey);
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-    }
-
     // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
@@ -150,31 +110,49 @@ class CloudflareAI {
         }
 
         // Attempt to repair the object if needed
-        if (interfaceOptions.attemptJsonRepair) {
-          responseContent = JSON.parse(responseContent);
-        }
-
-        // Build response object
-        responseContent = { results: responseContent };
-
-        // Cache the response content if cache timeout is set
-        if (cacheTimeoutSeconds && responseContent) {
-          await this.cache.saveToCache(
-            cacheKey,
+        if (
+          responseContent &&
+          options.response_format === 'json_object' &&
+          typeof responseContent === 'string'
+        ) {
+          try {
+            responseContent = JSON.parse(responseContent);
+          } catch {
+            responseContent = await parseJSON(
+              responseContent,
+              interfaceOptions.attemptJsonRepair,
+            );
+          }
+        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
+          responseContent = await parseJSON(
             responseContent,
-            cacheTimeoutSeconds,
+            interfaceOptions.attemptJsonRepair,
           );
         }
 
-        // Return the response content
-        return responseContent;
+        if (responseContent) {
+          // Build response object
+          responseContent = { results: responseContent };
+
+          // optionally include the original llm api response
+          if (interfaceOptions.includeOriginalResponse) {
+            responseContent.originalResponse = response.data;
+          }
+
+          // Return the response content
+          return responseContent;
+        }
       } catch (error) {
         // Decrease the number of retry attempts
         retryAttempts--;
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error('Error:', error.response ? error.response.data : null);
-          throw new RequestError(`Unable to connect to ${thisUrl}`);
+          throw new RequestError(
+            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
+            error.message,
+            error.stack,
+          );
         }
 
         // Calculate the delay for the next retry attempt
@@ -187,8 +165,5 @@ class CloudflareAI {
     }
   }
 }
-
-// Adjust model alias for backwards compatibility
-CloudflareAI.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = CloudflareAI;

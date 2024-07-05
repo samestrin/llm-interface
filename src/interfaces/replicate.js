@@ -6,8 +6,7 @@
  */
 const axios = require('axios');
 const { delay } = require('../utils/utils.js');
-const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { CacheManager } = require('../utils/cacheManager.js');
+const { getModelByAlias } = require('../utils/config.js');
 const { replicateOpenAIApiKey } = require('../config/config.js');
 const { getConfig } = require('../utils/configManager.js');
 const { RequestError, GetPredictionError } = require('../utils/errors.js');
@@ -20,7 +19,7 @@ class Replicate {
    * Constructor for the Replicate class.
    * @param {string} apiKey - The API key for the Replicate API.
    */
-  constructor(apiKey, cacheConfig = {}) {
+  constructor(apiKey) {
     this.interfaceName = 'replicate';
     this.apiKey = apiKey || replicateOpenAIApiKey;
     this.client = axios.create({
@@ -30,24 +29,6 @@ class Replicate {
         Authorization: `Bearer ${this.apiKey}`,
       },
     });
-
-    // Instantiate CacheManager with appropriate configuration
-    if (cacheConfig.cache && cacheConfig.config) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheOptions: config,
-      });
-    } else if (cacheConfig.cache && cacheConfig.path) {
-      this.cache = new CacheManager({
-        cacheType: cacheConfig.cache,
-        cacheDir: cacheConfig.path,
-      });
-    } else {
-      this.cache = new CacheManager({
-        cacheType: 'simple-cache',
-        cacheDir: cacheConfig.path,
-      });
-    }
 
     this.predictionResults = [];
   }
@@ -60,12 +41,6 @@ class Replicate {
    * @returns {string} The response content from the Replicate API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
-    // Get the cache timeout value from interfaceOptions
-    const cacheTimeoutSeconds =
-      typeof interfaceOptions === 'number'
-        ? interfaceOptions
-        : interfaceOptions.cacheTimeoutSeconds;
-
     // Extract model and messages from the message object
     let { model } = message;
 
@@ -99,17 +74,6 @@ class Replicate {
       },
     };
 
-    // Generate a cache key based on the request body
-    const cacheKey = JSON.stringify({ requestBody, interfaceOptions });
-
-    // Check if a cached response exists for the request
-    if (cacheTimeoutSeconds) {
-      const cachedResponse = await this.cache.getFromCache(cacheKey);
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-    }
-
     // Set up retry mechanism with exponential backoff
     let retryAttempts = interfaceOptions.retryAttempts || 0;
     let currentRetry = 0;
@@ -135,31 +99,49 @@ class Replicate {
         responseContent = responseContent.join('');
 
         // Attempt to repair the object if needed
-        if (interfaceOptions.attemptJsonRepair) {
-          responseContent = JSON.parse(responseContent);
-        }
-
-        // Build response object
-        responseContent = { results: responseContent };
-
-        // Cache the response content if cache timeout is set
-        if (cacheTimeoutSeconds && responseContent) {
-          await this.cache.saveToCache(
-            cacheKey,
+        if (
+          responseContent &&
+          options.response_format === 'json_object' &&
+          typeof responseContent === 'string'
+        ) {
+          try {
+            responseContent = JSON.parse(responseContent);
+          } catch {
+            responseContent = await parseJSON(
+              responseContent,
+              interfaceOptions.attemptJsonRepair,
+            );
+          }
+        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
+          responseContent = await parseJSON(
             responseContent,
-            cacheTimeoutSeconds,
+            interfaceOptions.attemptJsonRepair,
           );
         }
 
-        // Return the response content
-        return responseContent;
+        if (responseContent) {
+          // Build response object
+          responseContent = { results: responseContent };
+
+          // optionally include the original llm api response
+          if (interfaceOptions.includeOriginalResponse) {
+            responseContent.originalResponse = response.data;
+          }
+
+          // Return the response content
+          return responseContent;
+        }
       } catch (error) {
         // Decrease the number of retry attempts
         retryAttempts--;
         if (retryAttempts < 0) {
           // Log any errors and throw the error
           log.error('Error:', error.response ? error.response.data : null);
-          throw new RequestError(`Unable to connect to ${url}`);
+          throw new RequestError(
+            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
+            error.message,
+            error.stack,
+          );
         }
 
         // Calculate the delay for the next retry attempt
@@ -206,7 +188,9 @@ class Replicate {
           attempt++;
         }
       } catch (error) {
-        throw new GetPredictionError('Failed to get prediction:', error);
+        throw new GetPredictionError(
+          `Failed to get prediction: ${error.response ? error.response.data : error.message}`,
+        );
       }
     }
 
@@ -214,8 +198,5 @@ class Replicate {
     return false;
   }
 }
-
-// Adjust model alias for backwards compatibility
-Replicate.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = Replicate;
