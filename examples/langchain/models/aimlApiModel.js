@@ -1,15 +1,10 @@
 const { LLMInterface } = require('../../../src/index.js');
 
-class HuggingFaceModel {
-  constructor(apiKey, cache = false) {
+class AIMLAPI {
+  constructor(apiKey) {
     this.apiKey = apiKey;
-    this.interface = 'huggingface';
+    this.interface = 'aimlapi';
     this.outputParser = null; // Initialize outputParser as null
-    if (cache) {
-      this.interfaceOptions = { cacheTimeoutSeconds: this.cache };
-    } else {
-      this.interfaceOptions = {};
-    }
   }
 
   /**
@@ -23,7 +18,6 @@ class HuggingFaceModel {
       [this.interface, this.apiKey],
       prompt,
       options,
-      this.interfaceOptions,
     );
 
     // Assume response.results contains the generated text
@@ -81,7 +75,7 @@ class HuggingFaceModel {
   /**
    * Attach an output parser to process the generated text.
    * @param {object} outputParser - The parser object with a `parse` method.
-   * @returns {HuggingFaceModel} The current instance for method chaining.
+   * @returns {AIMLAPI} The current instance for method chaining.
    */
   pipe(outputParser) {
     this.outputParser = outputParser;
@@ -108,4 +102,4 @@ class HuggingFaceModel {
   }
 }
 
-module.exports = HuggingFaceModel;
+module.exports = AIMLAPI;

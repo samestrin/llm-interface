@@ -1,15 +1,10 @@
 const { LLMInterface } = require('../../../src/index.js');
 
-class HuggingFaceModel {
-  constructor(apiKey, cache = false) {
+class MonsterAPI {
+  constructor(apiKey) {
     this.apiKey = apiKey;
-    this.interface = 'huggingface';
+    this.interface = 'monsterapi';
     this.outputParser = null; // Initialize outputParser as null
-    if (cache) {
-      this.interfaceOptions = { cacheTimeoutSeconds: this.cache };
-    } else {
-      this.interfaceOptions = {};
-    }
   }
 
   /**
@@ -23,7 +18,6 @@ class HuggingFaceModel {
       [this.interface, this.apiKey],
       prompt,
       options,
-      this.interfaceOptions,
     );
 
     // Assume response.results contains the generated text
@@ -38,50 +32,9 @@ class HuggingFaceModel {
   }
 
   /**
-   * Embeds an array of texts using the LLMInterface.
-   *
-   * @param {string[]} texts - The array of texts to embed.
-   * @param {Object} [options={}] - Optional parameters for embedding.
-   * @returns {Promise<Array>} - A promise that resolves to an array of embeddings.
-   */
-  async embed(texts, options = {}) {
-    const responses = await Promise.all(
-      texts.map(async (text) => {
-        const response = await LLMInterface.embeddings(
-          [this.interface, this.apiKey],
-          text,
-          options,
-          this.interfaceOptions,
-        );
-
-        return response.results;
-      }),
-    );
-    return responses;
-  }
-
-  /**
-   * Embeds a single query using the LLMInterface.
-   *
-   * @param {string} query - The query to embed.
-   * @param {Object} [options={}] - Optional parameters for embedding.
-   * @returns {Promise<Array>} - A promise that resolves to the embedding of the query.
-   */
-  async embedQuery(query, options = {}) {
-    const response = await LLMInterface.embeddings(
-      [this.interface, this.apiKey],
-      query,
-      options,
-      this.interfaceOptions,
-    );
-
-    return response.results;
-  }
-
-  /**
    * Attach an output parser to process the generated text.
    * @param {object} outputParser - The parser object with a `parse` method.
-   * @returns {HuggingFaceModel} The current instance for method chaining.
+   * @returns {MonsterAPI} The current instance for method chaining.
    */
   pipe(outputParser) {
     this.outputParser = outputParser;
@@ -108,4 +61,4 @@ class HuggingFaceModel {
   }
 }
 
-module.exports = HuggingFaceModel;
+module.exports = MonsterAPI;
