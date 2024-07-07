@@ -10,9 +10,13 @@
 
 This goal of `llm-interface` is to provide a single, simple, unified interface for sending messages and receiving responses from different LLM services. This will make it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
 
+## Supporting
+
 <!-- Support List -->
 ![AI21 Studio](https://samestrin.github.io/media/llm-interface/icons/ai21.png) ![AIMLAPI](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png) ![Anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png) ![Anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png) ![Cloudflare AI](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png) ![Cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png) ![Corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png) ![DeepInfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png) ![DeepSeek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png) ![Forefront AI](https://samestrin.github.io/media/llm-interface/icons/forefront.png) ![GooseAI](https://samestrin.github.io/media/llm-interface/icons/gooseai.png) ![Lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png) ![Mistral AI](https://samestrin.github.io/media/llm-interface/icons/mistralai.png) ![Monster API](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png) ![Neets.ai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png) ![Perplexity AI](https://samestrin.github.io/media/llm-interface/icons/perplexity.png) ![Reka AI](https://samestrin.github.io/media/llm-interface/icons/rekaai.png) ![Replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png) ![Shuttle AI](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png) ![Together AI](https://samestrin.github.io/media/llm-interface/icons/togetherai.png) ![Writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)
 <!-- Support List End -->
+
+and more ...
 
 ## Features
 
