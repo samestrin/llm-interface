@@ -8,4 +8,4 @@ const { aimlapiApiKey } = require('../../src/config/config.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
-runTests(AIMLAPI, aimlapiApiKey, 'AIMLAPI', simplePrompt);
+runTests(AIMLAPI, aimlapiApiKey, 'AIMLAPI', simplePrompt, 30);

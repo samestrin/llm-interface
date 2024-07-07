@@ -47,15 +47,7 @@ let interfaces = {
 };
 
 interfaces = {
-  gemini: config.geminiApiKey,
-  groq: config.groqApiKey,
-  huggingface: config.huggingfaceApiKey,
-  //cloudflareai: [config.cloudflareaiApiKey, config.cloudflareaiAccountId],
-  //watsonxai: [config.watsonxaiApiKey, config.watsonxaiSpaceId],
-  //corcel: config.corcelApiKey,
-  //lamini: config.laminiApiKey,
-  //shuttleai: config.shuttleaiApiKey,
-  //thebai: config.thebaiApiKey,
+  lamini: config.laminiApiKey,
 };
 
 module.exports = interfaces;

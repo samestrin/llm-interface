@@ -1,5 +1,5 @@
 /**
- * @file test/basic/llmInterfaceSendMessageClass.setApiKey.test.js
+ * @file test/basic/llmInterfaceSendMessageClass.test.js
  * @description Tests for the LLMInterfaceSendMessage class.
  */
 
@@ -9,8 +9,6 @@ const { safeStringify } = require('../../src/utils/jestSerializer.js');
 const interfaces = require('./sharedInterfaceObject.js');
 let response;
 
-LLMInterface.setApiKey(interfaces);
-
 for (let [module, apiKey] of Object.entries(interfaces)) {
   if (apiKey) {
     let secondaryKey = false;
@@ -18,7 +16,7 @@ for (let [module, apiKey] of Object.entries(interfaces)) {
       [apiKey, secondaryKey] = apiKey;
     }
 
-    describe(`LLMInterface.SendMessage("${module}")`, () => {
+    describe(`LLMInterface.sendMessage("${module}")`, () => {
       test(`API Key should be set (string)`, () => {
         expect(typeof apiKey).toBe('string');
       });
@@ -29,7 +27,30 @@ for (let [module, apiKey] of Object.entries(interfaces)) {
         });
       }
 
-      test(`LLMInterface.SendMessage should send a message and receive a response`, async () => {
+      test(`LLMInterface.sendMessage with inline API key should send a message and receive a response`, async () => {
+        try {
+          if (!secondaryKey) {
+            response = await LLMInterface.sendMessage(
+              [module, apiKey],
+              simplePrompt,
+              options,
+              { retryAttempts: 3 },
+            );
+          } else {
+            response = await LLMInterface.sendMessage(
+              [module, [apiKey, secondaryKey]],
+              simplePrompt,
+              options,
+              { retryAttempts: 3 },
+            );
+          }
+        } catch (error) {
+          throw new Error(`Test failed: ${safeStringify(error)}`);
+        }
+        expect(typeof response).toStrictEqual('object');
+      }, 30000);
+
+      test(`LLMInterface.sendMessage after inline API key, without API key should send a message and receive a response`, async () => {
         try {
           response = await LLMInterface.sendMessage(
             module,
