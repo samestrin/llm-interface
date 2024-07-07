@@ -6,9 +6,13 @@
 
 ## Introduction
 
-`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **AI21 Studio, AIML API, Anyscale, Anthropic, Bigmodel, Cloudflare AI, Cohere, Corcel, DeepInfra, Deepseek, Fireworks AI, Forefront, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Hyperbee AI, Lamini, LLaMA.cpp, Mistral AI, Monster API, Neets AI, Novita AI, NVIDIA, Octo AI, Ollama, OpenAI, Perplexity, Reka AI, Replicate, Shuttle AI, TheB.AI, Together AI, watsonx.ai, and Writer**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
+`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **AI21 Studio, AiLAYER, AIMLAPI, Anyscale, Anthropic, Microsoft Azure AI, Cloudflare AI, Cohere, Corcel, DeepInfra, DeepSeek, Fireworks AI, Forefront AI, FriendliAI, Google Gemini, GooseAI, Groq, Hugging Face Inference API, HyperBee AI, Lamini, LLaMA.CPP, Mistral AI, Monster API, Neets.ai, Novita AI, NVIDIA AI, OctoAI, Ollama, OpenAI, Perplexity AI, Reka AI, Replicate, Shuttle AI, TheB.ai, Together AI, Voyage AI, Watsonx AI, Writer, and Zhipu AI**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
 
 This goal of `llm-interface` is to provide a single, simple, unified interface for sending messages and receiving responses from different LLM services. This will make it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
+
+<!-- Support List -->
+![AI21 Studio](https://samestrin.github.io/media/llm-interface/icons/ai21.png) ![AIMLAPI](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png) ![Anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png) ![Anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png) ![Cloudflare AI](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png) ![Cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png) ![Corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png) ![DeepInfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png) ![DeepSeek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png) ![Forefront AI](https://samestrin.github.io/media/llm-interface/icons/forefront.png) ![GooseAI](https://samestrin.github.io/media/llm-interface/icons/gooseai.png) ![Lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png) ![Mistral AI](https://samestrin.github.io/media/llm-interface/icons/mistralai.png) ![Monster API](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png) ![Neets.ai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png) ![Perplexity AI](https://samestrin.github.io/media/llm-interface/icons/perplexity.png) ![Reka AI](https://samestrin.github.io/media/llm-interface/icons/rekaai.png) ![Replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png) ![Shuttle AI](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png) ![Together AI](https://samestrin.github.io/media/llm-interface/icons/togetherai.png) ![Writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)
+<!-- Support List End -->
 
 ## Features
 
@@ -28,7 +32,8 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 - **New LLM Providers**: Anyscale, Bigmodel, Corcel, Deepseek, Hyperbee AI, Lamini, Neets AI, Novita AI, NVIDIA, Shuttle AI, TheB.AI, and Together AI.
 - **Caching**: Supports multiple caches: `simple-cache`, `flat-cache`, and `cache-manager`. _`flat-cache` is now an optional package._
 - **Logging**: Improved logging with the `loglevel`.
-- **More Examples**: [LangChain integration](/examples/langchain), [Mixture-of-Authorities (MoA)](/examples/moa), [caching](/examples/caching), [interfaceOptions](/examples/interfaceOptions), and [more](/examples/misc).
+- **More Examples**: [LangChain integrations](/examples/langchain), [Mixture-of-Authorities (MoA)](/examples/moa), [caching](/examples/caching), [interfaceOptions](/examples/interface-options), and [more](/examples/misc).
+- **Removed Dependency**: `@anthropic-ai/sdk` is no longer required.
 
 **v2.0.9**
 
@@ -45,7 +50,6 @@ Octo AI, Ollama, OpenAI, Perplexity, Together AI, and Writer.
 The project relies on several npm packages and APIs. Here are the primary dependencies:
 
 - `axios`: For making HTTP requests (used for various HTTP AI APIs).
-- `@anthropic-ai/sdk`: SDK for interacting with the Anthropic API.
 - `@google/generative-ai`: SDK for interacting with the Google Gemini API.
 - `dotenv`: For managing environment variables. Used by test cases.
 - `jsonrepair`: Used to repair invalid JSON responses.
@@ -64,6 +68,13 @@ To install the `llm-interface` package, you can use npm:
 ```bash
 npm install llm-interface
 ```
+## Quick Start
+
+- Looking for [API Keys](/docs/api-keys.md)? This document provides helpful links.
+- Detailed [usage](/docs/usage.md) documentation is available here.
+- Various [examples](/examples) are also available to help you get started.
+- A breakdown of [model aliaes](/docs/models.md) aliases is avilable here.
+- If you still need more examples, you may wish to review the [test cases](/test/) for further examples.
 
 ## Usage
 
@@ -121,9 +132,6 @@ try {
   console.error(error);
 }
 ```
-
-Looking for more [examples](/examples)? Looking for [API Keys](/docs/APIKEYS.md)? Additional [usage examples](/docs/USAGE.md) and an [API reference](/docs/API.md) are also available. You may also wish to review the [test cases](/test/) for further examples.
-
 _LLMInterfaceSendMessage and LLMInterfaceStreamMessage are still available and will be available until version 3_
 
 ## Running Tests
@@ -143,7 +151,7 @@ Snapshots:   0 total
 Time:        153.963 s
 ```
 
-_Note: Currently skipping Corcel and NVIDIA test cases due to API issues._
+_Note: Currently skipping NVIDIA test cases due to API issues._
 
 ## Contribute
 
