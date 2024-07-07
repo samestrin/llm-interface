@@ -53,86 +53,224 @@ When `default` or no model is passed, the system will use the default model for 
 
 Aliases can simplify working with multiple LLM providers letting you call different providers with the same model names out of the box. If you are unhappy with the defaults, you can always set your own:
 
-```javascript
+"""javascript
 LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
-```
+"""
 
 ## Default Aliases
 
-### OpenAI
+### AI21 Studio
 
-- `default`: GPT-3.5-turbo (tokens: 16,385)
-- `large`: GPT-4.0 (tokens: 128,000)
-- `small`: Davinci-002 (tokens: 16,384)
+- `default`: jamba-instruct
+- `large`: jamba-instruct
+- `small`: jamba-instruct
 
-### AI21
+### AIML API
 
-- `default`: Jamba-Instruct (tokens: 256,000)
-- `large`: Jamba-Instruct (tokens: 256,000)
-- `small`: Jamba-Instruct (tokens: 256,000)
+- `default`: gpt-3.5-turbo-16k
+- `large`: Qwen1.5-72B-Chat
+- `small`: Qwen1.5-0.5B-Chat
+
+### Anyscale
+
+- `default`: Mixtral-8x22B-Instruct-v0.1
+- `large`: Llama-3-70b-chat-hf
+- `small`: Mistral-7B-Instruct-v0.1
 
 ### Anthropic
 
-- `default`: Claude-3-Opus-20240229 (tokens: 200,000)
-- `large`: Claude-3-Opus-20240229 (tokens: 200,000)
-- `small`: Claude-3-Haiku-20240307 (tokens: 200,000)
+- `default`: claude-3-sonnet-20240229
+- `large`: claude-3-opus-20240229
+- `small`: claude-3-haiku-20240307
+
+### Bigmodel
+
+- `default`: glm-4
+- `large`: glm-4-alltools
+- `small`: glm-4
 
 ### Cloudflare AI
 
-- `default`: Llama-3-8B-Instruct (tokens: 4,096)
-- `large`: Llama-2-13B-Chat-AWQ (tokens: 8,192)
-- `small`: TinyLlama-1.1B-Chat-v1.0 (tokens: 2,048)
+- `default`: @cf/meta/llama-3-8b-instruct
+- `large`: @hf/thebloke/llama-2-13b-chat-awq
+- `small`: @cf/tinyllama/tinyllama-1.1b-chat-v1.0
 
 ### Cohere
 
-- `default`: Command-R (tokens: 128,000)
-- `large`: Command-R-Plus (tokens: 128,000)
-- `small`: Medium (tokens: 2,048)
+- `default`: command-r
+- `large`: command-r-plus
+- `small`: command-light
+
+### Corcel
+
+- `default`: llama-3
+- `large`: gpt-4o
+- `small`: llama-3
+
+### DeepInfra
+
+- `default`: openchat-3.6-8b
+- `large`: Nemotron-4-340B-Instruct
+- `small`: WizardLM-2-7B
+
+### Deepseek
+
+- `default`: deepseek-chat
+- `large`: deepseek-chat
+- `small`: deepseek-chat
 
 ### Fireworks AI
 
-- `default`: Llama-v3-8B-Instruct (tokens: 8,192)
-- `large`: Llama-v3-70B-Instruct (tokens: 8,192)
-- `small`: Phi-3-Mini-128K-Instruct (tokens: 128,000)
+- `default`: llama-v3-8b-instruct
+- `large`: llama-v3-70b-instruct
+- `small`: phi-3-mini-128k-instruct
 
-### Gemini
+### Forefront
 
-- `default`: Gemini-1.5-Flash (tokens: 1,048,576)
-- `large`: Gemini-1.5-Pro (tokens: 1,048,576)
-- `small`: Gemini-Small
+- `default`: Mistral-7B-Instruct-v0.2-chatml
+- `large`: Mistral-7B-Instruct-v0.2-chatml
+- `small`: Mistral-7B-Instruct-v0.2-chatml
+
+### Friendli AI
+
+- `default`: mixtral-8x7b-instruct-v0-1
+- `large`: meta-llama-3-70b-instruct
+- `small`: meta-llama-3-8b-instruct
+
+### Google Gemini
+
+- `default`: gemini-1.5-flash
+- `large`: gemini-1.5-pro
+- `small`: gemini-1.5-flash
 
 ### Goose AI
 
-- `default`: GPT-Neo-20B (tokens: 2,048)
-- `large`: GPT-Neo-20B (tokens: 2,048)
-- `small`: GPT-Neo-125M (tokens: 2,048)
+- `default`: gpt-neo-20b
+- `large`: gpt-neo-20b
+- `small`: gpt-neo-125m
 
 ### Groq
 
-- `default`: Llama3-8B-8192 (tokens: 8,192)
-- `large`: Llama3-70B-8192 (tokens: 8,192)
-- `small`: Gemma-7B-IT (tokens: 8,192)
+- `default`: llama3-8b-8192
+- `large`: llama3-70b-8192
+- `small`: gemma-7b-it
 
 ### Hugging Face
 
-- `default`: Meta-Llama/Meta-Llama-3-8B-Instruct (tokens: 8,192)
-- `large`: Meta-Llama/Meta-Llama-3-8B-Instruct (tokens: 8,192)
-- `small`: Microsoft/Phi-3-Mini-4K-Instruct (tokens: 4,096)
+- `default`: meta-llama/Meta-Llama-3-8B-Instruct
+- `large`: meta-llama/Meta-Llama-3-8B-Instruct
+- `small`: microsoft/Phi-3-mini-4k-instruct
+
+### Hyperbee AI
+
+- `default`: hive
+- `large`: gpt-4o
+- `small`: small-bee-en
+
+### Lamini
+
+- `default`: meta-llama/Meta-Llama-3-8B-Instruct
+- `large`: meta-llama/Meta-Llama-3-8B-Instruct
+- `small`: microsoft/phi-2
+
+### LLaMA.cpp
+
+- `default`: gpt-3.5-turbo
+- `large`: gpt-3.5-turbo
+- `small`: gpt-3.5-turbo
 
 ### Mistral AI
 
-- `default`: Mistral-Large-Latest (tokens: 32,768)
-- `large`: Mistral-Large-Latest (tokens: 32,768)
-- `small`: Mistral-Small (tokens: 32,768)
+- `default`: mistral-large-latest
+- `large`: mistral-large-latest
+- `small`: mistral-small-latest
+
+### Monster API
+
+- `default`: microsoft/Phi-3-mini-4k-instruct
+- `large`: meta-llama/Meta-Llama-3-8B-Instruct
+- `small`: microsoft/Phi-3-mini-4k-instruct
+
+### Neets AI
+
+- `default`: Neets-7B
+- `large`: mistralai/Mixtral-8X7B-Instruct-v0.1
+- `small`: Neets-7B
+
+### Novita AI
+
+- `default`: meta-llama/llama-3-8b-instruct
+- `large`: meta-llama/llama-3-70b-instruct
+- `small`: meta-llama/llama-3-8b-instruct
+
+### NVIDIA
+
+- `default`: nvidia/llama3-chatqa-1.5-8b
+- `large`: nvidia/nemotron-4-340b-instruct
+- `small`: microsoft/phi-3-mini-128k-instruct
+
+### Octo AI
+
+- `default`: mistral-7b-instruct
+- `large`: mixtral-8x22b-instruct
+- `small`: mistral-7b-instruct
+
+### Ollama
+
+- `default`: llama3
+- `large`: llama3
+- `small`: llama3
+
+### OpenAI
+
+- `default`: gpt-3.5-turbo
+- `large`: gpt-4o
+- `small`: gpt-3.5-turbo
 
 ### Perplexity
 
-- `default`: Llama-3-Sonar-Large-32K-Online (tokens: 28,000)
-- `large`: Llama-3-Sonar-Large-32K-Online (tokens: 28,000)
-- `small`: Llama-3-Sonar-Small-32K-Online (tokens: 28,000)
+- `default`: llama-3-sonar-large-32k-online
+- `large`: llama-3-sonar-large-32k-online
+- `small`: llama-3-sonar-small-32k-online
 
 ### Reka AI
 
-- `default`: Reka-Core
-- `large`: Reka-Core
-- `small`: Reka-Edge
+- `default`: reka-core
+- `large`: reka-core
+- `small`: reka-edge
+
+### Replicate
+
+- `default`: mistralai/mistral-7b-instruct-v0.2
+- `large`: meta/meta-llama-3-70b-instruct
+- `small`: mistralai/mistral-7b-instruct-v0.2
+
+### Shuttle AI
+
+- `default`: shuttle-2-turbo
+- `large`: wizardlm-2-70b
+- `small`: gpt-3.5-turbo-0125
+
+### TheB.AI
+
+- `default`: gpt-4-turbo
+- `large`: llama-3-70b-chat
+- `small`: llama-2-7b-chat
+
+### Together AI
+
+- `default`: deepseek-ai/deepseek-llm-67b-chat
+- `large`: NousResearch/Nous-Hermes-2-Mixtral-8x22B-Instruct
+- `small`: Qwen/Qwen1.5-0.5B-Chat
+
+### watsonx.ai
+
+- `default`: meta-llama/llama-2-13b-chat
+- `large`: meta-llama/llama-3-70b-instruct
+- `small`: google/flan-t5-xxl
+
+### Writer
+
+- `default`: palmyra-x-002-32k
+- `large`: palmyra-x-002-32k
+- `small`: palmyra-x-002-32k

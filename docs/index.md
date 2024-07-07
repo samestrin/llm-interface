@@ -41,6 +41,7 @@ Welcome to the documentation for the LLM Interface package. This documentation p
     - [Memory Cache](#memory-cache)
       - [Example Usage](#example-usage-4)
   - [Examples](#examples)
+  - [Jailbreaking](#jailbreaking)
 
 ## Introduction
 
@@ -107,3 +108,9 @@ The [Usage](usage.md) section contains detailed documentation on how to use the 
 Check out [Examples](usage.md#examples) for practical demonstrations of how to use the `llm-interface` package in various scenarios.
 
 For more detailed information, please refer to the respective sections in the documentation.
+
+### Jailbreaking
+
+If you'd like to attempt to [jailbreak](jailbreaking.md#jailbreaking) your AI model you try a version of the message obeject found [here](jailbreaking.md#jailbreaking).
+
+_Thanks to Shuttle AI for the original concept!_

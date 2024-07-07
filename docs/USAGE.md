@@ -189,7 +189,7 @@ The following are supported LLM providers (in alphabetical order):
 - `neetsai` - Neets AI
 - `novitaai` - Novita AI
 - `nvidia` - NVIDIA
-- `octoai` - Octo AI
+- `octoml` - Octo AI
 - `ollama` - Ollama
 - `openai` - OpenAI
 - `perplexity` - Perplexity
