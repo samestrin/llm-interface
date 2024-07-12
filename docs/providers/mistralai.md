@@ -35,7 +35,7 @@ The following model aliases are provided for this provider.
 - `small`: mistral-small-latest
 - `agent`: mistral-large-latest
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: mistral-embed
 - `large`: mistral-embed

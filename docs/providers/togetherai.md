@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: google/gemma-2b
 - `agent`: Qwen/Qwen1.5-14B
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: bert-base-uncased
 - `large`: BAAI/bge-large-en-v1.5

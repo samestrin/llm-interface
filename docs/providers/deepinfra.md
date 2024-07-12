@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: microsoft/WizardLM-2-7B
 - `agent`: Qwen/Qwen2-7B-Instruct
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: BAAI/bge-base-en-v1.5
 - `large`: BAAI/bge-large-en-v1.5

@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: command-light
 - `agent`: command-r-plus
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: embed-english-v3.0
 - `large`: embed-english-v3.0

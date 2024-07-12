@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: microsoft/Phi-3-mini-4k-instruct
 - `agent`: meta-llama/Meta-Llama-3-8B-Instruct
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: sentence-transformers/all-mpnet-base-v2
 - `large`: sentence-transformers/sentence-t5-large

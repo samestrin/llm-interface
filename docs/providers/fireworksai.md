@@ -35,7 +35,7 @@ The following model aliases are provided for this provider.
 - `small`: accounts/fireworks/models/phi-3-mini-128k-instruct
 - `agent`: accounts/fireworks/models/llama-v3-8b-instruct
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: nomic-ai/nomic-embed-text-v1.5
 - `large`: nomic-ai/nomic-embed-text-v1.5

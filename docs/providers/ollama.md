@@ -36,7 +36,7 @@ The following model aliases are provided for this provider.
 - `large`: llama3
 - `small`: llama3
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: all-minilm
 - `large`: all-minilm

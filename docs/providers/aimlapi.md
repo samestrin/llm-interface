@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: Qwen/Qwen1.5-0.5B-Chat
 - `agent`: gpt-4-32k-0613
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: text-embedding-ada-002
 - `large`: text-embedding-3-large

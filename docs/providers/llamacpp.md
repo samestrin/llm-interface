@@ -39,7 +39,7 @@ The following model aliases are provided for this provider.
 - `small`: gpt-3.5-turbo
 - `agent`: openhermes
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: none
 - `large`: none

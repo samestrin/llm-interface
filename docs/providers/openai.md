@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: gpt-3.5-turbo
 - `agent`: gpt-4o
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: text-embedding-ada-002
 - `large`: text-embedding-3-large

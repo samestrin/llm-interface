@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: mistralai/Mistral-7B-Instruct-v0.1
 - `agent`: mistralai/Mixtral-8x22B-Instruct-v0.1
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: thenlper/gte-large
 - `large`: thenlper/gte-large

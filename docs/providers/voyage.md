@@ -33,7 +33,7 @@ main();
 The following model aliases are provided for this provider. 
 
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: voyage-2
 - `large`: voyage-large-2

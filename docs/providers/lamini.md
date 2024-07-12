@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: microsoft/phi-2
 - `agent`: meta-llama/Meta-Llama-3-8B-Instruct
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: sentence-transformers/all-MiniLM-L6-v2
 - `large`: sentence-transformers/all-MiniLM-L6-v2

@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: google/flan-t5-xxl
 - `agent`: meta-llama/llama-3-70b-instruct
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: ibm/slate-125m-english-rtrvr
 - `large`: ibm/slate-125m-english-rtrvr

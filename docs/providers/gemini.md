@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: gemini-1.5-flash
 - `agent`: gemini-1.5-pro
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: text-embedding-004
 - `large`: text-embedding-004

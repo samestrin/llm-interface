@@ -37,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: @cf/tinyllama/tinyllama-1.1b-chat-v1.0
 - `agent`: @cf/meta/llama-3-8b-instruct
 
-### Embeddings
+### Embeddings Model Aliases
 
 - `default`: @cf/baai/bge-base-en-v1.5
 - `large`: @cf/baai/bge-large-en-v1.5
