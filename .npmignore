@@ -136,6 +136,7 @@ dist
 cache/
 build/
 .eslint*
+eslint*
 jest*
 babel.config.js
 .prettier*
