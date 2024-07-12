@@ -1,0 +1,1 @@
+{"url":"https://text.octoai.run/v1/chat/completions","model":{"default":"mistral-7b-instruct","large":"mixtral-8x22b-instruct","small":"mistral-7b-instruct","agent":"mixtral-8x22b-instruct"},"createMessageObject":"getSimpleMessageObject","stream":false,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

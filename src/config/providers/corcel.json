@@ -1,0 +1,1 @@
+{"url":"https://api.corcel.io/v1/text/cortext/chat","model":{"default":"gpt-4-turbo-2024-04-09","large":"gpt-4o","small":"cortext-lite","agent":"gemini-pro"},"createMessageObject":"getSimpleMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

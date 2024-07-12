@@ -1,0 +1,1 @@
+{"url":"https://api.replicate.com/v1/models","model":{"default":"mistralai/mistral-7b-instruct-v0.2","large":"meta/meta-llama-3-70b-instruct","small":"mistralai/mistral-7b-instruct-v0.2","agent":"meta/meta-llama-3-70b-instruct"},"createMessageObject":"getMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

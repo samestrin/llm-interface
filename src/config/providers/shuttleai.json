@@ -1,0 +1,1 @@
+{"url":"https://api.shuttleai.app/v1/chat/completions","model":{"default":"shuttle-2-turbo","large":"shuttle-2-turbo","small":"shuttle-2-turbo","agent":"shuttle-2-turbo"},"createMessageObject":"getSimpleMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}
