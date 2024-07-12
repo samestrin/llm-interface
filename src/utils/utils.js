@@ -164,10 +164,27 @@ function createCacheKey(key = {}) {
     .digest('hex');
 }
 
+
+/* should be moved */
+
+/**
+ * Writes the given text to the standard output without a newline.
+ *
+ * @param {string} text - The text to write to the standard output.
+ */
 function prettyText(text) {
   process.stdout.write(text);
 }
 
+/**
+ * Displays a pretty-formatted header with optional description, prompt, interface name, and embeddings.
+ *
+ * @param {string} title - The title to display.
+ * @param {string} [description=false] - The optional description to display.
+ * @param {string} [prompt=false] - The optional prompt to display.
+ * @param {string} [interfaceName=false] - The optional interface name to display.
+ * @param {boolean} [embeddings=false] - Indicates whether to display embeddings.
+ */
 function prettyHeader(
   title,
   description = false,
@@ -184,10 +201,9 @@ function prettyHeader(
 
   if (interfaceName) {
     process.stdout.write(
-      `\n${YELLOW}Using ${interfaceName} and ${
-        !embeddings
-          ? getInterfaceConfigValue(interfaceName, 'model.default')
-          : getInterfaceConfigValue(interfaceName, 'embeddings.default')
+      `\n${YELLOW}Using ${interfaceName} and ${!embeddings
+        ? getInterfaceConfigValue(interfaceName, 'model.default')
+        : getInterfaceConfigValue(interfaceName, 'embeddings.default')
       }${RESET}`,
     );
   }
@@ -204,6 +220,12 @@ function prettyHeader(
   }
 }
 
+/**
+ * Displays a pretty-formatted result with a title and response.
+ *
+ * @param {string|Array} response - The response to display. Can be a string or an array.
+ * @param {string} [title='Response'] - The title to display for the response.
+ */
 function prettyResult(response, title = 'Response') {
   title = title.trim();
   process.stdout.write(`\n${GREEN}${title}:${RESET}\n`);
@@ -214,10 +236,31 @@ function prettyResult(response, title = 'Response') {
   }
 }
 
+
+/**
+ * Checks if the given variable is an empty plain object.
+ *
+ * @param {object} obj - The object to check.
+ * @returns {boolean} - Returns true if the object is empty, false otherwise.
+ *
+ * @example
+ * const emptyObj = {};
+ * const nonEmptyObj = { key: 'value' };
+ *
+ * console.log(isEmptyObject(emptyObj)); // true
+ * console.log(isEmptyObject(nonEmptyObj)); // false
+ */
+
+function isEmptyObject(obj) {
+  return obj !== null && obj !== undefined && Object.keys(obj).length === 0 && obj.constructor === Object;
+}
+
+
 module.exports = {
   getMessageObject,
   getSimpleMessageObject,
   parseJSON,
+  isEmptyObject,
   delay,
   createCacheKey,
   prettyHeader,
