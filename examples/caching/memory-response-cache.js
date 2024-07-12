@@ -1,55 +1,74 @@
 /**
  * @file examples/caching/memory-response-cache.js
- * @description Example showing the response memory cache. This will store the sendMessage response in a singleton, which it will speed up any duplicate sendMessage in the same session.
+ * @description This example demonstrates the usage of the memory cache for caching API requests.
+ *
+ * This example show LLMInterface configured with a memory cache. Subsequent calls to LLMInterface.sendMessage()
+ * within the same session will utilize the cached responses, significantly improving performance by avoiding redundant requests.
+ *
+ * To run this example, you first need to install the required module by executing:
+ *
+ *    npm install dotenv
+ *
+ * Note: This script will run faster on subsequent executions within the same session due to the caching mechanism.
  */
 
 const { LLMInterface } = require('../../src/index.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
+const { prettyHeader, prettyResult } = require('../../src/utils/utils.js');
 
 require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
-const interface = 'groq';
+const interfaceName = 'groq';
 const apiKey = process.env.GROQ_API_KEY;
+
+// Example description
+const description = `This example demonstrates the usage of a memory response cache for caching API responses.
+
+To run this example, you first need to install the required modules by executing:
+
+  npm install dotenv
+
+In this example, the "LLMInterface" is configured with a memory cache. Subsequent calls to LLMInterface.sendMessage() within the same session will utilize the cached responses, significantly improving performance by avoiding redundant requests.
+
+Note: This script will run faster on subsequent executions within the same session due to the caching mechanism.`;
 
 /**
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  let prompt = `${simplePrompt}`;
+  prettyHeader(
+    'Memory Response Cache Example',
+    description,
+    simplePrompt,
+    interfaceName,
+  );
 
-  console.log('Memory Response Cache:');
-  console.log();
-  console.log('Prompt:');
-  console.log(`> ${prompt.replaceAll('\n', '\n> ')}`);
-  console.log();
-
-  LLMInterface.setApiKey(interface, apiKey);
+  LLMInterface.setApiKey(interfaceName, apiKey);
   LLMInterface.configureCache({ cache: 'memory-cache' });
   let response = null;
 
   try {
-    console.time('First Run');
-    response = await LLMInterface.sendMessage(interface, prompt, {
+    console.time('Timer');
+    response = await LLMInterface.sendMessage(interfaceName, simplePrompt, {
       max_tokens: 100,
     });
 
-    console.log('Response:');
-    console.log(response);
-    console.log();
-    console.timeEnd('First Run');
+    prettyResult(response.results);
 
-    console.time('Second Run');
-    response = await LLMInterface.sendMessage(interface, prompt, {
+    console.timeEnd('Timer');
+
+    console.time('Timer');
+    response = await LLMInterface.sendMessage(interfaceName, simplePrompt, {
       max_tokens: 100,
     });
 
-    console.log('Response:');
-    console.log(response);
+    prettyResult(response.results);
+
+    console.timeEnd('Timer');
     console.log();
-    console.timeEnd('Second Run');
   } catch (error) {
-    console.error('Error processing LLMInterface.sendMessage:', error);
+    console.error(error);
   }
 }
 

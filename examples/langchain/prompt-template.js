@@ -1,13 +1,24 @@
 /**
- * @file examples/langchain/simple-langchain.js
- * @description Example showing various custom models compatible with langchain. To run this example, you will first need to run "npm install langchain dotenv".
- * This example uses a PromptTemplate to format the response.
+ * @file examples/langchain/prompt-template.js
+ * @description This example demonstrates the use of various custom models compatible with LangChain. Prompts are
+ * created using the "PromptTemplate" class from the @langchain/core package.
+ *
+ * To run this example, you need to install the required modules by executing:
+ * "npm install langchain dotenv".
+ *
+ * This example uses a promptTemplate to format the response.
  */
 
+const { prettyHeader, prettyResult } = require('../../src/utils/utils.js');
 require('dotenv').config({ path: '../../.env' });
 
 // Create a structure with the model names and their respective import paths
 const models = [
+  {
+    name: 'AI21Model',
+    interfaceName: 'ai21',
+    importPath: './models/ai21Model',
+  },
   {
     name: 'AIMLAPIModel',
     interfaceName: 'aimlapi',
@@ -35,6 +46,9 @@ const models = [
   },
 ];
 
+// Example description
+const description = `This example demonstrates the use of various custom models compatible with LangChain. To run this example, you need to install the required modules by executing: "npm install langchain dotenv". This example uses a promptTemplate to format the response.`;
+
 // Create an array with the names as keys and the API keys as values using dotenv
 const apiKeys = Object.fromEntries(
   models.map((model) => [
@@ -49,6 +63,7 @@ const apiKeys = Object.fromEntries(
 async function exampleUsage() {
   const { PromptTemplate } = await import('@langchain/core/prompts');
 
+  prettyHeader('Auto Retry Failed Requests', description);
   const template = 'What is the capital of {country}?';
   const promptTemplate = new PromptTemplate({
     template,
@@ -59,7 +74,7 @@ async function exampleUsage() {
 
   console.log('LangChain.js (Requires "npm install langchain dotenv"):');
   console.log();
-  console.log('Prompt:');
+  console.log('prompt:');
   console.log(`> ${question.replaceAll('\n', '\n> ')}`);
   console.log();
 

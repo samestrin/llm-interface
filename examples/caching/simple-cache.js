@@ -1,48 +1,72 @@
 /**
  * @file examples/caching/simple-cache.js
- * @description Example showing SimpleCache usage. By default SimpleCache is available and does not have any requirements. To use it, just specify an
- * interfaceOptions.cacheTimeoutSeconds value. This script should be faster on subsequent runs after the first.
+ * @description This example demonstrates the usage of the SimpleCache for caching API responses.
+ *
+ * To run this example, you first need to install the required module by executing:
+ *
+ *    npm install dotenv
+ *
+ * SimpleCache is the default cache engine and does not require any additional setup. To use it, simply specify an
+ * interfaceOptions.cacheTimeoutSeconds value. Subsequent runs of this script will be faster after the initial execution due to the caching mechanism.
  */
 
 const { LLMInterface } = require('../../src/index.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
+const { prettyHeader, prettyResult } = require('../../src/utils/utils.js');
 
 require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
-const interface = 'groq';
+const interfaceName = 'groq';
 const apiKey = process.env.GROQ_API_KEY;
+const args = process.argv;
+
+const description = `This example demonstrates the usage of the SimpleCache for caching API responses. SimpleCache is the default cache engine and does not require any additional setup. To use it, simply specify an interfaceOptions.cacheTimeoutSeconds value. Subsequent runs of this script will be faster after the initial execution due to the caching mechanism.
+
+To run this example, you first need to install the required modules by executing:
+
+  npm install dotenv
+
+To flush the cache you can run this example with the "--flush-cache" argument.`;
 
 /**
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  let prompt = `${simplePrompt}`;
+  prettyHeader(
+    'Simple Cache (Default Cache Engine) Example',
+    description,
+    simplePrompt,
+    interfaceName,
+  );
 
-  console.log('Simple Cache (Default Cache Engine):');
-  console.log();
-  console.log('Prompt:');
-  console.log(`> ${prompt.replaceAll('\n', '\n> ')}`);
-  console.log();
+  LLMInterface.setApiKey(interfaceName, apiKey);
+  LLMInterface.configureCache();
 
-  LLMInterface.setApiKey(interface, apiKey);
-  console.time('Timer');
+  const args = process.argv;
+
   try {
+    console.time('Timer');
     const response = await LLMInterface.sendMessage(
-      interface,
-      prompt,
+      interfaceName,
+      simplePrompt,
       {
         max_tokens: 100,
       },
       { cacheTimeoutSeconds: 86400 },
     );
 
-    console.log('Response:');
-    console.log(response);
-    console.log();
+    prettyResult(response.results);
+
     console.timeEnd('Timer');
+    console.log();
   } catch (error) {
-    console.error('Error processing LLMInterface.sendMessage:', error);
+    console.error(error);
+  }
+
+  if (args.includes('--flush-cache')) {
+    console.log('Cache flushed.');
+    LLMInterface.flushCache();
   }
 }
 

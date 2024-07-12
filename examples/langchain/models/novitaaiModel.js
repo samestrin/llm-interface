@@ -3,20 +3,20 @@ const { LLMInterface } = require('../../../src/index.js');
 class NovitaAI {
   constructor(apiKey) {
     this.apiKey = apiKey;
-    this.interface = 'novataai';
+    this.interfaceName = 'novitaai';
     this.outputParser = null; // Initialize outputParser as null
   }
 
   /**
    * Generate text using the Hugging Face model.
-   * @param {object} inputs - The input object containing the prompt.
+   * @param {object} inputs - The input object containing the simplePrompt.
    * @param {object} options - Options for text generation, such as max_tokens.
    * @returns {string} The generated text.
    */
-  async call(prompt, options = { max_tokens: 1024, model: 'default' }) {
+  async call(simplePrompt, options = { max_tokens: 1024, model: 'default' }) {
     const response = await LLMInterface.sendMessage(
-      [this.interface, this.apiKey],
-      prompt,
+      [this.interfaceName, this.apiKey],
+      simplePrompt,
       options,
     );
 
@@ -43,13 +43,13 @@ class NovitaAI {
 
   /**
    * Invoke method required by langchain.
-   * @param {object} inputs - The input object containing the prompt.
+   * @param {object} inputs - The input object containing the simplePrompt.
    * @param {object} runManager - An optional run manager object.
    * @returns {string} The generated text.
    */
   async invoke(inputs, runManager) {
-    const prompt = inputs.value;
-    return this.call(prompt);
+    const simplePrompt = inputs.value;
+    return this.call(simplePrompt);
   }
 
   /**
@@ -57,7 +57,10 @@ class NovitaAI {
    * @returns {string} The model type string.
    */
   _modelType() {
-    return LLMInterface.getModelConfigValue(this.interface, 'model.default');
+    return LLMInterface.getModelConfigValue(
+      this.interfaceName,
+      'model.default',
+    );
   }
 }
 

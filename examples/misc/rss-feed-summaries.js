@@ -1,37 +1,88 @@
 /**
  * @file examples/misc/rss-feed-summaries.js
- * @description Example showing automatic summarization generation. This example uses "xml2js" to process an RSS feed that contains full length articles. To run this example,
- * you will first need to run "npm install xml2js".
+ * @description This example demonstrates automatic summarization generation using an RSS feed containing full-length articles. The example uses the "xml2js" module to process the RSS feed.
+ *
+ * To run this example, you need to install the required module by executing:
+ *
+ *    npm install xml2js dotenv
  */
 
 const axios = require('axios');
 const xml2js = require('xml2js');
 const { LLMInterface } = require('../../src/index.js');
-
+const {
+  prettyHeader,
+  prettyText,
+  YELLOW,
+  GREEN,
+  RESET,
+} = require('../../src/utils/utils.js');
 require('dotenv').config({ path: '../../.env' });
 
-const rssFeed = 'https://feeds.arstechnica.com/arstechnica/technology-lab';
-const interface = 'groq';
+// Setup your key and interface
+const interfaceName = 'groq';
 const apiKey = process.env.GROQ_API_KEY;
 
-LLMInterface.setApiKey(interface, apiKey);
+// RSS URL
+const rssFeed = 'https://feeds.arstechnica.com/arstechnica/technology-lab';
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+// Example description
+const description = `This example demonstrates automatic summarization generation using an RSS feed containing full-length articles. The example uses the "xml2js" module to process the RSS feed (artificially limited to 3 items). 
+
+To run this example, you need to install the required module by executing: 
+
+  npm install xml2js dotenv
+
+The RSS feed used in this example is: ${YELLOW}${rssFeed}${RESET}`;
+
+LLMInterface.setApiKey(interfaceName, apiKey);
+
+/**
+ * Fetches RSS feed data from the given URL.
+ * @param {string} url - The URL of the RSS feed.
+ * @returns {Promise<string>} - A promise that resolves to the RSS feed data as a string.
+ * @throws {Error} - Throws an error if the request fails.
+ */
+async function fetchRssFeed(url) {
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-const fetchRssFeed = async (url) => {
-  const response = await axios.get(url);
-  return response.data;
-};
+/**
+ * Parses the given RSS feed XML data.
+ * @param {string} xml - The RSS feed XML data as a string.
+ * @returns {Promise<object>} - A promise that resolves to the parsed RSS feed data.
+ * @throws {Error} - Throws an error if parsing fails.
+ */
+async function parseRssFeed(xml) {
+  try {
+    const parser = new xml2js.Parser();
+    const result = await parser.parseStringPromise(xml);
+    return result.rss.channel[0];
+  } catch (error) {
+    console.error(error);
+  }
+}
+/**
+ * Prints a line of characters to the console.
+ * @param {string} char - The character to use for the line.
+ * @param {number} length - The length of the line. Defaults to the width of the console.
+ */
+function printLine(char = '-', length = process.stdout.columns) {
+  console.log(char.repeat(length));
+}
 
-const parseRssFeed = async (xml) => {
-  const parser = new xml2js.Parser();
-  const result = await parser.parseStringPromise(xml);
-  return result.rss.channel[0].item;
-};
-
-const summarizeContent = async (content) => {
+/**
+ * Summarizes the given content using a language model interface.
+ * @param {string} content - The content to summarize.
+ * @returns {Promise<string>} - A promise that resolves to the summary of the content.
+ * @throws {Error} - Throws an error if the summarization process fails.
+ */
+async function summarizeContent(content) {
   const prompt = `Carefully review the following article:
 
 ${content}
@@ -39,36 +90,37 @@ ${content}
 Create a short, factual summary based on the information provided in the article. Do not supplement it with any of your existing knowledge. Return just the summary, do not include any text like "Here's a summary:".
 `;
   const summary = await LLMInterface.sendMessage(
-    interface,
+    interfaceName,
     prompt,
     {
       max_tokens: 1024,
     },
     { cacheTimeoutSeconds: 86400 },
   );
-  sleep(500);
   return summary;
-};
+}
 
 /**
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  const description = `This example processes the RSS feed: ${rssFeed}. This feed contains full length articles, the following are LLM generated summaries.`;
-
-  console.log('RSS Feed Summarization (Requires "npm install xml2js"):');
-  console.log();
-  console.log('Description:');
-  console.log(`> ${description.replaceAll('\n', '\n> ')}`);
-  console.log();
-  console.log();
-  console.log('---------------------------------------');
-  console.log();
+  prettyHeader('RSS Feed Summarization', description, false, interfaceName);
+  console.log('\n');
+  printLine();
+  console.log('');
 
   try {
     const rssData = await fetchRssFeed(rssFeed);
-    let items = await parseRssFeed(rssData);
-    items = items.slice(0, 10);
+
+    let channel = await parseRssFeed(rssData);
+
+    prettyText(
+      `${GREEN}${channel.title[0]}: ${channel.description[0]}${RESET}\n\n`,
+    );
+
+    let items = channel.item;
+
+    items = items.slice(0, 3); // The items have been artifically reduced
     for (const item of items) {
       const title = item.title[0];
       const link = item.link[0];
@@ -76,15 +128,24 @@ async function exampleUsage() {
         ? item['content:encoded'][0]
         : item.description[0];
 
+      const pubDate = item.pubDate[0];
+
+      console.time('Timer');
       const summary = await summarizeContent(content);
 
-      console.log(`Title: ${title}`);
-      console.log(`Link: ${link}`);
-      console.log(`\n\n${summary.results}\n`);
-      console.log(
-        `[Results: Original ${content.length} chars vs. Summary ${summary.results.length} chars]\n`,
+      const originalLength = content.length;
+      const summaryLength = summary.results.length;
+      const reduction =
+        ((originalLength - summaryLength) / originalLength) * 100;
+
+      prettyText(
+        `${GREEN}${title} (${reduction.toFixed(2)}% Reduction)${RESET}\n`,
       );
-      console.log('---------------------------------------');
+      prettyText(`${YELLOW}${link}${RESET}\n`);
+
+      console.log(`${pubDate}\n${summary.results}\n`);
+
+      console.timeEnd('Timer');
       console.log();
     }
   } catch (error) {

@@ -1,12 +1,12 @@
-/*
- * @file examples/interfaceOptions/json-repair.js
- * @description Example showing interfaceOptions usage to control the JSON repair function. When enabled any invalid JSON responses will attempt to be repaired.
+/**
+ * @file examples/json/native-json-output.js
+ * @description This example demonstrates JSON repair. An invalid JSON response is forced by specifying JSON output requirements through the simplePrompt and requesting a larger result set than can be returned based on token size. The invalid response can be repaired by setting interfaceOptions.attemptJsonRepair to true.
  *
  * Please review /examples/json/json-repair.js for a complete example. The following comment shows a simplified example.
  *
  *    const response = await LLMInterface.sendMessage(
- *      interface,
- *      prompt,
+ *      interfaceName
+ *      simplePrompt,
  *      {
  *        max_tokens: 100,
  *      },

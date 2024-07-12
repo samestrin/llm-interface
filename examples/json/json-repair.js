@@ -1,35 +1,42 @@
 /**
  * @file examples/json/native-json-output.js
- * @description Example showing JSON repair. In this example, an invalid JSON response is forced. This is accomplished by specifying JSON output requirements through the prompt, and requesting a
- * larger result set then can be returned based on token size. The invalid response can be repaired by setting interfaceOptions.attemptJsonRepair to true.
+ * @description This example demonstrates JSON repair. An invalid JSON response is forced by specifying JSON output requirements through the prompt and requesting a larger result set than can be returned based on token size. The invalid response can be repaired by setting interfaceOptions.attemptJsonRepair to true.
+ *
+ * To run this example, you first need to install the required module by executing:
+ *
+ *    npm install dotenv
  */
 
 const { LLMInterface } = require('../../src/index.js');
-const { simplePrompt } = require('../../src/utils/defaults.js');
+const { simpleprompt } = require('../../src/utils/defaults.js');
+const { prettyHeader, prettyResult } = require('../../src/utils/utils.js');
 
 require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
-const interface = 'groq';
+const interfaceName = 'groq';
 const apiKey = process.env.GROQ_API_KEY;
+
+// Example description
+const description = `This example demonstrates JSON repair. An invalid JSON response is forced by specifying JSON output requirements through the prompt and requesting a larger result set than can be returned based on token size. The invalid response can be repaired by setting interfaceOptions.attemptJsonRepair to true.
+
+To run this example, you first need to install the required modules by executing:
+
+  npm install dotenv`;
 
 /**
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  let prompt = `${simplePrompt} Return 5 results.\n\nProvide the response as a JSON object.\n\nFollow this output format, only responding with the JSON object and nothing else:\n\n{title, reason}`;
+  let prompt = `${simpleprompt} Return 5 results.\n\nProvide the response as a JSON object.\n\nFollow this output format, only responding with the JSON object and nothing else:\n\n{title, reason}`;
+  prettyHeader('JSON Repair Example', description, prompt, interfaceName);
 
-  console.log('JSON Repair:');
-  console.log();
-  console.log('Prompt:');
-  console.log(`> ${prompt.replaceAll('\n', '\n> ')}`);
-  console.log();
-
-  LLMInterface.setApiKey(interface, apiKey);
+  LLMInterface.setApiKey(interfaceName, apiKey);
 
   try {
+    console.time('Timer');
     const response = await LLMInterface.sendMessage(
-      interface,
+      interfaceName,
       prompt,
       {
         max_tokens: 100,
@@ -37,8 +44,9 @@ async function exampleUsage() {
       { attemptJsonRepair: true },
     );
 
-    console.log('Repaired JSON Result:');
-    console.log(response.results);
+    prettyResult(response.results);
+    console.log();
+    console.timeEnd('Timer');
     console.log();
   } catch (error) {
     console.error('Error processing LLMInterface.sendMessage:', error);

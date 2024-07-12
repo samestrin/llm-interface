@@ -3,25 +3,25 @@ const { LLMInterface } = require('../../../src/index.js');
 class HuggingFaceModel {
   constructor(apiKey, cache = false) {
     this.apiKey = apiKey;
-    this.interface = 'huggingface';
+    this.interfaceName = 'huggingface';
     this.outputParser = null; // Initialize outputParser as null
+    this.interfaceOptions = { retryAttempts: 3 };
+
     if (cache) {
-      this.interfaceOptions = { cacheTimeoutSeconds: this.cache };
-    } else {
-      this.interfaceOptions = {};
+      this.interfaceOptions.cacheTimeoutSeconds = this.cache;
     }
   }
 
   /**
    * Generate text using the Hugging Face model.
-   * @param {object} inputs - The input object containing the prompt.
+   * @param {object} inputs - The input object containing the simplePrompt.
    * @param {object} options - Options for text generation, such as max_tokens.
    * @returns {string} The generated text.
    */
-  async call(prompt, options = { max_tokens: 1024, model: 'default' }) {
+  async call(simplePrompt, options = { max_tokens: 1024, model: 'default' }) {
     const response = await LLMInterface.sendMessage(
-      [this.interface, this.apiKey],
-      prompt,
+      [this.interfaceName, this.apiKey],
+      simplePrompt,
       options,
       this.interfaceOptions,
     );
@@ -48,7 +48,7 @@ class HuggingFaceModel {
     const responses = await Promise.all(
       texts.map(async (text) => {
         const response = await LLMInterface.embeddings(
-          [this.interface, this.apiKey],
+          [this.interfaceName, this.apiKey],
           text,
           options,
           this.interfaceOptions,
@@ -69,7 +69,7 @@ class HuggingFaceModel {
    */
   async embedQuery(query, options = {}) {
     const response = await LLMInterface.embeddings(
-      [this.interface, this.apiKey],
+      [this.interfaceName, this.apiKey],
       query,
       options,
       this.interfaceOptions,
@@ -90,13 +90,13 @@ class HuggingFaceModel {
 
   /**
    * Invoke method required by langchain.
-   * @param {object} inputs - The input object containing the prompt.
+   * @param {object} inputs - The input object containing the simplePrompt.
    * @param {object} runManager - An optional run manager object.
    * @returns {string} The generated text.
    */
   async invoke(inputs, runManager) {
-    const prompt = inputs.value;
-    return this.call(prompt);
+    const simplePrompt = inputs.value;
+    return this.call(simplePrompt);
   }
 
   /**
@@ -104,7 +104,10 @@ class HuggingFaceModel {
    * @returns {string} The model type string.
    */
   _modelType() {
-    return LLMInterface.getModelConfigValue(this.interface, 'model.default');
+    return LLMInterface.getInterfaceConfigValue(
+      this.interfaceName,
+      'model.default',
+    );
   }
 }
 

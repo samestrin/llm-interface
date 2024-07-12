@@ -1,37 +1,47 @@
 /**
  * @file examples/interfaceOptions/include-original-response.js
- * @description Example showing interfaceOptions usage to control the final output response. By default, llm-interface does not include the entire response, instead it normalizes the responses back to
- * response.results. If you enable includeOriginalResponse, response.originalResponse will contain the entire LLM provider response in its original format.
+ * @description This example demonstrates the usage of interfaceOptions to control the final output response. By default, LLMInterface does not include the entire response, instead it normalizes the responses back to response.results. If you enable includeOriginalResponse, response.originalResponse will contain the entire LLM provider response in its original format.
+ *
+ * To run this example, you first need to install the required module by executing:
+ *
+ *    npm install dotenv
  */
 
 const { LLMInterface } = require('../../src/index.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
+const { prettyHeader, prettyResult } = require('../../src/utils/utils.js');
 
 require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
-const interface = 'groq';
+const interfaceName = 'groq';
 const apiKey = process.env.GROQ_API_KEY;
+
+// Example description
+const description = `This example demonstrates the usage of interfaceOptions to control the final output response. By default, LLMInterface does not include the entire response, instead it normalizes the responses back to response.results. If you enable includeOriginalResponse, response.originalResponse will contain the entire LLM provider response in its original format.
+
+To run this example, you first need to install the required modules by executing:
+
+  npm install dotenv`;
 
 /**
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  let prompt = `${simplePrompt}`;
+  prettyHeader(
+    'Auto Retry Failed Requests Example',
+    description,
+    simplePrompt,
+    interfaceName,
+  );
 
-  console.log('Include Original Response:');
-  console.log();
-  console.log('Prompt:');
-  console.log(`> ${prompt.replaceAll('\n', '\n> ')}`);
-  console.log();
+  LLMInterface.setApiKey(interfaceName, apiKey);
 
-  LLMInterface.setApiKey(interface, apiKey);
-
-  console.time('Timer');
   try {
+    console.time('Timer');
     const response = await LLMInterface.sendMessage(
-      interface,
-      prompt,
+      interfaceName,
+      simplePrompt,
       {
         max_tokens: 100,
       },
@@ -40,10 +50,10 @@ async function exampleUsage() {
       },
     );
 
-    console.log('Response:');
-    console.log(response);
+    prettyResult(response.results);
     console.log();
     console.timeEnd('Timer');
+    console.log();
   } catch (error) {
     console.error('Error processing LLMInterface.sendMessage:', error);
   }

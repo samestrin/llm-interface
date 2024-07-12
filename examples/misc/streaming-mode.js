@@ -1,16 +1,32 @@
 /**
  * @file examples/misc/streaming-mode.js
- * @description Example showing the new beta streaming functionality.
+ * @description This example demonstrates the new beta streaming functionality with the "groq" interface.
+ *
+ * To run this example, you first need to install the required modules by executing:
+ *
+ *    npm install dotenv
+ *
+ * This script shows how to process a stream and concatenate the data.choices[0].delta.content into a single string using the processStream function.
  */
 
 const { Readable } = require('stream');
 const { simplePrompt, options } = require('../../src/utils/defaults.js');
 const { LLMInterface } = require('../../src/index.js');
+const { prettyHeader } = require('../../src/utils/utils.js');
 require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
-const interface = 'groq';
+const interfaceName = 'groq';
 const apiKey = process.env.GROQ_API_KEY;
+
+// Example description
+const description = `This example demonstrates the new beta streaming functionality with the "groq" interface. Note that streaming format can vary between providers, so it is important to check the provider documentation.
+
+To run this example, you first need to install the required modules by executing:
+
+  npm install dotenv
+
+This script shows how to process a stream and concatenate the data.choices[0].delta.content into a single string using the processStream function.`;
 
 /**
  * Processes a stream and concatenates data.choices[0].content into a string.
@@ -67,13 +83,13 @@ async function exampleUsage() {
   console.log('Streaming Mode (Groq):');
   console.log();
 
-  LLMInterface.setApiKey(interface, apiKey);
+  LLMInterface.setApiKey(interfaceName, apiKey);
 
   try {
     console.log('Process Stream');
     console.log();
 
-    const stream = await LLMInterface.sendMessage(interface, simplePrompt, {
+    const stream = await LLMInterface.sendMessage(interfaceName, simplePrompt, {
       stream: true,
       ...options,
     });
@@ -82,8 +98,8 @@ async function exampleUsage() {
     or
 
     const stream = await LLMInterface.streamMessage(
-      interface,
-      simplePrompt,
+      interfaceName
+      simpleprompt,
       options,
     );
 
