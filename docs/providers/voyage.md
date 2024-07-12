@@ -47,7 +47,7 @@ The following model aliases are provided for this provider.
 
 ## Getting an API Key
 
-Free Tier Available (Rate Limited): This service is free with rate limits of 3 requests per minute and 10,000 tokens per month. Upgrade to remove limits. 50 million free tokens included.
+**Free Tier Available (Rate Limited)**: This service is free with rate limits of 3 requests per minute and 10,000 tokens per month. Upgrade to remove limits. 50 million free tokens included.
 
 To get an API key, first create a Voyage AI account, then visit the link below.
 
