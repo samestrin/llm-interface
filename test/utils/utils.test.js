@@ -10,7 +10,7 @@ const {
 } = require('../../src/utils/utils.js');
 const {
   getModelByAlias,
-  getEmbeddingModelByAlias,
+  getEmbeddingsModelByAlias,
   getInterfaceConfigValue,
 } = require('../../src/utils/config.js');
 
@@ -90,7 +90,7 @@ describe('Utils', () => {
     });
   });
 
-  describe('getEmbeddingModelByAlias', () => {
+  describe('getEmbeddingsModelByAlias', () => {
     test('should return the model name based on the provided alias', async () => {
       const interfaceName = 'openai';
       let modelAlias = 'default';
@@ -99,13 +99,13 @@ describe('Utils', () => {
       const config = getConfig();
 
       let expectedModelName = config[interfaceName].embeddings['default'];
-      expect(getEmbeddingModelByAlias(interfaceName, modelAlias)).toEqual(
+      expect(getEmbeddingsModelByAlias(interfaceName, modelAlias)).toEqual(
         expectedModelName,
       );
 
       modelAlias = 'embeddings.default';
       expectedModelName = config[interfaceName].embeddings['default'];
-      expect(getEmbeddingModelByAlias(interfaceName, modelAlias)).toEqual(
+      expect(getEmbeddingsModelByAlias(interfaceName, modelAlias)).toEqual(
         expectedModelName,
       );
     });
@@ -114,7 +114,7 @@ describe('Utils', () => {
       const interfaceName = 'openai';
       const modelAlias = 'nonexistent-model';
 
-      expect(getEmbeddingModelByAlias(interfaceName, modelAlias)).toEqual(
+      expect(getEmbeddingsModelByAlias(interfaceName, modelAlias)).toEqual(
         modelAlias,
       );
     });
@@ -123,7 +123,7 @@ describe('Utils', () => {
       const interfaceName = 'nonexistent-interfaceName';
       const modelAlias = 'gpt-3';
 
-      expect(getEmbeddingModelByAlias(interfaceName, modelAlias)).toEqual(
+      expect(getEmbeddingsModelByAlias(interfaceName, modelAlias)).toEqual(
         modelAlias,
       );
     });
