@@ -56,7 +56,7 @@ Welcome to the documentation for the LLM Interface package. This documentation p
 
 ## Introduction
 
-The LLMInterface npm module provides a unified interface for interacting with various large language models (LLMs). This documentation covers setup, configuration, usage, and examples to help you integrate LLMs into your projects efficiently.
+The LLM Interface npm module provides a unified interface for interacting with various large language models (LLMs). This documentation covers setup, configuration, usage, and examples to help you integrate LLMs into your projects efficiently.
 
 ## Installation
 
@@ -66,7 +66,7 @@ To interact with different LLM providers, you will need API keys. Refer to [API 
 
 ## Usage
 
-The [Usage](usage.md) section contains detailed documentation on how to use the LLMInterface npm module. This includes:
+The [Usage](usage.md) section contains detailed documentation on how to use the LLM Interface npm module. This includes:
 
 ### LLMInterface
 
@@ -147,4 +147,4 @@ A [glossary](glossary.md) of terms is available [here](glossary.md).
 
 ## Examples
 
-Check out [Examples](examples.md) for practical demonstrations of how to use the LLMInterface npm module in various scenarios.
+Check out [Examples](examples.md) for practical demonstrations of how to use the LLM Interface npm module in various scenarios.

@@ -363,7 +363,7 @@ _This is a legacy function and will be depreciated._
 
 ## Message Object
 
-The message object is a critical component when interacting with the various LLM APIs through the LLMInterface npm module. It contains the data that will be sent to the LLM for processing and allows for complex conversations. Below is a detailed explanation of the structure of a valid message object."
+The message object is a critical component when interacting with the various LLM APIs through the LLM Interface npm module. It contains the data that will be sent to the LLM for processing and allows for complex conversations. Below is a detailed explanation of the structure of a valid message object."
 
 ### Structure of a Message Object
 
@@ -407,7 +407,7 @@ const options = {
 
 ## Interface Options Object
 
-The `interfaceOptions` is an optional component when interacting with the various LLM APIs through the LLMInterface npm module. It contains interface-specific configuration.
+The `interfaceOptions` is an optional component when interacting with the various LLM APIs through the LLM Interface npm module. It contains interface-specific configuration.
 
 ### Structure of an Interface Options Object
 
@@ -431,11 +431,11 @@ const interfaceOptions = {
 
 ## Caching
 
-Caching is an essential feature that can significantly improve the performance of your application by reducing the number of requests made to the LLM APIs. The LLMInterface npm module supports various caching mechanisms, each with its own use case and configuration options. Below are examples showing how to use different caching strategies.
+Caching is an essential feature that can significantly improve the performance of your application by reducing the number of requests made to the LLM APIs. The LLM Interface npm module supports various caching mechanisms, each with its own use case and configuration options. Below are examples showing how to use different caching strategies.
 
 ### Simple Cache
 
-Simple Cache uses the default cache engine provided by the LLMInterface npm module. It is suitable for basic caching needs without additional dependencies.
+Simple Cache uses the default cache engine provided by the LLM Interface npm module. It is suitable for basic caching needs without additional dependencies.
 
 #### Example Usage
 
