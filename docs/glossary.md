@@ -29,6 +29,7 @@ Example:
 ### Provider
 The company or organization that offers a language model API (e.g., OpenAI, Cohere, Anthropic).
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 ## General
 
 ### API (Application Programming Interface)
