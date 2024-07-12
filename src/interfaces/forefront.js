@@ -6,18 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { forefrontApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { forefrontApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'forefront';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class Forefront extends BaseInterface {
   constructor(apiKey) {
-    super('forefront', apiKey || forefrontApiKey, config['forefront'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    super(interfaceName, apiKey || forefrontApiKey, config[interfaceName].url);
   }
 }
 

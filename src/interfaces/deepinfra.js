@@ -6,18 +6,21 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { deepinfra21ApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { deepinfra21ApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'deepinfra';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class DeepInfra extends BaseInterface {
   constructor(apiKey) {
-    super('deepinfra', apiKey || deepinfra21ApiKey, config['deepinfra'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    super(
+      interfaceName,
+      apiKey || deepinfra21ApiKey,
+      config[interfaceName].url,
+    );
   }
 }
 

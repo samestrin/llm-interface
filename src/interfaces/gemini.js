@@ -1,27 +1,33 @@
 /**
  * @file src/interfaces/gemini.js
  * @class Gemini
- * @description Wrapper class for the Gemini API.
- * @param {string} apiKey - The API key for the Gemini API.
+ * @description Wrapper class for the Google Gemini API, extends BaseInterface.
+ * @param {string} apiKey - The API key for the Google Gemini API.
  */
+
+const BaseInterface = require('./baseInterface');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getMessageObject, parseJSON, delay } = require('../utils/utils.js');
-const { geminiApiKey } = require('../config/config.js');
-const { getConfig } = require('../utils/configManager.js');
-const config = getConfig();
+
+const { getModelByAlias } = require('../utils/config.js');
+const { getMessageObject, parseJSON } = require('../utils/utils.js');
+const { geminiApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { StreamError } = require('../utils/errors.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
 const log = require('loglevel');
 
+const interfaceName = 'gemini';
+
+loadProviderConfig(interfaceName);
+const config = getConfig();
+
 // Gemini class for interacting with the Gemini API
-class Gemini {
+class Gemini extends BaseInterface {
   /**
    * Constructor for the Gemini class.
    * @param {string} apiKey - The API key for the Gemini API.
    */
   constructor(apiKey) {
-    this.interfaceName = 'gemini';
-    this.apiKey = apiKey || geminiApiKey;
+    super(interfaceName, apiKey || geminiApiKey, config[interfaceName].url);
     this.genAI = new GoogleGenerativeAI(this.apiKey);
   }
 
@@ -46,7 +52,9 @@ class Gemini {
     if (history.length > 0 && history[0].role !== 'user') {
       history[0].role = 'user';
     }
-    const prompt = input.messages[input.messages.length - 1].content;
+    //const prompt = input.messages[input.messages.length - 1].content;
+    const prompt = input.messages.map((message) => message.content).join('\n');
+
     const responseMimeType =
       responseFormat === 'json_object' ? 'application/json' : 'text/plain';
 
@@ -72,30 +80,28 @@ class Gemini {
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     const messageObject =
       typeof message === 'string' ? getMessageObject(message) : message;
-    const cacheTimeoutSeconds =
-      typeof interfaceOptions === 'number'
-        ? interfaceOptions
-        : interfaceOptions.cacheTimeoutSeconds;
 
     let { model } = messageObject;
 
     // Finalize the model name
-    model =
-      model || options.model || config[this.interfaceName].model.default.name;
+    model = model || options.model || config[this.interfaceName].model.default;
 
     const selectedModel = getModelByAlias(this.interfaceName, model);
     let max_tokens = options.max_tokens || 150;
     let response_format = options.response_format || '';
+    let stream = options.stream || '';
 
     if (options.model) delete options.model;
     if (options.max_tokens) delete options.max_tokens;
     if (options.response_format) delete options.response_format;
+    if (options.stream) delete options.stream;
 
     // Set the model and default values
     model =
       selectedModel ||
       options.model ||
-      config[this.interfaceName].model.default.name;
+      config[this.interfaceName].model.default;
+
     const { history, prompt, generationConfig } = this.convertDataStructure(
       messageObject,
       max_tokens,
@@ -103,69 +109,107 @@ class Gemini {
       options,
     );
 
-    // Generate a cache key based on the input data
-    const cacheKey = JSON.stringify({
-      model,
-      history,
-      prompt,
-      generationConfig,
-      interfaceOptions,
-    });
-    if (cacheTimeoutSeconds) {
-      const cachedResponse = getFromCache(cacheKey);
-      if (cachedResponse) {
-        return cachedResponse;
+    // Get the generative model instance for the selected model
+
+    const modelInstance = this.genAI.getGenerativeModel({ model });
+
+    // Is this a stream?
+    if (stream) {
+      try {
+        const results = await modelInstance.generateContentStream(prompt);
+        return results;
+      } catch (error) {
+        throw new StreamError(
+          `${this.interfaceName} streaming error`,
+          error.message,
+          error.stack,
+        );
       }
     }
 
-    // Set up retry mechanism with exponential backoff
-    let retryAttempts = interfaceOptions.retryAttempts || 0;
-    let currentRetry = 0;
-    while (retryAttempts >= 0) {
+    // Start a chat session with the model
+    const chat = modelInstance.startChat({ history, generationConfig });
+
+    // Send the prompt to the model
+    const result = await chat.sendMessage(prompt);
+    // Get the response from the model
+    const response = await result.response;
+    let responseContent = await response.text();
+
+    // Attempt to repair the object if needed
+    if (
+      responseContent &&
+      response_format === 'json_object' &&
+      typeof responseContent === 'string'
+    ) {
       try {
-        // Get the generative model instance for the selected model
-        const modelInstance = this.genAI.getGenerativeModel({ model });
-        // Start a chat session with the model
-        const chat = modelInstance.startChat({ history, generationConfig });
-        // Send the prompt to the model
-        const result = await chat.sendMessage(prompt);
-        // Get the response from the model
-        const response = await result.response;
-        let text = await response.text();
-
-        if (interfaceOptions.attemptJsonRepair) {
-          text = await parseJSON(text, interfaceOptions.attemptJsonRepair);
-        }
-
-        // Build response object
-        const responseContent = { results: text };
-
-        if (cacheTimeoutSeconds && responseContent) {
-          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
-        }
-
-        return responseContent;
-      } catch (error) {
-        retryAttempts--;
-        if (retryAttempts < 0) {
-          log.error(
-            'Response data:',
-            error.response ? error.response.data : null,
-          );
-          throw error;
-        }
-
-        // Calculate the delay for the next retry attempt
-        let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
-        await delay(delayTime);
-
-        currentRetry++;
+        responseContent = JSON.parse(responseContent);
+      } catch {
+        responseContent = await parseJSON(
+          responseContent,
+          interfaceOptions.attemptJsonRepair,
+        );
       }
+    } else if (responseContent && interfaceOptions.attemptJsonRepair) {
+      responseContent = await parseJSON(
+        responseContent,
+        interfaceOptions.attemptJsonRepair,
+      );
+    }
+
+    if (responseContent) {
+      // Build response object
+      responseContent = { results: responseContent };
+
+      // optionally include the original llm api response
+      if (interfaceOptions.includeOriginalResponse) {
+        //responseContent.originalResponse = response; @todo not implemented yet
+      }
+
+      return responseContent;
+    }
+  }
+
+  /**
+   * Fetches embeddings for a given prompt using the specified model and options.
+   *
+   * @async
+   * @param {string} prompt - The input prompt to get embeddings for.
+   * @param {Object} [options={}] - Optional parameters for embeddings.
+   * @param {string} [options.model] - The model to use for embeddings.
+   * @param {Object} [interfaceOptions={}] - Interface-specific options.
+   * @param {boolean} [interfaceOptions.includeOriginalResponse] - Whether to include the original response in the result.
+   *
+   * @returns {Promise<Object>} An object containing the embeddings and optionally the original response.
+   *
+   * @throws {EmbeddingsError} If the interface does not support embeddings or the embedding URL is not found.
+   * @throws {RequestError} If the request to fetch embeddings fails.
+   */
+  async embeddings(prompt, options = {}, interfaceOptions = {}) {
+    // get embeddings model
+    const selectedModel =
+      options.model || config[this.interfaceName].embeddings.default;
+
+    const model = this.genAI.getGenerativeModel({ model: selectedModel });
+    const result = await model.embedContent(prompt);
+
+    try {
+      const embedding = result.embedding.values;
+
+      const responseContent = { results: embedding };
+
+      if (interfaceOptions.includeOriginalResponse) {
+        responseContent.originalResponse = result;
+      }
+
+      return responseContent;
+    } catch (error) {
+      throw new RequestError(
+        `Failed to fetch embeddings: ${error.message}`,
+        error.stack,
+      );
     }
   }
 }
-
-Gemini.prototype.adjustModelAlias = adjustModelAlias;
 
 module.exports = Gemini;

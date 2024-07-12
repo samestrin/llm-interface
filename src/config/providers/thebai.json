@@ -1,0 +1,1 @@
+{"url":"https://api.theb.ai/v1/chat/completions","model":{"default":"gpt-4-turbo","large":"llama-3-70b-chat","small":"llama-2-7b-chat","agent":"gpt-4-turbo"},"createMessageObject":"getSimpleMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

@@ -1,0 +1,1 @@
+{"url":"https://integrate.api.nvidia.com/v1/chat/completions","model":{"default":"nvidia/llama3-chatqa-1.5-8b","large":"nvidia/nemotron-4-340b-instruct","small":"microsoft/phi-3-mini-128k-instruct","agent":"nvidia/llama3-chatqa-1.5-8b"},"createMessageObject":"getMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

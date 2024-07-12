@@ -1,0 +1,1 @@
+{"url":"https://open.bigmodel.cn/api/paas/v4/chat/completions","model":{"default":"glm-4-airx","large":"glm-4","small":"glm-4-flash","agent":"glm-4"},"createMessageObject":"getMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

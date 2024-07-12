@@ -7,57 +7,24 @@ const CloudflareAI = require('../../src/interfaces/cloudflareai.js');
 const {
   cloudflareaiApiKey,
   cloudflareaiAccountId,
-} = require('../../src/config/config.js');
-const {
-  simplePrompt,
-  options,
-  expectedMaxLength,
-} = require('../../src/utils/defaults.js');
-const { safeStringify } = require('../../src/utils/jestSerializer.js');
+} = require('../../src/utils/loadApiKeysFromEnv.js');
+const { simplePrompt } = require('../../src/utils/defaults.js');
+const runTests = require('./sharedTestCases.js');
 
-let response = '';
-let model = '@cf/meta/llama-3-8b-instruct';
+const message = {
+  messages: [
+    {
+      role: 'user',
+      content: simplePrompt,
+    },
+  ],
+};
 
-describe('CloudflareAI Interface', () => {
-  if (cloudflareaiApiKey) {
-    let response;
-
-    test('API Key should be set', () => {
-      expect(typeof cloudflareaiApiKey).toBe('string');
-    });
-
-    test('API Client should send a message and receive a response', async () => {
-      const cloudflareai = new CloudflareAI(
-        cloudflareaiApiKey,
-        cloudflareaiAccountId,
-      );
-      const message = {
-        model,
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.',
-          },
-          {
-            role: 'user',
-            content: simplePrompt,
-          },
-        ],
-      };
-
-      try {
-        response = await cloudflareai.sendMessage(message, options);
-      } catch (error) {
-        throw new Error(`Test failed: ${safeStringify(error)}`);
-      }
-
-      expect(typeof response).toStrictEqual('object');
-    }, 30000);
-
-    test(`Response should be less than ${expectedMaxLength} characters`, () => {
-      expect(response.results.length).toBeLessThan(expectedMaxLength);
-    });
-  } else {
-    test.skip(`API Key is not set`, () => {});
-  }
-});
+runTests(
+  CloudflareAI,
+  [cloudflareaiApiKey, cloudflareaiAccountId],
+  'CloudflareAI',
+  '@cf/tinyllama/tinyllama-1.1b-chat-v1.0',
+  message,
+  false,
+);

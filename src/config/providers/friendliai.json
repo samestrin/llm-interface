@@ -1,0 +1,1 @@
+{"url":"https://inference.friendli.ai/v1/chat/completions","model":{"default":"mixtral-8x7b-instruct-v0-1","large":"meta-llama-3-70b-instruct","small":"meta-llama-3-8b-instruct","agent":"gemma-7b-it"},"createMessageObject":"getSimpleMessageObject","stream":true,"jsonMode":true,"maxTokens":true,"hasEmbeddings":false}

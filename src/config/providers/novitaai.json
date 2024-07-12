@@ -1,0 +1,1 @@
+{"url":"https://api.novita.ai/v3/openai/chat/completions","model":{"default":"meta-llama/llama-3-8b-instruct","large":"meta-llama/llama-3-70b-instruct","small":"meta-llama/llama-3-8b-instruct","agent":"meta-llama/llama-3-70b-instruct"},"createMessageObject":"getMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

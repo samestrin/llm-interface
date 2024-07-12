@@ -2,17 +2,28 @@
 
 [![Star on GitHub](https://img.shields.io/github/stars/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/stargazers) [![Fork on GitHub](https://img.shields.io/github/forks/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/network/members) [![Watch on GitHub](https://img.shields.io/github/watchers/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/watchers)
 
-![Version 2.0.9](https://img.shields.io/badge/Version-2.0.9-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
+![Version 2.0.10](https://img.shields.io/badge/Version-2.0.10-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
 
 ## Introduction
 
-`llm-interface` is a wrapper designed to interact with multiple Large Language Model (LLM) APIs. `llm-interface` simplifies integrating various LLM providers, including **OpenAI, AI21 Studio, AIML API, Anthropic, Cloudflare AI, Cohere, DeepInfra, Fireworks AI, Forefront, Friendli AI, Google Gemini, Goose AI, Groq, Hugging Face, Mistral AI, Monster API, Octo AI, Ollama, Perplexity, Reka AI, Replicate, watsonx.ai, Writer, and LLaMA.cpp**, into your applications. It is available as an [NPM package](https://www.npmjs.com/package/llm-interface).
+LLM Interface is an npm module that streamlines your interactions with various Large Language Model (LLM) providers in your Node.js applications. It offers a unified interface, simplifying the process of switching between providers and their models.
 
-This goal of `llm-interface` is to provide a single, simple, unified interface for sending messages and receiving responses from different LLM services. This will make it easier for developers to work with multiple LLMs without worrying about the specific intricacies of each API.
+The LLM Interface package offers comprehensive support for a wide range of language model providers, encompassing 36 different providers and hundreds of models. This extensive coverage ensures that you have the flexibility to choose the best models suited to your specific needs.
+
+## Extensive Support for 36 Providers and Hundreds of Models
+
+LLM Interface supports: **AI21 Studio, AiLAYER, AIMLAPI, Anyscale, Anthropic, Microsoft Azure AI, Cloudflare AI, Cohere, Corcel, DeepInfra, DeepSeek, Fireworks AI, Forefront AI, FriendliAI, Google Gemini, GooseAI, Groq, Hugging Face Inference API, HyperBee AI, Lamini, LLaMA.CPP, Mistral AI, Monster API, Neets.ai, Novita AI, NVIDIA AI, OctoAI, Ollama, OpenAI, Perplexity AI, Reka AI, Replicate, Shuttle AI, TheB.ai, Together AI, Voyage AI, Watsonx AI, Writer, and Zhipu AI**.
+
+<!-- Support List -->
+![AI21 Studio](https://samestrin.github.io/media/llm-interface/icons/ai21.png) ![AIMLAPI](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png) ![Anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png) ![Anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png) ![blank.png](https://samestrin.github.io/media/llm-interface/icons/blank.png) ![Cloudflare AI](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png) ![Cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png) ![Corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png) ![DeepInfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png) ![DeepSeek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png) ![Forefront AI](https://samestrin.github.io/media/llm-interface/icons/forefront.png) ![GooseAI](https://samestrin.github.io/media/llm-interface/icons/gooseai.png) ![Lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png) ![Mistral AI](https://samestrin.github.io/media/llm-interface/icons/mistralai.png) ![Monster API](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png) ![Neets.ai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png) ![Perplexity AI](https://samestrin.github.io/media/llm-interface/icons/perplexity.png) ![Reka AI](https://samestrin.github.io/media/llm-interface/icons/rekaai.png) ![Replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png) ![Shuttle AI](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png) ![Together AI](https://samestrin.github.io/media/llm-interface/icons/togetherai.png) ![Writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)
+<!-- Support List End -->
+
+[Detailed Provider List](docs/providers.md)
 
 ## Features
 
-- **Unified Interface**: `LLMInterface.sendMessage` is a single, consistent interface to interact with **24 different LLM APIs** (22 hosted LLM providers and 2 local LLM providers).
+
+- **Unified Interface**: `LLMInterface.sendMessage` is a single, consistent interface to interact with **36 different LLM APIs** (34 hosted LLM providers and 2 local LLM providers).
 - **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
@@ -23,6 +34,15 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 
 ## Updates
 
+**v2.0.10**
+
+- **New LLM Providers**: Anyscale, Bigmodel, Corcel, Deepseek, Hyperbee AI, Lamini, Neets AI, Novita AI, NVIDIA, Shuttle AI, TheB.AI, and Together AI.
+- **Caching**: Supports multiple caches: `simple-cache`, `flat-cache`, and `cache-manager`. _`flat-cache` is now an optional package._
+- **Logging**: Improved logging with the `loglevel`.
+- **Improved Documentation**: Improved [documentation](docs/index.md) with new examples, glossary, and provider details. Updated API key details, model alias breakdown, and usage information.
+- **More Examples**: [LangChain.js RAG](examples/langchain/rag.js), [Mixture-of-Authorities (MoA)](examples/moa/moa.js), and [more](docs/examples.md).
+- **Removed Dependency**: `@anthropic-ai/sdk` is no longer required.
+
 **v2.0.9**
 
 - **New LLM Providers**: Added support for AIML API (_currently not respecting option values_), DeepSeek, Forefront, Ollama, Replicate, and Writer.
@@ -31,59 +51,70 @@ This goal of `llm-interface` is to provide a single, simple, unified interface f
 Octo AI, Ollama, OpenAI, Perplexity, Together AI, and Writer.
 - **New Interface Function**: `LLMInterfaceStreamMessage`
 - **Test Coverage**: 100% test coverage for all interface classes.
-- **Examples**: New usage [examples](/examples).
-
-**v2.0.8**
-
-- **Removing Dependencies**: The removal of OpenAI and Groq SDKs results in a smaller bundle, faster installs, and reduced complexity.
+- **Examples**: New usage [examples](examples).
 
 ## Dependencies
 
 The project relies on several npm packages and APIs. Here are the primary dependencies:
 
 - `axios`: For making HTTP requests (used for various HTTP AI APIs).
-- `@anthropic-ai/sdk`: SDK for interacting with the Anthropic API.
 - `@google/generative-ai`: SDK for interacting with the Google Gemini API.
 - `dotenv`: For managing environment variables. Used by test cases.
-- `flat-cache`: For optionally caching API responses to improve performance and reduce redundant requests.
 - `jsonrepair`: Used to repair invalid JSON responses.
-- `jest`: For running test cases.
+- `loglevel`:  A minimal, lightweight logging library with level-based logging and filtering.
+
+The following optional packages can added to extend LLMInterface's caching capabilities:
+
+- `flat-cache`: A simple JSON based cache.
+- `cache-manager`: An extendible cache module that supports various backends including Redis, MongoDB, File System, Memcached, Sqlite, and more.
 
 ## Installation
 
-To install the `llm-interface` package, you can use npm:
+To install the LLM Interface npm module, you can use npm:
 
 ```bash
 npm install llm-interface
 ```
+## Quick Start
+
+- Looking for [API Keys](/docs/api-keys.md)? This document provides helpful links.
+- Detailed [usage](/docs/usage.md) documentation is available here.
+- Various [examples](/examples) are also available to help you get started.
+- A breakdown of [model aliaes](/docs/models.md) aliases is available here.
+- If you still want more examples, you may wish to review the [test cases](/test/) for further examples.
 
 ## Usage
 
-### Example
-
-First import `LLMInterfaceSendMessage`. You can do this using either the CommonJS `require` syntax:
+First import `LLMInterface`. You can do this using either the CommonJS `require` syntax:
 
 ```javascript
-const { LLMInterfaceSendMessage } = require('llm-interface');
+const { LLMInterface } = require('llm-interface');
 ```
 
 or the ES6 `import` syntax:
 
 ```javascript
-import { LLMInterfaceSendMessage } from 'llm-interface';
+import { LLMInterface } from 'llm-interface';
 ```
 
-then send your prompt to the LLM provider of your choice:
+then send your prompt to the LLM provider:
 
 ```javascript
+LLMInterface.setApiKey({'openai': process.env.OPENAI_API_KEY});
+
 try {
-  const response = LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, 'Explain the importance of low latency LLMs.');
+  const response = await LLMInterface.sendMessage('openai', 'Explain the importance of low latency LLMs.');
 } catch (error) {
   console.error(error);
 }
 ```
+if you prefer, you can pass use a one-liner to pass the provider and API key, essentially skipping the LLMInterface.setApiKey() step.
 
-or if you'd like to chat, use the message object. You can also pass through options such as `max_tokens`.
+```javascript
+const response = await LLMInterface.sendMessage(['openai',process.env.OPENAI_API_KEY], 'Explain the importance of low latency LLMs.');
+```
+
+Passing a more complex message object is just as simple. The same rules apply:
 
 ```javascript
 const message = {
@@ -95,13 +126,12 @@ const message = {
 };
 
 try {
-  const response = LLMInterfaceSendMessage('openai', process.env.OPENAI_API_KEY, message, { max_tokens: 150 });
+  const response = await LLMInterface.sendMessage('openai', message, { max_tokens: 150 });
 } catch (error) {
   console.error(error);
 }
 ```
-
-If you need [API Keys](/docs/APIKEYS.md), use this [starting point](/docs/APIKEYS.md). Additional [usage examples](/docs/USAGE.md) and an [API reference](/docs/API.md) are available. You may also wish to review the [test cases](/test/) for further examples.
+_LLMInterfaceSendMessage and LLMInterfaceStreamMessage are still available and will be available until version 3_
 
 ## Running Tests
 
@@ -114,13 +144,23 @@ npm test
 #### Current Test Results
 
 ```bash
-Test Suites: 1 skipped, 65 passed, 65 of 66 total
-Tests:       2 skipped, 291 passed, 293 total
+Test Suites: 9 skipped, 93 passed, 93 of 102 total
+Tests:       86 skipped, 784 passed, 870 total
 Snapshots:   0 total
-Time:        103.293 s, estimated 121 s
+Time:        630.029 s
 ```
 
-_Note: Currently skipping NVIDIA test cases due to API key limits._
+_Note: Currently skipping NVIDIA test cases due to API issues, and Ollama due to performance issues._
+
+## TODO
+
+- [ ] Provider > Models > Azure AI
+- [ ] Provider > Models > Groq
+- [ ] Provider > Models > SiliconFlow
+- [ ] Provider > Embeddings > Nomic
+- [ ] _Feature > Image Generation?_
+
+_Submit your suggestions!_
 
 ## Contribute
 

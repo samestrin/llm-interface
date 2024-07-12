@@ -6,18 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { aimlapiApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { aimlapiApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'aimlapi';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class AIMLAPI extends BaseInterface {
   constructor(apiKey) {
-    super('aimlapi', apiKey || aimlapiApiKey, config['aimlapi'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    super(interfaceName, apiKey || aimlapiApiKey, config[interfaceName].url);
   }
 }
 

@@ -1,141 +1,104 @@
 /**
  * @file src/interfaces/rekaai.js
  * @class RekaAI
+ * @extends BaseInterface
  * @description Wrapper class for the Reka AI API.
- * @param {string} apiKey - The API key for Reka AI.
+ * @param {string} apiKey - The API key for Reka AI API.
  */
 
-const axios = require('axios');
+const BaseInterface = require('./baseInterface');
+const { rekaaiApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
 
-const { adjustModelAlias, getModelByAlias } = require('../utils/config.js');
-const { getFromCache, saveToCache } = require('../utils/cache.js');
-const { getSimpleMessageObject, delay } = require('../utils/utils.js');
-const { rekaaiApiKey } = require('../config/config.js');
-const { getConfig } = require('../utils/configManager.js');
+const interfaceName = 'rekaai';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
-const log = require('loglevel');
 
 // RekaAI class for interacting with the Reka AI API
-class RekaAI {
+class RekaAI extends BaseInterface {
   /**
    * Constructor for the RekaAI class.
    * @param {string} apiKey - The API key for Reka AI.
    */
   constructor(apiKey) {
-    this.interfaceName = 'rekaai';
-    this.apiKey = apiKey || rekaaiApiKey;
-    this.client = axios.create({
-      baseURL: config[this.interfaceName].url,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Api-Key': this.apiKey,
-      },
+    super(interfaceName, apiKey || rekaaiApiKey, config[interfaceName].url, {
+      'X-Api-Key': apiKey || rekaaiApiKey,
     });
   }
 
   /**
-   * Send a message to the Reka AI API.
-   * @param {string|object} message - The message to send or a message object.
-   * @param {object} options - Additional options for the API request.
-   * @param {object} interfaceOptions - Options specific to the interface.
-   * @returns {string|null} The response content from the Reka AI API or null if an error occurs.
+   * Updates the headers of an Axios client.
+   * @param {object} client - The Axios client instance.
    */
-  async sendMessage(message, options = {}, interfaceOptions = {}) {
-    const messageObject =
-      typeof message === 'string' ? getSimpleMessageObject(message) : message;
-    let cacheTimeoutSeconds;
-    if (typeof interfaceOptions === 'number') {
-      cacheTimeoutSeconds = interfaceOptions;
-    } else {
-      cacheTimeoutSeconds = interfaceOptions.cacheTimeoutSeconds;
-    }
+  updateHeaders(client) {
+    delete client.defaults.headers['Authorization'];
+  }
 
-    let { model } = messageObject;
-
-    // Set the model and default values
-    model =
-      model || options.model || config[this.interfaceName].model.default.name;
-    if (options.model) delete options.model;
-
-    // Get the selected model based on alias or default
-    model = getModelByAlias(this.interfaceName, model);
-
-    const { max_tokens = 150 } = options;
-
-    // Convert message roles as required by the API
-    const convertedMessages = messageObject.messages.map((msg, index) => {
+  /**
+   * Builds the request body for the API request.
+   * @param {string} model - The model to use for the request.
+   * @param {Array<object>} messages - An array of message objects.
+   * @param {number} max_tokens - The maximum number of tokens for the response.
+   * @param {object} options - Additional options for the API request.
+   * @returns {object} The constructed request body.
+   * @throws {Error} If the message roles do not alternate correctly or if the conversation does not start and end with 'user'.
+   */
+  buildRequestBody(model, messages, max_tokens, options) {
+    // Step 1: Convert the format
+    let convertedMessages = messages.map((msg) => {
       if (msg.role === 'system') {
         return { ...msg, role: 'assistant' };
       }
       return { ...msg, role: 'user' };
     });
 
-    // Prepare the modified message for the API call
-    const modifiedMessage = {
+    // Step 2: Check the first message role
+    if (convertedMessages[0].role === 'user') {
+      // If the first role is user, we can use convertedMessages as is
+      // Proceed to create the request body
+    } else {
+      // Step 3: Check if the first message entry is the specific assistant message
+      if (
+        convertedMessages[0].role === 'assistant' &&
+        convertedMessages[0].content === 'You are a helpful assistant.'
+      ) {
+        // Remove the first message
+        convertedMessages.shift();
+      } else {
+        // Step 4: Prepend a user message if the first message is an assistant with any other content
+        convertedMessages.unshift({ role: 'user', content: 'I need help.' });
+      }
+    }
+
+    // Ensure messages alternate between 'user' and 'assistant'
+    for (let i = 1; i < convertedMessages.length; i++) {
+      if (convertedMessages[i].role === convertedMessages[i - 1].role) {
+        throw new Error(
+          'Messages must alternate between "user" and "assistant".',
+        );
+      }
+    }
+
+    // Ensure the conversation starts and ends with 'user'
+    if (
+      convertedMessages[0].role !== 'user' ||
+      convertedMessages[convertedMessages.length - 1].role !== 'user'
+    ) {
+      throw new Error('Conversation must start and end with "user".');
+    }
+
+    // Step 5: Construct the request body
+    const requestBody = {
       messages: convertedMessages,
       model,
       max_tokens,
       stream: false,
+      ...options,
     };
 
-    // Generate a cache key based on the modified message
-    const cacheKey = JSON.stringify(modifiedMessage);
-    if (cacheTimeoutSeconds) {
-      const cachedResponse = getFromCache(cacheKey);
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-    }
-
-    // Set up retry mechanism with exponential backoff
-    let retryAttempts = interfaceOptions.retryAttempts || 0;
-    let currentRetry = 0;
-
-    while (retryAttempts >= 0) {
-      try {
-        // Send the request to the Reka AI API
-        const response = await this.client.post('', modifiedMessage);
-
-        let responseContent = null;
-
-        if (response.data?.responses?.[0]?.message?.content) {
-          responseContent = response.data.responses[0].message.content;
-        }
-        // Attempt to repair the object if needed
-        if (interfaceOptions.attemptJsonRepair) {
-          responseContent = await parseJSON(
-            responseContent,
-            interfaceOptions.attemptJsonRepair,
-          );
-        }
-        // Build response object
-        responseContent = { results: responseContent };
-
-        if (cacheTimeoutSeconds && responseContent) {
-          saveToCache(cacheKey, responseContent, cacheTimeoutSeconds);
-        }
-
-        return responseContent;
-      } catch (error) {
-        retryAttempts--;
-        if (retryAttempts < 0) {
-          // Log any errors and throw the error
-          log.error(
-            'API Error:',
-            error.response ? error.response.data : error.message,
-          );
-          throw new Error(error.response ? error.response.data : error.message);
-        }
-
-        // Calculate the delay for the next retry attempt
-        let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
-        await delay(delayTime);
-
-        currentRetry++;
-      }
-    }
+    return requestBody;
   }
 }
-RekaAI.prototype.adjustModelAlias = adjustModelAlias;
+
 module.exports = RekaAI;

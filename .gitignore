@@ -134,3 +134,9 @@ dist
 
 .DS_STORE
 cache/
+build/
+.eslint*
+eslint*
+jest*
+babel.config.js
+.prettier*

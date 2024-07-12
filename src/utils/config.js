@@ -3,9 +3,15 @@
  * @description Utility functions for working with config variables
  */
 
-const { getConfig, updateConfig } = require('./configManager.js');
-const config = getConfig();
-
+const {
+  getConfig,
+  loadProviderConfig,
+  updateConfig,
+} = require('./configManager.js');
+const { listOfActiveProviders } = require('../config/providers.js');
+const log = require('loglevel');
+//log.setLevel('silent');
+let cacheInstance = [];
 /**
  * Sets the API key for a specified interface or multiple interfaces.
  *
@@ -14,39 +20,43 @@ const config = getConfig();
  * @returns {boolean} - Returns true if the update was successful, otherwise false.
  */
 function setApiKey(interfaceNames, apiKey) {
+  log.log(`setApiKey('${interfaceNames}', '${apiKey}')`);
   if (!interfaceNames) {
     return false;
   }
 
   if (typeof interfaceNames === 'string') {
+    loadProviderConfig(interfaceNames);
+    const config = getConfig();
+
     if (!config[interfaceNames] || !apiKey) {
       return false;
     }
 
     config[interfaceNames].apiKey = apiKey;
+
+    updateConfig(interfaceNames, config[interfaceNames]);
+    loadProviderConfig(interfaceNames);
   } else if (typeof interfaceNames === 'object') {
     for (const [interfaceName, keyValue] of Object.entries(interfaceNames)) {
+      loadProviderConfig(interfaceNames);
+      const config = getConfig();
+
       if (!config[interfaceName]) {
         continue; // Skip if the interface name is invalid
       }
 
       config[interfaceName].apiKey = keyValue;
+      updateConfig(interfaceName, config[interfaceName]);
     }
   } else {
     // Invalid input type
     return false;
   }
-
-  try {
-    return updateConfig(config);
-  } catch (error) {
-    console.error('Error updating config:', error);
-    return false;
-  }
 }
 
 /**
- * Adjusts model alias values
+ * Set model alias values
  *
  * @param {string} interfaceName - The name of the interface.
  * @param {string} alias - The model alias to update (e.g., "default", "large", "small").
@@ -54,7 +64,10 @@ function setApiKey(interfaceNames, apiKey) {
  * @param {number} [tokens=null] - The optional token limit for the new model.
  * @returns {boolean} - Returns true if the update was successful, otherwise false.
  */
-function adjustModelAlias(interfaceName, alias, name, tokens = null) {
+function setModelAlias(interfaceName, alias, name, tokens = null) {
+  loadProviderConfig(interfaceName);
+  const config = getConfig();
+
   if (
     !interfaceName ||
     !config[interfaceName] ||
@@ -64,62 +77,85 @@ function adjustModelAlias(interfaceName, alias, name, tokens = null) {
     return false;
   }
 
-  const model = { name };
-  if (tokens !== null) {
-    model.tokens = tokens;
+  config[interfaceName].model[alias] = name;
+  updateConfig(interfaceName, config[interfaceName]); // Ensure the updated config is saved
+
+  return true;
+}
+
+/**
+ * Set embeddings model alias values
+ *
+ * @param {string} interfaceName - The name of the interface.
+ * @param {string} alias - The model alias to update (e.g., "default", "large", "small").
+ * @param {string} name - The new model name to set.
+ * @param {number} [tokens=null] - The optional token limit for the new model.
+ * @returns {boolean} - Returns true if the update was successful, otherwise false.
+ */
+function setEmbeddingsModelAlias(interfaceName, alias, name, tokens = null) {
+  loadProviderConfig(interfaceName);
+  const config = getConfig();
+
+  if (
+    !interfaceName ||
+    !config[interfaceName] ||
+    !config[interfaceName].embeddings ||
+    !config[interfaceName].embeddings[alias]
+  ) {
+    return false;
   }
 
-  config[interfaceName].model[alias] = model;
-  updateConfig(config); // Ensure the updated config is saved
+  config[interfaceName].embeddings[alias] = name;
+  updateConfig(interfaceName, config[interfaceName]); // Ensure the updated config is saved
+
   return true;
 }
 
 /**
  * Retrieves a configuration value for a specified model and key.
  *
- * @param {string} modelName - The name of the model (e.g., "openai").
+ * @param {string} modelName - The name of the interface (e.g., "openai").
  * @param {string} key - The configuration key (e.g., "url", "model.default").
  * @returns {any|boolean} - The configuration value if it exists, otherwise false.
  */
-function getModelConfigValue(modelName, key) {
-  const modelConfig = config[modelName];
+function getInterfaceConfigValue(interfaceName, key, passThrough = false) {
+  loadProviderConfig(interfaceName);
+  const config = getConfig();
 
-  if (!modelConfig) {
-    return false;
+  const interfaceConfig = config[interfaceName];
+  if (!interfaceConfig) {
+    if (passThrough) {
+      return key;
+    } else {
+      return false;
+    }
   }
 
-  let result;
+  const keys = key.split('.');
+  let result = interfaceConfig;
 
-  switch (key) {
-    case 'url':
-      result = modelConfig.url !== undefined ? modelConfig.url : false;
-      break;
-    case 'apiKey':
-      result = modelConfig.apiKey !== undefined ? modelConfig.apiKey : false;
-      break;
-    case 'model.default':
-      result =
-        modelConfig.model && modelConfig.model.default !== undefined
-          ? modelConfig.model.default
-          : false;
-      break;
-    case 'model.large':
-      result =
-        modelConfig.model && modelConfig.model.large !== undefined
-          ? modelConfig.model.large
-          : false;
-      break;
-    case 'model.small':
-      result =
-        modelConfig.model && modelConfig.model.small !== undefined
-          ? modelConfig.model.small
-          : false;
-      break;
-    default:
-      result = false;
+  for (const k of keys) {
+    if (result[k] === undefined) {
+      //console.error(`Key '${k}' not found in`, result);
+
+      if (passThrough) {
+        return key;
+      } else {
+        return false;
+      }
+    }
+
+    result = result[k];
   }
-
-  return result;
+  if (typeof result === 'string') {
+    return result;
+  } else {
+    if (passThrough) {
+      return key;
+    } else {
+      return false;
+    }
+  }
 }
 
 /**
@@ -128,36 +164,49 @@ function getModelConfigValue(modelName, key) {
  * @returns {string[]} - An array of model names.
  */
 function getAllModelNames() {
-  return Object.keys(config).sort();
+  return listOfActiveProviders.sort();
 }
 
 /**
  * Get the model name based on the provided alias.
  *
- * @param {string} provider - The name of the provider.
+ * @param {string} interfaceName - The name of the interfaceName.
  * @param {string} model - The alias or name of the model.
  * @returns {string} The model name.
  */
-function getModelByAlias(provider, model) {
-  if (model === undefined || model === null || model === '') {
-    model = 'default';
+function getModelByAlias(interfaceName, model = 'default') {
+  const key = model.startsWith('model.') ? model : `model.${model}`;
+  const alias = getInterfaceConfigValue(interfaceName, key, true);
+  if (alias === key) {
+    return model;
+  } else {
+    return alias;
   }
-  if (
-    config[provider] &&
-    config[provider].model &&
-    config[provider].model[model] &&
-    config[provider].model[model].name
-  ) {
-    return config[provider].model[model].name;
-  }
+}
 
-  return model;
+/**
+ * Get the embedding model name based on the provided alias.
+ *
+ * @param {string} interfaceName - The name of the interfaceName.
+ * @param {string} model - The alias or name of the model.
+ * @returns {string} The model name.
+ */
+function getEmbeddingsModelByAlias(interfaceName, model = 'default') {
+  const key = model.startsWith('embeddings.') ? model : `embeddings.${model}`;
+  const alias = getInterfaceConfigValue(interfaceName, key, true);
+  if (alias === key) {
+    return model;
+  } else {
+    return alias;
+  }
 }
 
 module.exports = {
-  adjustModelAlias,
   getModelByAlias,
-  getModelConfigValue,
+  getEmbeddingsModelByAlias,
+  getInterfaceConfigValue,
   getAllModelNames,
   setApiKey,
+  setModelAlias,
+  setEmbeddingsModelAlias
 };

@@ -6,18 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { monsterapiApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { monsterapiApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'monsterapi';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class MonsterAPI extends BaseInterface {
   constructor(apiKey) {
-    super('monsterapi', apiKey || monsterapiApiKey, config['monsterapi'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    super(interfaceName, apiKey || monsterapiApiKey, config[interfaceName].url);
   }
 }
 

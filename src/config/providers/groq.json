@@ -1,0 +1,1 @@
+{"url":"https://api.groq.com/openai/v1/chat/completions","model":{"default":"llama3-8b-8192","large":"llama3-70b-8192","small":"gemma-7b-it","agent":"llama3-8b-8192"},"createMessageObject":"getMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

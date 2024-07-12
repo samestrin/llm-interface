@@ -1,0 +1,1 @@
+{"model":{},"embeddingUrl":"https://api.voyageai.com/v1/embeddings","embeddings":{"expects":{"input":"{embedding}","model":"{model}"},"default":"voyage-2","large":"voyage-large-2","small":"voyage-2"},"maxTokens":false,"hasEmbeddings":true}

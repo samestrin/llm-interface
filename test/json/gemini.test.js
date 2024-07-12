@@ -3,13 +3,9 @@
  * @description Tests for the Gemini API client JSON output.
  */
 
-const Gemini = require('../../src/interfaces/gemini.js');
-const { geminiApiKey } = require('../../src/config/config.js');
-const {
-  simplePrompt,
-  options,
-  expectedMaxLength,
-} = require('../../src/utils/defaults.js');
+const { LLMInterface } = require('../../src/index.js');
+const { geminiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
+const { simplePrompt, options } = require('../../src/utils/defaults.js');
 describe('Gemini JSON', () => {
   if (geminiApiKey) {
     test('API Key should be set', async () => {
@@ -17,7 +13,6 @@ describe('Gemini JSON', () => {
     });
 
     test('API Client should send a message and receive a JSON response', async () => {
-      const gemini = new Gemini(geminiApiKey);
       const message = {
         model: 'gemini-1.5-flash',
         messages: [
@@ -31,10 +26,14 @@ describe('Gemini JSON', () => {
           },
         ],
       };
-      const response = await gemini.sendMessage(message, {
-        max_tokens: options.max_tokens * 2,
-        response_format: 'json_object',
-      });
+      const response = await LLMInterface.sendMessage(
+        ['gemini', geminiApiKey],
+        message,
+        {
+          max_tokens: options.max_tokens * 2,
+          response_format: 'json_object',
+        },
+      );
       expect(typeof response).toStrictEqual('object');
     });
   } else {

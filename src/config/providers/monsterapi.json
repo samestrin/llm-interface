@@ -1,0 +1,1 @@
+{"url":"https://llm.monsterapi.ai/v1/chat/completions","model":{"default":"meta-llama/Meta-Llama-3-8B-Instruct","large":"google/gemma-2-9b-it","small":"microsoft/Phi-3-mini-4k-instruct","agent":"google/gemma-2-9b-it"},"createMessageObject":"getMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

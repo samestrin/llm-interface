@@ -1,0 +1,1 @@
+{"url":"https://api.ailayer.ai/api/ailayer/v1/chat/completions","model":{"default":"Llama-2-70b","large":"Qwen/Qwen1.5-72B-Chat","small":"alpaca-7b","agent":"Llama-2-70b"},"createMessageObject":"getSimpleMessageObject","stream":false,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

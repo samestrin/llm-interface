@@ -1,0 +1,1 @@
+{"url":"https://api.hyperbee.ai/v1/chat/completions","model":{"default":"hive","large":"gpt-4o","small":"gemini-1.5-flash","agent":"gpt-4o"},"createMessageObject":"getSimpleMessageObject","stream":true,"jsonMode":true,"maxTokens":true,"hasEmbeddings":false}

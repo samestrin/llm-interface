@@ -1,65 +1,73 @@
 /**
  * @file src/utils/cache.js
- * @description Wrapper for flat-cache; only loads flat-cache when used, stored in a singleton.
+ * @description Cache related functions.
  */
 
-const path = require('path');
-const crypto = require('crypto');
-
-// Singleton to store the cache instance
-let cacheInstance = null;
+const { CacheManager } = require('./cacheManager.js');
+const { CacheError } = require('./errors.js');
+const log = require('loglevel');
 
 /**
- * Converts a key to an MD5 hash.
- *
- * @param {string} key - The key to convert.
- * @returns {string} The MD5 hash of the key.
+ * The main cacheInstance object
  */
-function getCacheFilePath(key) {
-  return crypto.createHash('md5').update(key).digest('hex');
-}
+const cacheInstance = {};
 
 /**
- * Loads the cache dynamically and stores it in the singleton if not already loaded.
+ * Flushes the entire cache.
  *
- * @returns {object} The flat-cache instance.
+ * @throws {CacheError} If 'this' is not defined or if the cache manager instance is not set up.
+ * @returns {Promise<void>} Resolves when the cache has been successfully flushed.
  */
-function getCacheInstance() {
-  if (!cacheInstance) {
-    const flatCache = require('flat-cache');
-    const cacheId = 'LLMInterface-cache';
-    const cacheDir = path.resolve(__dirname, '../..', 'cache');
-    cacheInstance = flatCache.load(cacheId, cacheDir);
+async function flushCache() {
+  if (!this) {
+    throw new CacheError(`'this' is not defined`);
+  } else if (!this.cacheManagerInstance) {
+    throw new CacheError(
+      `Cache not setup. Run LLMInterface.configureCache() first.`,
+    );
+  } else {
+    await this.cacheManagerInstance.flushCache();
   }
-  return cacheInstance;
 }
 
 /**
- * Retrieves data from the cache.
+ * Configures and returns a cache instance based on the provided configuration.
  *
- * @param {string} key - The cache key.
- * @returns {any} The cached data or null if not found.
+ * @param {Object} [cacheConfig={}] - The configuration object for the cache.
+ * @param {string} [cacheConfig.cache] - The type of cache to use (default is 'simple-cache').
+ * @param {Object} [cacheConfig.config] - Additional options for configuring the cache.
+ * @param {string} [cacheConfig.path] - The path for the cache directory.
+ * @returns {CacheManager} - The configured cache instance.
  */
-function getFromCache(key) {
-  const cache = getCacheInstance();
-  const hashedKey = getCacheFilePath(key);
-  return cache.getKey(hashedKey) || null;
-}
+function configureCache(cacheConfig = {}) {
+  const cacheType = cacheConfig.cache || 'simple-cache';
+  if (cacheInstance[cacheType]) {
+    return cacheInstance[cacheType];
+  }
+  // Instantiate CacheManager with appropriate configuration
+  if (cacheConfig.cache) {
+    cacheInstance[cacheType] = new CacheManager({
+      cacheType,
+      cacheOptions: cacheConfig.config,
+    });
+  } else if (cacheConfig.path) {
+    cacheInstance[cacheType] = new CacheManager({
+      cacheType,
+      cacheDir: cacheConfig.path,
+    });
+  } else {
+    cacheInstance[cacheType] = new CacheManager({
+      cacheType,
+    });
+  }
 
-/**
- * Saves data to the cache.
- *
- * @param {string} key - The cache key.
- * @param {any} data - The data to cache.
- */
-function saveToCache(key, data) {
-  const cache = getCacheInstance();
-  const hashedKey = getCacheFilePath(key);
-  cache.setKey(hashedKey, data);
-  cache.save(true); // Save to disk
+  cacheInstance[cacheType].loadCacheInstance();
+  if (this) this.cacheManagerInstance = cacheInstance[cacheType];
+
+  return cacheInstance[cacheType];
 }
 
 module.exports = {
-  getFromCache,
-  saveToCache,
+  flushCache,
+  configureCache,
 };

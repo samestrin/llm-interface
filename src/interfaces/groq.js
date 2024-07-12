@@ -6,18 +6,18 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { groqApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { groqApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'groq';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class Groq extends BaseInterface {
   constructor(apiKey) {
-    super('groq', apiKey || groqApiKey, config['groq'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    super(interfaceName, apiKey || groqApiKey, config[interfaceName].url);
+    super.config = config;
   }
 }
 

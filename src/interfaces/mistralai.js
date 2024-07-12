@@ -6,18 +6,22 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { mistralaiApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { mistralaiApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'mistralai';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class MistralAI extends BaseInterface {
   constructor(apiKey) {
-    super('mistralai', apiKey || mistralaiApiKey, config['mistralai'].url);
+    super(interfaceName, apiKey || mistralaiApiKey, config[interfaceName].url);
   }
 
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+  adjustEmbeddingPrompt(prompt) {
+    prompt = [prompt];
+    return prompt;
   }
 }
 

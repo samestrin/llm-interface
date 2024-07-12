@@ -1,0 +1,1 @@
+{"url":"https://api.goose.ai/v1/engines","model":{"default":"gpt-neo-20b","large":"gpt-neo-20b","small":"gpt-neo-125m","agent":"gpt-j-6b"},"createMessageObject":"getMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}

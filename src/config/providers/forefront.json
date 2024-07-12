@@ -1,0 +1,1 @@
+{"url":"https://api.forefront.ai/v1/chat/completions","model":{"default":"forefront/Mistral-7B-Instruct-v0.2-chatml","large":"forefront/Mistral-7B-Instruct-v0.2-chatml","small":"forefront/Mistral-7B-Instruct-v0.2-chatml"},"createMessageObject":"getMessageObject","stream":false,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}
