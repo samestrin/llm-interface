@@ -6,8 +6,27 @@ AiLAYER offers a service to connect and manage distributed GPU clusters. This al
 
 - `ailayer`
 
+### Example Usage
 
-## Model Aliases
+```javascript
+const { LLMInterface } = require('llm-interface');
+
+LLMInterface.setApiKey({'ailayer': process.env.AILAYER_API_KEY});
+
+async function main() {
+  try {
+    const response = await LLMInterface.sendMessage('ailayer', 'Explain the importance of low latency LLMs.');
+    console.log(response.results);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+main();
+```
+
+### Model Aliases
 
 The following model aliases are provided for this provider. 
 
@@ -21,8 +40,8 @@ The following model aliases are provided for this provider.
 
 The following values can be passed through `options`.
 
-- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
-- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
+- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `temperature`: _Details not available, please refer to the LLM provider documentation._
 
 
 ## Getting an API Key

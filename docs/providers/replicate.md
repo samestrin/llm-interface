@@ -8,29 +8,58 @@ Replicate is a platform that simplifies the deployment and scaling of machine le
 
 - `replicate`
 
+### Example Usage
 
-## Model Aliases
+```javascript
+const { LLMInterface } = require('llm-interface');
+
+LLMInterface.setApiKey({'replicate': process.env.REPLICATE_API_KEY});
+
+async function main() {
+  try {
+    const response = await LLMInterface.sendMessage('replicate', 'Explain the importance of low latency LLMs.');
+    console.log(response.results);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+main();
+```
+
+### Model Aliases
 
 The following model aliases are provided for this provider. 
 
 - `default`: mistralai/mistral-7b-instruct-v0.2
 - `large`: meta/meta-llama-3-70b-instruct
 - `small`: mistralai/mistral-7b-instruct-v0.2
-
-## Embeddings
-
-- `default`: 
-- `large`: 
-- `small`: 
+- `agent`: meta/meta-llama-3-70b-instruct
 
 
 ## Options
 
 The following values can be passed through `options`.
 
-- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `stream`: _Details not available, please refer to the LLM provider documentation._
 
 
-## Features
+### Features
 
-- Embeddings: true
+- Streaming: true
+
+
+## Getting an API Key
+
+**Free Tier Available:** The Replicate API is a commercial product but offers a free tier. No credit card is required for the free tier.
+
+To get an API key, first create a Replicate account, then visit the link below.
+
+- https://platform.reka.ai/apikeys
+
+
+## [Replicate Documentation](https://replicate.com/docs)
+
+[Replicate documentation](https://replicate.com/docs) is available [here](https://replicate.com/docs).

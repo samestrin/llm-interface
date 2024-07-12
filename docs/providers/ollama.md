@@ -1,3 +1,5 @@
+![Ollama](https://ollama.com/public/og.png)
+
 # Ollama
 
 Ollama is an open-source project that allows users to run large language models (LLMs) on their local devices. It aims to make LLMs more accessible and affordable by providing a user-friendly interface and removing the need for expensive cloud computing resources. Ollama supports various models and offers features like model downloading, running, and fine-tuning, enabling users to customize and experiment with LLMs for a variety of applications.
@@ -6,8 +8,27 @@ Ollama is an open-source project that allows users to run large language models 
 
 - `ollama`
 
+### Example Usage
 
-## Model Aliases
+```javascript
+const { LLMInterface } = require('llm-interface');
+
+LLMInterface.setApiKey({'ollama': process.env.OLLAMA_API_KEY});
+
+async function main() {
+  try {
+    const response = await LLMInterface.sendMessage('ollama', 'Explain the importance of low latency LLMs.');
+    console.log(response.results);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+main();
+```
+
+### Model Aliases
 
 The following model aliases are provided for this provider. 
 
@@ -15,7 +36,7 @@ The following model aliases are provided for this provider.
 - `large`: llama3
 - `small`: llama3
 
-## Embeddings
+### Embeddings
 
 - `default`: all-minilm
 - `large`: all-minilm
@@ -26,24 +47,28 @@ The following model aliases are provided for this provider.
 
 The following values can be passed through `options`.
 
-- `context`: _Details not available, please refer to Ollama documentation._
-- `format`: _Details not available, please refer to Ollama documentation._
-- `keep_alive`: _Details not available, please refer to Ollama documentation._
-- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
-- `options`: _Details not available, please refer to Ollama documentation._
-- `raw`: _Details not available, please refer to Ollama documentation._
-- `stream`: If set, partial message deltas will be sent, similar to ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
-- `system`: Defines the role and instructions for the system component of the AI interaction, guiding the overall behavior.
-- `template`: _Details not available, please refer to Ollama documentation._
+- `format`: _Details not available, please refer to the LLM provider documentation._
+- `keep_alive`: _Details not available, please refer to the LLM provider documentation._
+- `options`: _Details not available, please refer to the LLM provider documentation._
+- `stream`: _Details not available, please refer to the LLM provider documentation._
 
 
-## Features
+### Features
 
 - Native JSON Mode: true
 - Streaming: true
 - Embeddings: true
 
 
-## Ollama Documentation](undefined
+## Getting an API Key
+
+**No API Key (Local URL):**  This is not a traditional API so no API key is required. However, a URL(s) is required to use this service. (Ensure you have the matching models installed locally)
+
+To get an API key, first create an Ollama account, then visit the link below.
+
+- http://localhost:11434/api/chat
+
+
+## [Ollama Documentation](https://github.com/ollama/ollama/blob/main/docs/api.md)
 
 [Ollama documentation](https://github.com/ollama/ollama/blob/main/docs/api.md) is available [here](https://github.com/ollama/ollama/blob/main/docs/api.md).

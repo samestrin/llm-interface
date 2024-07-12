@@ -4,12 +4,15 @@
 
 - [LLMInterface](#llminterface)
   - [getAllModelNames()](#getallmodelnames)
-  - [getModelConfigValue(interfaceName, key)](#getmodelconfigvalueinterfacename-key)
+  - [getInterfaceConfigValue(interfaceName, key)](#getInterfaceConfigValueinterfacename-key)
   - [setApiKey(interfaceNames, apiKey)](#setapikeyinterfacenames-apikey)
   - [setModelAlias(interfaceName, alias, name, tokens = null)](#setmodelaliasinterfacename-alias-name-tokens--null)
   - [configureCache(cacheConfig = {})](#configurecachecacheconfig--)
+  - [flushCache()](#flushcache)
   - [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](#sendmessageinterfacename-message-options---interfaceoptions--)
   - [streamMessage(interfaceName, message, options = {})](#streammessageinterfacename-message-options--)
+  - [embedding(interfaceName, embeddingString, options = {}, interfaceOptions = {})](#embeddinginterfacename-embeddingstring-options---interfaceoptions--)
+  - [chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})](#chatcompletionscreateinterfacename-message-options---interfaceoptions--)
   - [Supported Interface Names](#supported-interface-names)
 - [LLMInterfaceSendMessage](#llminterfacesendmessage)
   - [LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})](#llminterfacesendmessageinterfacename-apikey-message-options---interfaceoptions--)
@@ -22,59 +25,55 @@
 - [Interface Options Object](#interface-options-object)
   - [Structure of an Interface Options Object](#structure-of-an-interface-options-object)
 - [Caching](#caching)
-   - [Simple Cache](#simple-cache)
-     - [Example Usage](#example-usage-1)
-   - [Flat Cache](#flat-cache)
-     - [Installation](#installation-1)
-     - [Example Usage](#example-usage-2)
-   - [Cache Manager](#cache-manager)
-     - [Installation](#installation-2)
-     - [Example Usage](#example-usage-3)
-     - [Advanced Backends](#advanced-backends)
-       - [Redis](#redis)
-       - [Memcached](#memcached)
-       - [MongoDB](#mongodb)
-   - [Memory Cache](#memory-cache)
-     - [Example Usage](#example-usage-4)
+  - [Simple Cache](#simple-cache)
+    - [Example Usage](#example-usage-1)
+  - [Flat Cache](#flat-cache)
+    - [Installation](#installation-1)
+    - [Example Usage](#example-usage-2)
+  - [Cache Manager](#cache-manager)
+    - [Installation](#installation-2)
+    - [Example Usage](#example-usage-3)
+    - [Advanced Backends](#advanced-backends)
+      - [Redis](#redis)
+      - [Memcached](#memcached)
+      - [MongoDB](#mongodb)
+  - [Memory Cache](#memory-cache)
+    - [Example Usage](#example-usage-4)
 - [Examples](#examples)
 
 ## LLMInterface
 
 To use the `LLMInterface.*` functions, first import `LLMInterface`. You can do this using either the CommonJS `require` syntax:
 
-```javascriptjavascript
+```javascript
 const { LLMInterface } = require('llm-interface');
-
 ```
 
 or the ES6 `import` syntax:
 
-```javascriptjavascript
+```javascript
 import { LLMInterface } from 'llm-interface';
-
 ```
 
 ### getAllModelNames()
 
 Retrieves a sorted list of all model names available in the configuration.
 
-```javascriptjavascript
+```javascript
 const modelNames = LLMInterface.getAllModelNames();
 console.log(modelNames);
-
 ```
 
-### getModelConfigValue(interfaceName, key)
+### getInterfaceConfigValue(interfaceName, key)
 
 Retrieves a specific configuration value for a given model.
 
 - `interfaceName` (String): The name of the model.
 - `key` (String): The configuration key to retrieve.
 
-```javascriptjavascript
-const apiKey = LLMInterface.getModelConfigValue('openai', 'apiKey');
+```javascript
+const apiKey = LLMInterface.getInterfaceConfigValue('openai', 'apiKey');
 console.log(apiKey);
-
 ```
 
 ### setApiKey(interfaceNames, apiKey)
@@ -84,11 +83,10 @@ Sets the API key for one or multiple interfaces.
 - `interfaceNames` (String|Object): The name of the interface or an object mapping interface names to API keys.
 - `apiKey` (String): The API key.
 
-```javascriptjavascript
+```javascript
 LLMInterface.setApiKey('openai', 'your-api-key');
 // or
 LLMInterface.setApiKey({ openai: 'your-api-key', cohere: 'another-api-key' });
-
 ```
 
 ### setModelAlias(interfaceName, alias, name, tokens = null)
@@ -100,106 +98,159 @@ Sets an alias for a model within a specific interface.
 - `name` (String): The model name.
 - `tokens` (Number, optional): The token limit for the model.
 
-```javascriptjavascript
+```javascript
 LLMInterface.setModelAlias('openai', 'default', 'gpt-3.5-turbo', 4096);
-
 ```
 
 ### configureCache(cacheConfig = {})
 
-Configures the cache system for the interface.
+Configures the cache system for the session. LLMInterface supports three caching mechanisms: `simple-cache`, `flat-cache`, and `cache-manager`. To use `flat-cache` or `cache-manager`, you need to install the corresponding packages.
 
 - `cacheConfig` (Object): Configuration options for the cache.
 
-```javascriptjavascript
+```javascript
 LLMInterface.configureCache({ cache: 'simple-cache', path: './cache' });
+```
 
+### flushCache()
+
+Clears the active cache for the session. Ensure you run LLMInterface.configureCache() beforehand.
+
+```javascript
+LLMInterface.flushCache();
 ```
 
 ### sendMessage(interfaceName, message, options = {}, interfaceOptions = {})
 
-Sends a message to a specified interface and returns the response. _The specified interface must aleady have its API key set, or it must be passed using the array format._
+Sends a message to a specified interface and returns the response. _The specified interface must already have its API key set, or it must be passed using the array format._
 
 - `interfaceName` (String|Array): The name of the LLM interface or an array containing the name of the LLM interface and the API key.
 - `message` (String|Object): The message to send.
-- `options` (Object, optional): Additional options for the message.
+- `options` (Object|number, optional): Additional options for the embedding generation. If a number, it represents the cache timeout in seconds.
 - `interfaceOptions` (Object, optional): Interface-specific options.
 
-```javascriptjavascript
+```javascript
+// use this after you've set your API key
 try {
-  const response = await LLMInterface.sendMessage('openai', 'Hello, world!', { max_tokens: 100 });
+  const response = await LLMInterface.sendMessage('openai', 'Hello, world!', {
+    max_tokens: 100,
+  });
   console.log(response.results);
 } catch (error) {
-  console.error(error.message)
+  console.error(error.message);
 }
-// or
+// or use this to set your API key in the same command
 try {
-  const response = await LLMInterface.sendMessage(['openai', 'your-api-key'], 'Hello, world!', { max_tokens: 100 });
+  const response = await LLMInterface.sendMessage(
+    ['openai', 'your-api-key'],
+    'Hello, world!',
+    { max_tokens: 100 },
+  );
   console.log(response.results);
 } catch (error) {
-  console.error(error.message)
+  console.error(error.message);
 }
-
 ```
 
 ### streamMessage(interfaceName, message, options = {})
 
-Streams a message to a specified interface and returns the response stream.
+Streams a message to a specified interface and returns the response stream. _You can also stream responses using LLMInterface.sendMessage, just pass options.stream=true._
 
 - `interfaceName` (String): The name of the LLM interface.
 - `message` (String|Object): The message to send.
-- `options` (Object, optional): Additional options for the message.
+- `options` (Object|number, optional): Additional options for the embedding generation. If a number, it represents the cache timeout in seconds.
 
-```javascriptjavascript
+```javascript
 try {
-  const stream = await LLMInterface.streamMessage('openai', 'Hello, world!', { max_tokens: 100 });
+  const stream = await LLMInterface.streamMessage('openai', 'Hello, world!', {
+    max_tokens: 100,
+  });
   const result = await processStream(stream.data);
 } catch (error) {
-  console.error(error.message)
+  console.error(error.message);
 }
+```
+
+_processStream(stream) is not part of LLMInterface. It is defined in the[streaming mode example](/examples/misc/streaming-mode.js)._
+
+### embedding(interfaceName, embeddingString, options = {}, interfaceOptions = {})
+
+Generates embeddings using a specified LLM interface.
+
+- `interfaceName` (String): The name of the LLM interface to use.
+- `embeddingString` (String): The string to generate embeddings for.
+- `options` (Object|number, optional): Additional options for the embedding generation. If a number, it represents the cache timeout in seconds.
+- `interfaceOptions` (Object, optional): Options specific to the LLM interface.
+- `defaultProvider` (String, optional): The default provider to use if the specified interface doesn't support embeddings. Defaults to 'voyage'.
+
 ```javascript
-_processStream(stream) is defined in the [streaming mode example](/examples/misc/streaming-mode.js)._
+try {
+  const embeddings = await LLMInterface.embedding('openai', 'Text to embed', {
+    max_tokens: 100,
+  });
+  console.log(embeddings);
+} catch (error) {
+  console.error(error.message);
+}
+```
+
+### chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})
+
+Alias for `LLMInterface.sendMessage` (For those OpenAI fans :)).
+
+```javascript
+const response = await LLMInterface.chat.completions.create(
+  'openai',
+  'Hello, world!',
+  { max_tokens: 100 },
+);
+console.log(response.results);
+```
 
 ### Supported Interface Names
 
-The following are supported LLM providers (in alphabetical order):
+The following are the interfaceNames for each supported LLM provider (in alphabetical order):
 
-- `ai21` - AI21 Studio
-- `aimlapi` - AIML API
-- `anyscale` - Anyscale
-- `anthropic` - Anthropic
-- `bigmodel` - Bigmodel
-- `cloudflareai` - Cloudflare AI
-- `cohere` - Cohere
-- `corcel` - Corcel
-- `deepinfra` - DeepInfra
-- `deepseek` - Deepseek
-- `fireworksai` - Fireworks AI
-- `forefront` - Forefront
-- `friendliai` - Friendli AI
-- `gemini` - Google Gemini
-- `gooseai` - Goose AI
-- `groq` - Groq
-- `huggingface` - Hugging Face
-- `hyperbeeai` - Hyperbee AI
-- `lamini` - Lamini
-- `llamacpp` - LLaMA.cpp
-- `mistralai` - Mistral AI
-- `monsterapi` - Monster API
-- `neetsai` - Neets AI
-- `novitaai` - Novita AI
-- `nvidia` - NVIDIA
-- `octoml` - Octo AI
-- `ollama` - Ollama
-- `openai` - OpenAI
-- `perplexity` - Perplexity
-- `rekaai` - Reka AI
-- `replicate` - Replicate
-- `shuttleai` - Shuttle AI
-- `thebai` - TheB.AI
-- `togetherai` - Together AI
-- `watsonxai` - watsonx.ai
-- `writer` - Writer
+- `ai21` - [AI21 Studio](providers/ai21)
+- `ailayer` - [AiLAYER](providers/ailayer)
+- `aimlapi` - [AIMLAPI](providers/aimlapi)
+- `anthropic` - [Anthropic](providers/anthropic)
+- `anyscale` - [Anyscale](providers/anyscale)
+- `cloudflareai` - [Cloudflare AI](providers/cloudflareai)
+- `cohere` - [Cohere](providers/cohere)
+- `corcel` - [Corcel](providers/corcel)
+- `deepinfra` - [DeepInfra](providers/deepinfra)
+- `deepseek` - [DeepSeek](providers/deepseek)
+- `fireworksai` - [Fireworks AI](providers/fireworksai)
+- `forefront` - [Forefront AI](providers/forefront)
+- `friendliai` - [FriendliAI](providers/friendliai)
+- `gemini` - [Google Gemini](providers/gemini)
+- `gooseai` - [GooseAI](providers/gooseai)
+- `groq` - [Groq](providers/groq)
+- `huggingface` - [Hugging Face Inference API](providers/huggingface)
+- `hyperbeeai` - [HyperBee AI](providers/hyperbeeai)
+- `lamini` - [Lamini](providers/lamini)
+- `llamacpp` - [LLaMA.CPP](providers/llamacpp)
+- `azureai` - [Microsoft Azure AI](providers/azureai)
+- `mistralai` - [Mistral AI](providers/mistralai)
+- `monsterapi` - [Monster API](providers/monsterapi)
+- `neetsai` - [Neets.ai](providers/neetsai)
+- `novitaai` - [Novita AI](providers/novitaai)
+- `nvidia` - [NVIDIA AI](providers/nvidia)
+- `octoai` - [OctoAI](providers/octoai)
+- `ollama` - [Ollama](providers/ollama)
+- `openai` - [OpenAI](providers/openai)
+- `perplexity` - [Perplexity AI](providers/perplexity)
+- `rekaai` - [Reka AI](providers/rekaai)
+- `replicate` - [Replicate](providers/replicate)
+- `shuttleai` - [Shuttle AI](providers/shuttleai)
+- `siliconflow` - [SiliconFlow](providers/siliconflow)
+- `thebai` - [TheB.ai](providers/thebai)
+- `togetherai` - [Together AI](providers/togetherai)
+- `voyage` - [Voyage AI](providers/voyage)
+- `watsonxai` - [Watsonx AI](providers/watsonxai)
+- `writer` - [Writer](providers/writer)
+- `zhipuai` - [Zhipu AI](providers/zhipuai)
 
 _This is regularly updated! :)_
 
@@ -207,16 +258,14 @@ _This is regularly updated! :)_
 
 To use the `LLMInterfaceSendMessage` function, first import `LLMInterfaceSendMessage`. You can do this using either the CommonJS `require` syntax:
 
-```javascriptjavascript
+```javascript
 const { LLMInterfaceSendMessage } = require('llm-interface');
-
 ```
 
 or the ES6 `import` syntax:
 
-```javascriptjavascript
+```javascript
 import { LLMInterfaceSendMessage } from 'llm-interface';
-
 ```
 
 ### LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})
@@ -229,30 +278,32 @@ Sends a message using the specified LLM interface.
 - `options` (Object, optional): Additional options for the message.
 - `interfaceOptions` (Object, optional): Interface-specific options.
 
-```javascriptjavascript
+```javascript
 try {
-  const response = await LLMInterfaceSendMessage('openai', 'your-api-key', 'Hello, world!', { max_tokens: 100 });
+  const response = await LLMInterfaceSendMessage(
+    'openai',
+    'your-api-key',
+    'Hello, world!',
+    { max_tokens: 100 },
+  );
   console.log(response.results);
 } catch (error) {
-  console.error(error.message)
+  console.error(error.message);
 }
-
 ```
 
 ## LLMInterfaceStreamMessage
 
 To use the `LLMInterfaceStreamMessage` function, first import `LLMInterfaceStreamMessage`. You can do this using either the CommonJS `require` syntax:
 
-```javascriptjavascript
+```javascript
 const { LLMInterfaceStreamMessage } = require('llm-interface');
-
 ```
 
 or the ES6 `import` syntax:
 
-```javascriptjavascript
+```javascript
 import { LLMInterfaceStreamMessage } from 'llm-interface';
-
 ```
 
 ### LLMInterfaceStreamMessage(interfaceName, apiKey, message, options = {})
@@ -264,19 +315,19 @@ Streams a message using the specified LLM interface.
 - `message` (String|Object): The message to send.
 - `options` (Object, optional): Additional options for the message.
 
-```javascriptjavascript
+````javascript
 try {}
   const stream = await LLMInterfaceStreamMessage('openai', 'your-api-key', 'Hello, world!', { max_tokens: 100 });
   const result = await processStream(stream.data);
 } catch (error) {
   console.error(error.message)
 }
-```javascript
+```
 _processStream(stream) is defined in the [streaming mode example](/examples/misc/streaming-mode.js)._
 
 ## Message Object
 
-The message object is a critical component when interacting with the various LLM APIs through the `llm-interface` package. It contains the data that will be sent to the LLM for processing and allows for complex conversations. Below is a detailed explanation of a valid message object.
+The message object is a critical component when interacting with the various LLM APIs through the LLMInterface npm module. It contains the data that will be sent to the LLM for processing and allows for complex conversations. Below is a detailed explanation of the structure of a valid message object."
 
 ### Structure of a Message Object
 
@@ -285,11 +336,11 @@ A valid message object typically includes the following properties:
 - `model`: A string specifying the model to use for the request (optional).
 - `messages`: An array of message objects that form the conversation history.
 
-Different LLMs may have their own message object rules. For example, both Anthropic and Gemini always expect the initial message to have the `user` role. Please be aware of this and structure your message objects accordingly. _`llm-interface` will attempt to auto-correct invalid objects where possible._
+Different LLMs may have their own message object rules. For example, both Anthropic and Gemini always expect the initial message to have the `user` role. Please be aware of this and structure your message objects accordingly. _LLMInterface will attempt to auto-correct invalid objects where possible._
 
 ## Options Object
 
-The options object is an optional component that lets you send LLM provider specific parameters. While paramter names are fairly consistent, they can vary slightly, so its important to pay attention. However, `max_token` is a special value, and is automatically normalized.
+The options object is an optional component that lets you send LLM provider specific parameters. While parameter names are fairly consistent, they can vary slightly, so it is important to pay attention. However, `max_token` is a special value, and is automatically normalized.
 
 ### Structure of an Options Object
 
@@ -306,17 +357,17 @@ If `options.stream` is true, then a LLMInterface.sendMessage() or LLMInterfaceSe
 
 If `options.response_format` is set to "json_object", along with including a JSON schema in the prompt, many LLM providers will return a valid JSON object. _Not all providers support this feature._
 
-```javascriptjavascript
+```javascript
 const options = {
   max_tokens: 1024,
   temperature: 0.3 // Lower values are more deterministic, Higher are more creative
 }
 
-```
+````
 
 ## Interface Options Object
 
-The `interfaceOptions` is an optional component when interacting with the various LLM APIs through the `llm-interface` package. It contains interface-specific configuration.
+The `interfaceOptions` is an optional component when interacting with the various LLM APIs through the LLMInterface npm module. It contains interface-specific configuration.
 
 ### Structure of an Interface Options Object
 
@@ -328,24 +379,23 @@ A valid `interfaceOptions` object can contain any of the following properties:
 - `attemptJsonRepair` (default: false)
 - `includeOriginalResponse` (default: false)
 
-```javascriptjavascript
+```javascript
 const interfaceOptions = {
   retryAttempts: 3,
   retryMultiplier: 0.5, // llm-interface uses progressive delays, Lower values are faster
   cacheTimeoutSeconds: 60,
   attemptJsonRepair: true,
-  includeOriginalResponse: true
+  includeOriginalResponse: true,
 };
-
 ```
 
 ## Caching
 
-Caching is an essential feature that can significantly improve the performance of your application by reducing the number of requests made to the LLM APIs. The `llm-interface` package supports various caching mechanisms, each with its own use case and configuration options. Below are examples showing how to use different caching strategies.
+Caching is an essential feature that can significantly improve the performance of your application by reducing the number of requests made to the LLM APIs. The LLMInterface npm module supports various caching mechanisms, each with its own use case and configuration options. Below are examples showing how to use different caching strategies.
 
 ### Simple Cache
 
-Simple Cache uses the default cache engine provided by the `llm-interface` package. It is suitable for basic caching needs without additional dependencies.
+Simple Cache uses the default cache engine provided by the LLMInterface npm module. It is suitable for basic caching needs without additional dependencies.
 
 #### Example Usage
 
@@ -353,7 +403,6 @@ Here's how to configure the Simple Cache:
 
 ```javascript
 LLMInterface.configureCache({ cache: 'simple-cache' });
-
 ```
 
 ### Flat Cache
@@ -375,16 +424,15 @@ Here's how to configure the Flat Cache:
 
 ```javascript
 LLMInterface.configureCache({ cache: 'flat-cache' });
-
 ```
 
 ### Cache Manager
 
-Cache Manager is a well-known package that supports many backends for caching. It allows you to use various storage systems for caching, such as in-memory, Redis, and file system-based caches. This flexibility makes it a robust choice for different caching needs.
+Cache Manager is a well-known package that supports many backends for caching. It allows you to use various storage systems for caching, such as in-memory, Redis, SQLite, and file system-based caches. This flexibility makes it a robust choice for different caching needs.
 
 #### Installation
 
-Before using Cache Manager, install the necessary packages:
+Before using Cache Manager, install the necessary packages, include the packages for your store:
 
 ```javascript
 npm install cache-manager@4.0.0 cache-manager-fs-hash
@@ -393,7 +441,7 @@ npm install cache-manager@4.0.0 cache-manager-fs-hash
 
 #### Example Usage
 
-Here's how to configure the Cache Manager with a file system-based backend:
+Here's how to configure the Cache Manager with a file system-based store (using cache-manager-fs-hash):
 
 ```javascript
 const fsStore = require('cache-manager-fs-hash');
@@ -410,7 +458,6 @@ LLMInterface.configureCache({
     },
   },
 });
-
 ```
 
 #### Advanced Backends
@@ -433,7 +480,6 @@ LLMInterface.configureCache({
     },
   },
 });
-
 ```
 
 - **Memcached**
@@ -451,7 +497,6 @@ LLMInterface.configureCache({
     },
   },
 });
-
 ```
 
 - **MongoDB**
@@ -470,7 +515,6 @@ LLMInterface.configureCache({
     },
   },
 });
-
 ```
 
 ### Memory Cache
@@ -480,17 +524,5 @@ Memory Cache stores responses in memory for quick retrieval during subsequent re
 #### Example Usage
 
 ```javascript
-LLMInterface.configureCache({ cache: 'flat-cache' });
-
+LLMInterface.configureCache({ cache: 'memory-cache' });
 ```
-
-## Examples
-
-Various [examples](/examples) are available, in alphabetical order they are:
-
-- [Caching](/examples/caching)
-- [Interface Options](/examples/interface-options)
-- [JSON](/examples/json)
-- [Langchain.js](/examples/langchain)
-- [Miscellaneous](/examples/misc)
-- [Mixture of Agents (MoA)](/examples/moa)

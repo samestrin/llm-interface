@@ -2,14 +2,33 @@
 
 # [Lamini](https://www.lamini.ai)
 
-Lamini is an enterprise-focused AI platform that enables businesses to build and deploy custom large language models (LLMs) with high accuracy and minimal hallucinations. Their platform offers tools like Memory Tuning, which ensures precise factual recall, and guaranteed JSON output for seamless integration with existing applications. Lamini models can be run in various environments, including on-premises and public clouds, with support for both Nvidia and AMD GPUs. Their solutions cater to diverse industries, emphasizing data security and customization to meet specific business needs.
+Lamini is an enterprise-focused AI platform that enables businesses to build and deploy custom large language models (LLMs) with high accuracy and minimal hallucinations. Their platform offers tools like Memory Tuning, which ensures precise factual recall, and guaranteed JSON output for seamless integration with existing applications. Lamini models can be run in various environments, including on-premises and public clouds, with support for both NVIDIA and AMD GPUs. Their solutions cater to diverse industries, emphasizing data security and customization to meet specific business needs.
 
 ## Interface Name
 
 - `lamini`
 
+### Example Usage
 
-## Model Aliases
+```javascript
+const { LLMInterface } = require('llm-interface');
+
+LLMInterface.setApiKey({'lamini': process.env.LAMINI_API_KEY});
+
+async function main() {
+  try {
+    const response = await LLMInterface.sendMessage('lamini', 'Explain the importance of low latency LLMs.');
+    console.log(response.results);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+main();
+```
+
+### Model Aliases
 
 The following model aliases are provided for this provider. 
 
@@ -18,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: microsoft/phi-2
 - `agent`: meta-llama/Meta-Llama-3-8B-Instruct
 
-## Embeddings
+### Embeddings
 
 - `default`: sentence-transformers/all-MiniLM-L6-v2
 - `large`: sentence-transformers/all-MiniLM-L6-v2
@@ -29,8 +48,8 @@ The following model aliases are provided for this provider.
 
 The following values can be passed through `options`.
 
-- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
-- `output_type`: _Details not available, please refer to Lamini documentation._
+- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `output_type`: _Details not available, please refer to the LLM provider documentation._
 
 
 ## Features
@@ -38,6 +57,15 @@ The following values can be passed through `options`.
 - Embeddings: true
 
 
-## Lamini Documentation](undefined
+## Getting an API Key
+
+**Free Tier Available:** The Lamini API offers a free plan with 200 inference calls per month (maximum 5,000 total). The API key is immediately accessible upon visiting the link.
+
+To get an API key, first create a Lamini account, then visit the link below.
+
+- https://app.lamini.ai/account
+
+
+## [Lamini Documentation](https://lamini-ai.github.io/about/)
 
 [Lamini documentation](https://lamini-ai.github.io/about/) is available [here](https://lamini-ai.github.io/about/).

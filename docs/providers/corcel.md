@@ -8,23 +8,49 @@ Corcel is a platform that leverages decentralized AI to offer a variety of tools
 
 - `corcel`
 
+### Example Usage
 
-## Model Aliases
+```javascript
+const { LLMInterface } = require('llm-interface');
+
+LLMInterface.setApiKey({'corcel': process.env.CORCEL_API_KEY});
+
+async function main() {
+  try {
+    const response = await LLMInterface.sendMessage('corcel', 'Explain the importance of low latency LLMs.');
+    console.log(response.results);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+main();
+```
+
+### Model Aliases
 
 The following model aliases are provided for this provider. 
 
-- `default`: llama-3
+- `default`: gpt-4-turbo-2024-04-09
 - `large`: gpt-4o
-- `small`: llama-3
-- `agent`: gpt-4o
+- `small`: cortext-lite
+- `agent`: gemini-pro
 
 
 ## Options
 
 The following values can be passed through `options`.
 
-- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
-- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
+- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `stream`: _Details not available, please refer to the LLM provider documentation._
+- `temperature`: _Details not available, please refer to the LLM provider documentation._
+- `top_p`: _Details not available, please refer to the LLM provider documentation._
+
+
+### Features
+
+- Streaming: true
 
 
 ## Getting an API Key
@@ -36,6 +62,6 @@ To get an API key, first create a Corcel account, then visit the link below.
 - https://app.corcel.io/dashboard
 
 
-## Corcel Documentation](undefined
+## [Corcel Documentation](https://docs.corcel.io/reference/the-corcel-api)
 
 [Corcel documentation](https://docs.corcel.io/reference/the-corcel-api) is available [here](https://docs.corcel.io/reference/the-corcel-api).

@@ -2,264 +2,362 @@
 
 ## Table of Contents
 
-1. [Getting Started](#getting-started)
-    - [OpenAI](#openai)
-    - [AI21 Studio](#ai21-studio)
-    - [Anthropic](#anthropic)
-    - [Anyscale](#anyscale)
-    - [Bigmodel](#bigmodel)
-    - [Cloudflare AI](#cloudflare-ai)
-    - [Cohere](#cohere)
-    - [Corcel](#corcel)
-    - [DeepInfra](#deepinfra)
-    - [DeepSeek](#deepseek)
-    - [Fireworks AI](#fireworks-ai)
-    - [Forefront](#forefront)
-    - [Friendli AI](#friendli-ai)
-    - [Gemini](#gemini)
-    - [Goose AI](#goose-ai)
-    - [Groq](#groq)
-    - [Hugging Face](#hugging-face)
-    - [Hyperbee AI](#hyperbee-ai)
-    - [MistralAI](#mistralai)
-    - [Monster API](#monster-api)
-    - [Neets AI](#neets-ai)
-    - [Novita AI](#novita-ai)
-    - [NVIDIA](#nvidia)
-    - [Octo AI](#octo-ai)
-    - [Perplexity](#perplexity)
-    - [Reka AI](#reka-ai)
-    - [Replicate](#replicate)
-    - [Shuttle AI](#shuttle-ai)
-    - [TheB.AI](#thebai)
-    - [Together AI](#together-ai)
-    - [watsonx.ai](#watsonxai)
-    - [LLaMA.cpp](#llamacpp)
-    - [Ollama](#ollama)
+1.[Getting Started](#getting - started) 
+    - [AI21 Studio](#ai21) 
+    - [AiLAYER](#ailayer) 
+    - [AIMLAPI](#aimlapi) 
+    - [Anthropic](#anthropic) 
+    - [Anyscale](#anyscale) 
+    - [Cloudflare AI](#cloudflareai) 
+    - [Cohere](#cohere) 
+    - [Corcel](#corcel) 
+    - [DeepInfra](#deepinfra) 
+    - [DeepSeek](#deepseek) 
+    - [Fireworks AI](#fireworksai) 
+    - [Forefront AI](#forefront) 
+    - [FriendliAI](#friendliai) 
+    - [Google Gemini](#gemini) 
+    - [GooseAI](#gooseai) 
+    - [Groq](#groq) 
+    - [Hugging Face Inference API](#huggingface) 
+    - [HyperBee AI](#hyperbeeai) 
+    - [Lamini](#lamini) 
+    - [LLaMA.CPP](#llamacpp) 
+    - [Mistral AI](#mistralai) 
+    - [Monster API](#monsterapi) 
+    - [Neets.ai](#neetsai) 
+    - [Novita AI](#novitaai) 
+    - [NVIDIA AI](#nvidia) 
+    - [OctoAI](#octoai) 
+    - [Ollama](#ollama) 
+    - [OpenAI](#openai) 
+    - [Perplexity AI](#perplexity) 
+    - [Reka AI](#rekaai) 
+    - [Replicate](#replicate) 
+    - [Shuttle AI](#shuttleai) 
+    - [TheB.ai](#thebai) 
+    - [Together AI](#togetherai) 
+    - [Voyage AI](#voyage) 
+    - [Watsonx AI](#watsonxai) 
+    - [Writer](#writer) 
+    - [Zhipu AI](#zhipuai) 
 
 ## Getting Started
 
-Getting API keys for your project is a simple process. You'll need to sign-up, then visit the URLs below generate your desired API keys. However, most LLMs require a credit card.
-
-### OpenAI
-
-The OpenAI API requires a credit card.
-
-- https://platform.openai.com/api-keys
+Getting API keys for your project is a simple process.You'll need to sign-up, then visit the URLs below to generate your desired API keys. However, most LLMs require a credit card.
 
 ### AI21 Studio
 
-The AI21 API is a commercial product, but it currently does not require a credit card, and comes with a $90 credit.
+**Commercial with Free Trial**: The AI21 API is a commercial product but offers a free trial with $90 in credits. No credit card is required initially.
 
 - https://studio.ai21.com/account/api-key?source=docs
 
+[Learn more about AI21 Studio](./providers/ai21.md)
+
+### AiLAYER
+
+**Details Pending**
+
+- https://ailayer.ai/home/demo
+
+After visiting the URL, click on "Get Your API Key".
+
+[Learn more about AiLAYER](./providers/ailayer.md)
+
+### AIMLAPI
+
+**Free Tier Available**: The AIMLAPI API offers a free tier and commercial accounts. A credit card is not required for the free tier.
+
+- https://aimlapi.com/app/keys
+
+[Learn more about AIMLAPI](./providers/aimlapi.md)
+
 ### Anthropic
 
-The Anthropic API requires a credit card.
+**Commercial (Credit Card Required)**: The Anthropic API is a commercial product and requires a credit card to get started.
 
 - https://console.anthropic.com/settings/keys
 
+[Learn more about Anthropic](./providers/anthropic.md)
+
 ### Anyscale
 
-The Anyscale API does not require a credit card and comes with $10 credit.
+**Commercial with Free Trial**: The Anyscale API does not require a credit card and comes with $10 credit to get started.
 
 - https://console.anyscale.com/v2/api-keys
 
-### Bigmodel
-
-I'm not sure I can help much here since I don't speak Chinese. However this link will still take you to the API key page.
-
-https://open.bigmodel.cn/usercenter/apikeys
+[Learn more about Anyscale](./providers/anyscale.md)
 
 ### Cloudflare AI
 
-The Cloudflare AI API offers a free tier and and commercial accounts. A credit is not required for for the free tier.
+**Free Tier Available**: The Cloudflare AI API offers a free tier and commercial accounts. A credit card is not required for the free tier.
 
 - https://dash.cloudflareai.com/profile/api-tokens
 
+[Learn more about Cloudflare AI](./providers/cloudflareai.md)
+
 ### Cohere
 
-The Cohere API offers trial keys. Trial keys are rate-limited, and cannot be used for commercial purposes.
+The Cohere API offers trial keys with rate limits. These keys are not intended for commercial use.
 
 - https://dashboard.cohere.com/api-keys
 
-# Corcel
+[Learn more about Cohere](./providers/cohere.md)
 
-The AI21 API is a commercial product, but it currently does not require a credit card, and comes with a $1 credit. However, when you need to upgrade, you'll have to send an email, but they were very responsive.
+### Corcel
+
+**Commercial with Free Trial**: The Corcel API is a commercial product but offers a $1 credit to get started. No credit card is required initially.
 
 - https://app.corcel.io/dashboard
 
+[Learn more about Corcel](./providers/corcel.md)
+
 ### DeepInfra
 
-The DeepInfra API is commercial but new accounts will start with a $1.80 credit.
+**Commercial with Free Trial**: The DeepInfra API is a commercial product, but new accounts start with a $1.80 credit.
 
 - https://deepinfra.com/dash/api_keys
 
+[Learn more about DeepInfra](./providers/deepinfra.md)
+
 ### DeepSeek
 
-The DeepSeek API is commercial and required a credit card or debit card to get started.
+**Commercial with Free Trial**: The DeepSeek API is a commercial product and requires a credit or debit card to get started.
 
 - https://platform.deepseek.com/api_keys
 
+[Learn more about DeepSeek](./providers/deepseek.md)
+
 ### Fireworks AI
 
-The Fireworks AI API offers a free developer tier and commercial accounts. A Credit is not required for the free developer tier.
+**Free Tier Available**: The Fireworks AI API offers a free developer tier and commercial accounts. No credit card is required for the free tier.
 
 - https://fireworks.ai/api-keys
 
-### Forefront
+[Learn more about Fireworks AI](./providers/fireworksai.md)
 
-The Forefront API is commercial but it comes with $20 free credit.
+### Forefront AI
+
+**Commercial with Free Trial**: The Forefront API is a commercial product but offers $20 in free credits to get started.
 
 - https://platform.forefront.ai/app/api-keys
 
-### Friendli AI
+[Learn more about Forefront AI](./providers/forefront.md)
 
-The Friendli AI API is commercial but it comes with a $5.00 credit.
+### FriendliAI
+
+**Commercial with Free Trial**: The Friendli AI API is a commercial product but offers a $5.00 credit to get started.
 
 - https://suite.friendli.ai/user-settings/tokens
 
-### Gemini
+[Learn more about FriendliAI](./providers/friendliai.md)
 
-The Gemini API is currently free.
+### Google Gemini
+
+**Free**: The Gemini API is currently free to use.
 
 - https://makersuite.google.com/app/apikey
 
-### Goose AI
+[Learn more about Google Gemini](./providers/gemini.md)
 
-The Goose AI API is a commercial product, but it currently does not require a credit card, and comes with a $9.99 credit.
+### GooseAI
+
+**Commercial with Free Trial**: The Goose AI API is a commercial product but offers a $9.99 credit to get started. No credit card is required initially.
 
 - https://goose.ai/dashboard/apikeys
 
+[Learn more about GooseAI](./providers/gooseai.md)
+
 ### Groq
 
-The Groq API is currently free.
+**Free**: The Groq API is currently free to use.
 
 - https://console.groq.com/keys
 
-### Hugging Face
+[Learn more about Groq](./providers/groq.md)
 
-The Hugging Face Inference API is currently free for rate-limited, non-commercial use.
+### Hugging Face Inference API
+
+Free Tier Available (Rate Limited): The Inference API is free to use, but may be rate limited for heavy usage. Sending requests gradually is recommended to avoid errors.
 
 - https://huggingface.co/settings/tokens
 
-### Hyperbee AI
+[Learn more about Hugging Face Inference API](./providers/huggingface.md)
 
-The Hyperbee AI API is a commerical product but it does not require a credit card to get started.
+### HyperBee AI
 
-- https://platform.hyperbee.ai/
+**Commercial (Details Pending)**: The Hyperbee AI API is a commercial product.
 
-Click on Create new key below Create a new API Key
+- https://platform.hyperbee.ai/keys
+
+[Learn more about HyperBee AI](./providers/hyperbeeai.md)
 
 ### Lamini
 
-The Lamini API has a free plan that incudes 200 inference calls a month with a cap of 5,000. The API key is presented right away when you visit the link below.
+**Free Tier Available:** The Lamini API offers a free plan with 200 inference calls per month (maximum 5,000 total). The API key is immediately accessible upon visiting the link.
 
 - https://app.lamini.ai/account
 
+[Learn more about Lamini](./providers/lamini.md)
 
-### MistralAI
+### LLaMA.CPP
 
-The MistralAI API is a commercial product, but it currently does not require a credit card, and comes with a $5.00 credit.
+**No API Key (Local URL):**  This is not a traditional API so no API key is required. However, a URL(s) is required to use this service. (Ensure you have the matching models installed locally)
+
+- http://localhost:8080/v1/chat/completions
+
+[Learn more about LLaMA.CPP](./providers/llamacpp.md)
+
+### Mistral AI
+
+**Commercial with Free Trial:** The MistralAI API is a commercial product but offers a $5.00 credit to get started. No credit card is required initially.
 
 - https://console.mistralai.ai/api-keys/
 
+[Learn more about Mistral AI](./providers/mistralai.md)
+
 ### Monster API
 
-The Monster API is commercial but it comes with a free tier. You do not need to provide a credit card to get started.
+**Free Tier Available:** The Monster API is a commercial product but offers a free tier. No credit card is required to get started.
 
 - https://monsterapi.ai/user/dashboard
 
-### Neets AI
+[Learn more about Monster API](./providers/monsterapi.md)
 
-The Neets AI API is commercial but comes with a free tier. You do not need to provide a credit card to get started.
+### Neets.ai
+
+**Free Tier Available:** The Neets.ai API is a commercial product but offers a free tier. No credit card is required to get started.
 
 - https://neets.ai/keys
 
+[Learn more about Neets.ai](./providers/neetsai.md)
+
 ### Novita AI
 
-The Novita AI API is commercial but comes with a $.50 of free credit.
+**Commercial with Free Trial:** The Novita AI API is a commercial product but offers $0.50 of free credit to get started.
 
 - https://novita.ai/dashboard/key
 
-### NVIDIA
+[Learn more about Novita AI](./providers/novitaai.md)
 
-The NVIDIA API comes with 1000 credits, however they run out fast. To get an API key, first navigate to a model like:
+### NVIDIA AI
+
+**Commercial with Free Trial:** The NVIDIA API comes with 1000 credits to get started. Navigate to a specific model page to obtain your API key.
 
 - https://build.nvidia.com/meta/llama3-70b
 
-Then click "Get API Key" on the right side of the page.
+After visiting the URL, click on "Get API Key". You can find the link on the right side of the page.
 
-### Octo AI
+[Learn more about NVIDIA AI](./providers/nvidia.md)
 
-The Octo AI API is commercial, but it comes with a $5.00 credit, and does not require a credit card.
+### OctoAI
 
-- https://octoai.cloud/settings
+**Commercial with Free Trial:** The Octo AI API is a commercial product but offers a $5.00 credit to get started. No credit card is required initially. 
 
-### Perplexity
+- https://octoml.cloud/settings
 
-The Perplexity API requires a credit cards.
-
-- https://www.perplexity.ai/settings/api
-
-### Reka AI
-
-The Reka AI API requires a credit card, but currently comes with a $5.00 credit.
-
-- https://platform.reka.ai/apikeys
-
-### Replicate
-
-The Replicate API is commercial but it does offer a free tier that you can use without providing a credit card.
-
-- https://replicate.com/
-
-After you login, you will need to click "Dashboard", then "Run a model".
-
-### Shuttle AI
-
-- https://shuttleai.app/keys
-
-### TheB.AI
-
-You'll need to go dashboard.
-
-- https://beta.theb.ai/home
-
-Then click on Manage Account in the lower left, then API keys, and finally Create key.
-
-### Together AI
-
-The Together API is commercial, but it did not require a credit card, and it came with a $5.00 credit.
-
-- https://api.together.xyz/settings/api-keys
-
-### watsonx.ai
-
-The watsonx.ai API is a commercial service, but it offers a free tier of service without requiring a credit card.
-
-- https://cloud.ibm.com/iam/apikeys
-
-You will also need to setup a space and get the space id:
-
-https://dataplatform.cloud.ibm.com/ml-runtime/spaces/create-space
-
-# Writer
-
-The Writer API is a commercial service, but it offers a free tier of service with a $50.00 free credit.
-
-- https://app.writer.com/aistudio/organization/733808/api-keys
-
-First you need to click Create API app, then you can create an api key.
-
-### LLaMA.cpp
-
-Instead of an API key, you'll need a URL to use LLaMA.cpp. This is provided by LLaMA.cpp HTTP Server. This is the default web server location.
-
-- http://localhost:8080/v1/chat/completions.
+[Learn more about OctoAI](./providers/octoai.md)
 
 ### Ollama
 
-Instead of an API key, you'll need a URL to use Ollama. Ollama also requires you to have a model that matches one you've already pulled. This is the default web server location.
+**No API Key (Local URL):**  This is not a traditional API so no API key is required. However, a URL(s) is required to use this service. (Ensure you have the matching models installed locally)
 
 - http://localhost:11434/api/chat
+
+[Learn more about Ollama](./providers/ollama.md)
+
+### OpenAI
+
+**Commercial (Credit Card Required)**: The OpenAI API is a commercial product and requires a credit card to get started.
+
+- https://platform.openai.com/api-keys
+
+[Learn more about OpenAI](./providers/openai.md)
+
+### Perplexity AI
+
+**Commercial (Credit Card Required):** The Perplexity API requires a credit card to get started.
+
+- https://www.perplexity.ai/settings/api
+
+[Learn more about Perplexity AI](./providers/perplexity.md)
+
+### Reka AI
+
+**Commercial with Free Trial:** The Reka AI API is a commercial product but offers a $5.00 credit to get started. A credit card is required.
+
+- https://platform.reka.ai/apikeys
+
+[Learn more about Reka AI](./providers/rekaai.md)
+
+### Replicate
+
+**Free Tier Available:** The Replicate API is a commercial product but offers a free tier. No credit card is required for the free tier.
+
+- https://platform.reka.ai/apikeys
+
+[Learn more about Replicate](./providers/replicate.md)
+
+### Shuttle AI
+
+**Details Pending:** You can attempt to request an API key by visiting this URL.
+
+- https://shuttleai.app/keys
+
+[Learn more about Shuttle AI](./providers/shuttleai.md)
+
+### TheB.ai
+
+**Details Pending:** You can attempt to request an API key by visiting their dashboard.
+
+- https://beta.theb.ai/home
+
+After visiting the URL, click "Manage Account" -> "API keys" -> "Create key".
+
+[Learn more about TheB.ai](./providers/thebai.md)
+
+### Together AI
+
+**Commercial with Free Trial:** The Together AI API is a commercial product but offers a $5.00 credit to get started. No credit card is required initially.
+
+- https://api.together.xyz/settings/api-keys
+
+[Learn more about Together AI](./providers/togetherai.md)
+
+### Voyage AI
+
+Free Tier Available (Rate Limited): This service is free with rate limits of 3 requests per minute and 10,000 tokens per month. Upgrade to remove limits. 50 million free tokens included.
+
+- https://dash.voyageai.com/api-keys
+
+[Learn more about Voyage AI](./providers/voyage.md)
+
+### Watsonx AI
+
+**Free Tier Available:** The watsonx.ai API is a commercial product but offers a free tier. No credit card is required for the free tier.
+
+- https://cloud.ibm.com/iam/apikeys
+
+In addition to an API key, you will also need a [space id](https://dataplatform.cloud.ibm.com/ml-runtime/spaces/create-space).
+
+[Learn more about Watsonx AI](./providers/watsonxai.md)
+
+### Writer
+
+**Commercial with Free Trial:** The Writer API is a commercial service but offers a free tier with $50.00 in free credits to get started.
+
+- https://dev.writer.com/api-guides/quickstart#generate-a-new-api-key
+
+The link above does not take you directly to the API key generation page, instead it takes you to the multi-step API key generation directions.
+
+[Learn more about Writer](./providers/writer.md)
+
+### Zhipu AI
+
+**Free Tier Available:** The Zhipu AI API is a commercial product but offers a free tier. No credit card is required for the free tier.
+
+- https://open.bigmodel.cn/usercenter/apikeys
+
+_This website is in the Chinese language._
+
+[Learn more about Zhipu AI](./providers/zhipuai.md)

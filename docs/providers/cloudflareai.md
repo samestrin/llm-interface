@@ -8,8 +8,27 @@ Cloudflare, Inc. is a leading web performance and security company that offers a
 
 - `cloudflareai`
 
+### Example Usage
 
-## Model Aliases
+```javascript
+const { LLMInterface } = require('llm-interface');
+
+LLMInterface.setApiKey({'cloudflareai': [process.env.CLOUDFLAREAI_ACCOUNT_ID]});
+
+async function main() {
+  try {
+    const response = await LLMInterface.sendMessage('cloudflareai', 'Explain the importance of low latency LLMs.');
+    console.log(response.results);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+main();
+```
+
+### Model Aliases
 
 The following model aliases are provided for this provider. 
 
@@ -18,22 +37,22 @@ The following model aliases are provided for this provider.
 - `small`: @cf/tinyllama/tinyllama-1.1b-chat-v1.0
 - `agent`: @cf/meta/llama-3-8b-instruct
 
-## Embeddings
+### Embeddings
 
-- `default`: bge-base-en-v1.5
-- `large`: bge-large-en-v1.5
-- `small`: bge-small-en-v1.5
+- `default`: @cf/baai/bge-base-en-v1.5
+- `large`: @cf/baai/bge-large-en-v1.5
+- `small`: @cf/baai/bge-small-en-v1.5
 
 
 ## Options
 
 The following values can be passed through `options`.
 
-- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
-- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
+- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `temperature`: _Details not available, please refer to the LLM provider documentation._
 
 
-## Features
+### Features
 
 - Functions: true
 - Embeddings: true
@@ -41,13 +60,13 @@ The following values can be passed through `options`.
 
 ## Getting an API Key
 
-https://dash.cloudflareai.com/profile/api-tokens
+**Free Tier Available**: The Cloudflare AI API offers a free tier and commercial accounts. A credit card is not required for the free tier.
 
 To get an API key, first create a Cloudflare AI account, then visit the link below.
 
-- **Free Tier Available**: The Cloudflare AI API offers a free tier and commercial accounts. A credit card is not required for the free tier.
+- https://dash.cloudflareai.com/profile/api-tokens
 
 
-## Cloudflare AI Documentation](undefined
+## [Cloudflare AI Documentation](https://developers.cloudflare.com/workers-ai/)
 
 [Cloudflare AI documentation](https://developers.cloudflare.com/workers-ai/) is available [here](https://developers.cloudflare.com/workers-ai/).

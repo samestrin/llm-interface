@@ -8,8 +8,27 @@
 
 - `cohere`
 
+### Example Usage
 
-## Model Aliases
+```javascript
+const { LLMInterface } = require('llm-interface');
+
+LLMInterface.setApiKey({'cohere': process.env.COHERE_API_KEY});
+
+async function main() {
+  try {
+    const response = await LLMInterface.sendMessage('cohere', 'Explain the importance of low latency LLMs.');
+    console.log(response.results);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+main();
+```
+
+### Model Aliases
 
 The following model aliases are provided for this provider. 
 
@@ -18,7 +37,7 @@ The following model aliases are provided for this provider.
 - `small`: command-light
 - `agent`: command-r-plus
 
-## Embeddings
+### Embeddings
 
 - `default`: embed-english-v3.0
 - `large`: embed-english-v3.0
@@ -29,28 +48,28 @@ The following model aliases are provided for this provider.
 
 The following values can be passed through `options`.
 
-- `chat_history`: _Details not available, please refer to Cohere documentation._
-- `connectors`: _Details not available, please refer to Cohere documentation._
-- `conversation_id`: _Details not available, please refer to Cohere documentation._
-- `documents`: _Details not available, please refer to Cohere documentation._
-- `force_single_step`: _Details not available, please refer to Cohere documentation._
-- `frequency_penalty`: Penalizes new tokens based on their existing frequency in the text so far, reducing the likelihood of repeating the same line. Positive values reduce the frequency of tokens appearing in the generated text.
-- `k`: _Details not available, please refer to Cohere documentation._
-- `max_input_tokens`: _Details not available, please refer to Cohere documentation._
-- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
-- `p`: _Details not available, please refer to Cohere documentation._
-- `preamble`: _Details not available, please refer to Cohere documentation._
-- `presence_penalty`: Penalizes new tokens based on whether they appear in the text so far, encouraging the model to talk about new topics. Positive values increase the likelihood of new tokens appearing in the generated text.
-- `prompt_truncation`: _Details not available, please refer to Cohere documentation._
-- `seed`: A random seed for reproducibility. If specified, the system will attempt to sample deterministically, ensuring repeated requests with the same seed and parameters return the same result. Determinism is not guaranteed.
-- `stop_sequences`: Sequences that indicate to the model when to stop generating further tokens.
-- `stream`: If set, partial message deltas will be sent, similar to ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
-- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
-- `tool_results`: _Details not available, please refer to Cohere documentation._
-- `tools`: A list of external tools available for the AI to use in generating responses.
+- `chat_history`: _Details not available, please refer to the LLM provider documentation._
+- `connectors`: _Details not available, please refer to the LLM provider documentation._
+- `conversation_id`: _Details not available, please refer to the LLM provider documentation._
+- `documents`: _Details not available, please refer to the LLM provider documentation._
+- `force_single_step`: _Details not available, please refer to the LLM provider documentation._
+- `frequency_penalty`: _Details not available, please refer to the LLM provider documentation._
+- `k`: _Details not available, please refer to the LLM provider documentation._
+- `max_input_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `p`: _Details not available, please refer to the LLM provider documentation._
+- `preamble`: _Details not available, please refer to the LLM provider documentation._
+- `presence_penalty`: _Details not available, please refer to the LLM provider documentation._
+- `prompt_truncation`: _Details not available, please refer to the LLM provider documentation._
+- `seed`: _Details not available, please refer to the LLM provider documentation._
+- `stop_sequences`: _Details not available, please refer to the LLM provider documentation._
+- `stream`: _Details not available, please refer to the LLM provider documentation._
+- `temperature`: _Details not available, please refer to the LLM provider documentation._
+- `tool_results`: _Details not available, please refer to the LLM provider documentation._
+- `tools`: _Details not available, please refer to the LLM provider documentation._
 
 
-## Features
+### Features
 
 - Streaming: true
 - Tools: true
@@ -66,6 +85,6 @@ To get an API key, first create a Cohere account, then visit the link below.
 - https://dashboard.cohere.com/api-keys
 
 
-## Cohere Documentation](undefined
+## [Cohere Documentation](https://docs.cohere.com/)
 
 [Cohere documentation](https://docs.cohere.com/) is available [here](https://docs.cohere.com/).

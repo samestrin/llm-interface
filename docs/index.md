@@ -5,12 +5,12 @@ Welcome to the documentation for the LLM Interface package. This documentation p
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Installation](#installation)
 - [API Keys](#api-keys)
-- [Models](#models)
 - [Usage](#usage)
   - [LLMInterface](#llminterface)
     - [getAllModelNames()](#getallmodelnames)
-    - [getModelConfigValue(interfaceName, key)](#getmodelconfigvalueinterfacename-key)
+    - [getInterfaceConfigValue(interfaceName, key)](#getInterfaceConfigValueinterfacename-key)
     - [setApiKey(interfaceNames, apiKey)](#setapikeyinterfacenames-apikey)
     - [setModelAlias(interfaceName, alias, name, tokens = null)](#setmodelaliasinterfacename-alias-name-tokens--null)
     - [configureCache(cacheConfig = {})](#configurecachecacheconfig--)
@@ -40,29 +40,29 @@ Welcome to the documentation for the LLM Interface package. This documentation p
         - [MongoDB](#mongodb)
     - [Memory Cache](#memory-cache)
       - [Example Usage](#example-usage-4)
-  - [Examples](#examples)
+  - [Models](#models)
   - [Jailbreaking](#jailbreaking)
+  - [Glossary](#gloss
+  - [Examples](#examples)ary)
 
 ## Introduction
 
-The `llm-interface` package provides a unified interface for interacting with various large language models (LLMs). This documentation covers setup, configuration, usage, and examples to help you integrate LLMs into your projects efficiently.
+The LLMInterface npm module provides a unified interface for interacting with various large language models (LLMs). This documentation covers setup, configuration, usage, and examples to help you integrate LLMs into your projects efficiently.
+
+## Installation
 
 ## API Keys
 
 To interact with different LLM providers, you will need API keys. Refer to [API Keys](api-key.md) for detailed instructions on obtaining and configuring API keys for supported providers.
 
-## Models
-
-The `llm-interface` supports multiple model aliases for different providers. See [Models](models.md) for a list of model aliases and their descriptions.
-
 ## Usage
 
-The [Usage](usage.md) section contains detailed documentation on how to use the `llm-interface` package. This includes:
+The [Usage](usage.md) section contains detailed documentation on how to use the LLMInterface npm module. This includes:
 
 ### LLMInterface
 
 - [getAllModelNames()](usage.md#getallmodelnames)
-- [getModelConfigValue(interfaceName, key)](usage.md#getmodelconfigvalueinterfacename-key)
+- [getInterfaceConfigValue(interfaceName, key)](usage.md#getInterfaceConfigValueinterfacename-key)
 - [setApiKey(interfaceNames, apiKey)](usage.md#setapikeyinterfacenames-apikey)
 - [setModelAlias(interfaceName, alias, name, tokens = null)](usage.md#setmodelaliasinterfacename-alias-name-tokens--null)
 - [configureCache(cacheConfig = {})](usage.md#configurecachecacheconfig--)
@@ -103,14 +103,22 @@ The [Usage](usage.md) section contains detailed documentation on how to use the 
 - [Memory Cache](usage.md#memory-cache)
   - [Example Usage](usage.md#example-usage-4)
 
-### Examples
+## Models
 
-Check out [Examples](usage.md#examples) for practical demonstrations of how to use the `llm-interface` package in various scenarios.
+The LLMInterface supports multiple model aliases for different providers. See [Models](models.md) for a list of model aliases and their descriptions.
 
 For more detailed information, please refer to the respective sections in the documentation.
 
-### Jailbreaking
+## Jailbreaking
 
 If you'd like to attempt to [jailbreak](jailbreaking.md#jailbreaking) your AI model you try a version of the message obeject found [here](jailbreaking.md#jailbreaking).
 
 _Thanks to Shuttle AI for the original concept!_
+
+## Glossary
+
+A [glossary](glossary.md) of terms is available [here](glossary.md).
+
+## Examples
+
+Check out [Examples](examples.md) for practical demonstrations of how to use the LLMInterface npm module in various scenarios.

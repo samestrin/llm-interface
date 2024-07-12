@@ -4,46 +4,47 @@
 
 1. [Model Aliases](#model-aliases)
 2. [Default Aliases](#default-aliases)
-  - [AI21 Studio](#ai21-studio)
-  - [AIML API](#aiml-api)
-  - [Anyscale](#anyscale)
-  - [Anthropic](#anthropic)
-  - [Bigmodel](#bigmodel)
-  - [Cloudflare AI](#cloudflare-ai)
-  - [Cohere](#cohere)
-  - [Corcel](#corcel)
-  - [DeepInfra](#deepinfra)
-  - [Deepseek](#deepseek)
-  - [Fireworks AI](#fireworks-ai)
-  - [Forefront](#forefront)
-  - [Friendli AI](#friendli-ai)
-  - [Google Gemini](#google-gemini)
-  - [Goose AI](#goose-ai)
-  - [Groq](#groq)
-  - [Hugging Face](#hugging-face)
-  - [Hyperbee AI](#hyperbee-ai)
-  - [Lamini](#lamini)
-  - [LLaMA.cpp](#llamacpp)
-  - [Mistral AI](#mistral-ai)
-  - [Monster API](#monster-api)
-  - [Neets AI](#neets-ai)
-  - [Novita AI](#novita-ai)
-  - [NVIDIA](#nvidia)
-  - [Octo AI](#octo-ai)
-  - [Ollama](#ollama)
-  - [OpenAI](#openai)
-  - [Perplexity](#perplexity)
-  - [Reka AI](#reka-ai)
-  - [Replicate](#replicate)
-  - [Shuttle AI](#shuttle-ai)
-  - [TheB.AI](#thebai)
-  - [Together AI](#together-ai)
-  - [watsonx.ai](#watsonxai)
-  - [Writer](#writer)
+
+- [AI21 Studio](#ai21-studio)
+- [AIML API](#aiml-api)
+- [Anyscale](#anyscale)
+- [Anthropic](#anthropic)
+- [Bigmodel](#bigmodel)
+- [Cloudflare AI](#cloudflare-ai)
+- [Cohere](#cohere)
+- [Corcel](#corcel)
+- [DeepInfra](#deepinfra)
+- [Deepseek](#deepseek)
+- [Fireworks AI](#fireworks-ai)
+- [Forefront](#forefront)
+- [Friendli AI](#friendli-ai)
+- [Google Gemini](#google-gemini)
+- [Goose AI](#goose-ai)
+- [Groq](#groq)
+- [Hugging Face](#hugging-face)
+- [Hyperbee AI](#hyperbee-ai)
+- [Lamini](#lamini)
+- [LLaMA.cpp](#llamacpp)
+- [Mistral AI](#mistral-ai)
+- [Monster API](#monster-api)
+- [Neets AI](#neets-ai)
+- [Novita AI](#novita-ai)
+- [NVIDIA](#nvidia)
+- [Octo AI](#octo-ai)
+- [Ollama](#ollama)
+- [OpenAI](#openai)
+- [Perplexity](#perplexity)
+- [Reka AI](#reka-ai)
+- [Replicate](#replicate)
+- [Shuttle AI](#shuttle-ai)
+- [TheB.AI](#thebai)
+- [Together AI](#together-ai)
+- [watsonx.ai](#watsonxai)
+- [Writer](#writer)
 
 ## Model Aliases
 
-To make using `llm-interface` easier to use, you can take advantage of model aliases:
+To make using LLMInterface easier to use, you can take advantage of model aliases:
 
 - `default`
 - `large`
@@ -60,6 +61,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 ## Default Aliases
 
 ### AI21 Studio
+
+The following aliases work with the `ai21`
 
 - `default`: jamba-instruct
 - `large`: jamba-instruct
