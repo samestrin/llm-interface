@@ -35,7 +35,7 @@ LLMInterface supports: **AI21 Studio, AiLAYER, AIMLAPI, Anyscale, Anthropic, Mic
 - **Caching**: Supports multiple caches: `simple-cache`, `flat-cache`, and `cache-manager`. _`flat-cache` is now an optional package._
 - **Logging**: Improved logging with the `loglevel`.
 - **Improved Documentation**: Improved [documentation](docs/index.md) with new examples, glossary, and provider details. Updated API key details, model alias breakdown, and usage information.
-- **More Examples**: [LangChain.js RAG](examples/langchain/langchain.js), [Mixture-of-Authorities (MoA)](examples/moa/moa.js), and [more](docs/examples.md).
+- **More Examples**: [LangChain.js RAG](examples/langchain/rag.js), [Mixture-of-Authorities (MoA)](examples/moa/moa.js), and [more](docs/examples.md).
 - **Removed Dependency**: `@anthropic-ai/sdk` is no longer required.
 
 **v2.0.9**
