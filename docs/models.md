@@ -68,114 +68,335 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 ## Model Alias Values
 
-### [undefined](providers/ai21.md)  ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
 
+### [AI21 Studio](providers/ai21.md)  ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
 
-### [undefined](providers/ailayer.md) 
+- `default`: jamba-instruct
+- `large`: jamba-instruct
+- `small`: jamba-instruct
+- `agent`: jamba-instruct
 
 
-### [undefined](providers/aimlapi.md)  ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [AiLAYER](providers/ailayer.md) 
 
+- `default`: Llama-2-70b
+- `large`: Qwen/Qwen1.5-72B-Chat
+- `small`: alpaca-7b
+- `agent`: Llama-2-70b
 
-### [undefined](providers/anyscale.md)  ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [AIMLAPI](providers/aimlapi.md)  ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)
 
-### [undefined](providers/anthropic.md)  ![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png)
+- `default`: gpt-3.5-turbo-16k
+- `large`: Qwen/Qwen1.5-72B-Chat
+- `small`: Qwen/Qwen1.5-0.5B-Chat
+- `agent`: gpt-4-32k-0613
 
 
-### [undefined](providers/cloudflareai.md)  ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Anyscale](providers/anyscale.md)  ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)
 
+- `default`: mistralai/Mixtral-8x22B-Instruct-v0.1
+- `large`: meta-llama/Llama-3-70b-chat-hf
+- `small`: mistralai/Mistral-7B-Instruct-v0.1
+- `agent`: mistralai/Mixtral-8x22B-Instruct-v0.1
 
-### [undefined](providers/cohere.md)  ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Anthropic](providers/anthropic.md)  ![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png)
 
-### [undefined](providers/corcel.md)  ![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png)
+- `default`: claude-3-sonnet-20240229
+- `large`: claude-3-opus-20240229
+- `small`: claude-3-haiku-20240307
+- `agent`: claude-3-sonnet-20240229
 
 
-### [undefined](providers/deepinfra.md)  ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Cloudflare AI](providers/cloudflareai.md)  ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
 
+- `default`: @cf/meta/llama-3-8b-instruct
+- `large`: @hf/thebloke/llama-2-13b-chat-awq
+- `small`: @cf/tinyllama/tinyllama-1.1b-chat-v1.0
+- `agent`: @cf/meta/llama-3-8b-instruct
 
-### [undefined](providers/deepseek.md)  ![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png)
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Cohere](providers/cohere.md)  ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
 
-### [undefined](providers/fireworksai.md) 
+- `default`: command-r
+- `large`: command-r-plus
+- `small`: command-light
+- `agent`: command-r-plus
 
 
-### [undefined](providers/forefront.md)  ![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png)
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Corcel](providers/corcel.md)  ![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png)
 
+- `default`: gpt-4-turbo-2024-04-09
+- `large`: gpt-4o
+- `small`: cortext-lite
+- `agent`: gemini-pro
 
-### [undefined](providers/friendliai.md) 
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [DeepInfra](providers/deepinfra.md)  ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)
 
-### [undefined](providers/gemini.md) 
+- `default`: openchat/openchat-3.6-8b
+- `large`: nvidia/Nemotron-4-340B-Instruct
+- `small`: microsoft/WizardLM-2-7B
+- `agent`: Qwen/Qwen2-7B-Instruct
 
 
-### [undefined](providers/gooseai.md)  ![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png)
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [DeepSeek](providers/deepseek.md)  ![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png)
 
+- `default`: deepseek-chat
+- `large`: deepseek-chat
+- `small`: deepseek-chat
+- `agent`: deepseek-chat
 
-### [undefined](providers/groq.md) 
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Fireworks AI](providers/fireworksai.md) 
 
-### [undefined](providers/huggingface.md) 
+- `default`: accounts/fireworks/models/llama-v3-8b-instruct
+- `large`: accounts/fireworks/models/llama-v3-70b-instruct
+- `small`: accounts/fireworks/models/phi-3-mini-128k-instruct
+- `agent`: accounts/fireworks/models/llama-v3-8b-instruct
 
 
-### [undefined](providers/hyperbeeai.md) 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Forefront AI](providers/forefront.md)  ![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png)
 
+- `default`: forefront/Mistral-7B-Instruct-v0.2-chatml
+- `large`: forefront/Mistral-7B-Instruct-v0.2-chatml
+- `small`: forefront/Mistral-7B-Instruct-v0.2-chatml
+- `agent`: 
 
-### [undefined](providers/lamini.md)  ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [FriendliAI](providers/friendliai.md) 
 
-### [undefined](providers/llamacpp.md) 
+- `default`: mixtral-8x7b-instruct-v0-1
+- `large`: meta-llama-3-70b-instruct
+- `small`: meta-llama-3-8b-instruct
+- `agent`: gemma-7b-it
 
 
-### [undefined](providers/mistralai.md)  ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Google Gemini](providers/gemini.md) 
 
+- `default`: gemini-1.5-flash
+- `large`: gemini-1.5-pro
+- `small`: gemini-1.5-flash
+- `agent`: gemini-1.5-pro
 
-### [undefined](providers/monsterapi.md)  ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png)
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [GooseAI](providers/gooseai.md)  ![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png)
 
-### [undefined](providers/neetsai.md)  ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png)
+- `default`: gpt-neo-20b
+- `large`: gpt-neo-20b
+- `small`: gpt-neo-125m
+- `agent`: gpt-j-6b
 
 
-### [undefined](providers/novitaai.md) 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Groq](providers/groq.md) 
 
+- `default`: llama3-8b-8192
+- `large`: llama3-70b-8192
+- `small`: gemma-7b-it
+- `agent`: llama3-8b-8192
 
-### [undefined](providers/nvidia.md) 
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Hugging Face Inference](providers/huggingface.md) 
 
-### [undefined](providers/octoai.md) 
+- `default`: meta-llama/Meta-Llama-3-8B-Instruct
+- `large`: meta-llama/Meta-Llama-3-8B-Instruct
+- `small`: microsoft/Phi-3-mini-4k-instruct
+- `agent`: meta-llama/Meta-Llama-3-8B-Instruct
 
 
-### [undefined](providers/ollama.md) 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [HyperBee AI](providers/hyperbeeai.md) 
 
+- `default`: hive
+- `large`: gpt-4o
+- `small`: gemini-1.5-flash
+- `agent`: gpt-4o
 
-### [undefined](providers/openai.md) 
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Lamini](providers/lamini.md)  ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)
 
-### [undefined](providers/perplexity.md)  ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png)
+- `default`: meta-llama/Meta-Llama-3-8B-Instruct
+- `large`: meta-llama/Meta-Llama-3-8B-Instruct
+- `small`: microsoft/phi-2
+- `agent`: meta-llama/Meta-Llama-3-8B-Instruct
 
 
-### [undefined](providers/rekaai.md)  ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png)
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [LLaMA.CPP](providers/llamacpp.md) 
 
+- `default`: gpt-3.5-turbo
+- `large`: gpt-3.5-turbo
+- `small`: gpt-3.5-turbo
+- `agent`: openhermes
 
-### [undefined](providers/replicate.md)  ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png)
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Mistral AI](providers/mistralai.md)  ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
 
-### [undefined](providers/shuttleai.md)  ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png)
+- `default`: mistral-large-latest
+- `large`: mistral-large-latest
+- `small`: mistral-small-latest
+- `agent`: mistral-large-latest
 
 
-### [undefined](providers/thebai.md) 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Monster API](providers/monsterapi.md)  ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png)
 
+- `default`: meta-llama/Meta-Llama-3-8B-Instruct
+- `large`: google/gemma-2-9b-it
+- `small`: microsoft/Phi-3-mini-4k-instruct
+- `agent`: google/gemma-2-9b-it
 
-### [undefined](providers/togetherai.md)  ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Neets.ai](providers/neetsai.md)  ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png)
 
-### [undefined](providers/watsonxai.md) 
+- `default`: Neets-7B
+- `large`: mistralai/Mixtral-8X7B-Instruct-v0.1
+- `small`: Neets-7B
+- `agent`: 
 
 
-### [undefined](providers/writer.md)  ![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Novita AI](providers/novitaai.md) 
 
+- `default`: meta-llama/llama-3-8b-instruct
+- `large`: meta-llama/llama-3-70b-instruct
+- `small`: meta-llama/llama-3-8b-instruct
+- `agent`: meta-llama/llama-3-70b-instruct
 
-### [undefined](providers/zhipuai.md) 
 
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [NVIDIA AI](providers/nvidia.md) 
+
+- `default`: nvidia/llama3-chatqa-1.5-8b
+- `large`: nvidia/nemotron-4-340b-instruct
+- `small`: microsoft/phi-3-mini-128k-instruct
+- `agent`: nvidia/llama3-chatqa-1.5-8b
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [OctoAI](providers/octoai.md) 
+
+- `default`: mistral-7b-instruct
+- `large`: mixtral-8x22b-instruct
+- `small`: mistral-7b-instruct
+- `agent`: mixtral-8x22b-instruct
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Ollama](providers/ollama.md) 
+
+- `default`: llama3
+- `large`: llama3
+- `small`: llama3
+- `agent`: 
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [OpenAI](providers/openai.md) 
+
+- `default`: gpt-3.5-turbo
+- `large`: gpt-4o
+- `small`: gpt-3.5-turbo
+- `agent`: gpt-4o
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Perplexity AI](providers/perplexity.md)  ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png)
+
+- `default`: llama-3-sonar-large-32k-online
+- `large`: llama-3-sonar-large-32k-online
+- `small`: llama-3-sonar-small-32k-online
+- `agent`: llama-3-sonar-large-32k-online
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Reka AI](providers/rekaai.md)  ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png)
+
+- `default`: reka-core
+- `large`: reka-core
+- `small`: reka-edge
+- `agent`: reka-core
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Replicate](providers/replicate.md)  ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png)
+
+- `default`: mistralai/mistral-7b-instruct-v0.2
+- `large`: meta/meta-llama-3-70b-instruct
+- `small`: mistralai/mistral-7b-instruct-v0.2
+- `agent`: meta/meta-llama-3-70b-instruct
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Shuttle AI](providers/shuttleai.md)  ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png)
+
+- `default`: shuttle-2-turbo
+- `large`: shuttle-2-turbo
+- `small`: shuttle-2-turbo
+- `agent`: shuttle-2-turbo
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [TheB.ai](providers/thebai.md) 
+
+- `default`: gpt-4-turbo
+- `large`: llama-3-70b-chat
+- `small`: llama-2-7b-chat
+- `agent`: gpt-4-turbo
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Together AI](providers/togetherai.md)  ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
+
+- `default`: google/gemma-7b
+- `large`: mistralai/Mixtral-8x22B
+- `small`: google/gemma-2b
+- `agent`: Qwen/Qwen1.5-14B
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Watsonx AI](providers/watsonxai.md) 
+
+- `default`: ibm/granite-13b-chat-v2
+- `large`: meta-llama/llama-3-70b-instruct
+- `small`: google/flan-t5-xxl
+- `agent`: meta-llama/llama-3-70b-instruct
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Writer](providers/writer.md)  ![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)
+
+- `default`: palmyra-x-002-32k
+- `large`: palmyra-x-002-32k
+- `small`: palmyra-x-002-32k
+- `agent`: 
+
+
+![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+### [Zhipu AI](providers/zhipuai.md) 
+
+- `default`: glm-4-airx
+- `large`: glm-4
+- `small`: glm-4-flash
+- `agent`: glm-4
 
