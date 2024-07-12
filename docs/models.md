@@ -5,22 +5,42 @@
 1. [Model Aliases](#model-aliases)
 2. [Model Alias Values](#model-alias-values)
     - [AI21 Studio](#ai21)
+    - [AiLAYER](#ailayer)
     - [AIMLAPI](#aimlapi)
     - [Anyscale](#anyscale)
+    - [Anthropic](#anthropic)
     - [Cloudflare AI](#cloudflareai)
     - [Cohere](#cohere)
+    - [Corcel](#corcel)
     - [DeepInfra](#deepinfra)
+    - [DeepSeek](#deepseek)
     - [Fireworks AI](#fireworksai)
+    - [Forefront AI](#forefront)
+    - [FriendliAI](#friendliai)
     - [Google Gemini](#gemini)
+    - [GooseAI](#gooseai)
+    - [Groq](#groq)
     - [Hugging Face Inference](#huggingface)
+    - [HyperBee AI](#hyperbeeai)
     - [Lamini](#lamini)
     - [LLaMA.CPP](#llamacpp)
     - [Mistral AI](#mistralai)
+    - [Monster API](#monsterapi)
+    - [Neets.ai](#neetsai)
+    - [Novita AI](#novitaai)
+    - [NVIDIA AI](#nvidia)
+    - [OctoAI](#octoai)
     - [Ollama](#ollama)
     - [OpenAI](#openai)
+    - [Perplexity AI](#perplexity)
+    - [Reka AI](#rekaai)
+    - [Replicate](#replicate)
+    - [Shuttle AI](#shuttleai)
+    - [TheB.ai](#thebai)
     - [Together AI](#togetherai)
-    - [Voyage AI](#voyage)
     - [Watsonx AI](#watsonxai)
+    - [Writer](#writer)
+    - [Zhipu AI](#zhipuai)
 
 ## Model Aliases
 
@@ -48,54 +68,114 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 ## Model Alias Values
 
-### [AI21 Studio](providers/ai21.md) ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
+### [undefined](providers/ai21.md)  ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
 
 
-### [AIMLAPI](providers/aimlapi.md) ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)
+### [undefined](providers/ailayer.md) 
 
 
-### [Anyscale](providers/anyscale.md) ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)
+### [undefined](providers/aimlapi.md)  ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)
 
 
-### [Cloudflare AI](providers/cloudflareai.md) ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
+### [undefined](providers/anyscale.md)  ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)
 
 
-### [Cohere](providers/cohere.md) ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
+### [undefined](providers/anthropic.md)  ![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png)
 
 
-### [DeepInfra](providers/deepinfra.md) ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)
+### [undefined](providers/cloudflareai.md)  ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
 
 
-### [Fireworks AI](providers/fireworksai.md) 
+### [undefined](providers/cohere.md)  ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
 
 
-### [Google Gemini](providers/gemini.md) 
+### [undefined](providers/corcel.md)  ![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png)
 
 
-### [Hugging Face Inference](providers/huggingface.md) 
+### [undefined](providers/deepinfra.md)  ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)
 
 
-### [Lamini](providers/lamini.md) ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)
+### [undefined](providers/deepseek.md)  ![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png)
 
 
-### [LLaMA.CPP](providers/llamacpp.md) 
+### [undefined](providers/fireworksai.md) 
 
 
-### [Mistral AI](providers/mistralai.md) ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
+### [undefined](providers/forefront.md)  ![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png)
 
 
-### [Ollama](providers/ollama.md) 
+### [undefined](providers/friendliai.md) 
 
 
-### [OpenAI](providers/openai.md) 
+### [undefined](providers/gemini.md) 
 
 
-### [Together AI](providers/togetherai.md) ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
+### [undefined](providers/gooseai.md)  ![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png)
 
 
-### [Voyage AI](providers/voyage.md) 
+### [undefined](providers/groq.md) 
 
 
-### [Watsonx AI](providers/watsonxai.md) 
+### [undefined](providers/huggingface.md) 
+
+
+### [undefined](providers/hyperbeeai.md) 
+
+
+### [undefined](providers/lamini.md)  ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)
+
+
+### [undefined](providers/llamacpp.md) 
+
+
+### [undefined](providers/mistralai.md)  ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
+
+
+### [undefined](providers/monsterapi.md)  ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png)
+
+
+### [undefined](providers/neetsai.md)  ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png)
+
+
+### [undefined](providers/novitaai.md) 
+
+
+### [undefined](providers/nvidia.md) 
+
+
+### [undefined](providers/octoai.md) 
+
+
+### [undefined](providers/ollama.md) 
+
+
+### [undefined](providers/openai.md) 
+
+
+### [undefined](providers/perplexity.md)  ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png)
+
+
+### [undefined](providers/rekaai.md)  ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png)
+
+
+### [undefined](providers/replicate.md)  ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png)
+
+
+### [undefined](providers/shuttleai.md)  ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png)
+
+
+### [undefined](providers/thebai.md) 
+
+
+### [undefined](providers/togetherai.md)  ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
+
+
+### [undefined](providers/watsonxai.md) 
+
+
+### [undefined](providers/writer.md)  ![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)
+
+
+### [undefined](providers/zhipuai.md) 
 
 
