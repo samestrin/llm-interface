@@ -140,6 +140,7 @@ eslint*
 jest*
 babel.config.js
 .prettier*
+
 examples/
 docs/
 test/
