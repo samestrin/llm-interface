@@ -19,6 +19,7 @@ const {
   setApiKey,
   getInterfaceConfigValue,
   setModelAlias,
+  setEmbeddingsModelAlias,
 } = require('./utils/config.js');
 const { flushCache, configureCache } = require('./utils/cache.js');
 
@@ -29,6 +30,7 @@ LLMInterface.getInterfaceConfigValue = getInterfaceConfigValue;
 // LLMInterface set functions
 LLMInterface.setApiKey = setApiKey;
 LLMInterface.setModelAlias = setModelAlias;
+LLMInterface.setEmbeddingsModelAlias = setEmbeddingsModelAlias;
 
 // LLMInterface chat functions
 LLMInterface.streamMessage = LLMInterfaceStreamMessageWithConfig;
