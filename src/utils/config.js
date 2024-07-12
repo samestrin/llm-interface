@@ -191,7 +191,7 @@ function getModelByAlias(interfaceName, model = 'default') {
  * @param {string} model - The alias or name of the model.
  * @returns {string} The model name.
  */
-function getEmbeddingModelByAlias(interfaceName, model = 'default') {
+function getEmbeddingsModelByAlias(interfaceName, model = 'default') {
   const key = model.startsWith('embeddings.') ? model : `embeddings.${model}`;
   const alias = getInterfaceConfigValue(interfaceName, key, true);
   if (alias === key) {
@@ -203,7 +203,7 @@ function getEmbeddingModelByAlias(interfaceName, model = 'default') {
 
 module.exports = {
   getModelByAlias,
-  getEmbeddingModelByAlias,
+  getEmbeddingsModelByAlias,
   getInterfaceConfigValue,
   getAllModelNames,
   setApiKey,
