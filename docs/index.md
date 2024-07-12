@@ -47,7 +47,7 @@ Welcome to the documentation for the LLM Interface package. This documentation p
         - [MongoDB](#mongodb)
     - [Memory Cache](#memory-cache)
       - [Example Usage](#example-usage-4)
-  - [Support](#support)
+  - [Supported Providers](#supported-providers)
   - [Model Aliases](#model-aliases)
   - [Embeddings Model Aliases](#embedding-model-aliases)
   - [Jailbreaking](#jailbreaking)
@@ -125,9 +125,9 @@ _This is a legacy function and will be depreciated._
 - [Memory Cache](usage.md#memory-cache)
   - [Example Usage](usage.md#example-usage-4)
 
-## Support
+## Supported Providers
 
-A complete list of [supported providers](support.md) is availabe [here](support.md).
+A complete list of [supported providers](support.md) is availabe [here](providers.md).
 
 ## Model Aliases
 
@@ -137,7 +137,7 @@ For more detailed information, please refer to the respective sections in the do
 
 ## Jailbreaking
 
-If you'd like to attempt to [jailbreak](jailbreaking.md#jailbreaking) your AI model you try a version of the message obeject found [here](jailbreaking.md#jailbreaking).
+If you'd like to attempt to [jailbreak](jailbreaking.md#jailbreaking) your AI model you try a version of the message object found [here](jailbreaking.md#jailbreaking).
 
 _Thanks to Shuttle AI for the original concept!_
 
