@@ -42,8 +42,8 @@ Welcome to the documentation for the LLM Interface package. This documentation p
       - [Example Usage](#example-usage-4)
   - [Models](#models)
   - [Jailbreaking](#jailbreaking)
-  - [Glossary](#gloss
-  - [Examples](#examples)ary)
+  - [Glossary](#glossary)
+  - [Examples](#examples)
 
 ## Introduction
 
