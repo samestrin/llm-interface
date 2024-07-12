@@ -45,7 +45,7 @@ async function exampleUsage() {
     console.timeEnd('Timer');
     console.log();
   } catch (error) {
-    console.error('Error processing stream:', error);
+    console.error('Error processing prompt sendMessage:', error);
   }
 }
 

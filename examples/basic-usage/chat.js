@@ -77,7 +77,7 @@ async function exampleUsage() {
     console.timeEnd('Timer');
     console.log();
   } catch (error) {
-    console.error('Error processing openaiCompatibleStructure:', error);
+    console.error('Error processing openaiCompatibleStructure sendMessage:', error);
   }
 }
 

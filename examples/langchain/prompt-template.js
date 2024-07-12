@@ -63,7 +63,7 @@ const apiKeys = Object.fromEntries(
 async function exampleUsage() {
   const { PromptTemplate } = await import('@langchain/core/prompts');
 
-  prettyHeader('Auto Retry Failed Requests', description);
+  prettyHeader('LangChain.js PromptTemplate', description);
   const template = 'What is the capital of {country}?';
   const promptTemplate = new PromptTemplate({
     template,
@@ -72,7 +72,7 @@ async function exampleUsage() {
 
   const question = await promptTemplate.format({ country: 'France' });
 
-  console.log('LangChain.js (Requires "npm install langchain dotenv"):');
+  console.log('LangChain.js PromptTemplate:');
   console.log();
   console.log('prompt:');
   console.log(`> ${question.replaceAll('\n', '\n> ')}`);
