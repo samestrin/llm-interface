@@ -84,6 +84,7 @@ async function processStream(stream) {
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
+  LLMInterface.setApiKey(interfaceName, apiKey);
   try {
     console.time('Timer');
     prettyHeader(
@@ -95,7 +96,6 @@ async function exampleUsage() {
     console.log();
     prettyText(`\n${GREEN}Response:${RESET}\n`);
     console.log();
-    LLMInterface.setApiKey(interfaceName, apiKey);
 
     const stream = await LLMInterface.sendMessage(interfaceName, simplePrompt, {
       stream: true,

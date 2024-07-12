@@ -46,7 +46,10 @@ async function exampleUsage() {
       ],
     "max_tokens": 100
   }
+  LLMInterface.setApiKey(interfaceName, apiKey);
+
   try {
+    console.time('Timer')
     prettyHeader(
       'Chat Example',
       description,
@@ -57,8 +60,6 @@ async function exampleUsage() {
     prettyText(`\n\n${GREEN}Prompt (OpenAI Compatible Structure):${RESET}\n\n`);
     console.log(openaiCompatibleStructure)
     console.log()
-
-    LLMInterface.setApiKey(interfaceName, apiKey);
 
     const response = await LLMInterface.sendMessage(interfaceName, openaiCompatibleStructure);
 

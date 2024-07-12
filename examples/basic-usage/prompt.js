@@ -28,7 +28,8 @@ To run this example, you first need to install the required modules by executing
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  const response = await LLMInterface.sendMessage(interfaceName, simplePrompt);
+  LLMInterface.setApiKey(interfaceName, apiKey);
+
   try {
     console.time('Timer');
     prettyHeader(
@@ -38,11 +39,9 @@ async function exampleUsage() {
       interfaceName,
     );
 
-    LLMInterface.setApiKey(interfaceName, apiKey);
+    const response = await LLMInterface.sendMessage(interfaceName, simplePrompt, { max_tokens: 100 });
 
-
-    console.log(response);
-    //prettyResult(response.results);
+    prettyResult(response.results);
     console.timeEnd('Timer');
     console.log();
   } catch (error) {

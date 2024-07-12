@@ -7,6 +7,7 @@
       - [Chat](#chat)
       - [Prompt](#prompt)
       - [Streaming Mode](#streaming-mode)
+      - [Set Multiple API Keys](#set-multiple-api-keys)
     - [Embeddings](#embeddings)
       - [Embeddings](#embeddings-1)
       - [Embeddings Failover](#embeddings-failover)
@@ -42,6 +43,7 @@ The following examples focus on LLMInterface usage.
 - **[Chat](/examples/basic-usage/chat.js)**: Basic LLMInterface.sendMessage() chat usage. This example features an OpenAI compatible structure.
 - **[Prompt](/examples/basic-usage/prompt.js)**: Basic LLMInterface.sendMessage() prompt usage.
 - **[Streaming Mode](/examples/basic-usage/steaming-mode.js)**: LLMInterface.sendMessage() streaming mode prompt usage.
+- **[Set Multiple API Keys](/examples/basic-usage/set-multiple-api-keys.js)**: LLMInterface.setApiKey() multiple key usage. This example shows how to set more than one API key at once.
 
 ### Embeddings
 
