@@ -2,45 +2,45 @@
 
 ## Table of Contents
 
-1. [Getting Started](#getting-started) 
-    - [AI21 Studio](#ai21) 
-    - [AiLAYER](#ailayer) 
-    - [AIMLAPI](#aimlapi) 
-    - [Anthropic](#anthropic) 
-    - [Anyscale](#anyscale) 
-    - [Cloudflare AI](#cloudflareai) 
-    - [Cohere](#cohere) 
-    - [Corcel](#corcel) 
-    - [DeepInfra](#deepinfra) 
-    - [DeepSeek](#deepseek) 
-    - [Fireworks AI](#fireworksai) 
-    - [Forefront AI](#forefront) 
-    - [FriendliAI](#friendliai) 
-    - [Google Gemini](#gemini) 
-    - [GooseAI](#gooseai) 
-    - [Groq](#groq) 
-    - [Hugging Face Inference](#huggingface) 
-    - [HyperBee AI](#hyperbeeai) 
-    - [Lamini](#lamini) 
-    - [LLaMA.CPP](#llamacpp) 
-    - [Mistral AI](#mistralai) 
-    - [Monster API](#monsterapi) 
-    - [Neets.ai](#neetsai) 
-    - [Novita AI](#novitaai) 
-    - [NVIDIA AI](#nvidia) 
-    - [OctoAI](#octoai) 
-    - [Ollama](#ollama) 
-    - [OpenAI](#openai) 
-    - [Perplexity AI](#perplexity) 
-    - [Reka AI](#rekaai) 
-    - [Replicate](#replicate) 
-    - [Shuttle AI](#shuttleai) 
-    - [TheB.ai](#thebai) 
-    - [Together AI](#togetherai) 
-    - [Voyage AI](#voyage) 
-    - [Watsonx AI](#watsonxai) 
-    - [Writer](#writer) 
-    - [Zhipu AI](#zhipuai) 
+1. [Getting Started](#getting-started)
+    - [AI21 Studio](#ai21)
+    - [AiLAYER](#ailayer)
+    - [AIMLAPI](#aimlapi)
+    - [Anthropic](#anthropic)
+    - [Anyscale](#anyscale)
+    - [Cloudflare AI](#cloudflareai)
+    - [Cohere](#cohere)
+    - [Corcel](#corcel)
+    - [DeepInfra](#deepinfra)
+    - [DeepSeek](#deepseek)
+    - [Fireworks AI](#fireworksai)
+    - [Forefront AI](#forefront)
+    - [FriendliAI](#friendliai)
+    - [Google Gemini](#gemini)
+    - [GooseAI](#gooseai)
+    - [Groq](#groq)
+    - [Hugging Face Inference](#huggingface)
+    - [HyperBee AI](#hyperbeeai)
+    - [Lamini](#lamini)
+    - [LLaMA.CPP](#llamacpp)
+    - [Mistral AI](#mistralai)
+    - [Monster API](#monsterapi)
+    - [Neets.ai](#neetsai)
+    - [Novita AI](#novitaai)
+    - [NVIDIA AI](#nvidia)
+    - [OctoAI](#octoai)
+    - [Ollama](#ollama)
+    - [OpenAI](#openai)
+    - [Perplexity AI](#perplexity)
+    - [Reka AI](#rekaai)
+    - [Replicate](#replicate)
+    - [Shuttle AI](#shuttleai)
+    - [TheB.ai](#thebai)
+    - [Together AI](#togetherai)
+    - [Voyage AI](#voyage)
+    - [Watsonx AI](#watsonxai)
+    - [Writer](#writer)
+    - [Zhipu AI](#zhipuai)
 
 ## Getting Started
 
@@ -52,7 +52,7 @@ Obtaining API keys for your project is straightforward. First, create an account
 
 - https://studio.ai21.com/account/api-key?source=docs
 
-### [AiLAYER](providers/ailayer.md) 
+### [AiLAYER](providers/ailayer.md)
 
 **Details Pending**
 
@@ -108,7 +108,7 @@ The Cohere API offers trial keys with rate limits. These keys are not intended f
 
 - https://platform.deepseek.com/api_keys
 
-### [Fireworks AI](providers/fireworksai.md) 
+### [Fireworks AI](providers/fireworksai.md)
 
 **Free Tier Available**: The Fireworks AI API offers a free developer tier and commercial accounts. No credit card is required for the free tier.
 
@@ -120,13 +120,13 @@ The Cohere API offers trial keys with rate limits. These keys are not intended f
 
 - https://platform.forefront.ai/app/api-keys
 
-### [FriendliAI](providers/friendliai.md) 
+### [FriendliAI](providers/friendliai.md)
 
 **Commercial with Free Trial**: The Friendli AI API is a commercial product but offers a $5.00 credit to get started.
 
 - https://suite.friendli.ai/user-settings/tokens
 
-### [Google Gemini](providers/gemini.md) 
+### [Google Gemini](providers/gemini.md)
 
 **Free**: The Gemini API is currently free to use.
 
@@ -138,19 +138,19 @@ The Cohere API offers trial keys with rate limits. These keys are not intended f
 
 - https://goose.ai/dashboard/apikeys
 
-### [Groq](providers/groq.md) 
+### [Groq](providers/groq.md)
 
 **Free**: The Groq API is currently free to use.
 
 - https://console.groq.com/keys
 
-### [Hugging Face Inference](providers/huggingface.md) 
+### [Hugging Face Inference](providers/huggingface.md)
 
 Free Tier Available (Rate Limited): The Inference API is free to use, but may be rate limited for heavy usage. Sending requests gradually is recommended to avoid errors.
 
 - https://huggingface.co/settings/tokens
 
-### [HyperBee AI](providers/hyperbeeai.md) 
+### [HyperBee AI](providers/hyperbeeai.md)
 
 **Commercial (Details Pending)**: The Hyperbee AI API is a commercial product.
 
@@ -162,7 +162,7 @@ Free Tier Available (Rate Limited): The Inference API is free to use, but may be
 
 - https://app.lamini.ai/account
 
-### [LLaMA.CPP](providers/llamacpp.md) 
+### [LLaMA.CPP](providers/llamacpp.md)
 
 **No API Key (Local URL):**  This is not a traditional API so no API key is required. However, a URL(s) is required to use this service. (Ensure you have the matching models installed locally)
 
@@ -186,13 +186,13 @@ Free Tier Available (Rate Limited): The Inference API is free to use, but may be
 
 - https://neets.ai/keys
 
-### [Novita AI](providers/novitaai.md) 
+### [Novita AI](providers/novitaai.md)
 
 **Commercial with Free Trial:** The Novita AI API is a commercial product but offers $0.50 of free credit to get started.
 
 - https://novita.ai/dashboard/key
 
-### [NVIDIA AI](providers/nvidia.md) 
+### [NVIDIA AI](providers/nvidia.md)
 
 **Commercial with Free Trial:** The NVIDIA API comes with 1000 credits to get started. Navigate to a specific model page to obtain your API key.
 
@@ -200,19 +200,19 @@ Free Tier Available (Rate Limited): The Inference API is free to use, but may be
 
 After visiting the URL, click on "Get API Key". You can find the link on the right side of the page.
 
-### [OctoAI](providers/octoai.md) 
+### [OctoAI](providers/octoai.md)
 
-**Commercial with Free Trial:** The Octo AI API is a commercial product but offers a $5.00 credit to get started. No credit card is required initially. 
+**Commercial with Free Trial:** The Octo AI API is a commercial product but offers a $5.00 credit to get started. No credit card is required initially.
 
 - https://octoml.cloud/settings
 
-### [Ollama](providers/ollama.md) 
+### [Ollama](providers/ollama.md)
 
 **No API Key (Local URL):**  This is not a traditional API so no API key is required. However, a URL(s) is required to use this service. (Ensure you have the matching models installed locally)
 
 - http://localhost:11434/api/chat
 
-### [OpenAI](providers/openai.md) 
+### [OpenAI](providers/openai.md)
 
 **Commercial (Credit Card Required)**: The OpenAI API is a commercial product and requires a credit card to get started.
 
@@ -242,7 +242,7 @@ After visiting the URL, click on "Get API Key". You can find the link on the rig
 
 - https://shuttleai.app/keys
 
-### [TheB.ai](providers/thebai.md) 
+### [TheB.ai](providers/thebai.md)
 
 **Details Pending:** You can attempt to request an API key by visiting their dashboard.
 
@@ -256,13 +256,13 @@ After visiting the URL, click "Manage Account" -> "API keys" -> "Create key".
 
 - https://api.together.xyz/settings/api-keys
 
-### [Voyage AI](providers/voyage.md) 
+### [Voyage AI](providers/voyage.md)
 
 **Free Tier Available (Rate Limited)**: This service is free with rate limits of 3 requests per minute and 10,000 tokens per month. Upgrade to remove limits. 50 million free tokens included.
 
 - https://dash.voyageai.com/api-keys
 
-### [Watsonx AI](providers/watsonxai.md) 
+### [Watsonx AI](providers/watsonxai.md)
 
 **Free Tier Available:** The watsonx.ai API is a commercial product but offers a free tier. No credit card is required for the free tier.
 
@@ -278,7 +278,7 @@ In addition to an API key, you will also need a [space id](https://dataplatform.
 
 The link above does not take you directly to the API key generation page, instead it takes you to the multi-step API key generation directions.
 
-### [Zhipu AI](providers/zhipuai.md) 
+### [Zhipu AI](providers/zhipuai.md)
 
 **Free Tier Available:** The Zhipu AI API is a commercial product but offers a free tier. No credit card is required for the free tier.
 
