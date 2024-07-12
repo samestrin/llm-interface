@@ -27,7 +27,7 @@ const {
 
 const config = getConfig();
 const log = require('loglevel');
-log.setLevel(log.levels.TRACE);
+log.setLevel(log.levels.SILENT);
 
 // BaseInterface class for interacting with various APIs
 class BaseInterface {
