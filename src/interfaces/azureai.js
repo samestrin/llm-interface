@@ -9,7 +9,7 @@ const BaseInterface = require('./baseInterface.js');
 const { azureaiApiKey } = require('../utils/loadApiKeysFromEnv.js');
 const {
   getModelByAlias,
-  getEmbeddingModelByAlias,
+  getEmbeddingsModelByAlias,
 } = require('../utils/config.js');
 const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
 
@@ -31,7 +31,7 @@ class AzureAI extends BaseInterface {
   }
   /*
   getEmbedRequestUrl(model) {
-    model = getEmbeddingModelByAlias('azureai', model);
+    model = getEmbeddingsModelByAlias('azureai', model);
     return `${model}`;
     }
     */

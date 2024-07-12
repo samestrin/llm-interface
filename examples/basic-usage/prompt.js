@@ -10,7 +10,7 @@
 
 const { LLMInterface } = require('../../src/index.js');
 const { prettyHeader, prettyResult } = require('../../src/utils/utils.js');
-const { simplePrompt, options } = require('../../src/utils/defaults.js');
+const { simplePrompt } = require('../../src/utils/defaults.js');
 require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
@@ -28,6 +28,7 @@ To run this example, you first need to install the required modules by executing
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
+  const response = await LLMInterface.sendMessage(interfaceName, simplePrompt);
   try {
     console.time('Timer');
     prettyHeader(
@@ -39,9 +40,9 @@ async function exampleUsage() {
 
     LLMInterface.setApiKey(interfaceName, apiKey);
 
-    const response = await LLMInterface.sendMessage(interfaceName, simplePrompt, options);
 
-    prettyResult(response.results);
+    console.log(response);
+    //prettyResult(response.results);
     console.timeEnd('Timer');
     console.log();
   } catch (error) {

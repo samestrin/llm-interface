@@ -4,7 +4,9 @@
 
 - [LLMInterface](#llminterface)
   - [getAllModelNames()](#getallmodelnames)
+  - [getEmbeddingsModelAlias(interfaceName, alias)](#getembeddingsmodelaliasinterfacename-alias)
   - [getInterfaceConfigValue(interfaceName, key)](#getInterfaceConfigValueinterfacename-key)
+  - [getModelByAlias(interfaceName, alias)](#getmodelbyaliasinterfacename-alias)
   - [setApiKey(interfaceNames, apiKey)](#setapikeyinterfacenames-apikey)
   - [setEmbeddingsModelAlias(interfaceName, alias, name)](#setembeddingsmodelaliasinterfacename-alias-name)
   - [setModelAlias(interfaceName, alias, name)](#setmodelaliasinterfacename-alias-name)
@@ -12,7 +14,7 @@
   - [flushCache()](#flushcache)
   - [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](#sendmessageinterfacename-message-options---interfaceoptions--)
   - [streamMessage(interfaceName, message, options = {})](#streammessageinterfacename-message-options--)
-  - [embedding(interfaceName, embeddingString, options = {}, interfaceOptions = {})](#embeddinginterfacename-embeddingstring-options---interfaceoptions--)
+  - [embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})](#embeddingsinterfacename-embeddingstring-options---interfaceoptions--)
   - [chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})](#chatcompletionscreateinterfacename-message-options---interfaceoptions--)
   - [Supported Interface Names](#supported-interface-names)
 - [LLMInterfaceSendMessage](#llminterfacesendmessage)
@@ -65,6 +67,15 @@ const modelNames = LLMInterface.getAllModelNames();
 console.log(modelNames);
 ```
 
+### getEmbeddingsModelAlias(interfaceName, alias)
+
+Retrieves an embeddings model name for a specific interfaceName alias.
+
+```javascript
+const model = LLMInterface.getEmbeddingsModelAlias('openai','default');
+console.log(model);
+```
+
 ### getInterfaceConfigValue(interfaceName, key)
 
 Retrieves a specific configuration value for a given model.
@@ -75,6 +86,15 @@ Retrieves a specific configuration value for a given model.
 ```javascript
 const apiKey = LLMInterface.getInterfaceConfigValue('openai', 'apiKey');
 console.log(apiKey);
+```
+
+### getModelAlias(interfaceName, alias)
+
+Retrieves a model name for a specific interfaceName alias.
+
+```javascript
+const model = LLMInterface.getModelAlias('openai','default');
+console.log(model);
 ```
 
 ### setApiKey(interfaceNames, apiKey)
@@ -185,7 +205,7 @@ try {
 
 _processStream(stream) is not part of LLMInterface. It is defined in the[streaming mode example](/examples/misc/streaming-mode.js)._
 
-### embedding(interfaceName, embeddingString, options = {}, interfaceOptions = {})
+### embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})
 
 Generates embeddings using a specified LLM interface.
 
@@ -245,7 +265,6 @@ The following are the interfaceNames for each supported LLM provider (in alphabe
 |  | `hyperbeeai` | [HyperBee AI](providers/hyperbeeai.md) | &check; |   |
 | ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png) | `lamini` | [Lamini](providers/lamini.md) | &check; | &check; |
 |  | `llamacpp` | [LLaMA.CPP](providers/llamacpp.md) | &check; | &check; |
-|  | `azureai` | [Microsoft Azure AI](providers/azureai.md) | &check; | &check; |
 | ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png) | `mistralai` | [Mistral AI](providers/mistralai.md) | &check; | &check; |
 | ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png) | `monsterapi` | [Monster API](providers/monsterapi.md) | &check; |   |
 | ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png) | `neetsai` | [Neets.ai](providers/neetsai.md) | &check; |   |
@@ -258,7 +277,6 @@ The following are the interfaceNames for each supported LLM provider (in alphabe
 | ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png) | `rekaai` | [Reka AI](providers/rekaai.md) | &check; |   |
 | ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png) | `replicate` | [Replicate](providers/replicate.md) | &check; |   |
 | ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png) | `shuttleai` | [Shuttle AI](providers/shuttleai.md) | &check; |   |
-|  | `siliconflow` | [SiliconFlow](providers/siliconflow.md) | &check; | &check; |
 |  | `thebai` | [TheB.ai](providers/thebai.md) | &check; |   |
 | ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png) | `togetherai` | [Together AI](providers/togetherai.md) | &check; | &check; |
 |  | `voyage` | [Voyage AI](providers/voyage.md) |   | &check; |
@@ -306,6 +324,8 @@ try {
 }
 ```
 
+_This is a legacy function and will be depreciated._
+
 ## LLMInterfaceStreamMessage
 
 To use the `LLMInterfaceStreamMessage` function, first import `LLMInterfaceStreamMessage`. You can do this using either the CommonJS `require` syntax:
@@ -329,8 +349,8 @@ Streams a message using the specified LLM interface.
 - `message` (String|Object): The message to send.
 - `options` (Object, optional): Additional options for the message.
 
-````javascript
-try {}
+```javascript
+try {
   const stream = await LLMInterfaceStreamMessage('openai', 'your-api-key', 'Hello, world!', { max_tokens: 100 });
   const result = await processStream(stream.data);
 } catch (error) {
@@ -338,6 +358,8 @@ try {}
 }
 ```
 _processStream(stream) is defined in the [streaming mode example](/examples/misc/streaming-mode.js)._
+
+_This is a legacy function and will be depreciated._
 
 ## Message Object
 
@@ -350,11 +372,15 @@ A valid message object typically includes the following properties:
 - `model`: A string specifying the model to use for the request (optional).
 - `messages`: An array of message objects that form the conversation history.
 
-Different LLMs may have their own message object rules. For example, both Anthropic and Gemini always expect the initial message to have the `user` role. Please be aware of this and structure your message objects accordingly. _LLMInterface will attempt to auto-correct invalid objects where possible._
+Different LLMs may have their own message object rules. For example, both Anthropic and Gemini always expect the initial message to have the `user` role. Please be aware of this and structure your message objects accordingly.
+
+_LLMInterface will attempt to auto-correct invalid objects where possible._
 
 ## Options Object
 
-The options object is an optional component that lets you send LLM provider specific parameters. While parameter names are fairly consistent, they can vary slightly, so it is important to pay attention. However, `max_token` is a special value, and is automatically normalized.
+The options object is an optional component that lets you send LLM provider specific parameters. While parameter names are fairly consistent, they can vary slightly, so it is important to pay attention.
+
+However, `max_token` is a special value, and is automatically normalized and is set with a default value of `1024`.
 
 ### Structure of an Options Object
 

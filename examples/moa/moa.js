@@ -1,6 +1,6 @@
 /**
  * @file examples/moa/moa.js
- * @description Example showing Mixture of Agents (MoA) concept (https://www.together.ai/blog/together-moa) to improve response quality. In this example, three LLM providers are used. Gemini is used as the Proposer and the Aggregator. Gemini, Hugging Face, and Groq are used as the Agents. The Proposer attempts to break down a simplePrompt into supporting questions, then the Agents answer the questions, and the Aggregator synthesizes a final response. Upon completion of synthesis, a control response is requested from Gemini. Finally, Gemini is used to evaluate the differences between both responses and provide a report. The example can be run in two modes, 'fast' or 'comprehensive'; in 'fast' mode, the questions are spread across the LLM providers, in 'comprehensive' mode, every LLM provider must answer every question. The number of questions can vary, which may require multiple Agent requests.
+ * @description Example showing use of Mixture of Agents (MoA) (https://www.together.ai/blog/together-moa) to improve response quality. In this example, three LLM providers are used. Gemini is used as the Proposer and the Aggregator. Gemini, Hugging Face, and Groq are used as the Agents. The Proposer attempts to break down a simplePrompt into supporting questions, then the Agents answer the questions, and the Aggregator synthesizes a final response. Upon completion of synthesis, a control response is requested from Gemini. Finally, Gemini is used to evaluate the differences between both responses and provide a report. The example can be run in two modes, 'fast' or 'comprehensive'; in 'fast' mode, the questions are spread across the LLM providers, in 'comprehensive' mode, every LLM provider must answer every question. The number of questions can vary, which may require multiple Agent requests.
  *
  * To run this example, you will need to install the required packages:
  *
@@ -54,12 +54,12 @@ LLMInterface.setApiKey({
 const max_concurrent_moas = 2;
 
 // Example description
-const description = `Example showing Mixture of Agents (MoA) concept (https://www.together.ai/blog/together-moa) to improve response quality. The value of MoA increases significantly with the addition of more agents and responses. 
+const description = `Example showing use of Mixture of Agents (MoA) (https://www.together.ai/blog/together-moa) to improve response quality. The value of MoA increases significantly with the addition of more agents and responses.
 Sure! Here’s a shortened version:
 
 Leveraging diverse language models from multiple providers, each agent brings unique strengths, enhancing the quality and robustness of responses. Increasing the number of responses improves corpus comprehensiveness and coverage, ensuring diverse viewpoints and a more accurate, reliable synthesized output.
 
-In this example, three LLM providers are used. Gemini is used as the Proposer and the Aggregator. Gemini, Hugging Face, and Groq are used as the Agents. The Proposer attempts to break down a simplePrompt into supporting questions, then the Agents answer the questions, and the Aggregator synthesizes a final MoA response. Upon completion of the MoA workflow, a control response is requested from Gemini, then Gemini is used again to evaluate the differences between both responses and provide a report. 
+In this example, three LLM providers are used. Gemini is used as the Proposer and the Aggregator. Gemini, Hugging Face, and Groq are used as the Agents. The Proposer attempts to break down a simplePrompt into supporting questions, then the Agents answer the questions, and the Aggregator synthesizes a final MoA response. Upon completion of the MoA workflow, a control response is requested from Gemini, then Gemini is used again to evaluate the differences between both responses and provide a report.
 
 The example can be run in two modes, 'fast' or 'comprehensive'; in 'fast' mode, the questions are spread across the LLM providers, in 'comprehensive' mode, every LLM provider must answer every question. Running the example in the two modes can highlight the value of increasing the number of providers and responses.
 
@@ -99,11 +99,11 @@ async function exampleUsage(mode = 'Fast') {
   prettyText(`\n${GREEN}Get MoA responses using '${mode}' mode${RESET}\n`);
   mode === 'Fast'
     ? prettyText(
-        `${YELLOW}In 'fast' mode, each question will be answered once.${RESET}\n\n`,
-      )
+      `${YELLOW}In 'fast' mode, each question will be answered once.${RESET}\n\n`,
+    )
     : prettyText(
-        `${YELLOW}In 'comprehensive' mode, each question will be answered N times, with N being the number of Agents.${RESET}\n\n`,
-      );
+      `${YELLOW}In 'comprehensive' mode, each question will be answered N times, with N being the number of Agents.${RESET}\n\n`,
+    );
   let moaResponses = [];
 
   if (mode === 'Fast') {
@@ -232,14 +232,12 @@ function promptUser(callback) {
   runMode.forEach((choice, index) => {
     if (choice === 'Fast') {
       prettyText(
-        `${
-          index + 1
+        `${index + 1
         }.) ${YELLOW}Fast${RESET} ---------- 1 Responses For Each Question\n`,
       );
     } else {
       prettyText(
-        `${index + 1}.) ${YELLOW}Comprehensive${RESET} - ${
-          moas.length
+        `${index + 1}.) ${YELLOW}Comprehensive${RESET} - ${moas.length
         } Responses For Each Question\n`,
       );
     }

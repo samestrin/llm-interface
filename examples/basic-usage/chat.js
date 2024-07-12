@@ -32,25 +32,21 @@ To run this example, you first need to install the required modules by executing
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
+
+  console.time('Timer');
+  // OpenAI chat.completion structure
+  const openaiCompatibleStructure = {
+    "model": "gemma-7b-it",
+    "messages":
+      [
+        { "role": "system", "content": "You are a helpful assistant." },
+        { "role": "user", "content": "Say hello with a polite greeting!" },
+        { "role": "system", "content": "Hello there! It's an absolute pleasure to make your acquaintance. How may I have the honor of assisting you today?" },
+        { "role": "user", "content": "I need help understanding low latency LLMs!" }
+      ],
+    "max_tokens": 100
+  }
   try {
-    console.time('Timer');
-    // OpenAI chat.completion structure
-    const openaiCompatibleStructure = {
-      "model": "gemma-7b-it",
-      "messages":
-        [
-          { "role": "system", "content": "You are a helpful assistant." },
-          { "role": "user", "content": "Say hello with a polite greeting!" },
-          { "role": "system", "content": "Hello there! It's an absolute pleasure to make your acquaintance. How may I have the honor of assisting you today?" },
-          { "role": "user", "content": "I need help understanding low latency LLMs!" }
-        ],
-      "max_tokens": 100
-    }
-
-    // Concatenate messages into a single string
-    const concatenatedMessages = openaiCompatibleStructure.messages.map(message => `${message.role}: ${message.content}`).join('\n');
-
-
     prettyHeader(
       'Chat Example',
       description,

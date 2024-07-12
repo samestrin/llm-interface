@@ -10,19 +10,26 @@ Welcome to the documentation for the LLM Interface package. This documentation p
 - [Usage](#usage)
   - [LLMInterface](#llminterface)
     - [getAllModelNames()](#getallmodelnames)
+    - [getEmbeddingsModelAlias(interfaceName, alias)](#getembeddingsmodelaliasinterfacename-alias)
     - [getInterfaceConfigValue(interfaceName, key)](#getInterfaceConfigValueinterfacename-key)
+    - [getModelAlias(interfaceName, alias)](#getmodelaliasinterfacename-alias)
     - [setApiKey(interfaceNames, apiKey)](#setapikeyinterfacenames-apikey)
-    - [setModelAlias(interfaceName, alias, name, tokens = null)](#setmodelaliasinterfacename-alias-name-tokens--null)
+    - [setEmbeddingsModelAlias(interfaceName, alias, name)](#setembeddingsmodelaliasinterfacename-alias-name)
+    - [setModelAlias(interfaceName, alias, name)](#setmodelaliasinterfacename-alias-name)
     - [configureCache(cacheConfig = {})](#configurecachecacheconfig--)
+    - [flushCache()](#flushcache)
     - [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](#sendmessageinterfacename-message-options---interfaceoptions--)
     - [streamMessage(interfaceName, message, options = {})](#streammessageinterfacename-message-options--)
-    - [Supported Interface Names](#supported-interface-names)
+    - [embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})](#embeddingsinterfacename-embeddingstring-options---interfaceoptions--)
+    - [chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})](#chatcompletionscreateinterfacename-message-options---interfaceoptions--)
   - [LLMInterfaceSendMessage](#llminterfacesendmessage)
     - [LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})](#llminterfacesendmessageinterfacename-apikey-message-options---interfaceoptions--)
   - [LLMInterfaceStreamMessage](#llminterfacestreammessage)
     - [LLMInterfaceStreamMessage(interfaceName, apiKey, message, options = {})](#llminterfacestreammessageinterfacename-apikey-message-options--)
   - [Message Object](#message-object)
     - [Structure of a Message Object](#structure-of-a-message-object)
+  - [Options Object](#options-object)
+    - [Structure of an Options Object](#structure-of-an-options-object)
   - [Interface Options Object](#interface-options-object)
     - [Structure of an Interface Options Object](#structure-of-an-interface-options-object)
   - [Caching](#caching)
@@ -40,7 +47,9 @@ Welcome to the documentation for the LLM Interface package. This documentation p
         - [MongoDB](#mongodb)
     - [Memory Cache](#memory-cache)
       - [Example Usage](#example-usage-4)
-  - [Models](#models)
+  - [Support](#support)
+  - [Model Aliases](#model-aliases)
+  - [Embeddings Model Aliases](#embedding-model-aliases)
   - [Jailbreaking](#jailbreaking)
   - [Glossary](#glossary)
   - [Examples](#examples)
@@ -53,7 +62,7 @@ The LLMInterface npm module provides a unified interface for interacting with va
 
 ## API Keys
 
-To interact with different LLM providers, you will need API keys. Refer to [API Keys](api-key.md) for detailed instructions on obtaining and configuring API keys for supported providers.
+To interact with different LLM providers, you will need API keys. Refer to [API Keys](api-keys.md) for detailed instructions on obtaining and configuring API keys for supported providers.
 
 ## Usage
 
@@ -62,25 +71,38 @@ The [Usage](usage.md) section contains detailed documentation on how to use the 
 ### LLMInterface
 
 - [getAllModelNames()](usage.md#getallmodelnames)
+- [getEmbeddingsModelAlias(interfaceName, alias)](usage.md#getembeddingsmodelaliasinterfacename-alias)
 - [getInterfaceConfigValue(interfaceName, key)](usage.md#getInterfaceConfigValueinterfacename-key)
+- [getModelAlias(interfaceName, alias)](usage.md#getmodelaliasinterfacename-alias)
 - [setApiKey(interfaceNames, apiKey)](usage.md#setapikeyinterfacenames-apikey)
-- [setModelAlias(interfaceName, alias, name, tokens = null)](usage.md#setmodelaliasinterfacename-alias-name-tokens--null)
+- [setEmbeddingsModelAlias(interfaceName, alias, name)](usage.md#setembeddingsmodelaliasinterfacename-alias-name)
+- [setModelAlias(interfaceName, alias, name)](usage.md#setmodelaliasinterfacename-alias-name)
 - [configureCache(cacheConfig = {})](usage.md#configurecachecacheconfig--)
+- [flushCache()](usage.md#flushcache)
 - [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](usage.md#sendmessageinterfacename-message-options---interfaceoptions--)
 - [streamMessage(interfaceName, message, options = {})](usage.md#streammessageinterfacename-message-options--)
-- [Supported Interface Names](usage.md#supported-interface-names)
+- [embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})](usage.md#embeddingsinterfacename-embeddingstring-options---interfaceoptions--)
+- [chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})](usage.md#chatcompletionscreateinterfacename-message-options---interfaceoptions--)
 
 ### LLMInterfaceSendMessage
 
 - [LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})](usage.md#llminterfacesendmessageinterfacename-apikey-message-options---interfaceoptions--)
 
+_This is a legacy function and will be depreciated._
+
 ### LLMInterfaceStreamMessage
 
 - [LLMInterfaceStreamMessage(interfaceName, apiKey, message, options = {})](usage.md#llminterfacestreammessageinterfacename-apikey-message-options--)
 
+_This is a legacy function and will be depreciated._
+
 ### Message Object
 
 - [Structure of a Message Object](usage.md#structure-of-a-message-object)
+
+### Options Object
+
+- [Structure of an Options Object](usage.md#structure-of-an-options-object)
 
 ### Interface Options Object
 
@@ -103,7 +125,11 @@ The [Usage](usage.md) section contains detailed documentation on how to use the 
 - [Memory Cache](usage.md#memory-cache)
   - [Example Usage](usage.md#example-usage-4)
 
-## Models
+## Support
+
+A complete list of [supported providers](support.md) is availabe [here](support.md).
+
+## Model Aliases
 
 The LLMInterface supports multiple model aliases for different providers. See [Models](models.md) for a list of model aliases and their descriptions.
 

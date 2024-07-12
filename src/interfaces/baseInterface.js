@@ -11,13 +11,13 @@ const axios = require('axios');
 
 const {
   getModelByAlias,
-  getEmbeddingModelByAlias,
+  getEmbeddingsModelByAlias,
 } = require('../utils/config.js');
 const {
   getMessageObject,
   getSimpleMessageObject,
 } = require('../utils/utils.js');
-const { parseJSON } = require('../utils/utils.js');
+const { parseJSON, isEmptyObject } = require('../utils/utils.js');
 const { getConfig } = require('../utils/configManager.js');
 const {
   LLMInterfaceError,
@@ -156,6 +156,17 @@ class BaseInterface {
 
     let { model, messages } = messageObject;
 
+    // support OpenAI structure
+    if (isEmptyObject(options)) {
+      if (messageObject.model) delete messageObject.model;
+      if (messageObject.messages) delete messageObject.messages;
+
+      if (!isEmptyObject(messageObject)) {
+        options = messageObject;
+      }
+    }
+
+
     // Finalize the model name
     model =
       model || options.model || this.config[this.interfaceName].model.default;
@@ -163,7 +174,10 @@ class BaseInterface {
 
     const selectedModel = getModelByAlias(this.interfaceName, model);
 
-    const { max_tokens = 150, response_format = '' } = options;
+    const {
+      max_tokens = 1024,
+      response_format = ''
+    } = options;
 
     // Adjust options
     options = this.adjustOptions(options);
@@ -345,7 +359,7 @@ class BaseInterface {
     let model =
       options.model || this.config[this.interfaceName].embeddings.default;
 
-    model = getEmbeddingModelByAlias(this.interfaceName, model);
+    model = getEmbeddingsModelByAlias(this.interfaceName, model);
 
     // If we reach here, it means we are either in the original call or we found a valid embedding URL
     if (embeddingUrl) {

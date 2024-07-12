@@ -9,7 +9,7 @@ const BaseInterface = require('./baseInterface.js');
 const { huggingfaceApiKey } = require('../utils/loadApiKeysFromEnv.js');
 const {
   getModelByAlias,
-  getEmbeddingModelByAlias,
+  getEmbeddingsModelByAlias,
 } = require('../utils/config.js');
 const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
 
@@ -33,7 +33,7 @@ class HuggingFace extends BaseInterface {
   }
 
   getEmbedRequestUrl(model) {
-    model = getEmbeddingModelByAlias(interfaceName, model);
+    model = getEmbeddingsModelByAlias(interfaceName, model);
     return `${model}`;
   }
 }

@@ -14,7 +14,6 @@ const { simplePrompt } = require('../../src/utils/defaults.js');
 const { LLMInterface } = require('../../src/index.js');
 const { prettyHeader,
   prettyText,
-  YELLOW,
   GREEN,
   RESET,
 } = require('../../src/utils/utils.js');
