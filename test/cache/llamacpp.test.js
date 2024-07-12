@@ -3,6 +3,6 @@
  * @description Tests for the caching mechanism in the LlamaCPP class.
  */
 
-const { llamaURL } = require('../../src/config/config.js');
+const { llamaURL } = require('../../src/utils/loadApiKeysFromEnv.js');
 const runTests = require('./sharedTestCases.js');
 runTests('llamacpp', llamaURL);

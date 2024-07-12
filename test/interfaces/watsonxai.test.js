@@ -7,7 +7,7 @@ const WatsonxAI = require('../../src/interfaces/watsonxai.js');
 const {
   watsonxaiApiKey,
   watsonxaiProjectId,
-} = require('../../src/config/config.js');
+} = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

@@ -1,17 +1,11 @@
 /**
- * @file test/basic/llmInterfaceGetModelConfigValue.test.js
- * @description Tests for the LLMInterface.getModelConfigValue function.
+ * @file test/basic/llmInterface.config.test.js
+ * @description Tests for the LLMInterface.getInterfaceConfigValue function.
  */
 
 const { LLMInterface } = require('../../src/index.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
-const {
-  simplePrompt,
-  options,
-  expectedMaxLength,
-} = require('../../src/utils/defaults.js');
-let config = require('../../src/config/config.js');
-const { Readable } = require('stream');
+let config = require('../../src/utils/loadApiKeysFromEnv.js');
 
 let response;
 
@@ -25,8 +19,6 @@ describe('LLMInterface.getAllModelNames', () => {
       'aimlapi',
       'anthropic',
       'anyscale',
-      'azureai',
-      'bigmodel',
       'cloudflareai',
       'cohere',
       'corcel',
@@ -54,11 +46,12 @@ describe('LLMInterface.getAllModelNames', () => {
       'rekaai',
       'replicate',
       'shuttleai',
-      'siliconflow',
       'thebai',
       'togetherai',
+      'voyage',
       'watsonxai',
       'writer',
+      'zhipuai',
     ];
 
     // Sort both arrays to ensure the order doesn't affect the comparison
@@ -69,7 +62,7 @@ describe('LLMInterface.getAllModelNames', () => {
   });
 });
 
-describe('LLMInterface.getModelConfigValue', () => {
+describe('LLMInterface.getInterfaceConfigValue', () => {
   let testCases = [
     {
       llmProvider: 'openai',
@@ -79,7 +72,7 @@ describe('LLMInterface.getModelConfigValue', () => {
     {
       llmProvider: 'openai',
       key: 'model.default',
-      expectedValue: { name: 'gpt-3.5-turbo', tokens: 16385 },
+      expectedValue: 'gpt-3.5-turbo',
     },
     {
       llmProvider: 'ai21',
@@ -89,12 +82,12 @@ describe('LLMInterface.getModelConfigValue', () => {
     {
       llmProvider: 'ai21',
       key: 'model.large',
-      expectedValue: { name: 'jamba-instruct', tokens: 256000 },
+      expectedValue: 'jamba-instruct',
     },
     {
       llmProvider: 'anthropic',
       key: 'model.small',
-      expectedValue: { name: 'claude-3-haiku-20240307', tokens: 200000 },
+      expectedValue: 'claude-3-haiku-20240307',
     },
     { llmProvider: 'nonexistent', key: 'url', expectedValue: false },
     { llmProvider: 'openai', key: 'nonexistent.key', expectedValue: false },
@@ -102,8 +95,8 @@ describe('LLMInterface.getModelConfigValue', () => {
 
   testCases.forEach(({ llmProvider, key, expectedValue }) => {
     test(`should return the correct value for ${llmProvider} and key ${key}`, () => {
+      response = LLMInterface.getInterfaceConfigValue(llmProvider, key);
       try {
-        response = LLMInterface.getModelConfigValue(llmProvider, key);
       } catch (error) {
         throw new Error(`Test failed: ${safeStringify(error)}`);
       }
@@ -113,10 +106,10 @@ describe('LLMInterface.getModelConfigValue', () => {
   });
 });
 
-describe('LLMInterface.setApiKey and getModelConfigValue', () => {
+describe('LLMInterface.setApiKey and getInterfaceConfigValue', () => {
   test('should set and get a single API key', () => {
     LLMInterface.setApiKey('openai', 'sk-YOUR_OPENAI_API_KEY_HERE');
-    const apiKey = LLMInterface.getModelConfigValue('openai', 'apiKey');
+    const apiKey = LLMInterface.getInterfaceConfigValue('openai', 'apiKey');
     expect(apiKey).toBe('sk-YOUR_OPENAI_API_KEY_HERE');
   });
 
@@ -126,68 +119,21 @@ describe('LLMInterface.setApiKey and getModelConfigValue', () => {
       gemini: 'gemini_YOUR_GEMINI_API_KEY_HERE',
     });
 
-    const openaiKey = LLMInterface.getModelConfigValue('openai', 'apiKey');
-    const geminiKey = LLMInterface.getModelConfigValue('gemini', 'apiKey');
+    const openaiKey = LLMInterface.getInterfaceConfigValue('openai', 'apiKey');
+    const geminiKey = LLMInterface.getInterfaceConfigValue('gemini', 'apiKey');
 
     expect(openaiKey).toBe('sk-YOUR_OPENAI_API_KEY_HERE');
     expect(geminiKey).toBe('gemini_YOUR_GEMINI_API_KEY_HERE');
   });
 });
 
-describe('LLMInterface.setApiKey followed by LLMInterface.sendMessage and LLMInterface.streamMessage (using Groq)', () => {
-  if (config.groqApiKey) {
-    beforeAll(() => {
-      LLMInterface.setApiKey('groq', config.groqApiKey);
-    });
-
-    test('LLMInterface.sendMessage should send a message and receive a response', async () => {
-      response = await LLMInterface.sendMessage('groq', simplePrompt, options);
-      expect(typeof response).toBe('object');
-    }, 30000);
-
-    test('LLMInterface.streamMessage should stream a message and receive a response stream', async () => {
-      try {
-        const stream = await LLMInterface.streamMessage(
-          'groq',
-          simplePrompt,
-          options,
-        );
-
-        expect(stream).toBeDefined();
-        expect(stream).toHaveProperty('data');
-
-        let data = '';
-        const readableStream = new Readable().wrap(stream.data);
-
-        await new Promise((resolve, reject) => {
-          readableStream.on('data', (chunk) => {
-            data += chunk;
-          });
-
-          readableStream.on('end', () => {
-            try {
-              expect(typeof data).toBe('string');
-              resolve();
-            } catch (error) {
-              reject(
-                new Error(`Invalid string received: ${safeStringify(error)}`),
-              );
-            }
-          });
-
-          readableStream.on('error', (error) => {
-            reject(new Error(`Stream error: ${safeStringify(error)}`));
-          });
-        });
-      } catch (error) {
-        throw new Error(`Stream test failed: ${safeStringify(error)}`);
-      }
-    }, 30000);
-
-    test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-      expect(response.results.length).toBeLessThan(expectedMaxLength);
-    });
-  } else {
-    test.skip(`OpenAI API Key is not set`, () => {});
-  }
+describe('LLMInterface.setModelAlias and getInterfaceConfigValue', () => {
+  test('should set and get a default model alias', () => {
+    LLMInterface.setModelAlias('openai', 'default', 'newModelName');
+    const model = LLMInterface.getInterfaceConfigValue(
+      'openai',
+      'model.default',
+    );
+    expect(model).toBe('newModelName');
+  });
 });

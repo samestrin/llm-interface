@@ -4,7 +4,7 @@
  */
 
 const OctoAI = require('../../src/interfaces/octoai.js');
-const { octoaiApiKey } = require('../../src/config/config.js');
+const { octoaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

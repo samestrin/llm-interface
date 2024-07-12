@@ -4,7 +4,7 @@
  */
 
 const LlamaCPP = require('../../src/interfaces/llamacpp.js');
-const { llamaURL } = require('../../src/config/config.js');
+const { llamaURL } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 const axios = require('axios');

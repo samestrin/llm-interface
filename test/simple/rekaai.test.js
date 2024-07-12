@@ -4,7 +4,7 @@
  */
 
 const RekaAI = require('../../src/interfaces/rekaai.js');
-const { rekaaiApiKey } = require('../../src/config/config.js');
+const { rekaaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

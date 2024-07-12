@@ -4,7 +4,7 @@
  */
 
 const AIMLAPI = require('../../src/interfaces/aimlapi.js');
-const { aimlapiApiKey } = require('../../src/config/config.js');
+const { aimlapiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
@@ -21,4 +21,4 @@ const message = {
   ],
 };
 
-runTests(AIMLAPI, aimlapiApiKey, 'AIML API', 'Qwen/Qwen1.5-0.5B-Chat', message);
+runTests(AIMLAPI, aimlapiApiKey, 'AIMLAPI', 'Qwen/Qwen1.5-0.5B-Chat', message);

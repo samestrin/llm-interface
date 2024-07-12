@@ -4,7 +4,7 @@
  */
 
 const { LLMInterface } = require('../../src/index.js');
-const { openaiApiKey } = require('../../src/config/config.js');
+const { openaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt, options } = require('../../src/utils/defaults.js');
 
 describe('OpenAI JSON', () => {

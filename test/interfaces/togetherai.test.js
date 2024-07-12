@@ -4,7 +4,7 @@
  */
 
 const TogetherAI = require('../../src/interfaces/togetherai.js');
-const { togetheraiApiKey } = require('../../src/config/config.js');
+const { togetheraiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

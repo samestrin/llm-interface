@@ -4,7 +4,7 @@
  */
 
 const DeepInfra = require('../../src/interfaces/deepinfra.js');
-const { deepinfraApiKey } = require('../../src/config/config.js');
+const { deepinfraApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

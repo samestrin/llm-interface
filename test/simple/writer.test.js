@@ -4,7 +4,7 @@
  */
 
 const Writer = require('../../src/interfaces/writer.js');
-const { writerApiKey } = require('../../src/config/config.js');
+const { writerApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

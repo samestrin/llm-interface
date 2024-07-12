@@ -4,7 +4,7 @@
  */
 
 const HuggingFace = require('../../src/interfaces/huggingface.js');
-const { huggingfaceApiKey } = require('../../src/config/config.js');
+const { huggingfaceApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

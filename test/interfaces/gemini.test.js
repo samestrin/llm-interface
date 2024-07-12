@@ -4,7 +4,7 @@
  */
 
 const Gemini = require('../../src/interfaces/gemini.js');
-const { geminiApiKey } = require('../../src/config/config.js');
+const { geminiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
@@ -21,4 +21,4 @@ const message = {
   ],
 };
 
-runTests(Gemini, geminiApiKey, 'Gemini', 'gemini-1.5-flash', message, false);
+runTests(Gemini, geminiApiKey, 'Gemini', 'gemini-1.5-flash', message, true);

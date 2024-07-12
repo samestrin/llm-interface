@@ -4,7 +4,7 @@
  */
 
 const NVIDIA = require('../../src/interfaces/nvidia.js');
-const { nvidiaApiKey } = require('../../src/config/config.js');
+const { nvidiaApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

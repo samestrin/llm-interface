@@ -4,7 +4,7 @@
  */
 
 const AILayer = require('../../src/interfaces/ailayer.js');
-const { ailayerApiKey } = require('../../src/config/config.js');
+const { ailayerApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

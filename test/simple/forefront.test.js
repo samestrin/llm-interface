@@ -4,7 +4,7 @@
  */
 
 const Forefront = require('../../src/interfaces/forefront.js');
-const { forefrontApiKey } = require('../../src/config/config.js');
+const { forefrontApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

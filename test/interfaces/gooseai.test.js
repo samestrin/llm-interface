@@ -4,7 +4,7 @@
  */
 
 const GooseAI = require('../../src/interfaces/gooseai.js');
-const { gooseaiApiKey } = require('../../src/config/config.js');
+const { gooseaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

@@ -4,7 +4,7 @@
  */
 
 const Cohere = require('../../src/interfaces/cohere.js');
-const { cohereApiKey } = require('../../src/config/config.js');
+const { cohereApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

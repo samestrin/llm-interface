@@ -4,7 +4,7 @@
  */
 
 const DeepSeek = require('../../src/interfaces/deepseek.js');
-const { deepseekApiKey } = require('../../src/config/config.js');
+const { deepseekApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

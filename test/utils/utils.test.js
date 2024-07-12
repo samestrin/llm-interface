@@ -10,9 +10,14 @@ const {
 } = require('../../src/utils/utils.js');
 const {
   getModelByAlias,
-  getModelConfigValue,
+  getEmbeddingModelByAlias,
+  getInterfaceConfigValue,
 } = require('../../src/utils/config.js');
-const config = require('../../src/config/llmProviders.json');
+
+const {
+  loadProviderConfig,
+  getConfig,
+} = require('../../src/utils/configManager.js');
 
 describe('Utils', () => {
   describe('getMessageObject', () => {
@@ -51,23 +56,76 @@ describe('Utils', () => {
   });
 
   describe('getModelByAlias', () => {
-    test('should return the model name based on the provided alias', () => {
-      const provider = 'openai';
-      const modelAlias = 'default';
-      const expectedModelName = config[provider].model[modelAlias].name;
-      expect(getModelByAlias(provider, modelAlias)).toEqual(expectedModelName);
+    test('should return the model name based on the provided alias', async () => {
+      const interfaceName = 'openai';
+      let modelAlias = 'default';
+
+      loadProviderConfig(interfaceName);
+      const config = getConfig();
+
+      let expectedModelName = config[interfaceName].model['default'];
+
+      expect(getModelByAlias(interfaceName, modelAlias)).toEqual(
+        expectedModelName,
+      );
+      modelAlias = 'model.default';
+      expectedModelName = config[interfaceName].model['default'];
+      expect(getModelByAlias(interfaceName, modelAlias)).toEqual(
+        expectedModelName,
+      );
     });
 
-    test('should return the model alias if the model name is not found', () => {
-      const provider = 'openai';
+    test('should return the original model value if the model name is not found', () => {
+      const interfaceName = 'openai';
       const modelAlias = 'nonexistent-model';
-      expect(getModelByAlias(provider, modelAlias)).toEqual(modelAlias);
+
+      expect(getModelByAlias(interfaceName, modelAlias)).toEqual(modelAlias);
     });
 
-    test('should return the model alias if the provider is not found', () => {
-      const provider = 'nonexistent-provider';
+    test('should return the original model value if the interfaceName is not found', () => {
+      const interfaceName = 'nonexistent-interfaceName';
       const modelAlias = 'gpt-3';
-      expect(getModelByAlias(provider, modelAlias)).toEqual(modelAlias);
+
+      expect(getModelByAlias(interfaceName, modelAlias)).toEqual(modelAlias);
+    });
+  });
+
+  describe('getEmbeddingModelByAlias', () => {
+    test('should return the model name based on the provided alias', async () => {
+      const interfaceName = 'openai';
+      let modelAlias = 'default';
+
+      loadProviderConfig(interfaceName);
+      const config = getConfig();
+
+      let expectedModelName = config[interfaceName].embeddings['default'];
+      expect(getEmbeddingModelByAlias(interfaceName, modelAlias)).toEqual(
+        expectedModelName,
+      );
+
+      modelAlias = 'embeddings.default';
+      expectedModelName = config[interfaceName].embeddings['default'];
+      expect(getEmbeddingModelByAlias(interfaceName, modelAlias)).toEqual(
+        expectedModelName,
+      );
+    });
+
+    test('should return the original model value if the model name is not found', () => {
+      const interfaceName = 'openai';
+      const modelAlias = 'nonexistent-model';
+
+      expect(getEmbeddingModelByAlias(interfaceName, modelAlias)).toEqual(
+        modelAlias,
+      );
+    });
+
+    test('should return the original model value if the interfaceName is not found', () => {
+      const interfaceName = 'nonexistent-interfaceName';
+      const modelAlias = 'gpt-3';
+
+      expect(getEmbeddingModelByAlias(interfaceName, modelAlias)).toEqual(
+        modelAlias,
+      );
     });
   });
 
@@ -84,50 +142,63 @@ describe('Utils', () => {
     });
   });
 
-  describe('getModelConfigValue', () => {
-    test('should return the correct value for a given key', () => {
-      const modelName = 'aimlapi';
-      expect(getModelConfigValue(modelName, 'url')).toEqual(
-        config[modelName].url,
+  describe('getInterfaceConfigValue', () => {
+    test('should return the correct value for a given key', async () => {
+      const interfaceName = 'aimlapi';
+
+      loadProviderConfig(interfaceName);
+      const config = getConfig();
+
+      expect(getInterfaceConfigValue(interfaceName, 'url')).toEqual(
+        config[interfaceName].url,
       );
-      expect(getModelConfigValue(modelName, 'apiKey')).toEqual(false);
-      expect(getModelConfigValue(modelName, 'model.default')).toEqual(
-        config[modelName].model.default,
+
+      expect(getInterfaceConfigValue(interfaceName, 'apiKey')).toEqual(false);
+      expect(getInterfaceConfigValue(interfaceName, 'model.default')).toEqual(
+        config[interfaceName].model.default,
       );
-      expect(getModelConfigValue(modelName, 'model.large')).toEqual(
-        config[modelName].model.large,
+      expect(getInterfaceConfigValue(interfaceName, 'model.large')).toEqual(
+        config[interfaceName].model.large,
       );
-      expect(getModelConfigValue(modelName, 'model.small')).toEqual(
-        config[modelName].model.small,
+      expect(getInterfaceConfigValue(interfaceName, 'model.small')).toEqual(
+        config[interfaceName].model.small,
       );
-      expect(getModelConfigValue(modelName, 'embeddingUrl')).toEqual(
-        config[modelName].embeddingUrl,
+      expect(getInterfaceConfigValue(interfaceName, 'embeddingUrl')).toEqual(
+        config[interfaceName].embeddingUrl,
       );
-      expect(getModelConfigValue(modelName, 'embeddings.default')).toEqual(
-        config[modelName].embeddings.default,
-      );
-      expect(getModelConfigValue(modelName, 'embeddings.large')).toEqual(
-        config[modelName].embeddings.large,
-      );
-      expect(getModelConfigValue(modelName, 'embeddings.small')).toEqual(
-        config[modelName].embeddings.small,
-      );
-      expect(getModelConfigValue(modelName, 'createMessageObject')).toEqual(
-        config[modelName].createMessageObject,
-      );
-      expect(getModelConfigValue(modelName, 'arguments')).toEqual(
-        config[modelName].arguments,
-      );
+      expect(
+        getInterfaceConfigValue(interfaceName, 'embeddings.default'),
+      ).toEqual(config[interfaceName].embeddings.default);
+      expect(
+        getInterfaceConfigValue(interfaceName, 'embeddings.large'),
+      ).toEqual(config[interfaceName].embeddings.large);
+      expect(
+        getInterfaceConfigValue(interfaceName, 'embeddings.small'),
+      ).toEqual(config[interfaceName].embeddings.small);
+      expect(
+        getInterfaceConfigValue(interfaceName, 'createMessageObject'),
+      ).toEqual(config[interfaceName].createMessageObject);
     });
 
     test('should return false for non-existent keys', () => {
-      const modelName = 'aimlapi';
-      expect(getModelConfigValue(modelName, 'nonexistent.key')).toEqual(false);
+      const interfaceName = 'aimlapi';
+
+      expect(getInterfaceConfigValue(interfaceName, 'nonexistent.key')).toEqual(
+        false,
+      );
     });
 
-    test('should return false for non-existent model', () => {
-      const modelName = 'nonexistentModel';
-      expect(getModelConfigValue(modelName, 'url')).toEqual(false);
+    test('should return false for non-existent interfaceName', async () => {
+      const interfaceName = 'nonexistent';
+      loadProviderConfig(interfaceName);
+      expect(getInterfaceConfigValue(interfaceName, 'url')).toEqual(false);
+    });
+
+    test('should return false for non-existent model', async () => {
+      const interfaceName = 'nonexistentModel';
+      const model = 'fakemodel';
+      loadProviderConfig(interfaceName, model);
+      expect(getInterfaceConfigValue(interfaceName, 'url')).toEqual(false);
     });
   });
 });

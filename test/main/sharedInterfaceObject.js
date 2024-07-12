@@ -1,9 +1,9 @@
 /**
- * @file test/basic/llmInterfaceGetModelConfigValue.test.js
- * @description Tests for the LLMInterface.getModelConfigValue function.
+ * @file test/basic/llmInterfacegetInterfaceConfigValue.test.js
+ * @description Tests for the LLMInterface.getInterfaceConfigValue function.
  */
 
-let config = require('../../src/config/config.js');
+let config = require('../../src/utils/loadApiKeysFromEnv.js');
 
 let interfaces = {
   ai21: config.ai21ApiKey,
@@ -11,7 +11,6 @@ let interfaces = {
   aimlapi: config.aimlapiApiKey,
   anyscale: config.anyscaleApiKey,
   anthropic: config.anthropicApiKey,
-  bigmodel: config.bigmodelApiKey,
   cloudflareai: [config.cloudflareaiApiKey, config.cloudflareaiAccountId],
   cohere: config.cohereApiKey,
   corcel: config.corcelApiKey,
@@ -26,7 +25,7 @@ let interfaces = {
   huggingface: config.huggingfaceApiKey,
   hyperbeeai: config.hyperbeeaiApiKey,
   lamini: config.laminiApiKey,
-  llamacpp: config.llamaURL,
+  llamacpp: config.llamaURL, // for embeddings you to start the server with the --embeddings options
   mistralai: config.mistralaiApiKey,
   monsterapi: config.monsterapiApiKey,
   neetsai: config.neetsaiApiKey,
@@ -44,10 +43,13 @@ let interfaces = {
   togetherai: config.togetheraiApiKey,
   watsonxai: [config.watsonxaiApiKey, config.watsonxaiSpaceId],
   writer: config.writerApiKey,
+  voyage: config.voyageApiKey,
+  zhipuai: config.zhipuaiApiKey,
 };
 
 interfaces = {
-  lamini: config.laminiApiKey,
+  thebai: config.thebaiApiKey,
 };
+
 
 module.exports = interfaces;

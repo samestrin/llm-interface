@@ -3,6 +3,6 @@
  * @description Tests for the caching mechanism in the Hugging Face class.
  */
 
-const { huggingfaceApiKey } = require('../../src/config/config.js');
+const { huggingfaceApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const runTests = require('./sharedTestCases.js');
 runTests('huggingface', huggingfaceApiKey);

@@ -4,7 +4,7 @@
  */
 
 const Anyscale = require('../../src/interfaces/anyscale.js');
-const { anyscaleApiKey } = require('../../src/config/config.js');
+const { anyscaleApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
@@ -27,4 +27,5 @@ runTests(
   'Anyscale',
   'mistralai/Mistral-7B-Instruct-v0.1',
   message,
+  false,
 );

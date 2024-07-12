@@ -4,7 +4,7 @@
  */
 
 const FireworksAI = require('../../src/interfaces/fireworksai.js');
-const { fireworksaiApiKey } = require('../../src/config/config.js');
+const { fireworksaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

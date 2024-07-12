@@ -4,7 +4,7 @@
  */
 
 const Corcel = require('../../src/interfaces/corcel.js');
-const { corcelApiKey } = require('../../src/config/config.js');
+const { corcelApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
@@ -17,4 +17,5 @@ const message = {
   ],
 };
 
-runTests(Corcel, corcelApiKey, 'Corcel', 'llama-3', message, true, true, 60);
+runTests(Corcel, corcelApiKey, 'Corcel', 'cortext-lite', message, true, false);
+// they support max_tokens but the response length is longer then the average

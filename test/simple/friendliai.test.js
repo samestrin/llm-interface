@@ -4,7 +4,7 @@
  */
 
 const FriendliAI = require('../../src/interfaces/friendliai.js');
-const { friendliaiApiKey } = require('../../src/config/config.js');
+const { friendliaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

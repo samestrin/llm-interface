@@ -4,7 +4,7 @@
  */
 
 const TheBAI = require('../../src/interfaces/thebai.js');
-const { thebaiApiKey } = require('../../src/config/config.js');
+const { thebaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

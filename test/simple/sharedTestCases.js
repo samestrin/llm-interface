@@ -5,24 +5,23 @@
 
 const { options, expectedMaxLength } = require('../../src/utils/defaults.js');
 const { safeStringify } = require('../../src/utils/jestSerializer.js');
+const { delay } = require('../../src/utils/utils.js');
 
-function delay(ms) {
-  ms = ms * 1000;
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const interfaceSkip = ['ollama'];
 
 module.exports = function runTests(
   AIClient,
   apiKey,
-  clientName,
+  interfaceName,
   simplePrompt,
   delayBetweenTests = 0,
+  runMaxTokens = true,
 ) {
   let aiClient;
-  let delayBetweenTestsWithWait = 30000 + delayBetweenTests * 1000;
+  let delayBetweenTestsWithWait = 30000 + delayBetweenTests;
 
-  describe(`${clientName} Simple`, () => {
-    if (apiKey) {
+  describe(`${interfaceName} Simple`, () => {
+    if (apiKey && !interfaceSkip.includes(interfaceName)) {
       let response;
       test('API Key should be set', () => {
         expect(typeof apiKey === 'string' || Array.isArray(apiKey)).toBe(true);
@@ -88,12 +87,15 @@ module.exports = function runTests(
         },
         delayBetweenTestsWithWait,
       );
-
-      test(`Response should be less than ${expectedMaxLength} characters`, async () => {
-        expect(response.results.length).toBeLessThan(expectedMaxLength);
-      });
+      if (runMaxTokens) {
+        test(`Response should be less than ${expectedMaxLength} characters`, async () => {
+          expect(response.results.length).toBeLessThan(expectedMaxLength);
+        });
+      } else {
+        test.skip(`API does not support max_tokens`, () => { });
+      }
     } else {
-      test.skip(`API Key is not set`, () => {});
+      test.skip(`API Key is not set`, () => { });
     }
   });
 };

@@ -4,7 +4,7 @@
  */
 
 const OpenAI = require('../../src/interfaces/openai.js');
-const { openaiApiKey } = require('../../src/config/config.js');
+const { openaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

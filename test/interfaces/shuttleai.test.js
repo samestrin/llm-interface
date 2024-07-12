@@ -4,7 +4,7 @@
  */
 
 const ShuttleAI = require('../../src/interfaces/shuttleai.js');
-const { shuttleaiApiKey } = require('../../src/config/config.js');
+const { shuttleaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
@@ -21,7 +21,7 @@ runTests(
   ShuttleAI,
   shuttleaiApiKey,
   'ShuttleAI',
-  'wizardlm-2-70b',
+  'shuttle-2-turbo',
   message,
   false,
 );

@@ -4,7 +4,7 @@
  */
 
 const NovitaAI = require('../../src/interfaces/novitaai.js');
-const { novitaaiApiKey } = require('../../src/config/config.js');
+const { novitaaiApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 

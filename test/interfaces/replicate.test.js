@@ -4,7 +4,7 @@
  */
 
 const Replicate = require('../../src/interfaces/replicate.js');
-const { replicateApiKey } = require('../../src/config/config.js');
+const { replicateApiKey } = require('../../src/utils/loadApiKeysFromEnv.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
 const runTests = require('./sharedTestCases.js');
 
@@ -23,5 +23,4 @@ runTests(
   'Replicate',
   'mistralai/mistral-7b-instruct-v0.2',
   message,
-  false,
 );
