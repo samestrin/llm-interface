@@ -84,6 +84,34 @@ function setModelAlias(interfaceName, alias, name, tokens = null) {
 }
 
 /**
+ * Set embeddings model alias values
+ *
+ * @param {string} interfaceName - The name of the interface.
+ * @param {string} alias - The model alias to update (e.g., "default", "large", "small").
+ * @param {string} name - The new model name to set.
+ * @param {number} [tokens=null] - The optional token limit for the new model.
+ * @returns {boolean} - Returns true if the update was successful, otherwise false.
+ */
+function setEmbeddingsModelAlias(interfaceName, alias, name, tokens = null) {
+  loadProviderConfig(interfaceName);
+  const config = getConfig();
+
+  if (
+    !interfaceName ||
+    !config[interfaceName] ||
+    !config[interfaceName].embeddings ||
+    !config[interfaceName].embeddings[alias]
+  ) {
+    return false;
+  }
+
+  config[interfaceName].embeddings[alias] = name;
+  updateConfig(interfaceName, config[interfaceName]); // Ensure the updated config is saved
+
+  return true;
+}
+
+/**
  * Retrieves a configuration value for a specified model and key.
  *
  * @param {string} modelName - The name of the interface (e.g., "openai").
@@ -180,4 +208,5 @@ module.exports = {
   getAllModelNames,
   setApiKey,
   setModelAlias,
+  setEmbeddingsModelAlias
 };
