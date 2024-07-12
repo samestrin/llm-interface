@@ -6,22 +6,22 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { corcelApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { corcelApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'corcel';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class Corcel extends BaseInterface {
   constructor(apiKey) {
-    super('corcel', apiKey || corcelApiKey, config['corcel'].url, {
+    super(interfaceName, apiKey || corcelApiKey, config[interfaceName].url, {
       Authorization: apiKey || corcelApiKey,
     });
   }
-
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+  adjustOptions(options) {
+    return { stream: false, ...options };
   }
 }
 

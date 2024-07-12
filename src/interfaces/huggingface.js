@@ -6,30 +6,35 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { huggingfaceApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
-const { getModelByAlias } = require('../utils/config.js');
+const { huggingfaceApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const {
+  getModelByAlias,
+  getEmbeddingModelByAlias,
+} = require('../utils/config.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'huggingface';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class HuggingFace extends BaseInterface {
   constructor(apiKey) {
     super(
-      'huggingface',
+      interfaceName,
       apiKey || huggingfaceApiKey,
-      config['huggingface'].url,
+      config[interfaceName].url,
     );
   }
 
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+  getRequestUrl(model) {
+    model = getModelByAlias(interfaceName, model);
+    return `${model}/v1/chat/completions`;
   }
 
-  getRequestUrl(model) {
-    model = getModelByAlias('huggingface', model);
-    return `${model}/v1/chat/completions`;
+  getEmbedRequestUrl(model) {
+    model = getEmbeddingModelByAlias(interfaceName, model);
+    return `${model}`;
   }
 }
 

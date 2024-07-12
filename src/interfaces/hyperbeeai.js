@@ -6,20 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { hyperbeeaiApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { hyperbeeaiApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'hyperbeeai';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class HyperbeeAI extends BaseInterface {
   constructor(apiKey) {
-    super('hyperbeeai', apiKey || hyperbeeaiApiKey, config['hyperbeeai'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+    super(interfaceName, apiKey || hyperbeeaiApiKey, config[interfaceName].url);
   }
 }
 

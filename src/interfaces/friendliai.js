@@ -6,20 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { friendliApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { friendliApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'friendliai';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class FriendliAI extends BaseInterface {
   constructor(apiKey) {
-    super('friendliai', apiKey || friendliApiKey, config['friendliai'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+    super(interfaceName, apiKey || friendliApiKey, config[interfaceName].url);
   }
 }
 

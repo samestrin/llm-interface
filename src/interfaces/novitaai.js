@@ -6,18 +6,16 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { novitaaiApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
-const config = getConfig();
+const { novitaaiApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
 
+const interfaceName = 'novitaai';
+
+loadProviderConfig(interfaceName);
+const config = getConfig();
 class NovitaAI extends BaseInterface {
   constructor(apiKey) {
-    super('novitaai', apiKey || novitaaiApiKey, config['novitaai'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    super(interfaceName, apiKey || novitaaiApiKey, config[interfaceName].url);
   }
 }
 

@@ -6,20 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { togetherAIApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { togetherAIApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'togetherai';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class TogetherAI extends BaseInterface {
   constructor(apiKey) {
-    super('togetherai', apiKey || togetherAIApiKey, config['togetherai'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+    super(interfaceName, apiKey || togetherAIApiKey, config[interfaceName].url);
   }
 }
 

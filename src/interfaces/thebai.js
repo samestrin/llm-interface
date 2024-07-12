@@ -6,20 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { thebaiApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { thebaiApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'thebai';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class TheBAI extends BaseInterface {
   constructor(apiKey) {
-    super('thebai', apiKey || thebaiApiKey, config['thebai'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+    super(interfaceName, apiKey || thebaiApiKey, config[interfaceName].url);
   }
 
   adjustOptions(options) {

@@ -10,18 +10,21 @@ const {
   LLMInterfaceSendMessageWithConfig,
   LLMInterfaceStreamMessageWithConfig,
 } = require('./utils/message.js');
-
+const {
+  LLMInterfaceEmbeddings,
+  LLMInterfaceEmbeddingsWithConfig,
+} = require('./utils/embeddings.js');
 const {
   getAllModelNames,
   setApiKey,
-  getModelConfigValue,
+  getInterfaceConfigValue,
   setModelAlias,
-  configureCache,
 } = require('./utils/config.js');
+const { flushCache, configureCache } = require('./utils/cache.js');
 
 // LLMInterface get functions
 LLMInterface.getAllModelNames = getAllModelNames;
-LLMInterface.getModelConfigValue = getModelConfigValue;
+LLMInterface.getInterfaceConfigValue = getInterfaceConfigValue;
 
 // LLMInterface set functions
 LLMInterface.setApiKey = setApiKey;
@@ -31,11 +34,21 @@ LLMInterface.setModelAlias = setModelAlias;
 LLMInterface.streamMessage = LLMInterfaceStreamMessageWithConfig;
 LLMInterface.sendMessage = LLMInterfaceSendMessageWithConfig;
 
-// LLMInterface configure function
+// Alias to match OpenAI
+LLMInterface.chat = {};
+LLMInterface.chat.completions = {};
+LLMInterface.chat.completions.create = LLMInterfaceSendMessageWithConfig;
+
+// LLMInterface embedding function
+LLMInterface.embeddings = LLMInterfaceEmbeddingsWithConfig;
+
+// LLMInterface cache functions
 LLMInterface.configureCache = configureCache;
+LLMInterface.flushCache = flushCache;
 
 module.exports = {
   LLMInterface,
   LLMInterfaceSendMessage,
   LLMInterfaceStreamMessage,
+  LLMInterfaceEmbeddings,
 };

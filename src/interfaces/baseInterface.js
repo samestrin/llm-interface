@@ -7,14 +7,27 @@
  * @param {string} baseURL - The base URL for the API.
  * @param {object} headers - Additional headers for the API requests.
  */
-
 const axios = require('axios');
-const { getModelByAlias } = require('../utils/config.js');
-const { parseJSON, delay } = require('../utils/utils.js');
+
+const {
+  getModelByAlias,
+  getEmbeddingModelByAlias,
+} = require('../utils/config.js');
+const {
+  getMessageObject,
+  getSimpleMessageObject,
+} = require('../utils/utils.js');
+const { parseJSON } = require('../utils/utils.js');
 const { getConfig } = require('../utils/configManager.js');
-const { LLMInterfaceError, RequestError } = require('../utils/errors.js');
+const {
+  LLMInterfaceError,
+  EmbeddingsError,
+  StreamError,
+} = require('../utils/errors.js');
+
 const config = getConfig();
 const log = require('loglevel');
+log.setLevel(log.levels.TRACE);
 
 // BaseInterface class for interacting with various APIs
 class BaseInterface {
@@ -28,27 +41,47 @@ class BaseInterface {
   constructor(interfaceName, apiKey, baseURL, headers = {}) {
     this.interfaceName = interfaceName;
     this.apiKey = apiKey;
+
+    this.baseURL = baseURL;
     this.client = axios.create({
-      baseURL,
       headers: {
         'Content-Type': 'application/json',
         ...headers,
         Authorization: `Bearer ${this.apiKey}`,
       },
+      //signal: controller.signal,
     });
+    this.config = config;
   }
+
   /**
-   * Method to be implemented by derived classes to create the appropriate message object.
-   * @abstract
+   * Create the appropriate message object.
    * @param {string|object} message - The message to send.
    * @returns {object} The message object.
-   * @throws {Error} If the method is not implemented by a subclass.
+   * @throws {Error} If the function is not defined in the this.config.
    */
   createMessageObject(message) {
-    throw new LLMInterfaceError(
-      `createMessageObject method must be implemented by subclass`,
-    );
+    const createMessageObject =
+      this.config[this.interfaceName].createMessageObject;
+    const messageObjectFunction =
+      global[createMessageObject] || getMessageObject; // added default, so error will never throw
+
+    if (typeof messageObjectFunction !== 'function') {
+      throw new LLMInterfaceError(
+        `Function '${createMessageObject}' is not defined in the global scope or utils.`,
+      );
+    }
+
+    return messageObjectFunction(message);
   }
+
+  /**
+   * Updates the headers of an Axios client.
+   *
+   * @param {object} client - The Axios client instance.
+   * @param {object} newHeaders - The new headers to set on the Axios client.
+   */
+  updateHeaders(client, newHeaders) { }
 
   /**
    * Method to update the message object if needed.
@@ -70,12 +103,40 @@ class BaseInterface {
   }
 
   /**
+   * Method to construct the embed request URL, can be overridden by derived classes.
+   * @param {string} model - The model to use for the request.
+   * @returns {string} The request URL.
+   */
+  getEmbedRequestUrl(model) {
+    return ''; // Default URL if not overridden
+  }
+
+  /**
    * Method to adjust options, can be overridden by derived classes.
    * @param {object} optons - The optons to use for the request.
    * @returns {object} The request URL.
    */
   adjustOptions(options) {
     return options;
+  }
+
+  /**
+   * Builds the request body for the API request.
+   *
+   * @param {string} model - The model to use for the request.
+   * @param {Array<object>} messages - An array of message objects.
+   * @param {number} max_tokens - The maximum number of tokens for the response.
+   * @param {object} options - Additional options for the API request.
+   * @returns {object} The constructed request body.
+   */
+  buildRequestBody(model, messages, max_tokens, options) {
+    const requestBody = {
+      model,
+      messages,
+      max_tokens,
+      ...options,
+    };
+    return requestBody;
   }
 
   /**
@@ -97,7 +158,7 @@ class BaseInterface {
 
     // Finalize the model name
     model =
-      model || options.model || config[this.interfaceName].model.default.name;
+      model || options.model || this.config[this.interfaceName].model.default;
     if (options.model) delete options.model;
 
     const selectedModel = getModelByAlias(this.interfaceName, model);
@@ -107,95 +168,137 @@ class BaseInterface {
     // Adjust options
     options = this.adjustOptions(options);
 
-    const requestBody = {
-      model: selectedModel,
+    // Build request body
+    const requestBody = this.buildRequestBody(
+      selectedModel,
       messages,
       max_tokens,
-      ...options,
-    };
-
-    // log the requestBody for debugging
-    log.log(requestBody);
+      options,
+    );
 
     if (response_format) {
       requestBody.response_format = { type: response_format };
     }
 
+
+    // update the url based on the model
     const url = this.getRequestUrl(selectedModel);
 
-    let retryAttempts = interfaceOptions.retryAttempts || 0;
+    log.log(this.baseURL + url);
 
-    let currentRetry = 0;
+    // update the headers
+    this.updateHeaders(this.client);
 
-    const thisUrl = this.client.defaults.baseURL + url;
+    log.log(this.client.defaults.headers)
 
-    while (retryAttempts >= 0) {
-      try {
-        const response = await this.client.post(url, requestBody);
-        let responseContent = null;
-        if (
-          response &&
-          response.data &&
-          response.data.choices &&
-          response.data.choices[0] &&
-          response.data.choices[0].message
-        ) {
-          responseContent = response.data.choices[0].message.content;
-        }
+    log.log(requestBody);
 
-        // Attempt to repair the object if needed
-        if (
-          responseContent &&
-          options.response_format === 'json_object' &&
-          typeof responseContent === 'string'
-        ) {
-          try {
-            responseContent = JSON.parse(responseContent);
-          } catch {
-            responseContent = await parseJSON(
-              responseContent,
-              interfaceOptions.attemptJsonRepair,
-            );
-          }
-        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
-          responseContent = await parseJSON(
-            responseContent,
-            interfaceOptions.attemptJsonRepair,
-          );
-        }
+    let response;
 
-        if (responseContent) {
-          responseContent = { results: responseContent };
-
-          // optionally include the original llm api response
-          if (interfaceOptions.includeOriginalResponse) {
-            responseContent.originalResponse = response.data;
-          }
-
-          return responseContent;
-        }
-      } catch (error) {
-        retryAttempts--;
-        if (retryAttempts < 0) {
-          log.error('Error:', {
-            url: thisUrl,
-            error: error.response ? error.response.data : null,
-          });
-
-          throw new RequestError(
-            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
-            error.message,
-            error.stack,
-          );
-        }
-
-        // Calculate the delay for the next retry attempt
-        let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
-        await delay(delayTime);
-
-        currentRetry++;
+    try {
+      if (options.stream !== true) {
+        response = await this.client.post(this.baseURL + url, requestBody);
+        log.log(JSON.stringify(response.data));
+      } else {
+        return await this.client.post(this.baseURL + url, requestBody, {
+          responseType: 'stream',
+        });
       }
+    } catch (error) {
+
+      // pass up the axios error to the retry handler
+      if (error.response) {
+        throw {
+          response: error.response,
+          message: `Could not connect to ${this.baseURL + url} (${error.response.status
+            })`,
+          stack: error.stack,
+        };
+      } else if (error.request) {
+        throw {
+          request: error.request,
+          message: `Could not connect to ${this.baseURL + url}`,
+          stack: error.stack,
+        };
+      } else {
+        throw {
+          message: `Could not connect to ${this.baseURL + url}`,
+          stack: error.stack,
+        };
+      }
+    }
+
+    let responseContent = null;
+
+    if (response?.data?.choices?.[0]?.message?.content) {
+      // openai format
+      responseContent = response.data.choices[0].message.content;
+    } else if (response?.data?.content?.[0]?.text) {
+      // anthropic format
+      responseContent = response.data.content[0].text;
+    } else if (response?.data?.results?.[0]?.generatedText) {
+      // azure ai format
+      responseContent = response.data.results[0].generatedText;
+    } else if (response?.data?.results?.[0]?.generated_text) {
+      // watsonx ai format
+      responseContent = response.data.results[0].generated_text;
+    } else if (response?.data?.result?.response) {
+      // cloudflare workers ai
+      responseContent = response.data.result.response;
+    } else if (response?.data?.choices?.[0]?.text) {
+      // generic text completion
+      responseContent = response.data.choices[0].text;
+    } else if (response?.data?.answer) {
+      // lamina
+      responseContent = response.data.answer;
+    } else if (response?.data?.responses?.[0]?.message?.content) {
+      // reka ai
+      responseContent = response.data.responses[0].message.content;
+    } else if (response?.data?.message?.content) {
+      // ollama
+      responseContent = response.data.message.content;
+    } else if (response?.data?.[0]?.choices?.[0]?.delta?.content) {
+      // corcel
+      responseContent = response.data[0].choices[0].delta.content;
+    } else if (response?.data?.text) {
+      // cohere
+      responseContent = response.data.text;
+    }
+
+    if (responseContent) {
+      responseContent = responseContent.trim();
+    }
+
+    // Attempt to repair the object if needed
+    if (
+      responseContent &&
+      options.response_format === 'json_object' &&
+      typeof responseContent === 'string'
+    ) {
+      try {
+        responseContent = JSON.parse(responseContent);
+      } catch {
+        responseContent = await parseJSON(
+          responseContent,
+          interfaceOptions.attemptJsonRepair,
+        );
+      }
+    } else if (responseContent && interfaceOptions.attemptJsonRepair) {
+      responseContent = await parseJSON(
+        responseContent,
+        interfaceOptions.attemptJsonRepair,
+      );
+    }
+    log.log(responseContent);
+    if (responseContent) {
+      responseContent = { results: responseContent };
+
+      // optionally include the original llm api response
+      if (interfaceOptions.includeOriginalResponse) {
+        responseContent.originalResponse = response.data;
+      }
+
+      return responseContent;
     }
   }
 
@@ -206,45 +309,177 @@ class BaseInterface {
    * @returns {Promise} The Axios response stream.
    */
   async streamMessage(message, options = {}) {
-    // Create the message object if a string is provided, otherwise use the provided object
-    let messageObject =
-      typeof message === 'string' ? this.createMessageObject(message) : message;
-
-    // Update the message object if needed
-    messageObject = this.updateMessageObject(messageObject);
-
-    // Extract model and messages from the message object
-    let { model, messages } = messageObject;
-
-    // Finalize the model name
-    model =
-      model || options.model || config[this.interfaceName].model.default.name;
-    if (options.model) delete options.model;
-
-    const selectedModel = getModelByAlias(this.interfaceName, model);
-
-    // Set default values for max_tokens and response_format
-    const { max_tokens = 150, response_format = '' } = options;
-
-    // Construct the request body with model, messages, max_tokens, and additional options
-    const requestBody = {
-      model: selectedModel,
-      messages,
-      max_tokens,
-      ...options,
-      stream: true,
-    };
-
-    // Include response_format in the request body if specified
-    if (response_format) {
-      requestBody.response_format = { type: response_format };
+    if (!this.config[this.interfaceName].stream) {
+      throw new StreamError(`${this.interfaceName} does not support streaming`);
     }
 
-    // Construct the request URL
-    const url = this.getRequestUrl(selectedModel);
+    options.stream = true;
+    return await this.sendMessage(message, options);
+  }
 
-    // Return the Axios POST request with response type set to 'stream'
-    return this.client.post(url, requestBody, { responseType: 'stream' });
+  /**
+   * Fetches embeddings for a given prompt using the specified model and options.
+   *
+   * @async
+   * @param {string} prompt - The input prompt to get embeddings for.
+   * @param {Object} [options={}] - Optional parameters for embeddings.
+   * @param {string} [options.model] - The model to use for embeddings.
+   * @param {Object} [interfaceOptions={}] - Interface-specific options.
+   * @param {boolean} [interfaceOptions.includeOriginalResponse] - Whether to include the original response in the result.
+   *
+   * @returns {Promise<Object>} An object containing the embeddings and optionally the original response.
+   *
+   * @throws {EmbeddingsError} If the interface does not support embeddings or the embedding URL is not found.
+   * @throws {RequestError} If the request to fetch embeddings fails.
+   */
+  async embeddings(prompt, options = {}, interfaceOptions = {}) {
+    const embeddingUrl = this.config[this.interfaceName]?.embeddingUrl;
+
+    if (!embeddingUrl) {
+      throw new EmbeddingsError(
+        '${this.interfaceName} does not support embeddings. Try using a default provider.',
+      );
+    }
+
+    // get embeddings model
+    let model =
+      options.model || this.config[this.interfaceName].embeddings.default;
+
+    model = getEmbeddingModelByAlias(this.interfaceName, model);
+
+    // If we reach here, it means we are either in the original call or we found a valid embedding URL
+    if (embeddingUrl) {
+      let expects =
+        this.config[this.interfaceName]?.embeddings?.expects ||
+        this.config[interfaceOptions.embeddingsInterfaceName]?.embeddings
+          ?.expects;
+      let resultsPath =
+        this.config[this.interfaceName]?.embeddings?.results ||
+        this.config[interfaceOptions.embeddingsInterfaceName]?.embeddings
+          ?.results;
+      let payload;
+
+      // Adjust options
+      log.log('expects', expects);
+      prompt = this.adjustEmbeddingPrompt(prompt);
+      //console.log('prompt', prompt);
+
+      if (expects) {
+        // Convert expects to a string for replacements
+        let expectsString = JSON.stringify(expects);
+
+        // Replace placeholders with actual values
+        expectsString = expectsString.replace(
+          '"{embedding}"',
+          `${JSON.stringify(prompt)}`,
+        );
+        expectsString = expectsString.replace('{model}', model);
+
+        if (Array.isArray(config[this.interfaceName].apiKey)) {
+          expectsString = expectsString.replace(
+            '{second}',
+            config[this.interfaceName].apiKey[1],
+          );
+        }
+
+        // Parse the string back to an object
+        payload = JSON.parse(expectsString);
+      } else {
+        payload = {
+          input: prompt,
+          model: model,
+        };
+      }
+      const url = this.getEmbedRequestUrl(model);
+      log.log('url', embeddingUrl + url);
+      log.log('api', config[this.interfaceName].apiKey);
+      log.log('payload', payload);
+      log.log('prompt', prompt.length);
+
+      let response, embeddings;
+
+      try {
+        try {
+          response = await this.client.post(embeddingUrl + url, payload);
+          log.log('response', response.data);
+        } catch (error) {
+          if (error.response) {
+            throw {
+              response: error.response,
+              message: `Could not connect to ${embeddingUrl + url} (${error.response.status
+                })`,
+              stack: error.stack,
+            };
+          } else if (error.request) {
+            throw {
+              request: error.request,
+              message: `Could not connect to ${embeddingUrl + url}`,
+              stack: error.stack,
+            };
+          } else {
+            throw {
+              message: `Could not connect to ${embeddingUrl + url}`,
+              stack: error.stack,
+            };
+          }
+        }
+
+        const responseData = response.data;
+
+        if (resultsPath) {
+          const pathParts = resultsPath.split('.');
+
+          const initialObject =
+            pathParts[0] === 'response' ? response : response.data;
+          const validPathParts =
+            pathParts[0] === 'response' ? pathParts.slice(1) : pathParts;
+
+          embeddings = validPathParts.reduce((obj, part) => {
+            if (obj) {
+              // Check for array index in the part
+              const arrayIndexMatch = part.match(/^(\w+)\[(\d+)\]$/);
+              if (arrayIndexMatch) {
+                const [_, key, index] = arrayIndexMatch;
+                return obj[key] && obj[key][parseInt(index, 10)];
+              }
+              return obj[part];
+            }
+            return undefined;
+          }, initialObject);
+        } else {
+          if (Array.isArray(responseData.data)) {
+            embeddings = responseData.data[0]?.embedding; //opanai format
+          } else if (responseData.data?.embedding) {
+            embeddings = responseData.data.embedding;
+          } else {
+            // Add more checks as per the API documentation or known response structures
+            throw new EmbeddingsError(
+              'Unexpected response structure for embedding data',
+              responseData.data,
+            );
+          }
+        }
+
+        embeddings = { results: embeddings };
+
+        if (interfaceOptions.includeOriginalResponse) {
+          embeddings.originalResponse = responseData;
+        }
+
+        return embeddings;
+      } catch (error) {
+        throw new Error(`Failed to fetch embeddings: ${error.message}`);
+      }
+    } else {
+      // If in fallback and no valid URL was found, throw an error
+      throw new EmbeddingsError(
+        'Valid embedding URL not found after fallback attempts',
+      );
+    }
+  }
+
+  adjustEmbeddingPrompt(prompt) {
+    return prompt;
   }
 }
 

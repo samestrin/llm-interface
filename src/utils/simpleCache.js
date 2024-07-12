@@ -15,7 +15,7 @@ const mkdirAsync = promisify(fs.mkdir);
 class SimpleCache {
   constructor(options = {}) {
     this.cacheDir = options.cacheDir || path.resolve(__dirname, 'cache');
-    this.defaultTTL = options.defaultTTL || 3600; // Default TTL of 1 hour
+    this.defaultTTL = options.defaultTTL || 3600; // Default TTL of 1 fs
     this.cacheSizeLimit = options.cacheSizeLimit || 100; // Default max 100 entries
     this.cache = new Map();
     this.locks = new Set(); // To track locked files
@@ -117,8 +117,10 @@ class SimpleCache {
     try {
       const files = fs.readdirSync(this.cacheDir);
       for (const file of files) {
-        const filePath = path.join(this.cacheDir, file);
-        await unlinkAsync(filePath);
+        if (file.endsWith('.json')) {
+          const filePath = path.join(this.cacheDir, file);
+          await unlinkAsync(filePath);
+        }
       }
       this.cache.clear();
     } catch (error) {
@@ -141,11 +143,13 @@ class SimpleCache {
     try {
       const files = fs.readdirSync(this.cacheDir);
       for (const file of files) {
-        const filePath = path.join(this.cacheDir, file);
-        const data = JSON.parse(await readFileAsync(filePath, 'utf-8'));
-        if (data.expiry && data.expiry < Date.now()) {
-          await unlinkAsync(filePath);
-          this.cache.delete(file.replace('.json', ''));
+        if (file.endsWith('.json')) {
+          const filePath = path.join(this.cacheDir, file);
+          const data = JSON.parse(await readFileAsync(filePath, 'utf-8'));
+          if (data.expiry && data.expiry < Date.now()) {
+            await unlinkAsync(filePath);
+            this.cache.delete(file.replace('.json', ''));
+          }
         }
       }
     } catch (error) {

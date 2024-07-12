@@ -6,20 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { shuttleaiApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { shuttleaiApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'shuttleai';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class ShuttleAI extends BaseInterface {
   constructor(apiKey) {
-    super('shuttleai', apiKey || shuttleaiApiKey, config['shuttleai'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+    super(interfaceName, apiKey || shuttleaiApiKey, config[interfaceName].url);
   }
 }
 

@@ -1,38 +1,39 @@
 /**
  * @file src/interfaces/watsonxai.js
- * @class WatsonX
+ * @class WatsonxAI
  * @description Wrapper class for the watsonx.ai API.
  * @param {string} apiKey - The API key for the watsonx.ai API.
+ * @param {string} spaceId - The Space ID for the watsonx.ai API.
  */
 
+const BaseInterface = require('./baseInterface.js');
 const axios = require('axios');
-
-const { getModelByAlias } = require('../utils/config.js');
-const { getMessageObject, delay } = require('../utils/utils.js');
-const { watsonxaiApiKey, watsonxaiSpaceId } = require('../config/config.js');
-const { getConfig } = require('../utils/configManager.js');
-const { RequestError } = require('../utils/errors.js');
-const config = getConfig();
+const {
+  watsonxaiApiKey,
+  watsonxaiSpaceId,
+} = require('../utils/loadApiKeysFromEnv.js');
+const { SendMessageError } = require('../utils/errors.js');
 const log = require('loglevel');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'watsonxai';
+
+loadProviderConfig(interfaceName);
+const config = getConfig();
 
 // WatsonX class for interacting with the watsonx.ai API
-class WatsonxAI {
+class WatsonxAI extends BaseInterface {
   /**
    * Constructor for the WatsonX class.
    * @param {string} apiKey - The API key for the watsonx.ai API.
+   * @param {string} spaceId - The space ID for the watsonx.ai API.
    */
   constructor(apiKey, spaceId) {
-    this.interfaceName = 'watsonxai';
-    this.apiKey = apiKey || watsonxaiApiKey;
+    super(interfaceName, apiKey || watsonxaiApiKey, config[interfaceName].url);
+
     this.spaceId = spaceId || watsonxaiSpaceId;
     this.bearerToken = null;
     this.tokenExpiration = null;
-    this.client = axios.create({
-      baseURL: config[this.interfaceName].url,
-      headers: {
-        'Content-type': 'application/json',
-      },
-    });
   }
 
   /**
@@ -66,8 +67,36 @@ class WatsonxAI {
         'Failed to get bearer token:',
         error.response ? error.response.data : error.message,
       );
-      throw new RequestError(`Unable to connect to ${url}`);
+      throw new SendMessageError(
+        `Unable to get bearer token.`,
+        error.message,
+        error.stack,
+      );
     }
+  }
+
+  /**
+   * Override to build the request body specific to watsonx.ai API.
+   * @param {string} model - The model to use for the request.
+   * @param {Array<object>} messages - An array of message objects.
+   * @param {number} max_tokens - The maximum number of tokens for the response.
+   * @param {object} options - Additional options for the API request.
+   * @returns {object} The constructed request body.
+   */
+  buildRequestBody(model, messages, max_tokens, options) {
+    const formattedPrompt = messages
+      .map((message) => message.content)
+      .join(' ');
+
+    return {
+      model_id: model,
+      input: formattedPrompt,
+      parameters: {
+        max_new_tokens: max_tokens,
+        time_limit: options.time_limit || 1000,
+      },
+      space_id: options.space_id || this.spaceId,
+    };
   }
 
   /**
@@ -80,101 +109,18 @@ class WatsonxAI {
   async sendMessage(message, options = {}, interfaceOptions = {}) {
     await this.getBearerToken(); // Ensure the bearer token is valid
 
-    const messageObject =
-      typeof message === 'string' ? getMessageObject(message) : message;
+    return super.sendMessage(message, options, interfaceOptions);
+  }
 
-    const { messages } = messageObject;
-    const { max_tokens = 150, space_id } = options;
-    let { model } = messageObject;
+  async embeddings(prompt, options = {}, interfaceOptions = {}) {
+    await this.getBearerToken(); // Ensure the bearer token is valid
 
-    // Set the model and default values
-    model =
-      model || options.model || config[this.interfaceName].model.default.name;
-    if (options.model) delete options.model;
+    return super.embeddings(prompt, options, interfaceOptions);
+  }
 
-    model = getModelByAlias(this.interfaceName, model);
-
-    const formattedPrompt = messages
-      .map((message) => message.content)
-      .join(' ');
-
-    const payload = {
-      model_id: model,
-      input: formattedPrompt,
-      parameters: {
-        max_new_tokens: max_tokens,
-        time_limit: options.time_limit || 1000,
-      },
-      space_id: space_id || this.spaceId,
-    };
-
-    let retryAttempts = interfaceOptions.retryAttempts || 0;
-    let currentRetry = 0;
-    let url = this.client.defaults.baseURL;
-    while (retryAttempts >= 0) {
-      try {
-        const response = await this.client.post('', payload);
-        let responseContent = null;
-        if (
-          response &&
-          response.data &&
-          response.data.results &&
-          response.data.results[0] &&
-          response.data.results[0].generated_text
-        ) {
-          responseContent = response.data.results[0].generated_text.trim();
-        }
-
-        // Attempt to repair the object if needed
-        if (
-          responseContent &&
-          options.response_format === 'json_object' &&
-          typeof responseContent === 'string'
-        ) {
-          try {
-            responseContent = JSON.parse(responseContent);
-          } catch {
-            responseContent = await parseJSON(
-              responseContent,
-              interfaceOptions.attemptJsonRepair,
-            );
-          }
-        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
-          responseContent = await parseJSON(
-            responseContent,
-            interfaceOptions.attemptJsonRepair,
-          );
-        }
-
-        if (responseContent) {
-          responseContent = { results: responseContent };
-
-          // optionally include the original llm api response
-          if (interfaceOptions.includeOriginalResponse) {
-            responseContent.originalResponse = response.data;
-          }
-
-          return responseContent;
-        }
-      } catch (error) {
-        retryAttempts--;
-        if (retryAttempts < 0) {
-          log.error('Error:', error.response ? error.response.data : null);
-          throw new RequestError(
-            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
-            error.message,
-            error.stack,
-          );
-        }
-
-        // Calculate the delay for the next retry attempt
-        let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
-        await delay(delayTime);
-
-        currentRetry++;
-      }
-    }
+  adjustEmbeddingPrompt(prompt) {
+    prompt = [prompt];
+    return prompt;
   }
 }
 

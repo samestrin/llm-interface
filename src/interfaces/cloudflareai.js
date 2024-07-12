@@ -5,36 +5,40 @@
  * @param {string} apiKey - The API key for the CloudflareAI API.
  */
 
-const axios = require('axios');
-const { getModelByAlias } = require('../utils/config.js');
-const { getSimpleMessageObject, delay } = require('../utils/utils.js');
 const {
   cloudflareaiApiKey,
   cloudflareaiAccountId,
-} = require('../config/config.js');
-const { getConfig } = require('../utils/configManager.js');
-const { RequestError } = require('../utils/errors.js');
+} = require('../utils/loadApiKeysFromEnv.js');
+const BaseInterface = require('./baseInterface'); // Import BaseInterface
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'cloudflareai';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
-const log = require('loglevel');
 
 // CloudflareAI class for interacting with the CloudflareAI LLM API
-class CloudflareAI {
+class CloudflareAI extends BaseInterface {
   /**
    * Constructor for the CloudflareAI class.
    * @param {string} apiKey - The API key for the CloudflareAI LLM API.
    */
   constructor(apiKey, accountId) {
-    this.interfaceName = 'cloudflareai';
-
-    this.apiKey = apiKey || cloudflareaiApiKey;
+    super(
+      interfaceName,
+      apiKey || cloudflareaiApiKey,
+      config[interfaceName].url,
+    );
     this.accountId = accountId || cloudflareaiAccountId;
-    this.client = axios.create({
-      baseURL: config[this.interfaceName].url,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.apiKey}`,
-      },
-    });
+  }
+
+  /**
+   * Get the request URL for CloudflareAI API.
+   * @param {string} model - The model to use for the request.
+   * @returns {string} The request URL.
+   */
+  getRequestUrl(model) {
+    return `/${this.accountId}/ai/run/${model}`;
   }
 
   /**
@@ -45,124 +49,35 @@ class CloudflareAI {
    * @returns {string} The response content from the CloudflareAI LLM API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
-    // Convert a string message to a simple message object
-    const messageObject =
-      typeof message === 'string' ? getSimpleMessageObject(message) : message;
+    // Use the base class sendMessage method
+    return super.sendMessage(message, options, {
+      ...interfaceOptions,
+    });
+  }
 
-    // Extract model, lora, and messages from the message object
-    let { model, lora, messages } = messageObject;
+  /**
+   * Stream a message to the CloudflareAI API.
+   * @param {string|object} message - The message to send or a message object.
+   * @param {object} options - Additional options for the API request.
+   * @returns {Promise} The Axios response stream.
+   */
+  async streamMessage(message, options = {}) {
+    // Use the base class streamMessage method
+    return super.streamMessage(message, options);
+  }
 
-    // Finalize the model name
-    model =
-      model || options.model || config[this.interfaceName].model.default.name;
-    if (options.model) delete options.model;
+  /**
+   * Get the embed request URL for CloudflareAI API.
+   * @param {string} model - The model to use for the request.
+   * @returns {string} The request URL.
+   */
+  getEmbedRequestUrl(model) {
+    return `/${this.accountId}/ai/run/${model}`;
+  }
 
-    // Get the selected model based on alias or default
-    let selectedModel = getModelByAlias(this.interfaceName, model);
-
-    // Set default values for temperature, max_tokens, stop_sequences, frequency_penalty, and presence_penalty
-    const {
-      temperature = 0.7,
-      max_tokens = 150,
-      stop_sequences = ['<|endoftext|>'],
-      frequency_penalty = 0,
-      presence_penalty = 0,
-    } = options;
-
-    const account_id = interfaceOptions.account_id || this.accountId;
-
-    // Update selected model
-    selectedModel =
-      selectedModel ||
-      options.model ||
-      config[this.interfaceName].model.default.name;
-
-    // Prepare the request body for the API call
-    const requestBody = {
-      messages,
-      max_tokens,
-      ...options,
-    };
-
-    // Set up retry mechanism with exponential backoff
-    let retryAttempts = interfaceOptions.retryAttempts || 0;
-    let currentRetry = 0;
-    const thisUrl =
-      this.client.defaults.baseURL + `/${account_id}/ai/run/${selectedModel}`;
-
-    while (retryAttempts >= 0) {
-      try {
-        // Send the request to the CloudflareAI LLM API
-        const response = await this.client.post(
-          `/${account_id}/ai/run/${selectedModel}`,
-          requestBody,
-        );
-
-        // Extract the response content from the API response
-        let responseContent = null;
-        if (
-          response &&
-          response.data &&
-          response.data.result &&
-          response.data.result.response
-        ) {
-          responseContent = response.data.result.response;
-        }
-
-        // Attempt to repair the object if needed
-        if (
-          responseContent &&
-          options.response_format === 'json_object' &&
-          typeof responseContent === 'string'
-        ) {
-          try {
-            responseContent = JSON.parse(responseContent);
-          } catch {
-            responseContent = await parseJSON(
-              responseContent,
-              interfaceOptions.attemptJsonRepair,
-            );
-          }
-        } else if (responseContent && interfaceOptions.attemptJsonRepair) {
-          responseContent = await parseJSON(
-            responseContent,
-            interfaceOptions.attemptJsonRepair,
-          );
-        }
-
-        if (responseContent) {
-          // Build response object
-          responseContent = { results: responseContent };
-
-          // optionally include the original llm api response
-          if (interfaceOptions.includeOriginalResponse) {
-            responseContent.originalResponse = response.data;
-          }
-
-          // Return the response content
-          return responseContent;
-        }
-      } catch (error) {
-        // Decrease the number of retry attempts
-        retryAttempts--;
-        if (retryAttempts < 0) {
-          // Log any errors and throw the error
-          log.error('Error:', error.response ? error.response.data : null);
-          throw new RequestError(
-            `Unable to connect to ${thisUrl} (${retryAttempts + 1} attempts`,
-            error.message,
-            error.stack,
-          );
-        }
-
-        // Calculate the delay for the next retry attempt
-        let retryMultiplier = interfaceOptions.retryMultiplier || 0.3;
-        const delayTime = (currentRetry + 1) * retryMultiplier * 1000;
-        await delay(delayTime);
-
-        currentRetry++;
-      }
-    }
+  adjustEmbeddingPrompt(prompt) {
+    prompt = [prompt];
+    return prompt;
   }
 }
 

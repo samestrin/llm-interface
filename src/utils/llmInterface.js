@@ -1,23 +1,26 @@
 /**
  * @file /src/utils/llmInterface.js
- * @description Build the base LLMInterface class
+ * @description Build the base LLMInterface used providers.js
  */
 
-const { getConfig } = require('./configManager.js');
+const { listOfActiveProviders } = require('../config/providers.js');
 
-const config = getConfig();
+const interfaces = {};
 
-const modules = Object.keys(config).reduce((acc, key) => {
-  acc[key] = `../interfaces/${key}`;
-  return acc;
-}, {});
+for (const interfaceName of listOfActiveProviders) {
+  interfaces[interfaceName] = `../interfaces/${interfaceName}`;
+}
 
+/**
+ * Dynamically imports and initializes LLM interfaces based on the list of active providers.
+ * @namespace
+ */
 const LLMInterface = {};
-Object.keys(modules).forEach((key) => {
+Object.keys(interfaces).forEach((key) => {
   Object.defineProperty(LLMInterface, key, {
     get: function () {
       if (!this[`_${key}`]) {
-        this[`_${key}`] = require(modules[key]);
+        this[`_${key}`] = require(interfaces[key]);
       }
       return this[`_${key}`];
     },

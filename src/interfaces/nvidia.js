@@ -6,20 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { nvidiaApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { nvidiaApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'nvidia';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class NVIDIA extends BaseInterface {
   constructor(apiKey) {
-    super('nvidia', apiKey || nvidiaApiKey, config['nvidia'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+    super(interfaceName, apiKey || nvidiaApiKey, config[interfaceName].url);
   }
 }
 

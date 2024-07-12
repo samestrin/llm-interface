@@ -6,20 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { ailayerApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { ailayerApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'ailayer';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class AILayer extends BaseInterface {
   constructor(apiKey) {
-    super('ailayer', apiKey || ailayerApiKey, config['ailayer'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+    super(interfaceName, apiKey || ailayerApiKey, config[interfaceName].url);
   }
 }
 

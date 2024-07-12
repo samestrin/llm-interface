@@ -6,18 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { deepseekApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { deepseekApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'deepseek';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class DeepSeek extends BaseInterface {
   constructor(apiKey) {
-    super('deepseek', apiKey || deepseekApiKey, config['deepseek'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    super(interfaceName, apiKey || deepseekApiKey, config[interfaceName].url);
   }
 }
 

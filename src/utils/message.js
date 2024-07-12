@@ -3,15 +3,110 @@
  * @description Message related functions both non streamed and streamed. Includes wrapper that don't require the API key each time.
  */
 
-const { updateConfig, getConfig } = require('./configManager.js');
-const { SendMessageError, StreamError } = require('./errors.js');
+const {
+  updateConfig,
+  getConfig,
+  loadProviderConfig,
+} = require('./configManager.js');
+const {
+  SendMessageError,
+  StreamError,
+  EmbeddingsError,
+} = require('./errors.js');
 const { LLMInterface } = require('./llmInterface.js');
-const { createCacheKey } = require('./utils.js');
+const { createCacheKey, delay } = require('./utils.js');
+const log = require('loglevel');
 
 const config = getConfig();
 
 const LLMInstances = {}; // Persistent LLM instances
-const responseCache = {}; // Cache for responses
+
+/**
+ * Retries the provided function with exponential backoff and handles specific HTTP errors.
+ * @param {Function} fn - The function to retry.
+ * @param {object} options - Retry options.
+ * @param {number} options.retryAttempts - Number of retry attempts.
+ * @param {number} options.retryMultiplier - Multiplier for the retry delay.
+ * @param {string} errorType - The type of error to throw ('SendMessageError' or 'EmbeddingsError').
+ * @returns {Promise<any>} - The result of the function call.
+ * @throws {SendMessageError|EmbeddingsError} - Throws an error if all retry attempts fail.
+ */
+async function retryWithBackoff(fn, options, errorType) {
+  let { retryAttempts = 3, retryMultiplier = 0.3 } = options;
+  let currentRetry = 0;
+
+  while (retryAttempts > 0) {
+    try {
+      return await fn();
+    } catch (error) {
+      const statusCode = error.response?.status;
+      switch (statusCode) {
+        case 400:
+        case 401:
+        case 403:
+        case 404:
+          if (errorType === 'SendMessageError') {
+            throw new SendMessageError(
+              `HTTP ${statusCode}: ${error.response?.statusText || 'Error'}`,
+              error.response?.data,
+              error.stack,
+            );
+          } else if (errorType === 'EmbeddingsError') {
+            throw new EmbeddingsError(
+              `HTTP ${statusCode}: ${error.response?.statusText || 'Error'}`,
+              error.response?.data,
+              error.stack,
+            );
+          }
+          break;
+
+        case 429:
+        case 503:
+          // Retry after the specified time in the Retry-After header if present
+          const retryAfter = error.response?.headers['retry-after'];
+          if (retryAfter) {
+            await delay(retryAfter * 1000);
+          } else {
+            const delayTime = ((currentRetry + 1) * retryMultiplier * 1000) + 500;
+            await delay(delayTime);
+          }
+          break;
+
+        case 500:
+        case 502:
+        case 504:
+          // Retry with exponential backoff
+          const delayTime = ((currentRetry + 1) * retryMultiplier * 1000) + 500;
+          await delay(delayTime);
+          break;
+
+        default:
+          if (errorType === 'SendMessageError') {
+            throw new SendMessageError(
+              `HTTP ${statusCode || 'Unknown'}: ${error.message}`,
+              error.response?.data,
+              error.stack,
+            );
+          } else if (errorType === 'EmbeddingsError') {
+            throw new EmbeddingsError(
+              `HTTP ${statusCode || 'Unknown'}: ${error.message}`,
+              error.response?.data,
+              error.stack,
+            );
+          }
+          break;
+      }
+      currentRetry++;
+      retryAttempts--;
+    }
+  }
+
+  if (errorType === 'SendMessageError') {
+    throw new SendMessageError('All retry attempts failed');
+  } else if (errorType === 'EmbeddingsError') {
+    throw new EmbeddingsError('All retry attempts failed');
+  }
+}
 
 /**
  * Sends a message to a specified LLM interfaceName and returns the response.
@@ -23,7 +118,7 @@ const responseCache = {}; // Cache for responses
  * @param {object} [options={}] - Additional options for the message.
  * @param {object} [interfaceOptions={}] - Options for initializing the interface.
  * @returns {Promise<any>} - The response from the LLM.
- * @throws {Error} - Throws an error if the interfaceName is not supported or if the API key is not provided.
+ * @throws {SendMessageError} - Throws an error if the interfaceName is not supported or if the API key is not provided.
  */
 async function LLMInterfaceSendMessage(
   interfaceName,
@@ -35,6 +130,10 @@ async function LLMInterfaceSendMessage(
   if (typeof message === 'string' && message === '') {
     throw new SendMessageError(
       `The string 'message' value passed was invalid.`,
+    );
+  } else if (message === undefined) {
+    throw new SendMessageError(
+      `The string 'message' value passed was undefined.`,
     );
   }
 
@@ -48,6 +147,7 @@ async function LLMInterfaceSendMessage(
   }
 
   if (!LLMInterface[interfaceName]) {
+    log.log(LLMInterface);
     throw new SendMessageError(
       `Unsupported LLM interfaceName: ${interfaceName}`,
     );
@@ -83,8 +183,9 @@ async function LLMInterfaceSendMessage(
     LLMInterface.cacheManagerInstance &&
     LLMInterface.cacheManagerInstance.cacheType === 'memory-cache'
   ) {
-    let cachedResponse =
-      await LLMInterface.cacheManagerInstance.getFromCache(cacheKey);
+    let cachedResponse = await LLMInterface.cacheManagerInstance.getFromCache(
+      cacheKey,
+    );
 
     if (cachedResponse) {
       cachedResponse.cacheType = LLMInterface.cacheManagerInstance.cacheType;
@@ -95,8 +196,9 @@ async function LLMInterfaceSendMessage(
     if (!LLMInterface.cacheManagerInstance)
       LLMInterface.cacheManagerInstance = LLMInterface.configureCache();
 
-    let cachedResponse =
-      await LLMInterface.cacheManagerInstance.getFromCache(cacheKey);
+    let cachedResponse = await LLMInterface.cacheManagerInstance.getFromCache(
+      cacheKey,
+    );
 
     if (cachedResponse) {
       cachedResponse.cacheType = LLMInterface.cacheManagerInstance.cacheType;
@@ -112,45 +214,122 @@ async function LLMInterfaceSendMessage(
       : new LLMInterface[interfaceName](apiKey);
   }
 
-  try {
+  const sendMessageWithRetries = async () => {
     const llmInstance = LLMInstances[interfaceName][apiKey];
-    const response = await llmInstance.sendMessage(
-      message,
-      options,
+    return await llmInstance.sendMessage(message, options, interfaceOptions);
+  };
+
+  try {
+    const response = await retryWithBackoff(
+      sendMessageWithRetries,
       interfaceOptions,
     );
 
-    // cache the the response in a singleton if responseMemoryCache is true or in the cache if cacheTimeoutSeconds is set
-    if (
-      LLMInterface &&
-      LLMInterface.cacheManagerInstance &&
-      LLMInterface.cacheManagerInstance.cacheType === 'memory-cache' &&
-      response
-    ) {
-      await LLMInterface.cacheManagerInstance.saveToCache(cacheKey, response);
-    } else if (
-      LLMInterface &&
-      response &&
-      cacheTimeoutSeconds &&
-      LLMInterface.cacheManagerInstance
-    ) {
-      await LLMInterface.cacheManagerInstance.saveToCache(
-        cacheKey,
-        response,
-        cacheTimeoutSeconds,
-      );
+    if (LLMInterface && LLMInterface.cacheManagerInstance && response) {
+      const { cacheManagerInstance } = LLMInterface;
+
+      if (cacheManagerInstance.cacheType === 'memory-cache') {
+        await cacheManagerInstance.saveToCache(cacheKey, response);
+      } else if (cacheTimeoutSeconds) {
+        await cacheManagerInstance.saveToCache(
+          cacheKey,
+          response,
+          cacheTimeoutSeconds,
+        );
+      }
     }
 
     return response;
   } catch (error) {
     throw new SendMessageError(
       `Failed to send message using LLM interfaceName ${interfaceName}: ${error.message}`,
+      error.stack,
     );
   }
 }
 
 /**
- * Sends a message to a specified LLM interfaceName and returns the response.
+ * Wrapper function for LLMInterfaceSendMessage that looks up the API key in the config.
+ *
+ * @param {string} interfaceName - The name of the LLM interfaceName (e.g., "openai").
+ * @param {string} message - The message to send to the LLM.
+ * @param {object} [options={}] - Additional options for the message.
+ * @param {object} [interfaceOptions={}] - Options for initializing the interface.
+ * @returns {Promise<any>} - The response from the LLM.
+ * @throws {SendMessageError} - Throws an error if the interfaceName is not supported or if the API key is not found.
+ */
+async function LLMInterfaceSendMessageWithConfig(
+  interfaceName,
+  message,
+  options = {},
+  interfaceOptions = {},
+) {
+  // Ensure config and updateConfig are defined
+  if (typeof config === 'undefined' || typeof updateConfig === 'undefined') {
+    throw new SendMessageError('Config or updateConfig is not defined.');
+  }
+
+  // allow for the API to be passed in-line
+  let apiKey = null;
+  if (!config[interfaceName]?.apiKey && Array.isArray(interfaceName)) {
+    apiKey = interfaceName[1];
+    interfaceName = interfaceName[0];
+  }
+
+  // ensure the config is loaded for this interface
+  if (!config[interfaceName]) {
+    loadProviderConfig(interfaceName);
+  }
+
+  if (
+    config[interfaceName]?.apiKey &&
+    (typeof config[interfaceName].apiKey === 'string' ||
+      Array.isArray(config[interfaceName].apiKey))
+  ) {
+    apiKey = config[interfaceName].apiKey;
+  }
+
+  // Ensure we have the current interfaceName in the config
+  if (
+    (!apiKey && config[interfaceName]?.apiKey === undefined) ||
+    config[interfaceName]?.apiKey === null
+  ) {
+    loadProviderConfig(interfaceName);
+    if (!apiKey && config[interfaceName]?.apiKey) {
+      apiKey = config[interfaceName].apiKey;
+    }
+  }
+
+  // Register a key update
+  if (apiKey && config[interfaceName]?.apiKey !== apiKey) {
+    if (config[interfaceName]) {
+      config[interfaceName].apiKey = apiKey;
+      updateConfig(interfaceName, config[interfaceName]);
+    }
+  }
+
+  if (!apiKey) {
+    throw new SendMessageError(
+      `API key not found for LLM interfaceName: ${interfaceName}`,
+    );
+  }
+
+  // Save the key to the config object
+
+  config[interfaceName].apiKey = apiKey;
+  updateConfig(interfaceName, config[interfaceName]);
+
+  return LLMInterfaceSendMessage(
+    interfaceName,
+    apiKey,
+    message,
+    options,
+    interfaceOptions,
+  );
+}
+
+/**
+ * Sends a message to a specified LLM interfaceName and returns the streamed response.
  * Reuses existing LLM instances for the given interfaceName and API key to optimize resource usage.
  *
  * @param {string} interfaceName - The name of the LLM interfaceName (e.g., "openai").
@@ -158,7 +337,7 @@ async function LLMInterfaceSendMessage(
  * @param {string} message - The message to send to the LLM.
  * @param {object} [options={}] - Additional options for the message.
  * @returns {Promise<any>} - The response from the LLM.
- * @throws {Error} - Throws an error if the interfaceName is not supported or if the API key is not provided.
+ * @throws {StreamError} - Throws an error if the interfaceName is not supported or if the API key is not provided.
  */
 async function LLMInterfaceStreamMessage(
   interfaceName,
@@ -204,60 +383,13 @@ async function LLMInterfaceStreamMessage(
 }
 
 /**
- * Wrapper function for LLMInterfaceSendMessage that looks up the API key in the config.
- *
- * @param {string} interfaceName - The name of the LLM interfaceName (e.g., "openai").
- * @param {string} message - The message to send to the LLM.
- * @param {object} [options={}] - Additional options for the message.
- * @param {object} [interfaceOptions={}] - Options for initializing the interface.
- * @returns {Promise<any>} - The response from the LLM.
- * @throws {Error} - Throws an error if the interfaceName is not supported or if the API key is not found.
- */
-async function LLMInterfaceSendMessageWithConfig(
-  interfaceName,
-  message,
-  options = {},
-  interfaceOptions = {},
-) {
-  // Ensure config and updateConfig are defined
-  if (typeof config === 'undefined' || typeof updateConfig === 'undefined') {
-    throw new SendMessageError('Config or updateConfig is not defined.');
-  }
-
-  // allow for the API to be passed in-line
-  let apiKey = null;
-  if (!config[interfaceName]?.apiKey && Array.isArray(interfaceName)) {
-    apiKey = interfaceName[1];
-    interfaceName = interfaceName[0];
-    config[interfaceName].apiKey = apiKey;
-    updateConfig(config);
-  } else {
-    apiKey = config[interfaceName]?.apiKey;
-  }
-
-  if (!apiKey) {
-    throw new SendMessageError(
-      `API key not found for LLM interfaceName: ${interfaceName}`,
-    );
-  }
-
-  return LLMInterfaceSendMessage(
-    interfaceName,
-    apiKey,
-    message,
-    options,
-    interfaceOptions,
-  );
-}
-
-/**
  * Wrapper function for LLMInterfaceStreamMessage that looks up the API key in the config.
  *
  * @param {string} interfaceName - The name of the LLM interfaceName (e.g., "openai").
  * @param {string} message - The message to send to the LLM.
  * @param {object} [options={}] - Additional options for the message.
  * @returns {Promise<any>} - The response from the LLM.
- * @throws {Error} - Throws an error if the interfaceName is not supported or if the API key is not found.
+ * @throws {StreamError} - Throws an error if the interfaceName is not supported or if the API key is not found.
  */
 async function LLMInterfaceStreamMessageWithConfig(
   interfaceName,
@@ -274,10 +406,38 @@ async function LLMInterfaceStreamMessageWithConfig(
   if (!config[interfaceName]?.apiKey && Array.isArray(interfaceName)) {
     apiKey = interfaceName[1];
     interfaceName = interfaceName[0];
-    config[interfaceName].apiKey = apiKey;
-    updateConfig(config);
-  } else {
-    apiKey = config[interfaceName]?.apiKey;
+  }
+
+  // ensure the config is loaded for this interface
+  if (!config[interfaceName]) {
+    loadProviderConfig(interfaceName);
+  }
+
+  if (
+    config[interfaceName]?.apiKey &&
+    (typeof config[interfaceName].apiKey === 'string' ||
+      Array.isArray(config[interfaceName].apiKey))
+  ) {
+    apiKey = config[interfaceName].apiKey;
+  }
+
+  // Ensure we have the current interfaceName in the config
+  if (
+    (!apiKey && config[interfaceName]?.apiKey === undefined) ||
+    config[interfaceName]?.apiKey === null
+  ) {
+    loadProviderConfig(interfaceName);
+    if (!apiKey && config[interfaceName]?.apiKey) {
+      apiKey = config[interfaceName].apiKey;
+    }
+  }
+
+  // Register a key update
+  if (apiKey && config[interfaceName]?.apiKey !== apiKey) {
+    if (config[interfaceName]) {
+      config[interfaceName].apiKey = apiKey;
+      updateConfig(interfaceName, config[interfaceName]);
+    }
   }
 
   if (!apiKey) {
@@ -289,9 +449,11 @@ async function LLMInterfaceStreamMessageWithConfig(
   return LLMInterfaceStreamMessage(interfaceName, apiKey, message, options);
 }
 
+
+
 module.exports = {
   LLMInterfaceSendMessage,
-  LLMInterfaceStreamMessage,
   LLMInterfaceSendMessageWithConfig,
+  LLMInterfaceStreamMessage,
   LLMInterfaceStreamMessageWithConfig,
 };

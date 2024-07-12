@@ -6,18 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { llamacppApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { llamacppApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'llamacpp';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class LLamaCPP extends BaseInterface {
   constructor(apiKey) {
-    super('llamacpp', apiKey || llamacppApiKey, config['llamacpp'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    super(interfaceName, apiKey || llamacppApiKey, config[interfaceName].url);
   }
 }
 

@@ -6,20 +6,17 @@
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { anyscaleApiKey } = require('../config/config.js');
-const { getSimpleMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { anyscaleApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'anyscale';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class Anyscale extends BaseInterface {
   constructor(apiKey) {
-    super('anyscale', apiKey || anyscaleApiKey, config['anyscale'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string'
-      ? getSimpleMessageObject(message)
-      : message;
+    super(interfaceName, apiKey || anyscaleApiKey, config[interfaceName].url);
   }
 }
 

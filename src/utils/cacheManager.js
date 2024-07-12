@@ -1,7 +1,16 @@
 /**
- * @file src/utils/cacheManager.js
- * @description Cache management class that supports different caching strategies and TTL.
+ * CacheManager class for managing different caching strategies.
+ * @class CacheManager
+ * @param {object} options - Configuration options for the cache manager.
+ * @param {string} options.cacheType - Type of cache to use (e.g., 'flat-cache', 'cache-manager', 'simple-cache').
+ * @param {object} options.cacheOptions - Additional options for the cache.
+ * @param {string} [options.cacheDir] - Directory for storing cache files.
  */
+
+const { CacheError } = require('./errors.js');
+const fs = require('fs');
+const log = require('loglevel');
+log.setLevel(log.levels.SILENT);
 
 /**
  * CacheManager class for managing different caching strategies.
@@ -39,7 +48,7 @@ class CacheManager {
   /**
    * Loads the appropriate cache instance based on the cache type.
    * @returns {Promise<object>} - The cache instance.
-   * @throws {Error} - Throws an error if the cache type is unsupported.
+   * @throws {CacheError} - Throws an error if the cache type is unsupported.
    */
   async loadCacheInstance() {
     // Load libraries conditionally
@@ -53,13 +62,14 @@ class CacheManager {
       cacheDir = this.path.resolve(__dirname, '../..', 'cache');
     }
 
-    if (!this.cacheInstance) {
+    if (!this.cacheInstance || this.cacheInstance === null) {
       if (this.cacheType === 'flat-cache') {
         const flatCache = require('flat-cache');
         const cacheId = 'LLMInterface-cache';
         this.cacheInstance = flatCache.load(cacheId, cacheDir);
       } else if (this.cacheType === 'cache-manager') {
         const cacheManager = require('cache-manager');
+
         this.cacheInstance = await cacheManager.caching(this.cacheOptions);
       } else if (this.cacheType === 'simple-cache') {
         const SimpleCache = require('./simpleCache.js');
@@ -71,7 +81,7 @@ class CacheManager {
         const MemoryCache = require('./memoryCache.js'); // Import the MemoryCache singleton
         this.cacheInstance = MemoryCache;
       } else {
-        throw new Error('Unsupported cache type');
+        throw new CacheError('Unsupported cache type');
       }
     }
   }
@@ -93,11 +103,24 @@ class CacheManager {
         }
         return cachedData ? cachedData.data : null;
       } else if (this.cacheType === 'cache-manager') {
-        return await this.cacheInstance.get(hashedKey);
+        if (
+          typeof this.cacheInstance?.store?.get !== 'function' &&
+          typeof this.cacheInstance?.get !== 'function'
+        ) {
+          await this.loadCacheInstance();
+        }
+
+        if (typeof this.cacheInstance?.store?.get === 'function') {
+          return await this.cacheInstance.store.get(hashedKey);
+        } else if (typeof this.cacheInstance?.get === 'function') {
+          return await this.cacheInstance.get(hashedKey);
+        } else {
+          throw new CacheError('Cache manage not available');
+        }
       } else if (this.cacheType === 'simple-cache') {
         return await this.cacheInstance.getFromCache(hashedKey);
       } else if (this.cacheType === 'memory-cache') {
-        return await this.cacheInstance.get(hashedKey);
+        return this.cacheInstance.get(hashedKey);
       }
     } catch (error) {
       console.error(error);
@@ -123,37 +146,69 @@ class CacheManager {
         this.cacheInstance.setKey(hashedKey, cacheData);
         this.cacheInstance.save(true);
       } else if (this.cacheType === 'cache-manager') {
-        await this.cacheInstance.set(hashedKey, data, { ttl });
+        if (
+          typeof this.cacheInstance?.store?.get !== 'function' &&
+          typeof this.cacheInstance?.get !== 'function'
+        ) {
+          await this.loadCacheInstance();
+        }
+
+        if (typeof this.cacheInstance?.store?.set === 'function') {
+          await this.cacheInstance.store.set(hashedKey, data, { ttl });
+        } else if (typeof this.cacheInstance?.set === 'function') {
+          await this.cacheInstance.store.set(hashedKey, data, { ttl });
+        } else {
+          throw new CacheError('Cache manager not available');
+        }
       } else if (this.cacheType === 'simple-cache') {
         await this.cacheInstance.saveToCache(hashedKey, data, ttl);
       } else if (this.cacheType === 'memory-cache') {
-        await this.cacheInstance.set(hashedKey, data);
+        this.cacheInstance.set(hashedKey, data);
       }
     } catch (error) {
-      console.error(error);
+      log.error(error);
     }
   }
 
   /**
-   * Flushes a specific key from the cache.
-   * @param {string} key - The cache key to flush.
-   * @returns {Promise<void>}
+   * Flushes the entire cache or a specific cache key.
+   * @param {string} [key] - The cache key to flush. If not provided, flushes the entire cache.
    */
-  async flushCache(key) {
-    const hashedKey = this.getCacheFilePath(key);
-    try {
-      if (this.cacheType === 'flat-cache') {
-        this.cacheInstance.removeKey(hashedKey);
-        this.cacheInstance.save(true);
-      } else if (this.cacheType === 'cache-manager') {
-        await this.cacheInstance.del(hashedKey);
-      } else if (this.cacheType === 'simple-cache') {
-        await this.cacheInstance.deleteFromCache(hashedKey);
-      } else if (this.cacheType === 'memory-cache') {
-        return await this.cacheInstance.delete(hashedKey);
+  async flushCache(key = false) {
+    if (key) {
+      const hashedKey = this.getCacheFilePath(key);
+      try {
+        if (this.cacheType === 'flat-cache') {
+          this.cacheInstance.removeKey(hashedKey);
+          this.cacheInstance.save(true);
+        } else if (this.cacheType === 'cache-manager') {
+          await this.cacheInstance.del(hashedKey);
+        } else if (this.cacheType === 'simple-cache') {
+          await this.cacheInstance.deleteFromCache(hashedKey);
+        } else if (this.cacheType === 'memory-cache') {
+          return this.cacheInstance.delete(hashedKey);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    } else {
+      try {
+        if (this.cacheType === 'flat-cache') {
+          try {
+            fs.unlinkSync(this.cacheInstance['_pathToFile']);
+          } catch (err) {
+            log.error('Error deleting file:', err);
+          }
+        } else if (this.cacheType === 'cache-manager') {
+          await this.cacheInstance.reset();
+        } else if (this.cacheType === 'simple-cache') {
+          await this.cacheInstance.clearCache();
+        } else if (this.cacheType === 'memory-cache') {
+          this.cacheInstance.clear();
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 }

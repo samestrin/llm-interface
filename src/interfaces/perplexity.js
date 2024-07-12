@@ -2,22 +2,21 @@
  * @file src/interfaces/perplexity.js
  * @class Perplexity
  * @description Wrapper class for the Perplexity API.
- * @param {string} apiKey - The API key for the Perplexity API.
+ * @param {string} apiKey - The API key for Perplexity API.
  */
 
 const BaseInterface = require('./baseInterface.js');
-const { perplexityApiKey } = require('../config/config.js');
-const { getMessageObject } = require('../utils/utils.js');
-const { getConfig } = require('../utils/configManager.js');
+const { perplexityApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
+
+const interfaceName = 'perplexity';
+
+loadProviderConfig(interfaceName);
 const config = getConfig();
 
 class Perplexity extends BaseInterface {
   constructor(apiKey) {
-    super('perplexity', apiKey || perplexityApiKey, config['perplexity'].url);
-  }
-
-  createMessageObject(message) {
-    return typeof message === 'string' ? getMessageObject(message) : message;
+    super(interfaceName, apiKey || perplexityApiKey, config[interfaceName].url);
   }
 }
 
