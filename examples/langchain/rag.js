@@ -1,13 +1,13 @@
 /**
  * @file examples/langchain/rag.js
- * @description This example demonstrates Retrieval-Augmented Generation (RAG) with custom models built using LLMInterface, which are compatible with LangChain.
+ * @description This example demonstrates Retrieval-Augmented Generation (RAG) with custom models built using LLMInterface, which are compatible with LangChain.js.
  *
  * To run this example, you need to install the required modules by executing:
  * "npm install langchain dotenv".
  *
  * This example showcases how to retrieve relevant documents from a local directory, generate embeddings using a custom model built with LLMInterface, identify the most relevant context for answering a question, and construct a prompt for a language model to generate a response.
  *
- * The workflow employs cosine similarity to determine document relevance and utilizes LangChain to format and process the final prompt. After completing the RAG process, a final direct query is sent to the provider, and the control answer is displayed for comparison.
+ * The workflow employs cosine similarity to determine document relevance and utilizes LangChain.js to format and process the final prompt. After completing the RAG process, a final direct query is sent to the provider, and the control answer is displayed for comparison.
  */
 
 const fs = require('fs');
@@ -16,7 +16,6 @@ const {
   prettyHeader,
   prettyResult,
   prettyText,
-  YELLOW,
   GREEN,
   RESET,
 } = require('../../src/utils/utils.js');
@@ -27,9 +26,9 @@ const HuggingFaceModel = require('./models/huggingfaceModel');
 const AI21Model = require('./models/ai21Model');
 
 // Example description
-const description = `This example demonstrates the use of Retrieval-Augmented Generation (RAG) with custom models built using LLMInterface, which are compatible with LangChain. The process involves retrieving relevant documents from a local directory, generating embeddings, identifying the most pertinent context for answering a question, and constructing a prompt for a language model to generate a response.
+const description = `This example demonstrates the use of Retrieval-Augmented Generation (RAG) with custom models built using LLMInterface, which are compatible with LangChain.js. The process involves retrieving relevant documents from a local directory, generating embeddings, identifying the most pertinent context for answering a question, and constructing a prompt for a language model to generate a response.
 
-The workflow employs cosine similarity to determine the relevance of documents and utilizes LangChain to format and process the final prompt. After completing the RAG process, a final direct query is sent to the provider, and the control answer is displayed for comparison.`;
+The workflow employs cosine similarity to determine the relevance of documents and utilizes LangChain.js to format and process the final prompt. After completing the RAG process, a final direct query is sent to the provider, and the control answer is displayed for comparison.`;
 
 require('dotenv').config({ path: '../../.env' });
 
@@ -112,7 +111,7 @@ async function exampleUsage(provider) {
 
   console.time('Timer');
   prettyText(
-    `\n${YELLOW}Use Langchain to create the PromptTemplate and invoke LLMChain${RESET}\n`,
+    `\n${YELLOW}Use Langchain.js to create the PromptTemplate and invoke LLMChain${RESET}\n`,
   );
 
   const promptTemplate = new PromptTemplate({

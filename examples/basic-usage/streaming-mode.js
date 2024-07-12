@@ -1,5 +1,5 @@
 /**
- * @file examples/misc/streaming-mode.js
+ * @file examples/basic-usage/streaming-mode.js
  * @description This example demonstrates the new beta streaming functionality with the "groq" interface.
  *
  * To run this example, you first need to install the required modules by executing:
@@ -10,9 +10,14 @@
  */
 
 const { Readable } = require('stream');
-const { simplePrompt, options } = require('../../src/utils/defaults.js');
+const { simplePrompt } = require('../../src/utils/defaults.js');
 const { LLMInterface } = require('../../src/index.js');
-const { prettyHeader } = require('../../src/utils/utils.js');
+const { prettyHeader,
+  prettyText,
+  YELLOW,
+  GREEN,
+  RESET,
+} = require('../../src/utils/utils.js');
 require('dotenv').config({ path: '../../.env' });
 
 // Setup your key and interface
@@ -80,18 +85,22 @@ async function processStream(stream) {
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  console.log('Streaming Mode (Groq):');
-  console.log();
-
-  LLMInterface.setApiKey(interfaceName, apiKey);
-
   try {
-    console.log('Process Stream');
+    console.time('Timer');
+    prettyHeader(
+      'Streaming Mode',
+      description,
+      simplePrompt,
+      interfaceName,
+    );
     console.log();
+    prettyText(`\n${GREEN}Response:${RESET}\n`);
+    console.log();
+    LLMInterface.setApiKey(interfaceName, apiKey);
 
     const stream = await LLMInterface.sendMessage(interfaceName, simplePrompt, {
       stream: true,
-      ...options,
+      max_tokens: 25
     });
 
     /*
@@ -105,10 +114,12 @@ async function exampleUsage() {
 
     */
 
-    const result = await processStream(stream.data);
+    await processStream(stream.data);
+
     console.log();
-    console.log('Concatenated Content');
-    console.log(result);
+    console.timeEnd('Timer');
+    console.log();
+
   } catch (error) {
     console.error('Error processing stream:', error);
   }

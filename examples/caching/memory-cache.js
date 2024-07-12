@@ -1,5 +1,5 @@
 /**
- * @file examples/caching/memory-response-cache.js
+ * @file examples/caching/memory-cache.js
  * @description This example demonstrates the usage of the memory cache for caching API requests.
  *
  * This example show LLMInterface configured with a memory cache. Subsequent calls to LLMInterface.sendMessage()
@@ -38,7 +38,7 @@ Note: This script will run faster on subsequent executions within the same sessi
  */
 async function exampleUsage() {
   prettyHeader(
-    'Memory Response Cache Example',
+    'Memory Cache Example',
     description,
     simplePrompt,
     interfaceName,

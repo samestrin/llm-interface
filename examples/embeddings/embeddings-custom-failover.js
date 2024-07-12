@@ -1,5 +1,5 @@
 /**
- * @file examples/embeddings/embeddings-failover-custom.js
+ * @file examples/embeddings/embeddings-custom-failover.js
  * @description This example demonstrates the usage of LLMInterface.embeddings() with a custom failover mechanism.
  * To use a custom failover, ensure your selected service supports embeddings and provide LLMInterface with the associated API key.
  *
