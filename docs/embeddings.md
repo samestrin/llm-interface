@@ -48,13 +48,13 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 ## Embeddings Alias Values
 
 
-### [AI21 Studio](providers/ai21.md)  ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
+### [AI21 Studio](providers/ai21.md)  &nbsp;![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
 
 - This provider does not support model selection. Model names passed will be ignored.
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [AIMLAPI](providers/aimlapi.md)  ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)
+### [AIMLAPI](providers/aimlapi.md)  &nbsp;![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)
 
 - `default`: text-embedding-ada-002
 - `large`: text-embedding-3-large
@@ -62,7 +62,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Anyscale](providers/anyscale.md)  ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)
+### [Anyscale](providers/anyscale.md)  &nbsp;![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)
 
 - `default`: thenlper/gte-large
 - `large`: thenlper/gte-large
@@ -70,7 +70,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Cloudflare AI](providers/cloudflareai.md)  ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
+### [Cloudflare AI](providers/cloudflareai.md)  &nbsp;![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
 
 - `default`: @cf/baai/bge-base-en-v1.5
 - `large`: @cf/baai/bge-large-en-v1.5
@@ -78,7 +78,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Cohere](providers/cohere.md)  ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
+### [Cohere](providers/cohere.md)  &nbsp;![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
 
 - `default`: embed-english-v3.0
 - `large`: embed-english-v3.0
@@ -86,7 +86,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [DeepInfra](providers/deepinfra.md)  ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)
+### [DeepInfra](providers/deepinfra.md)  &nbsp;![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)
 
 - `default`: BAAI/bge-base-en-v1.5
 - `large`: BAAI/bge-large-en-v1.5
@@ -118,7 +118,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Lamini](providers/lamini.md)  ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)
+### [Lamini](providers/lamini.md)  &nbsp;![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)
 
 - `default`: sentence-transformers/all-MiniLM-L6-v2
 - `large`: sentence-transformers/all-MiniLM-L6-v2
@@ -134,7 +134,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Mistral AI](providers/mistralai.md)  ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
+### [Mistral AI](providers/mistralai.md)  &nbsp;![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
 
 - `default`: mistral-embed
 - `large`: mistral-embed
@@ -158,7 +158,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Together AI](providers/togetherai.md)  ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
+### [Together AI](providers/togetherai.md)  &nbsp;![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
 
 - `default`: bert-base-uncased
 - `large`: BAAI/bge-large-en-v1.5

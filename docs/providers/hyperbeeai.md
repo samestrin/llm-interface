@@ -38,7 +38,7 @@ The following model aliases are provided for this provider.
 
 ## Options
 
-The following values can be passed through `options`.
+The following parameters can be passed through `options`.
 
 - `add_generation_prompt`: _Details not available, please refer to the LLM provider documentation._
 - `best_of`: _Details not available, please refer to the LLM provider documentation._

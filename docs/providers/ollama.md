@@ -45,7 +45,7 @@ The following model aliases are provided for this provider.
 
 ## Options
 
-The following values can be passed through `options`.
+The following parameters can be passed through `options`.
 
 - `format`: _Details not available, please refer to the LLM provider documentation._
 - `keep_alive`: _Details not available, please refer to the LLM provider documentation._

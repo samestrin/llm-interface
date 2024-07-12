@@ -44,7 +44,7 @@ The following model aliases are provided for this provider.
 
 ## Options
 
-The following values can be passed through `options`.
+The following parameters can be passed through `options`.
 
 - `context_length_exceeded_behavior`: _Details not available, please refer to the LLM provider documentation._
 - `frequency_penalty`: _Details not available, please refer to the LLM provider documentation._

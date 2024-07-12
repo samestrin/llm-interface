@@ -38,7 +38,7 @@ The following model aliases are provided for this provider.
 
 ## Options
 
-The following values can be passed through `options`.
+The following parameters can be passed through `options`.
 
 - `frequency_penalty`: _Details not available, please refer to the LLM provider documentation._
 - `logit_bias`: _Details not available, please refer to the LLM provider documentation._

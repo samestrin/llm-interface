@@ -39,7 +39,7 @@ The following model aliases are provided for this provider.
 
 ## Options
 
-The following values can be passed through `options`.
+The following parameters can be passed through `options`.
 
 - `choices`: _Details not available, please refer to the LLM provider documentation._
 - `created`: _Details not available, please refer to the LLM provider documentation._
