@@ -87,8 +87,8 @@ The following values can be passed through `options`.
 
 ### Features
 
-- Streaming: true
-- Embeddings: true
+- Streaming
+- Embeddings
 
 
 ## Getting an API Key

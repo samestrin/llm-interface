@@ -73,11 +73,11 @@ The following values can be passed through `options`.
 
 ### Features
 
-- Native JSON Mode: true
-- Streaming: true
-- Functions: true
-- Tools: true
-- Embeddings: true
+- Native JSON Mode
+- Streaming
+- Functions
+- Tools
+- Embeddings
 
 
 ## Getting an API Key

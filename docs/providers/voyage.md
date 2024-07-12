@@ -42,7 +42,7 @@ The following model aliases are provided for this provider.
 
 ## Features
 
-- Embeddings: true
+- Embeddings
 
 
 ## Getting an API Key

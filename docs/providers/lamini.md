@@ -54,7 +54,7 @@ The following values can be passed through `options`.
 
 ## Features
 
-- Embeddings: true
+- Embeddings
 
 
 ## Getting an API Key

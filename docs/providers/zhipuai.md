@@ -54,8 +54,8 @@ The following values can be passed through `options`.
 
 ### Features
 
-- Streaming: true
-- Tools: true
+- Streaming
+- Tools
 
 
 ## Getting an API Key

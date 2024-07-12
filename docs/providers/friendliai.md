@@ -55,8 +55,8 @@ The following values can be passed through `options`.
 
 ### Features
 
-- Native JSON Mode: true
-- Streaming: true
+- Native JSON Mode
+- Streaming
 
 
 ## Getting an API Key

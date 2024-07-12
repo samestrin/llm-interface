@@ -71,9 +71,9 @@ The following values can be passed through `options`.
 
 ### Features
 
-- Streaming: true
-- Tools: true
-- Embeddings: true
+- Streaming
+- Tools
+- Embeddings
 
 
 ## Getting an API Key
