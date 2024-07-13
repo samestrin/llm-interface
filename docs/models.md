@@ -56,7 +56,7 @@ If no model is passed, the system will use the default model for the LLM provide
 Aliases can simplify working with multiple LLM providers letting you call different providers with the same model names out of the box.
 
 ```javascript
-const openaiResult = await LLMInterface.sendMessage("openai", "Explain the importance of low latency LLMs", { model: "small" });
+const response = await LLMInterface.sendMessage("openai", "Explain the importance of low latency LLMs", { model: "small" });
 const geminiResult = await LLMInterface.sendMessage("gemini", "Explain the importance of low latency LLMs", { model: "small" });
 ```
 
