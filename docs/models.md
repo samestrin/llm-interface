@@ -69,8 +69,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 ## Model Alias Values
 
 
-### [AI21 Studio](providers/ai21.md)  &nbsp;![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
-
+### [AI21 Studio](providers/ai21.md)
+![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
 - `default`: jamba-instruct
 - `large`: jamba-instruct
 - `small`: jamba-instruct
@@ -78,7 +78,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [AiLAYER](providers/ailayer.md) 
+### [AiLAYER](providers/ailayer.md)
 
 - `default`: Llama-2-70b
 - `large`: Qwen/Qwen1.5-72B-Chat
@@ -87,8 +87,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [AIMLAPI](providers/aimlapi.md)  &nbsp;![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)
-
+### [AIMLAPI](providers/aimlapi.md)
+![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)
 - `default`: gpt-3.5-turbo-16k
 - `large`: Qwen/Qwen1.5-72B-Chat
 - `small`: Qwen/Qwen1.5-0.5B-Chat
@@ -96,8 +96,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Anyscale](providers/anyscale.md)  &nbsp;![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)
-
+### [Anyscale](providers/anyscale.md)
+![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)
 - `default`: mistralai/Mixtral-8x22B-Instruct-v0.1
 - `large`: meta-llama/Llama-3-70b-chat-hf
 - `small`: mistralai/Mistral-7B-Instruct-v0.1
@@ -105,8 +105,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Anthropic](providers/anthropic.md)  &nbsp;![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png)
-
+### [Anthropic](providers/anthropic.md)
+![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png)
 - `default`: claude-3-sonnet-20240229
 - `large`: claude-3-opus-20240229
 - `small`: claude-3-haiku-20240307
@@ -114,8 +114,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Cloudflare AI](providers/cloudflareai.md)  &nbsp;![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
-
+### [Cloudflare AI](providers/cloudflareai.md)
+![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
 - `default`: @cf/meta/llama-3-8b-instruct
 - `large`: @hf/thebloke/llama-2-13b-chat-awq
 - `small`: @cf/tinyllama/tinyllama-1.1b-chat-v1.0
@@ -123,8 +123,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Cohere](providers/cohere.md)  &nbsp;![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
-
+### [Cohere](providers/cohere.md)
+![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
 - `default`: command-r
 - `large`: command-r-plus
 - `small`: command-light
@@ -132,8 +132,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Corcel](providers/corcel.md)  &nbsp;![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png)
-
+### [Corcel](providers/corcel.md)
+![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png)
 - `default`: gpt-4-turbo-2024-04-09
 - `large`: gpt-4o
 - `small`: cortext-lite
@@ -141,8 +141,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [DeepInfra](providers/deepinfra.md)  &nbsp;![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)
-
+### [DeepInfra](providers/deepinfra.md)
+![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)
 - `default`: openchat/openchat-3.6-8b
 - `large`: nvidia/Nemotron-4-340B-Instruct
 - `small`: microsoft/WizardLM-2-7B
@@ -150,8 +150,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [DeepSeek](providers/deepseek.md)  &nbsp;![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png)
-
+### [DeepSeek](providers/deepseek.md)
+![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png)
 - `default`: deepseek-chat
 - `large`: deepseek-chat
 - `small`: deepseek-chat
@@ -159,7 +159,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Fireworks AI](providers/fireworksai.md) 
+### [Fireworks AI](providers/fireworksai.md)
 
 - `default`: accounts/fireworks/models/llama-v3-8b-instruct
 - `large`: accounts/fireworks/models/llama-v3-70b-instruct
@@ -168,8 +168,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Forefront AI](providers/forefront.md)  &nbsp;![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png)
-
+### [Forefront AI](providers/forefront.md)
+![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png)
 - `default`: forefront/Mistral-7B-Instruct-v0.2-chatml
 - `large`: forefront/Mistral-7B-Instruct-v0.2-chatml
 - `small`: forefront/Mistral-7B-Instruct-v0.2-chatml
@@ -177,7 +177,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [FriendliAI](providers/friendliai.md) 
+### [FriendliAI](providers/friendliai.md)
 
 - `default`: mixtral-8x7b-instruct-v0-1
 - `large`: meta-llama-3-70b-instruct
@@ -186,7 +186,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Google Gemini](providers/gemini.md) 
+### [Google Gemini](providers/gemini.md)
 
 - `default`: gemini-1.5-flash
 - `large`: gemini-1.5-pro
@@ -195,8 +195,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [GooseAI](providers/gooseai.md)  &nbsp;![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png)
-
+### [GooseAI](providers/gooseai.md)
+![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png)
 - `default`: gpt-neo-20b
 - `large`: gpt-neo-20b
 - `small`: gpt-neo-125m
@@ -204,7 +204,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Groq](providers/groq.md) 
+### [Groq](providers/groq.md)
 
 - `default`: llama3-8b-8192
 - `large`: llama3-70b-8192
@@ -213,7 +213,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Hugging Face Inference](providers/huggingface.md) 
+### [Hugging Face Inference](providers/huggingface.md)
 
 - `default`: meta-llama/Meta-Llama-3-8B-Instruct
 - `large`: meta-llama/Meta-Llama-3-8B-Instruct
@@ -222,7 +222,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [HyperBee AI](providers/hyperbeeai.md) 
+### [HyperBee AI](providers/hyperbeeai.md)
 
 - `default`: hive
 - `large`: gpt-4o
@@ -231,8 +231,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Lamini](providers/lamini.md)  &nbsp;![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)
-
+### [Lamini](providers/lamini.md)
+![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)
 - `default`: meta-llama/Meta-Llama-3-8B-Instruct
 - `large`: meta-llama/Meta-Llama-3-8B-Instruct
 - `small`: microsoft/phi-2
@@ -240,7 +240,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [LLaMA.CPP](providers/llamacpp.md) 
+### [LLaMA.CPP](providers/llamacpp.md)
 
 - `default`: gpt-3.5-turbo
 - `large`: gpt-3.5-turbo
@@ -249,8 +249,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Mistral AI](providers/mistralai.md)  &nbsp;![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
-
+### [Mistral AI](providers/mistralai.md)
+![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
 - `default`: mistral-large-latest
 - `large`: mistral-large-latest
 - `small`: mistral-small-latest
@@ -258,8 +258,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Monster API](providers/monsterapi.md)  &nbsp;![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png)
-
+### [Monster API](providers/monsterapi.md)
+![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png)
 - `default`: meta-llama/Meta-Llama-3-8B-Instruct
 - `large`: google/gemma-2-9b-it
 - `small`: microsoft/Phi-3-mini-4k-instruct
@@ -267,8 +267,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Neets.ai](providers/neetsai.md)  &nbsp;![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png)
-
+### [Neets.ai](providers/neetsai.md)
+![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png)
 - `default`: Neets-7B
 - `large`: mistralai/Mixtral-8X7B-Instruct-v0.1
 - `small`: Neets-7B
@@ -276,7 +276,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Novita AI](providers/novitaai.md) 
+### [Novita AI](providers/novitaai.md)
 
 - `default`: meta-llama/llama-3-8b-instruct
 - `large`: meta-llama/llama-3-70b-instruct
@@ -285,7 +285,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [NVIDIA AI](providers/nvidia.md) 
+### [NVIDIA AI](providers/nvidia.md)
 
 - `default`: nvidia/llama3-chatqa-1.5-8b
 - `large`: nvidia/nemotron-4-340b-instruct
@@ -294,7 +294,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [OctoAI](providers/octoai.md) 
+### [OctoAI](providers/octoai.md)
 
 - `default`: mistral-7b-instruct
 - `large`: mixtral-8x22b-instruct
@@ -303,7 +303,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Ollama](providers/ollama.md) 
+### [Ollama](providers/ollama.md)
 
 - `default`: llama3
 - `large`: llama3
@@ -312,7 +312,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [OpenAI](providers/openai.md) 
+### [OpenAI](providers/openai.md)
 
 - `default`: gpt-3.5-turbo
 - `large`: gpt-4o
@@ -321,8 +321,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Perplexity AI](providers/perplexity.md)  &nbsp;![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png)
-
+### [Perplexity AI](providers/perplexity.md)
+![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png)
 - `default`: llama-3-sonar-large-32k-online
 - `large`: llama-3-sonar-large-32k-online
 - `small`: llama-3-sonar-small-32k-online
@@ -330,8 +330,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Reka AI](providers/rekaai.md)  &nbsp;![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png)
-
+### [Reka AI](providers/rekaai.md)
+![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png)
 - `default`: reka-core
 - `large`: reka-core
 - `small`: reka-edge
@@ -339,8 +339,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Replicate](providers/replicate.md)  &nbsp;![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png)
-
+### [Replicate](providers/replicate.md)
+![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png)
 - `default`: mistralai/mistral-7b-instruct-v0.2
 - `large`: meta/meta-llama-3-70b-instruct
 - `small`: mistralai/mistral-7b-instruct-v0.2
@@ -348,8 +348,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Shuttle AI](providers/shuttleai.md)  &nbsp;![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png)
-
+### [Shuttle AI](providers/shuttleai.md)
+![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png)
 - `default`: shuttle-2-turbo
 - `large`: shuttle-2-turbo
 - `small`: shuttle-2-turbo
@@ -357,7 +357,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [TheB.ai](providers/thebai.md) 
+### [TheB.ai](providers/thebai.md)
 
 - `default`: gpt-4-turbo
 - `large`: llama-3-70b-chat
@@ -366,8 +366,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Together AI](providers/togetherai.md)  &nbsp;![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
-
+### [Together AI](providers/togetherai.md)
+![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
 - `default`: google/gemma-7b
 - `large`: mistralai/Mixtral-8x22B
 - `small`: google/gemma-2b
@@ -375,7 +375,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Watsonx AI](providers/watsonxai.md) 
+### [Watsonx AI](providers/watsonxai.md)
 
 - `default`: ibm/granite-13b-chat-v2
 - `large`: meta-llama/llama-3-70b-instruct
@@ -384,8 +384,8 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Writer](providers/writer.md)  &nbsp;![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)
-
+### [Writer](providers/writer.md)
+![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)
 - `default`: palmyra-x-002-32k
 - `large`: palmyra-x-002-32k
 - `small`: palmyra-x-002-32k
@@ -393,7 +393,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Zhipu AI](providers/zhipuai.md) 
+### [Zhipu AI](providers/zhipuai.md)
 
 - `default`: glm-4-airx
 - `large`: glm-4
