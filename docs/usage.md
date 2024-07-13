@@ -2,51 +2,49 @@
 
 ## Table of Contents
 
-- [LLMInterface](#llminterface)
-  - [getAllModelNames()](#getallmodelnames)
-  - [getEmbeddingsModelAlias(interfaceName, alias)](#getembeddingsmodelaliasinterfacename-alias)
-  - [getInterfaceConfigValue(interfaceName, key)](#getInterfaceConfigValueinterfacename-key)
-  - [getModelByAlias(interfaceName, alias)](#getmodelbyaliasinterfacename-alias)
-  - [setApiKey(interfaceNames, apiKey)](#setapikeyinterfacenames-apikey)
-  - [setEmbeddingsModelAlias(interfaceName, alias, name)](#setembeddingsmodelaliasinterfacename-alias-name)
-  - [setModelAlias(interfaceName, alias, name)](#setmodelaliasinterfacename-alias-name)
-  - [configureCache(cacheConfig = {})](#configurecachecacheconfig--)
-  - [flushCache()](#flushcache)
-  - [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](#sendmessageinterfacename-message-options---interfaceoptions--)
-  - [streamMessage(interfaceName, message, options = {})](#streammessageinterfacename-message-options--)
-  - [embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})](#embeddingsinterfacename-embeddingstring-options---interfaceoptions--)
-  - [chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})](#chatcompletionscreateinterfacename-message-options---interfaceoptions--)
-  - [Supported Interface Names](#supported-interface-names)
-- [LLMInterfaceSendMessage](#llminterfacesendmessage)
-  - [LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})](#llminterfacesendmessageinterfacename-apikey-message-options---interfaceoptions--)
-- [LLMInterfaceStreamMessage](#llminterfacestreammessage)
-  - [LLMInterfaceStreamMessage(interfaceName, apiKey, message, options = {})](#llminterfacestreammessageinterfacename-apikey-message-options--)
-- [Message Object](#message-object)
-  - [Structure of a Message Object](#structure-of-a-message-object)
-- [Options Object](#options-object)
-  - [Structure of an Options Object](#structure-of-an-options-object)
-- [Interface Options Object](#interface-options-object)
-  - [Structure of an Interface Options Object](#structure-of-an-interface-options-object)
-- [Caching](#caching)
-  - [Simple Cache](#simple-cache)
-    - [Example Usage](#example-usage-1)
-  - [Flat Cache](#flat-cache)
-    - [Installation](#installation-1)
-    - [Example Usage](#example-usage-2)
-  - [Cache Manager](#cache-manager)
-    - [Installation](#installation-2)
-    - [Example Usage](#example-usage-3)
-    - [Advanced Backends](#advanced-backends)
-      - [Redis](#redis)
-      - [Memcached](#memcached)
-      - [MongoDB](#mongodb)
-  - [Memory Cache](#memory-cache)
-    - [Example Usage](#example-usage-4)
-- [Examples](#examples)
+- [LLM Interface Usage Documentation](#llm-interface-usage-documentation)
+  - [Table of Contents](#table-of-contents)
+  - [LLMInterface](#llminterface)
+    - [getAllModelNames()](#getallmodelnames)
+    - [getEmbeddingsModelAlias(interfaceName, alias)](#getembeddingsmodelaliasinterfacename-alias)
+    - [getInterfaceConfigValue(interfaceName, key)](#getinterfaceconfigvalueinterfacename-key)
+    - [getModelAlias(interfaceName, alias)](#getmodelaliasinterfacename-alias)
+    - [setApiKey(interfaceNames, apiKey)](#setapikeyinterfacenames-apikey)
+    - [setEmbeddingsModelAlias(interfaceName, alias, name)](#setembeddingsmodelaliasinterfacename-alias-name)
+    - [setModelAlias(interfaceName, alias, name)](#setmodelaliasinterfacename-alias-name)
+    - [configureCache(cacheConfig = {})](#configurecachecacheconfig--)
+    - [flushCache()](#flushcache)
+    - [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](#sendmessageinterfacename-message-options---interfaceoptions--)
+    - [streamMessage(interfaceName, message, options = {})](#streammessageinterfacename-message-options--)
+    - [embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {}, defaultProvider = 'voyage')](#embeddingsinterfacename-embeddingstring-options---interfaceoptions---defaultprovider--voyage)
+    - [chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})](#chatcompletionscreateinterfacename-message-options---interfaceoptions--)
+    - [Supported Interface Names](#supported-interface-names)
+  - [LLMInterfaceSendMessage](#llminterfacesendmessage)
+    - [LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})](#llminterfacesendmessageinterfacename-apikey-message-options---interfaceoptions--)
+  - [LLMInterfaceStreamMessage](#llminterfacestreammessage)
+    - [LLMInterfaceStreamMessage(interfaceName, apiKey, message, options = {})](#llminterfacestreammessageinterfacename-apikey-message-options--)
+  - [Message Object](#message-object)
+    - [Structure of a Message Object](#structure-of-a-message-object)
+  - [Options Object](#options-object)
+    - [Structure of an Options Object](#structure-of-an-options-object)
+  - [Interface Options Object](#interface-options-object)
+    - [Structure of an Interface Options Object](#structure-of-an-interface-options-object)
+  - [Caching](#caching)
+    - [Simple Cache](#simple-cache)
+      - [Example Usage](#example-usage)
+    - [Flat Cache](#flat-cache)
+      - [Installation](#installation)
+      - [Example Usage](#example-usage-1)
+    - [Cache Manager](#cache-manager)
+      - [Installation](#installation-1)
+      - [Example Usage](#example-usage-2)
+      - [Advanced Backends](#advanced-backends)
+    - [Memory Cache](#memory-cache)
+      - [Example Usage](#example-usage-3)
 
 ## LLMInterface
 
-To use the `LLMInterface.*` functions, first import `LLMInterface`. You can do this using either the CommonJS `require` syntax:
+To use the `LLMInterface.*` functions, first import `llm-interface`. You can do this using either the CommonJS `require` syntax:
 
 ```javascript
 const { LLMInterface } = require('llm-interface');
@@ -72,7 +70,7 @@ console.log(modelNames);
 Retrieves an embeddings model name for a specific interfaceName alias.
 
 ```javascript
-const model = LLMInterface.getEmbeddingsModelAlias('openai','default');
+const model = LLMInterface.getEmbeddingsModelAlias('openai', 'default');
 console.log(model);
 ```
 
@@ -93,7 +91,7 @@ console.log(apiKey);
 Retrieves a model name for a specific interfaceName alias.
 
 ```javascript
-const model = LLMInterface.getModelAlias('openai','default');
+const model = LLMInterface.getModelAlias('openai', 'default');
 console.log(model);
 ```
 
@@ -119,7 +117,11 @@ Sets an alias for a model within a specific interface.
 - `name` (String): The model name.
 
 ```javascript
-LLMInterface.setEmbeddingsModelAlias('openai', 'default', 'text-embedding-3-large');
+LLMInterface.setEmbeddingsModelAlias(
+  'openai',
+  'default',
+  'text-embedding-3-large',
+);
 ```
 
 ### setModelAlias(interfaceName, alias, name)
@@ -158,7 +160,7 @@ Sends a message to a specified interface and returns the response. _The specifie
 
 - `interfaceName` (String|Array): The name of the LLM interface or an array containing the name of the LLM interface and the API key.
 - `message` (String|Object): The message to send.
-- `options` (Object|number, optional): Additional options for the embedding generation. If a number, it represents the cache timeout in seconds.
+- `options` (Object|number, optional): Additional options object to pass parameters to the model. If a number, it represents the cache timeout in seconds.
 - `interfaceOptions` (Object, optional): Interface-specific options.
 
 ```javascript
@@ -190,7 +192,7 @@ Streams a message to a specified interface and returns the response stream. _You
 
 - `interfaceName` (String): The name of the LLM interface.
 - `message` (String|Object): The message to send.
-- `options` (Object|number, optional): Additional options for the embedding generation. If a number, it represents the cache timeout in seconds.
+- `options` (Object|number, optional): Additional options object to pass parameters to the model. If a number, it represents the cache timeout in seconds.
 
 ```javascript
 try {
@@ -205,13 +207,13 @@ try {
 
 _processStream(stream) is not part of LLMInterface. It is defined in the[streaming mode example](/examples/misc/streaming-mode.js)._
 
-### embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})
+### embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {}, defaultProvider = 'voyage')
 
 Generates embeddings using a specified LLM interface.
 
 - `interfaceName` (String): The name of the LLM interface to use.
 - `embeddingString` (String): The string to generate embeddings for.
-- `options` (Object|number, optional): Additional options for the embedding generation. If a number, it represents the cache timeout in seconds.
+- `options` (Object|number, optional): Additional options object to pass parameters to the model. If a number, it represents the cache timeout in seconds.
 - `interfaceOptions` (Object, optional): Options specific to the LLM interface.
 - `defaultProvider` (String, optional): The default provider to use if the specified interface doesn't support embeddings. Defaults to 'voyage'.
 
@@ -243,46 +245,46 @@ console.log(response.results);
 
 The following are the interfaceNames for each supported LLM provider (in alphabetical order):
 
-|  | Interface Name | Provider Name | [.sendMessage](#sendmessageinterfacename-message-options---interfaceoptions--) | [.embeddings](#embeddinginterfacename-embeddingstring-options---interfaceoptions--)
-| --- | --- | --- | --- | --- |
-| ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png) | `ai21` | [AI21 Studio](providers/ai21.md) | &check; | &check; |
-|  | `ailayer` | [AiLAYER](providers/ailayer.md) | &check; |   |
-| ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png) | `aimlapi` | [AIMLAPI](providers/aimlapi.md) | &check; | &check; |
-| ![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png) | `anthropic` | [Anthropic](providers/anthropic.md) | &check; |   |
-| ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png) | `anyscale` | [Anyscale](providers/anyscale.md) | &check; | &check; |
-| ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png) | `cloudflareai` | [Cloudflare AI](providers/cloudflareai.md) | &check; | &check; |
-| ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png) | `cohere` | [Cohere](providers/cohere.md) | &check; | &check; |
-| ![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png) | `corcel` | [Corcel](providers/corcel.md) | &check; |   |
-| ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png) | `deepinfra` | [DeepInfra](providers/deepinfra.md) | &check; | &check; |
-| ![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png) | `deepseek` | [DeepSeek](providers/deepseek.md) | &check; |   |
-|  | `fireworksai` | [Fireworks AI](providers/fireworksai.md) | &check; | &check; |
-| ![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png) | `forefront` | [Forefront AI](providers/forefront.md) | &check; |   |
-|  | `friendliai` | [FriendliAI](providers/friendliai.md) | &check; |   |
-|  | `gemini` | [Google Gemini](providers/gemini.md) | &check; | &check; |
-| ![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png) | `gooseai` | [GooseAI](providers/gooseai.md) | &check; |   |
-|  | `groq` | [Groq](providers/groq.md) | &check; |   |
-|  | `huggingface` | [Hugging Face Inference](providers/huggingface.md) | &check; | &check; |
-|  | `hyperbeeai` | [HyperBee AI](providers/hyperbeeai.md) | &check; |   |
-| ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png) | `lamini` | [Lamini](providers/lamini.md) | &check; | &check; |
-|  | `llamacpp` | [LLaMA.CPP](providers/llamacpp.md) | &check; | &check; |
-| ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png) | `mistralai` | [Mistral AI](providers/mistralai.md) | &check; | &check; |
-| ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png) | `monsterapi` | [Monster API](providers/monsterapi.md) | &check; |   |
-| ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png) | `neetsai` | [Neets.ai](providers/neetsai.md) | &check; |   |
-|  | `novitaai` | [Novita AI](providers/novitaai.md) | &check; |   |
-|  | `nvidia` | [NVIDIA AI](providers/nvidia.md) | &check; |   |
-|  | `octoai` | [OctoAI](providers/octoai.md) | &check; |   |
-|  | `ollama` | [Ollama](providers/ollama.md) | &check; | &check; |
-|  | `openai` | [OpenAI](providers/openai.md) | &check; | &check; |
-| ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png) | `perplexity` | [Perplexity AI](providers/perplexity.md) | &check; |   |
-| ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png) | `rekaai` | [Reka AI](providers/rekaai.md) | &check; |   |
-| ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png) | `replicate` | [Replicate](providers/replicate.md) | &check; |   |
-| ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png) | `shuttleai` | [Shuttle AI](providers/shuttleai.md) | &check; |   |
-|  | `thebai` | [TheB.ai](providers/thebai.md) | &check; |   |
-| ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png) | `togetherai` | [Together AI](providers/togetherai.md) | &check; | &check; |
-|  | `voyage` | [Voyage AI](providers/voyage.md) |   | &check; |
-|  | `watsonxai` | [Watsonx AI](providers/watsonxai.md) | &check; | &check; |
-| ![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png) | `writer` | [Writer](providers/writer.md) | &check; |   |
-|  | `zhipuai` | [Zhipu AI](providers/zhipuai.md) | &check; |   |
+|                                                                                         | Interface Name | Provider Name                                      | [.sendMessage](#sendmessageinterfacename-message-options---interfaceoptions--) | [.embeddings](#embeddinginterfacename-embeddingstring-options---interfaceoptions--) |
+| --------------------------------------------------------------------------------------- | -------------- | -------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)                 | `ai21`         | [AI21 Studio](providers/ai21.md)                   | &check;                                                                        | &check;                                                                             |
+|                                                                                         | `ailayer`      | [AiLAYER](providers/ailayer.md)                    | &check;                                                                        |                                                                                     |
+| ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)           | `aimlapi`      | [AIMLAPI](providers/aimlapi.md)                    | &check;                                                                        | &check;                                                                             |
+| ![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png)       | `anthropic`    | [Anthropic](providers/anthropic.md)                | &check;                                                                        |                                                                                     |
+| ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)         | `anyscale`     | [Anyscale](providers/anyscale.md)                  | &check;                                                                        | &check;                                                                             |
+| ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png) | `cloudflareai` | [Cloudflare AI](providers/cloudflareai.md)         | &check;                                                                        | &check;                                                                             |
+| ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)             | `cohere`       | [Cohere](providers/cohere.md)                      | &check;                                                                        | &check;                                                                             |
+| ![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png)             | `corcel`       | [Corcel](providers/corcel.md)                      | &check;                                                                        |                                                                                     |
+| ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)       | `deepinfra`    | [DeepInfra](providers/deepinfra.md)                | &check;                                                                        | &check;                                                                             |
+| ![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png)         | `deepseek`     | [DeepSeek](providers/deepseek.md)                  | &check;                                                                        |                                                                                     |
+|                                                                                         | `fireworksai`  | [Fireworks AI](providers/fireworksai.md)           | &check;                                                                        | &check;                                                                             |
+| ![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png)       | `forefront`    | [Forefront AI](providers/forefront.md)             | &check;                                                                        |                                                                                     |
+|                                                                                         | `friendliai`   | [FriendliAI](providers/friendliai.md)              | &check;                                                                        |                                                                                     |
+|                                                                                         | `gemini`       | [Google Gemini](providers/gemini.md)               | &check;                                                                        | &check;                                                                             |
+| ![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png)           | `gooseai`      | [GooseAI](providers/gooseai.md)                    | &check;                                                                        |                                                                                     |
+|                                                                                         | `groq`         | [Groq](providers/groq.md)                          | &check;                                                                        |                                                                                     |
+|                                                                                         | `huggingface`  | [Hugging Face Inference](providers/huggingface.md) | &check;                                                                        | &check;                                                                             |
+|                                                                                         | `hyperbeeai`   | [HyperBee AI](providers/hyperbeeai.md)             | &check;                                                                        |                                                                                     |
+| ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)             | `lamini`       | [Lamini](providers/lamini.md)                      | &check;                                                                        | &check;                                                                             |
+|                                                                                         | `llamacpp`     | [LLaMA.CPP](providers/llamacpp.md)                 | &check;                                                                        | &check;                                                                             |
+| ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)       | `mistralai`    | [Mistral AI](providers/mistralai.md)               | &check;                                                                        | &check;                                                                             |
+| ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png)     | `monsterapi`   | [Monster API](providers/monsterapi.md)             | &check;                                                                        |                                                                                     |
+| ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png)           | `neetsai`      | [Neets.ai](providers/neetsai.md)                   | &check;                                                                        |                                                                                     |
+|                                                                                         | `novitaai`     | [Novita AI](providers/novitaai.md)                 | &check;                                                                        |                                                                                     |
+|                                                                                         | `nvidia`       | [NVIDIA AI](providers/nvidia.md)                   | &check;                                                                        |                                                                                     |
+|                                                                                         | `octoai`       | [OctoAI](providers/octoai.md)                      | &check;                                                                        |                                                                                     |
+|                                                                                         | `ollama`       | [Ollama](providers/ollama.md)                      | &check;                                                                        | &check;                                                                             |
+|                                                                                         | `openai`       | [OpenAI](providers/openai.md)                      | &check;                                                                        | &check;                                                                             |
+| ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png)     | `perplexity`   | [Perplexity AI](providers/perplexity.md)           | &check;                                                                        |                                                                                     |
+| ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png)             | `rekaai`       | [Reka AI](providers/rekaai.md)                     | &check;                                                                        |                                                                                     |
+| ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png)       | `replicate`    | [Replicate](providers/replicate.md)                | &check;                                                                        |                                                                                     |
+| ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png)       | `shuttleai`    | [Shuttle AI](providers/shuttleai.md)               | &check;                                                                        |                                                                                     |
+|                                                                                         | `thebai`       | [TheB.ai](providers/thebai.md)                     | &check;                                                                        |                                                                                     |
+| ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)     | `togetherai`   | [Together AI](providers/togetherai.md)             | &check;                                                                        | &check;                                                                             |
+|                                                                                         | `voyage`       | [Voyage AI](providers/voyage.md)                   |                                                                                | &check;                                                                             |
+|                                                                                         | `watsonxai`    | [Watsonx AI](providers/watsonxai.md)               | &check;                                                                        | &check;                                                                             |
+| ![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)             | `writer`       | [Writer](providers/writer.md)                      | &check;                                                                        |                                                                                     |
+|                                                                                         | `zhipuai`      | [Zhipu AI](providers/zhipuai.md)                   | &check;                                                                        |                                                                                     |
 
 _This is regularly updated! :)_
 
@@ -351,12 +353,18 @@ Streams a message using the specified LLM interface.
 
 ```javascript
 try {
-  const stream = await LLMInterfaceStreamMessage('openai', 'your-api-key', 'Hello, world!', { max_tokens: 100 });
+  const stream = await LLMInterfaceStreamMessage(
+    'openai',
+    'your-api-key',
+    'Hello, world!',
+    { max_tokens: 100 },
+  );
   const result = await processStream(stream.data);
 } catch (error) {
-  console.error(error.message)
+  console.error(error.message);
 }
 ```
+
 _processStream(stream) is defined in the [streaming mode example](/examples/misc/streaming-mode.js)._
 
 _This is a legacy function and will be depreciated._
@@ -395,15 +403,14 @@ Two other common values of interest are:
 
 If `options.stream` is true, then a LLMInterface.sendMessage() or LLMInterfaceSendMessage() call becomes a LLMInterface.streamMessage() call.
 
-If `options.response_format` is set to "json_object", along with including a JSON schema in the prompt, many LLM providers will return a valid JSON object. _Not all providers support this feature._
+If `options.response_format` is set to "json*object", along with including a JSON schema in the prompt, many LLM providers will return a valid JSON object. \_Not all providers support this feature.*
 
 ```javascript
 const options = {
   max_tokens: 1024,
-  temperature: 0.3 // Lower values are more deterministic, Higher are more creative
-}
-
-````
+  temperature: 0.3, // Lower values are more deterministic, Higher are more creative
+};
+```
 
 ## Interface Options Object
 
