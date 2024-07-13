@@ -112,7 +112,7 @@ After visiting the URL, click on "Get Your API Key".
 
 ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
 
-The Cohere API offers trial keys with rate limits. These keys are not intended for commercial use.
+**Commercial with Free Trial**:The Cohere API offers trial keys with rate limits. These keys are not intended for commercial use.
 
 - https://dashboard.cohere.com/api-keys
 
@@ -212,7 +212,7 @@ The Cohere API offers trial keys with rate limits. These keys are not intended f
 
 
 
-Free Tier Available (Rate Limited): The Inference API is free to use, but may be rate limited for heavy usage. Sending requests gradually is recommended to avoid errors.
+**Free Tier Available (Rate Limited)**: The Inference API is free to use, but may be rate limited for heavy usage. Sending requests gradually is recommended to avoid errors.
 
 - https://huggingface.co/settings/tokens
 
