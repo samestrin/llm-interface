@@ -70,7 +70,7 @@ The [Usage](usage.md) section contains detailed documentation on how to use the 
 
 ### LLMInterface
 
-- [getAllModelNames()](usage.md#getallmodelnames)
+- ##### [getAllModelNames()](usage.md#getallmodelnames)
 - [getEmbeddingsModelAlias(interfaceName, alias)](usage.md#getembeddingsmodelaliasinterfacename-alias)
 - [getInterfaceConfigValue(interfaceName, key)](usage.md#getinterfaceconfigvalueinterfacename-key)
 - [getModelAlias(interfaceName, alias)](usage.md#getmodelaliasinterfacename-alias)
