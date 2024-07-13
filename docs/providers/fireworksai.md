@@ -1,3 +1,5 @@
+![Fireworks AI](https://pbs.twimg.com/media/GJTcGMJWkAA90oY?format=png&name=large)
+
 # [Fireworks AI](https://www.fireworks.ai)
 
 Fireworks AI is a platform designed to empower developers and businesses to leverage the power of generative AI. It offers a comprehensive suite of tools and services, including fast and affordable text and image model inference, fine-tuning capabilities, and on-demand private GPU inference. This enables developers to build innovative products and applications with generative AI while benefiting from optimized performance and customizable solutions. Fireworks AI is committed to accelerating product innovation and making generative AI accessible to a wide range of users.
