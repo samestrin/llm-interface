@@ -1,6 +1,6 @@
 # LLM Interface Documentation
 
-Welcome to the documentation for the LLM Interface package. This documentation provides comprehensive guides on how to set up, configure, and use the LLM Interface with various Large Language Model providers.
+Welcome to the documentation for the LLM Interface package. This documentation provides comprehensive guides on how to set up, configure, and use the LLM Interface with various Language Model providers.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ Welcome to the documentation for the LLM Interface package. This documentation p
     - [setApiKey(interfaceNames, apiKey)](#setapikeyinterfacenames-apikey)
     - [setEmbeddingsModelAlias(interfaceName, alias, name)](#setembeddingsmodelaliasinterfacename-alias-name)
     - [setModelAlias(interfaceName, alias, name)](#setmodelaliasinterfacename-alias-name)
-    - [configureCache(cacheconfig--)](#configurecachecacheconfig--)
+    - [configureCache(cacheConfig = {})](#configurecachecacheconfig--)
     - [flushCache()](#flushcache)
     - [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](#sendmessageinterfacename-message-options--interfaceoptions--)
     - [streamMessage(interfaceName, message, options = {})](#streammessageinterfacename-message-options--)
@@ -127,7 +127,7 @@ _This is a legacy function and will be depreciated._
 
 ## Supported Providers
 
-A complete list of [supported providers](support.md) is availabe [here](providers.md).
+A complete list of [supported providers](support.md) is available [here](providers.md).
 
 ## Model Aliases
 
@@ -137,7 +137,7 @@ For more detailed information, please refer to the respective sections in the do
 
 ## Jailbreaking
 
-If you'd like to attempt to [jailbreak](jailbreaking.md#jailbreaking) your AI model you try a version of the message object found [here](jailbreaking.md#jailbreaking).
+If you'd like to attempt to [jailbreak](jailbreaking.md#jailbreaking) your AI model, you can try a version of the message object found [here](jailbreaking.md#jailbreaking).
 
 _Thanks to Shuttle AI for the original concept!_
 
