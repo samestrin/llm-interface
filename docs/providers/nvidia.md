@@ -1,4 +1,4 @@
-![NVIDIA AI](https://www.nvidia.com/content/dam/en-zz/Solutions/homepage/v2/sfg/nvidia-corporate-og-image-1200x630.jpg)
+![NVIDIA AI](https://build.nvidia.com/opengraph-image.jpg?6ec102a0470b935b)
 
 # [NVIDIA AI](https://www.nvidia.com)
 
@@ -67,9 +67,3 @@ After visiting the URL, click on "Get API Key". You can find the link on the rig
 ## [NVIDIA AI Documentation](https://developer.nvidia.com/accelerate-ai-applications/get-started)
 
 [NVIDIA AI documentation](https://developer.nvidia.com/accelerate-ai-applications/get-started) is available [here](https://developer.nvidia.com/accelerate-ai-applications/get-started).
-
-
-![@NVIDIA](https://pbs.twimg.com/profile_images/1798110641414443008/XP8gyBaY_normal.jpg)
-[@NVIDIA](https://www.x.com/NVIDIA)
-
-Anthropic

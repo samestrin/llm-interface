@@ -1,3 +1,5 @@
+![TheB.ai](https://samestrin.github.io/media/llm-interface/thebai.png)
+
 # TheB.ai
 
 TheB is an AI chatbot platform that aims to simplify the integration of artificial intelligence into workflows. It offers various AI chatbot models accessible via API or their user-friendly web application, which is designed for both individual and team use. TheB's platform features include real-time search capabilities, customizable model personas, and long-term memory to improve conversation flow. Additionally, it supports image generation and multiple model options, with advanced parameters for custom model tuning.

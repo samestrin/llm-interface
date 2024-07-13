@@ -1,3 +1,5 @@
+![Mistral AI](https://samestrin.github.io/media/llm-interface/mistralai.png)
+
 # [Mistral AI](https://www.mistral.ai)
 
 Mistral AI is a French artificial intelligence company focused on developing and providing large language models (LLMs). They emphasize open-source principles, making their models accessible and customizable for various applications. Mistral AI offers a range of models with varying sizes and capabilities, catering to different user needs. The company has gained significant attention and funding due to its commitment to transparency and collaboration within the AI community.
