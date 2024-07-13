@@ -76,9 +76,8 @@ To get an API key, first create an Anthropic account, then visit the link below.
 
 ## [Anthropic X](https://www.x.com/AnthropicAI)
 
-
 ![@AnthropicAI](https://pbs.twimg.com/profile_images/1798110641414443008/XP8gyBaY_normal.jpg)
 
 [@AnthropicAI](https://www.x.com/AnthropicAI)
 
-Anthropic
+
