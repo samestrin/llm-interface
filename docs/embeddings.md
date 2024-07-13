@@ -48,53 +48,60 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 ## Embeddings Alias Values
 
 
-### [AI21 Studio](providers/ai21.md)
 ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
+### [AI21 Studio](providers/ai21-studio.md)
+
 - This provider does not support model selection. Model names passed will be ignored.
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [AIMLAPI](providers/aimlapi.md)
 ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)
+### [AIMLAPI](providers/aimlapi.md)
+
 - `default`: text-embedding-ada-002
 - `large`: text-embedding-3-large
 - `small`: text-embedding-3-small
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Anyscale](providers/anyscale.md)
 ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)
+### [Anyscale](providers/anyscale.md)
+
 - `default`: thenlper/gte-large
 - `large`: thenlper/gte-large
 - `small`: BAAI/bge-large-en-v1.5
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Cloudflare AI](providers/cloudflareai.md)
 ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
+### [Cloudflare AI](providers/cloudflare-ai.md)
+
 - `default`: @cf/baai/bge-base-en-v1.5
 - `large`: @cf/baai/bge-large-en-v1.5
 - `small`: @cf/baai/bge-small-en-v1.5
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Cohere](providers/cohere.md)
 ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)
+### [Cohere](providers/cohere.md)
+
 - `default`: embed-english-v3.0
 - `large`: embed-english-v3.0
 - `small`: embed-english-light-v3.0
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [DeepInfra](providers/deepinfra.md)
 ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)
+### [DeepInfra](providers/deepinfra.md)
+
 - `default`: BAAI/bge-base-en-v1.5
 - `large`: BAAI/bge-large-en-v1.5
 - `small`: BAAI/bge-base-en-v1.5
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Fireworks AI](providers/fireworksai.md)
+
+### [Fireworks AI](providers/fireworks-ai.md)
 
 - `default`: nomic-ai/nomic-embed-text-v1.5
 - `large`: nomic-ai/nomic-embed-text-v1.5
@@ -102,7 +109,8 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Google Gemini](providers/gemini.md)
+
+### [Google Gemini](providers/google-gemini.md)
 
 - `default`: text-embedding-004
 - `large`: text-embedding-004
@@ -110,7 +118,8 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Hugging Face Inference](providers/huggingface.md)
+
+### [Hugging Face Inference](providers/hugging-face inference.md)
 
 - `default`: sentence-transformers/all-mpnet-base-v2
 - `large`: sentence-transformers/sentence-t5-large
@@ -118,15 +127,17 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Lamini](providers/lamini.md)
 ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)
+### [Lamini](providers/lamini.md)
+
 - `default`: sentence-transformers/all-MiniLM-L6-v2
 - `large`: sentence-transformers/all-MiniLM-L6-v2
 - `small`: sentence-transformers/all-MiniLM-L6-v2
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [LLaMA.CPP](providers/llamacpp.md)
+
+### [LLaMA.CPP](providers/llama.cpp.md)
 
 - `default`: none
 - `large`: none
@@ -134,14 +145,16 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Mistral AI](providers/mistralai.md)
 ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
+### [Mistral AI](providers/mistral-ai.md)
+
 - `default`: mistral-embed
 - `large`: mistral-embed
 - `small`: mistral-embed
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+
 ### [Ollama](providers/ollama.md)
 
 - `default`: all-minilm
@@ -150,6 +163,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
+
 ### [OpenAI](providers/openai.md)
 
 - `default`: text-embedding-ada-002
@@ -158,15 +172,17 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Together AI](providers/togetherai.md)
 ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
+### [Together AI](providers/together-ai.md)
+
 - `default`: bert-base-uncased
 - `large`: BAAI/bge-large-en-v1.5
 - `small`: BAAI/bge-base-en-v1.5 
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Voyage AI](providers/voyage.md)
+
+### [Voyage AI](providers/voyage-ai.md)
 
 - `default`: voyage-2
 - `large`: voyage-large-2
@@ -174,7 +190,8 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
-### [Watsonx AI](providers/watsonxai.md)
+
+### [Watsonx AI](providers/watsonx-ai.md)
 
 - `default`: ibm/slate-125m-english-rtrvr
 - `large`: ibm/slate-125m-english-rtrvr
