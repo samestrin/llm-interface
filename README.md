@@ -23,6 +23,7 @@ LLM Interface supports: **AI21 Studio, AiLAYER, AIMLAPI, Anyscale, Anthropic, Cl
 ## Features
 
 - **Unified Interface**: `LLMInterface.sendMessage` is a single, consistent interface to interact with **36 different LLM APIs** (34 hosted LLM providers and 2 local LLM providers).
+- **Chat Completion, Streaming and Embeddings**: Supports [chat completion, streaming, and embeddings](docs/providers.md) (with failover).
 - **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
@@ -33,24 +34,14 @@ LLM Interface supports: **AI21 Studio, AiLAYER, AIMLAPI, Anyscale, Anthropic, Cl
 
 ## Updates
 
-**v2.0.10**
+**v2.0.11**
 
 - **New LLM Providers**: Anyscale, Bigmodel, Corcel, Deepseek, Hyperbee AI, Lamini, Neets AI, Novita AI, NVIDIA, Shuttle AI, TheB.AI, and Together AI.
 - **Caching**: Supports multiple caches: `simple-cache`, `flat-cache`, and `cache-manager`. _`flat-cache` is now an optional package._
 - **Logging**: Improved logging with the `loglevel`.
-- **Improved Documentation**: Improved [documentation](docs/index.md) with new examples, glossary, and provider details. Updated API key details, model alias breakdown, and usage information.
+- **Improved Documentation**: Improved [documentation](docs/README.md) with new examples, glossary, and provider details. Updated API key details, model alias breakdown, and usage information.
 - **More Examples**: [LangChain.js RAG](examples/langchain/rag.js), [Mixture-of-Authorities (MoA)](examples/moa/moa.js), and [more](docs/examples.md).
 - **Removed Dependency**: `@anthropic-ai/sdk` is no longer required.
-
-**v2.0.9**
-
-- **New LLM Providers**: Added support for AIML API (_currently not respecting option values_), DeepSeek, Forefront, Ollama, Replicate, and Writer.
-- **New LLMInterface Methods**: `LLMInterface.setApiKey`, `LLMInterface.sendMesage`, and `LLMInterface.streamMessage`.
-- **Streaming**: Streaming support available for: AI21 Studio, AIML API, DeepInfra, DeepSeek, Fireworks AI, FriendliAI, Groq, Hugging Face, LLaMa.CPP, Mistral AI, Monster API, NVIDIA,
-  Octo AI, Ollama, OpenAI, Perplexity, Together AI, and Writer.
-- **New Interface Function**: `LLMInterfaceStreamMessage`
-- **Test Coverage**: 100% test coverage for all interface classes.
-- **Examples**: New usage [examples](examples).
 
 ## Dependencies
 
@@ -80,7 +71,8 @@ npm install llm-interface
 - Looking for [API Keys](/docs/api-keys.md)? This document provides helpful links.
 - Detailed [usage](/docs/usage.md) documentation is available here.
 - Various [examples](/examples) are also available to help you get started.
-- A breakdown of [model aliaes](/docs/models.md) aliases is available here.
+- A breakdown of [model aliases](/docs/models.md) aliases is available here.
+- A breakdown of [embeddings model aliases](/docs/embeddings.md) aliases is available here.
 - If you still want more examples, you may wish to review the [test cases](/test/) for further examples.
 
 ## Usage

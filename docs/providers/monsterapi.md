@@ -1,4 +1,4 @@
-![Monster API](https://monsterapi.ai/images/monster_social_share.png)
+![Monster API](https://www.theinsaneapp.com/tools/wp-content/uploads/2023/06/Monster-API-Tool.jpg)
 
 # [Monster API](https://www.monsterapi.ai)
 

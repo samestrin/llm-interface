@@ -1,3 +1,5 @@
+![AiLAYER](https://ailayer.ai/assets/logo-d25870d4d7d638be1aeaa85fb0968f5e595a5eaa91d25e592afab96ed2820e21.svg)
+
 # [AiLAYER](https://www.ailayer.ai)
 
 AiLAYER offers a service to connect and manage distributed GPU clusters. This allows users to optimize their Ai infrastructure and eliminate waste. AiLAYER accomplishes this by connecting siloed GPU clusters into one large, manageable swarm. This can reduce costs and maximize existing GPU capacity.

@@ -1,3 +1,5 @@
+![Groq](https://cdn.prod.website-files.com/5da60b8bfc98fdf11111b791/667d84f156ec37bd39bba262_What%20is%20Groq%20AI%20and%20How%20to%20Use%20It.webp)
+
 # [Groq](https://www.groq.com)
 
 Groq is a company that develops hardware and software for accelerating artificial intelligence and machine learning workloads. They specialize in creating Tensor Streaming Processor (TSP) architecture, which is designed to optimize the performance and efficiency of AI computations. Groq's technology aims to deliver high performance and low latency for various applications, such as natural language processing, computer vision, and recommendation systems. The company's focus on hardware acceleration distinguishes them in the field of AI infrastructure providers.
