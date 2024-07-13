@@ -1,6 +1,6 @@
 # LLM Interface Documentation
 
-Welcome to the documentation for the LLM Interface package. This documentation provides comprehensive guides on how to set up, configure, and use the LLM Interface with various Language Model providers.
+Welcome to the documentation for the LLM Interface package. This documentation provides comprehensive guides on how to set up, configure, and use the LLM Interface with various Large Language Model providers.
 
 ## Table of Contents
 
