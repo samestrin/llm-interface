@@ -1,6 +1,6 @@
 ![Monster API](https://www.theinsaneapp.com/tools/wp-content/uploads/2023/06/Monster-API-Tool.jpg)
 
-# [Monster API](https://www.monsterapi.ai)
+# [Monster API](https://monsterapi.ai)
 
 Monster API is a platform that streamlines the deployment and fine-tuning of large language models (LLMs). Their product, MonsterGPT, simplifies the process by using a chat-based interface, eliminating the need for complex technical setup. With MonsterAPI, developers can quickly deploy and customize LLMs for various applications like code generation, sentiment analysis, and classification, without the hassle of managing infrastructure or intricate fine-tuning parameters. The platform aims to make LLM technology more accessible and efficient for a wider range of users.
 

@@ -1,6 +1,6 @@
 ![GooseAI](https://goose.ai/_next/static/media/twitter-card.ef9b825e.png)
 
-# [GooseAI](https://www.goose.ai)
+# [GooseAI](https://goose.ai)
 
 Goose AI offers a fully managed, cost-effective Natural Language Processing (NLP) as a Service platform delivered via API. This allows businesses to easily integrate AI-powered language capabilities into their products and services without needing to manage complex infrastructure. GooseAI claims to provide these services at a significantly lower cost compared to other providers, making it an attractive option for businesses looking to leverage AI while managing expenses.
 
@@ -83,7 +83,10 @@ To get an API key, first create a GooseAI account, then visit the link below.
 [GooseAI documentation](https://goose.ai/docs) is available [here](https://goose.ai/docs).
 
 
+## [GooseAI X](https://www.x.com/gooseai_NLP)
+
 ![@gooseai_NLP](https://pbs.twimg.com/profile_images/1798110641414443008/XP8gyBaY_normal.jpg)
+
 [@gooseai_NLP](https://www.x.com/gooseai_NLP)
 
-Anthropic
+

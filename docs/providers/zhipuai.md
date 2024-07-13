@@ -1,6 +1,6 @@
 ![Zhipu AI](https://pbs.twimg.com/card_img/1811406553502658563/mjTxJCNo?format=jpg&name=large)
 
-# [Zhipu AI](https://www.bigmodel.cn)
+# [Zhipu AI](https://bigmodel.cn)
 
 Zhipu AI is a Chinese technology company specializing in large language models and artificial intelligence. Their platform, accessible through open.bigmodel.cn, offers various AI models like ChatGLM and CodeGeeX, along with tools for developers and businesses. Zhipu AI is dedicated to advancing AI research and promoting its application across diverse industries, making AI technology more accessible and beneficial for everyone.
 

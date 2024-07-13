@@ -1,6 +1,6 @@
 ![Novita AI](https://samestrin.github.io/media/llm-interface/novitaai.png)
 
-# [Novita AI](https://www.novita.ai)
+# [Novita AI](https://novita.ai)
 
 Novita AI is a platform that provides a comprehensive suite of APIs for various artificial intelligence applications. It offers over 100 APIs, including image generation and editing with access to thousands of models, as well as training APIs for building custom models. Novita AI aims to simplify the process of integrating AI into various products and services, eliminating the need for expensive GPUs and complex infrastructure. It provides a cost-effective and user-friendly solution for developers and businesses to leverage AI capabilities for their specific needs.
 

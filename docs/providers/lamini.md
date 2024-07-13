@@ -1,6 +1,6 @@
 ![Lamini](https://cdn.prod.website-files.com/65f9ebe58e6225ebad55ef60/6605f028392ea0cba018fbff_Open%20Graph%20Image.png)
 
-# [Lamini](https://www.lamini.ai)
+# [Lamini](https://lamini.ai)
 
 Lamini is an enterprise-focused AI platform that enables businesses to build and deploy custom large language models (LLMs) with high accuracy and minimal hallucinations. Their platform offers tools like Memory Tuning, which ensures precise factual recall, and guaranteed JSON output for seamless integration with existing applications. Lamini models can be run in various environments, including on-premises and public clouds, with support for both NVIDIA and AMD GPUs. Their solutions cater to diverse industries, emphasizing data security and customization to meet specific business needs.
 

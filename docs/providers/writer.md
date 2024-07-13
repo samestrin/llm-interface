@@ -1,6 +1,6 @@
 ![Writer](https://writer.com/wp-content/uploads/2024/01/writer-share.png)
 
-# [Writer](https://www.writer.com)
+# [Writer](https://writer.com)
 
 Writer is a comprehensive AI platform designed for enterprises to harness the power of generative AI. It enables businesses to streamline workflows, enhance productivity, and maintain brand consistency across various applications. Writer's platform offers tools for content creation, analysis, and governance, ensuring high-quality output that aligns with company guidelines and standards. With features like custom AI app deployment, content generation, summarization, and data analysis, Writer empowers teams to unlock new levels of efficiency and innovation in their work.
 
@@ -73,7 +73,10 @@ The link above does not take you directly to the API key generation page, instea
 [Writer documentation](https://dev.writer.com/home/introduction) is available [here](https://dev.writer.com/home/introduction).
 
 
+## [Writer X](https://www.x.com/Get_Writer)
+
 ![@Get_Writer](https://pbs.twimg.com/profile_images/1798110641414443008/XP8gyBaY_normal.jpg)
+
 [@Get_Writer](https://www.x.com/Get_Writer)
 
-Anthropic
+

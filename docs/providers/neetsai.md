@@ -1,6 +1,6 @@
 ![Neets.ai](https://neets.ai/share.jpg)
 
-# [Neets.ai](https://www.neets.ai)
+# [Neets.ai](https://neets.ai)
 
 Neets.ai offers a cloud-based platform for text-to-speech (TTS) and conversational AI solutions. Their Text-to-Speech API allows developers to convert text into natural-sounding speech using a variety of voices and languages. Additionally, their Conversational AI API provides tools for building chatbots and virtual assistants capable of engaging in real-time conversations. Neets.ai leverages deep learning and natural language processing (NLP) techniques to deliver high-quality and customizable solutions for businesses and developers seeking to integrate voice and conversational capabilities into their applications and services.
 

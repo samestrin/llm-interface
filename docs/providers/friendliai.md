@@ -1,6 +1,6 @@
 ![FriendliAI](https://friendli.ai/opengraph-image.png)
 
-# [FriendliAI](https://www.friendli.ai)
+# [FriendliAI](https://friendli.ai)
 
 FriendliAI is a company focused on making generative AI accessible to all businesses. They provide efficient and scalable solutions for deploying and managing generative AI models, eliminating the complexities often associated with this technology. FriendliAI offers various products, such as Friendli Container, Friendli Dedicated Endpoints, and Friendli Serverless Endpoints, to cater to different needs and budgets. Their mission is to empower companies to innovate and achieve their goals through the effective use of generative AI.
 

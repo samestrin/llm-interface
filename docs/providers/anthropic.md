@@ -1,6 +1,6 @@
 ![Anthropic](https://cdn.sanity.io/images/4zrzovbb/website/4b8bc05b916dc4fbaf2543f76f946e5587aaeb43-2400x1260.png)
 
-# [Anthropic](https://www.anthropic.com)
+# [Anthropic](https://anthropic.com)
 
 Anthropic is an AI research and safety company focused on developing reliable, interpretable, and steerable AI systems. Founded by former members of OpenAI, Anthropic prioritizes the safe and ethical development of artificial intelligence. Their research focuses on understanding and mitigating potential risks associated with advanced AI systems. The company's flagship model, Claude, is designed for safety and is accessible through a user-friendly chat interface and an API.
 

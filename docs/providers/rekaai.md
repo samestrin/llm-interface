@@ -1,6 +1,6 @@
 ![Reka AI](http://static1.squarespace.com/static/66118bc053ae495c0021e80f/t/661d8ad31654cb7ecf49c127/1713212115473/reka+logo.jpg?format=1500w)
 
-# [Reka AI](https://www.reka.ai)
+# [Reka AI](https://reka.ai)
 
 Reka is an artificial intelligence (AI) startup focused on developing multimodal language models. Their team of researchers and engineers, with backgrounds from DeepMind, Google Brain, and FAIR, aims to build useful AI that empowers organizations and businesses. Reka's models are designed to process and generate text, images, and other forms of data, enabling a wide range of applications in areas such as content creation, customer service, and data analysis. They are committed to making AI accessible, offering both pre-trained models and tools for building custom solutions.
 

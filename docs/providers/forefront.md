@@ -1,6 +1,6 @@
 ![Forefront AI](https://assets.forefront.ai/og_image.png)
 
-# [Forefront AI](https://www.forefront.ai)
+# [Forefront AI](https://forefront.ai)
 
 Forefront AI offers a chat-based AI model named 'forefront/Mistral-7B-Instruct-v0.2-chatml' for various text generation tasks.
 

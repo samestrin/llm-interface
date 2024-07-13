@@ -1,6 +1,6 @@
 ![Corcel](https://corcel.io/opengraph-image.png?7dc7fa422d541b32)
 
-# [Corcel](https://www.corcel.io)
+# [Corcel](https://corcel.io)
 
 Corcel is a platform that leverages decentralized AI to offer a variety of tools and applications. It provides access to cutting-edge AI models for tasks like web searching, image generation from text prompts, and interacting with advanced language models. Corcel is powered by a range of both closed and open-source models, ensuring users have access to the latest AI capabilities. The platform boasts a user-friendly interface and is available for free.
 

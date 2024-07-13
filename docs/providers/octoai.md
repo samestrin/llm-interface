@@ -1,6 +1,6 @@
 ![OctoAI](https://www.datocms-assets.com/45680/1715637918-octoai-efficient-reliable-customizable-genai.png?auto=format)
 
-# OctoAI
+# [OctoAI](https://octo.ai)
 
 OctoAI, originating from the University of Washington, specializes in creating efficient, reliable, and customizable AI systems. The company builds on GenAI optimization and offers a broad range of hardware options or integrates into existing environments. OctoAI's roots trace back to the creators of Apache TVM, a technology enabling ML models to run efficiently on any hardware. Their mission is to harness the value of AI innovations, supported by significant funding and a global team.
 

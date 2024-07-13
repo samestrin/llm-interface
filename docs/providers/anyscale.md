@@ -1,6 +1,6 @@
 ![Anyscale](https://images.ctfassets.net/xjan103pcp94/cpKmR4XdiqNwmVIPyso3s/420926d0c276ff5e80faae17200f2acb/Webinar-Anyscale_logo.png)
 
-# [Anyscale](https://www.anyscale.com)
+# [Anyscale](https://anyscale.com)
 
 Anyscale is a leading AI platform that enables developers and AI teams to build, deploy, and scale AI applications with unmatched efficiency. Built on the Ray open-source framework, Anyscale offers a fully managed platform with capabilities like orchestration, experiment management, and hyperparameter tuning. Anyscale is used by thousands of organizations to accelerate their AI development, providing a seamless experience from laptop to production across diverse AI workloads.
 

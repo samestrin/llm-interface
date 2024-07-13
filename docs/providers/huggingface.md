@@ -1,6 +1,6 @@
 ![Hugging Face Inference](https://huggingface.co/front/thumbnails/v2-2.png)
 
-# [Hugging Face Inference](https://www.huggingface.co)
+# [Hugging Face Inference](https://huggingface.co)
 
 Hugging Face offers a serverless Inference API, allowing users to easily test and evaluate various machine learning models, including both publicly available and private ones. With simple HTTP requests, users can access over 150,000 models hosted on Hugging Face's shared infrastructure. The API covers a wide range of tasks in natural language processing, audio, and vision, making it a versatile tool for developers and researchers. While free to use, the Inference API is rate limited, with options for higher request rates and dedicated endpoints for production-level workloads.
 
@@ -62,7 +62,7 @@ The following parameters can be passed through `options`.
 
 ## Getting an API Key
 
-Free Tier Available (Rate Limited): The Inference API is free to use, but may be rate limited for heavy usage. Sending requests gradually is recommended to avoid errors.
+**Free Tier Available (Rate Limited)**: The Inference API is free to use, but may be rate limited for heavy usage. Sending requests gradually is recommended to avoid errors.
 
 To get an API key, first create a Hugging Face Inference account, then visit the link below.
 
@@ -74,7 +74,10 @@ To get an API key, first create a Hugging Face Inference account, then visit the
 [Hugging Face Inference documentation](https://huggingface.co/docs/api-inference/index) is available [here](https://huggingface.co/docs/api-inference/index).
 
 
+## [Hugging Face Inference X](https://www.x.com/huggingface)
+
 ![@huggingface](https://pbs.twimg.com/profile_images/1798110641414443008/XP8gyBaY_normal.jpg)
+
 [@huggingface](https://www.x.com/huggingface)
 
-Anthropic
+

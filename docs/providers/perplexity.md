@@ -1,6 +1,4 @@
-![Perplexity AI](https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png)
-
-# [Perplexity AI](https://www.perplexity.ai)
+# Perplexity AI
 
 Perplexity AI is a cutting-edge answer engine that utilizes large language models (LLMs) to provide accurate and informative responses to user inquiries. By leveraging the power of AI, Perplexity AI aims to enhance the search experience by delivering concise answers along with relevant sources, saving users time and effort. Additionally, Perplexity AI offers features like summarizing information from web pages and generating creative content, making it a versatile tool for research, learning, and exploring new ideas.
 
@@ -70,9 +68,3 @@ To get an API key, first create a Perplexity AI account, then visit the link bel
 ## [Perplexity AI Documentation](https://docs.perplexity.ai/)
 
 [Perplexity AI documentation](https://docs.perplexity.ai/) is available [here](https://docs.perplexity.ai/).
-
-
-![@perplexity_ai](https://pbs.twimg.com/profile_images/1798110641414443008/XP8gyBaY_normal.jpg)
-[@perplexity_ai](https://www.x.com/perplexity_ai)
-
-Anthropic

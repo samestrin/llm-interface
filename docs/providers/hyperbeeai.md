@@ -1,6 +1,6 @@
 ![HyperBee AI](https://samestrin.github.io/media/llm-interface/hyperbee.ai.1024x641.png)
 
-# [HyperBee AI](https://www.hyperbee.ai)
+# [HyperBee AI](https://hyperbee.ai)
 
 HyperBeeAI is an artificial intelligence (AI) company that develops small-footprint language models (LLMs) designed for on-premises deployment. Their technology aims to reduce computing costs and enhance data privacy for businesses by enabling the use of powerful AI capabilities locally. HyperBeeAI's platform includes a proprietary framework for training and deploying customized LLMs, addressing the growing demand for efficient and secure AI solutions in various industries.
 

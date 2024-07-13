@@ -1,6 +1,6 @@
 ![AIMLAPI](https://cdn.prod.website-files.com/65b8f36fa600366bc7cf9a67/65e055f2cce5ca962f833d3f_Group%201000007684.png)
 
-# [AIMLAPI](https://www.aimlapi.com)
+# [AIMLAPI](https://aimlapi.com)
 
 AIMLAPI.com is a versatile platform that provides developers with streamlined access to over 200 AI models through a single API. It simplifies the integration of AI capabilities into applications, offering a diverse range of models from industry leaders like OpenAI, Anthropic, and Stability AI. With a focus on quality, stability, and affordability, AIMLAPI.com caters to developers seeking efficient AI solutions for their projects.
 

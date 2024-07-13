@@ -1,6 +1,6 @@
 ![Watsonx AI](https://samestrin.github.io/media/llm-interface/watsonx.ai.1600x900.png)
 
-# Watsonx AI
+# [Watsonx AI](https://ibm.com)
 
 IBM watsonx is an AI and data platform designed to help businesses scale and accelerate the impact of AI with trusted data. It's comprised of three components: watsonx.ai, a studio for building and deploying AI models; watsonx.data, a data store built on an open lakehouse architecture; and watsonx.governance, a toolkit to enable AI workflows to be built with responsible and trustworthy principles. Additionally, the platform offers a range of AI assistants tailored for specific business functions.  IBM watsonx is designed to be open, using open-source technologies and offering a choice of models, targeted to address specific enterprise needs, and trusted, ensuring data governance and responsible AI practices.
 

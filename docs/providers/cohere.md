@@ -1,6 +1,6 @@
 ![Cohere](https://cdn.sanity.io/images/rjtqmwfu/production/5a374837aab376bb677b3a968c337532ea16f6cb-800x600.png?rect=0,90,800,420&w=1200&h=630)
 
-# [Cohere](https://www.cohere.ai)
+# [Cohere](https://cohere.ai)
 
 **Trial Keys Available**: Cohere is an AI company specializing in large language models (LLMs) designed for enterprise use. They offer a platform that allows developers to leverage pre-built models or create custom models tailored to specific business needs. Cohere's technology empowers businesses to integrate natural language processing capabilities into their applications, streamlining tasks such as text generation, analysis, and understanding. Their focus on enterprise solutions sets them apart, providing secure and customizable AI tools to improve efficiency and productivity across various industries.
 
@@ -78,7 +78,7 @@ The following parameters can be passed through `options`.
 
 ## Getting an API Key
 
-The Cohere API offers trial keys with rate limits. These keys are not intended for commercial use.
+**Commercial with Free Trial**:The Cohere API offers trial keys with rate limits. These keys are not intended for commercial use.
 
 To get an API key, first create a Cohere account, then visit the link below.
 

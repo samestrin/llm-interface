@@ -1,6 +1,6 @@
 ![NVIDIA AI](https://build.nvidia.com/opengraph-image.jpg?6ec102a0470b935b)
 
-# [NVIDIA AI](https://www.nvidia.com)
+# [NVIDIA AI](https://nvidia.com)
 
 NVIDIA NIM is a set of inference microservices designed to accelerate the deployment of large language models (LLMs). Part of NVIDIA AI Enterprise, NIM provides models as optimized containers, enabling developers to easily deploy them on various platforms like clouds, data centers, or workstations. This streamlines the process of building generative AI applications like copilots, chatbots, and more. Additionally, NIM helps enterprises maximize their infrastructure investments by boosting efficiency and allowing for more responses from the same amount of compute resources.
 

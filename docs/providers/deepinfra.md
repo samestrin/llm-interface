@@ -1,6 +1,6 @@
 ![DeepInfra](https://deepinfra.com/deepinfra-logo-512.webp)
 
-# [DeepInfra](https://www.deepinfra.com)
+# [DeepInfra](https://deepinfra.com)
 
 DeepInfra is a platform that allows users to deploy machine learning models. They offer a variety of models, including text-generation, text-to-image, and automatic speech recognition. Users can pay per use for the models they deploy. DeepInfra offers both custom models and pre-trained models. Pre-trained models include openchat/openchat-3.6-8b, nvidia/Nemotron-4-340B-Instruct, and microsoft/WizardLM-2-7B.
 
@@ -84,7 +84,10 @@ To get an API key, first create a DeepInfra account, then visit the link below.
 [DeepInfra documentation](https://deepinfra.com/docs/) is available [here](https://deepinfra.com/docs/).
 
 
+## [DeepInfra X](https://www.x.com/DeepInfra)
+
 ![@DeepInfra](https://pbs.twimg.com/profile_images/1798110641414443008/XP8gyBaY_normal.jpg)
+
 [@DeepInfra](https://www.x.com/DeepInfra)
 
-Anthropic
+

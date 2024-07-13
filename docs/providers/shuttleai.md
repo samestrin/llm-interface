@@ -1,6 +1,6 @@
 ![Shuttle AI](https://samestrin.github.io/media/llm-interface/shuttleai.app.1600x900.png)
 
-# Shuttle AI
+# [Shuttle AI](https://shuttleai.app)
 
 ShuttleAI provides a platform for developers to easily integrate AI capabilities into their applications. They offer a powerful API for tasks like text completion, image generation, and chat interactions, with a variety of models to choose from, including their own Shuttle models. ShuttleAI aims to make AI accessible and affordable for developers, providing an interactive chat interface and documentation to streamline the development process.
 
