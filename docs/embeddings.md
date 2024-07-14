@@ -4,23 +4,23 @@
 
 1. [Embeddings Model Aliases](#embeddings-model-aliases)
 2. [Embeddings Alias Values](#embeddings-alias-values)
-    - [AI21 Studio](#ai21-studio)
+    - [AI21 Studio](#ai21)
     - [AIMLAPI](#aimlapi)
     - [Anyscale](#anyscale)
-    - [Cloudflare AI](#cloudflare-ai)
+    - [Cloudflare AI](#cloudflareai)
     - [Cohere](#cohere)
     - [DeepInfra](#deepinfra)
-    - [Fireworks AI](#fireworks-ai)
-    - [Google Gemini](#google-gemini)
-    - [Hugging Face Inference](#hugging-face-inference)
+    - [Fireworks AI](#fireworksai)
+    - [Google Gemini](#gemini)
+    - [Hugging Face Inference](#huggingface)
     - [Lamini](#lamini)
-    - [LLaMA.CPP](#llama.cpp)
-    - [Mistral AI](#mistral-ai)
+    - [LLaMA.CPP](#llamacpp)
+    - [Mistral AI](#mistralai)
     - [Ollama](#ollama)
     - [OpenAI](#openai)
-    - [Together AI](#together-ai)
-    - [Voyage AI](#voyage-ai)
-    - [Watsonx AI](#watsonx-ai)
+    - [Together AI](#togetherai)
+    - [Voyage AI](#voyage)
+    - [Watsonx AI](#watsonxai)
 
 ## Embeddings Model Aliases
 
@@ -49,7 +49,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 
 
-### [AI21 Studio](providers/ai21-studio.md)
+### [AI21 Studio](providers/ai21.md)
 
 ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)
 
@@ -80,7 +80,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 
-### [Cloudflare AI](providers/cloudflare-ai.md)
+### [Cloudflare AI](providers/cloudflareai.md)
 
 ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png)
 
@@ -113,7 +113,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 
-### [Fireworks AI](providers/fireworks-ai.md)
+### [Fireworks AI](providers/fireworksai.md)
 
 
 
@@ -124,7 +124,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 
-### [Google Gemini](providers/google-gemini.md)
+### [Google Gemini](providers/gemini.md)
 
 
 
@@ -135,7 +135,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 
-### [Hugging Face Inference](providers/hugging-face inference.md)
+### [Hugging Face Inference](providers/huggingface.md)
 
 
 
@@ -157,7 +157,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 
-### [LLaMA.CPP](providers/llama.cpp.md)
+### [LLaMA.CPP](providers/llamacpp.md)
 
 
 
@@ -168,7 +168,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 
-### [Mistral AI](providers/mistral-ai.md)
+### [Mistral AI](providers/mistralai.md)
 
 ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)
 
@@ -201,7 +201,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 
-### [Together AI](providers/together-ai.md)
+### [Together AI](providers/togetherai.md)
 
 ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)
 
@@ -212,7 +212,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 
-### [Voyage AI](providers/voyage-ai.md)
+### [Voyage AI](providers/voyage.md)
 
 
 
@@ -223,7 +223,7 @@ LLMInterface.setEmeddingsModelAlias("openai", "default", "text-embedding-3-large
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 
-### [Watsonx AI](providers/watsonx-ai.md)
+### [Watsonx AI](providers/watsonxai.md)
 
 
 
