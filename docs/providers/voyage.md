@@ -15,18 +15,18 @@ const { LLMInterface } = require('llm-interface');
 
 LLMInterface.setApiKey({'voyage': process.env.VOYAGE_API_KEY});
 
-    async function main() {
-      try {
-        const response = await LLMInterface.embeddings('voyage', 'Explain the importance of low latency LLMs.');
-        console.log(response.results);
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    }
-    
-    main();
-    ```
+async function main() {
+  try {
+    const response = await LLMInterface.embeddings('voyage', 'Explain the importance of low latency LLMs.');
+    console.log(response.results);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+main();
+```
 
 ### Model Aliases
 
