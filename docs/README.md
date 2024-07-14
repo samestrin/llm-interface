@@ -57,7 +57,7 @@ To interact with different LLM providers, you will need API keys. Refer to [API 
 
 The [Usage](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md) section contains detailed documentation on how to use the LLM Interface npm module. This includes:
 
-### [LLMInterface](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#llminterface)
+### LLMInterface
 
 #### [getAllModelNames()](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#getallmodelnames)
 
