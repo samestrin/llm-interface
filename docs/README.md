@@ -55,83 +55,83 @@ To interact with different LLM providers, you will need API keys. Refer to [API 
 
 ## Usage
 
-The [Usage](usage.md) section contains detailed documentation on how to use the LLM Interface npm module. This includes:
+The [Usage](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md) section contains detailed documentation on how to use the LLM Interface npm module. This includes:
 
-### LLMInterface
+### [LLMInterface](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#llminterface)
 
-#### [getAllModelNames()](usage.md#getallmodelnames)
+#### [getAllModelNames()](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#getallmodelnames)
 
-#### [getEmbeddingsModelAlias(interfaceName, alias)](usage.md#getembeddingsmodelaliasinterfacename-alias)
+#### [getEmbeddingsModelAlias(interfaceName, alias)](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#getembeddingsmodelaliasinterfacename-alias)
 
-#### [getInterfaceConfigValue(interfaceName, key)](usage.md#getinterfaceconfigvalueinterfacename-key)
+#### [getInterfaceConfigValue(interfaceName, key)](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#getinterfaceconfigvalueinterfacename-key)
 
-#### [getModelAlias(interfaceName, alias)](usage.md#getmodelaliasinterfacename-alias)
+#### [getModelAlias(interfaceName, alias)](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#getmodelaliasinterfacename-alias)
 
-#### [setApiKey(interfaceNames, apiKey)](usage.md#setapikeyinterfacenames-apikey)
+#### [setApiKey(interfaceNames, apiKey)](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#setapikeyinterfacenames-apikey)
 
-#### [setEmbeddingsModelAlias(interfaceName, alias, name)](usage.md#setembeddingsmodelaliasinterfacename-alias-name)
+#### [setEmbeddingsModelAlias(interfaceName, alias, name)](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#setembeddingsmodelaliasinterfacename-alias-name)
 
-#### [setModelAlias(interfaceName, alias, name)](usage.md#setmodelaliasinterfacename-alias-name)
+#### [setModelAlias(interfaceName, alias, name)](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#setmodelaliasinterfacename-alias-name)
 
-#### [configureCache(cacheConfig = {})](usage.md#configurecachecacheconfig--)
+#### [configureCache(cacheConfig = {})](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#configurecachecacheconfig--)
 
-#### [flushCache()](usage.md#flushcache)
+#### [flushCache()](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#flushcache)
 
-#### [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](usage.md#sendmessageinterfacename-message-options--interfaceoptions--)
+#### [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#sendmessageinterfacename-message-options--interfaceoptions--)
 
-#### [streamMessage(interfaceName, message, options = {})](usage.md#streammessageinterfacename-message-options--)
+#### [streamMessage(interfaceName, message, options = {})](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#streammessageinterfacename-message-options--)
 
-#### [embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})](usage.md#embeddingsinterfacename-embeddingstring-options--interfaceoptions--)
+#### [embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#embeddingsinterfacename-embeddingstring-options--interfaceoptions--)
 
-#### [chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})](usage.md#chatcompletionscreateinterfacename-message-options--interfaceoptions--)
+#### [chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#chatcompletionscreateinterfacename-message-options--interfaceoptions--)
 
 ### LLMInterfaceSendMessage
 
-#### [LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})](usage.md#llminterfacesendmessageinterfacename-apikey-message-options--interfaceoptions--)
+#### [LLMInterfaceSendMessage(interfaceName, apiKey, message, options = {}, interfaceOptions = {})](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#llminterfacesendmessageinterfacename-apikey-message-options--interfaceoptions--)
 
 _This is a legacy function and will be depreciated._
 
 ### LLMInterfaceStreamMessage
 
-#### [LLMInterfaceStreamMessage(interfaceName, apiKey, message, options = {})](usage.md#llminterfacestreammessageinterfacename-apikey-message-options--)
+#### [LLMInterfaceStreamMessage(interfaceName, apiKey, message, options = {})](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#llminterfacestreammessageinterfacename-apikey-message-options--)
 
 _This is a legacy function and will be depreciated._
 
 ### Message Object
 
-#### [Structure of a Message Object](usage.md#structure-of-a-message-object)
+#### [Structure of a Message Object](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#structure-of-a-message-object)
 
 ### Options Object
 
-#### [Structure of an Options Object](usage.md#structure-of-an-options-object)
+#### [Structure of an Options Object](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#structure-of-an-options-object)
 
 ### Interface Options Object
 
-#### [Structure of an Interface Options Object](usage.md#structure-of-an-interface-options-object)
+#### [Structure of an Interface Options Object](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#structure-of-an-interface-options-object)
 
 ### Caching
 
-#### [Simple Cache](usage.md#simple-cache)
+#### [Simple Cache](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#simple-cache)
 
-- [Example Usage](usage.md#example-usage-1)
+- [Example Usage](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#example-usage-1)
 
-#### [Flat Cache](usage.md#flat-cache)
+#### [Flat Cache](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#flat-cache)
 
-- [Installation](usage.md#installation-1)
-- [Example Usage](usage.md#example-usage-2)
+- [Installation](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#installation-1)
+- [Example Usage](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#example-usage-2)
 
-#### [Cache Manager](usage.md#cache-manager)
+#### [Cache Manager](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#cache-manager)
 
-- [Installation](usage.md#installation-2)
-- [Example Usage](usage.md#example-usage-3)
-- [Advanced Backends](usage.md#advanced-backends)
-  - [Redis](usage.md#redis)
-  - [Memcached](usage.md#memcached)
-  - [MongoDB](usage.md#mongodb)
+- [Installation](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#installation-2)
+- [Example Usage](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#example-usage-3)
+- [Advanced Backends](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#advanced-backends)
+  - [Redis](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#redis)
+  - [Memcached](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#memcached)
+  - [MongoDB](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#mongodb)
 
-#### [Memory Cache](usage.md#memory-cache)
+#### [Memory Cache](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#memory-cache)
 
-- [Example Usage](usage.md#example-usage-4)
+- [Example Usage](https://www.github.com/samestrin/llm-interface/blob/docs/docs/usage.md#example-usage-4)
 
 ## Supported Providers
 
