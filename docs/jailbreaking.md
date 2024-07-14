@@ -3,6 +3,7 @@
 While you can't jailbreak all AI models, this [handy guide](https://docs.shuttleai.app/guides/jailbreaking) from Shuttle AI provided the following useful message object designed to jailbreak Google Gemini:
 
 ## Google Gemini Jailbreak
+
 ```javascript
 {
     "role": "system",

@@ -1,19 +1,17 @@
-# Examples
+# Examples<!-- omit from toc -->
 
-## Table of Contents
+## Table of Contents<!-- omit from toc -->
 
-- [Examples](#examples)
-  - [Table of Contents](#table-of-contents)
-  - [Using LLMInterface](#using-llminterface)
-    - [Basic Usage](#basic-usage)
-    - [Embeddings](#embeddings)
-    - [Caching](#caching)
-    - [Interface Options](#interface-options)
-    - [JSON](#json)
-  - [What Can You Do with LLMInterface?](#what-can-you-do-with-llminterface)
-    - [Retrieval-Augmented Generation (RAG) using Langchain.js](#retrieval-augmented-generation-rag-using-langchainjs)
-    - [Mixture of Agents (MoA)](#mixture-of-agents-moa)
-    - [Miscellaneous](#miscellaneous)
+- [Using LLMInterface](#using-llminterface)
+  - [Basic Usage](#basic-usage)
+  - [Embeddings](#embeddings)
+  - [Caching](#caching)
+  - [Interface Options](#interface-options)
+  - [JSON](#json)
+- [What Can You Do with LLMInterface?](#what-can-you-do-with-llminterface)
+  - [Retrieval-Augmented Generation (RAG) using Langchain.js](#retrieval-augmented-generation-rag-using-langchainjs)
+  - [Mixture of Agents (MoA)](#mixture-of-agents-moa)
+  - [Miscellaneous](#miscellaneous)
 
 ## Using LLMInterface
 
