@@ -1,6 +1,6 @@
 ![Google Gemini](https://ai.google.dev/static/site-assets/images/share.png)
 
-# Google Gemini
+# [Google Gemini](https://google.dev)
 
 Google Gemini is a family of multimodal AI models developed by Google. It is designed to process and generate various forms of content, including text, images, and potentially audio and video. Gemini is considered one of Google's most capable and general models, with potential applications ranging from chatbots and virtual assistants to creative tools and search enhancements. Notably, Gemini excels in coding tasks, ranking among the leading foundation models for code generation. The models are being integrated into various Google products and services, aiming to enhance user experiences across platforms and applications.
 
@@ -49,9 +49,9 @@ The following model aliases are provided for this provider.
 The following parameters can be passed through `options`.
 
 - `candidateCount`: _Details not available, please refer to the LLM provider documentation._
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
 - `stopSequences`: _Details not available, please refer to the LLM provider documentation._
-- `temperature`: _Details not available, please refer to the LLM provider documentation._
+- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
 - `topK`: _Details not available, please refer to the LLM provider documentation._
 - `topP`: _Details not available, please refer to the LLM provider documentation._
 

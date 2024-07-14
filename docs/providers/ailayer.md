@@ -1,6 +1,6 @@
 ![AiLAYER](https://ailayer.ai/assets/logo-d25870d4d7d638be1aeaa85fb0968f5e595a5eaa91d25e592afab96ed2820e21.svg)
 
-# [AiLAYER](https://www.ailayer.ai)
+# [AiLAYER](https://ailayer.ai)
 
 AiLAYER offers a service to connect and manage distributed GPU clusters. This allows users to optimize their Ai infrastructure and eliminate waste. AiLAYER accomplishes this by connecting siloed GPU clusters into one large, manageable swarm. This can reduce costs and maximize existing GPU capacity.
 
@@ -42,8 +42,8 @@ The following model aliases are provided for this provider.
 
 The following parameters can be passed through `options`.
 
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
-- `temperature`: _Details not available, please refer to the LLM provider documentation._
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
 
 
 ## Getting an API Key

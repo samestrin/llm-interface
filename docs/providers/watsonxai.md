@@ -1,6 +1,6 @@
 ![Watsonx AI](https://samestrin.github.io/media/llm-interface/watsonx.ai.1600x900.png)
 
-# Watsonx AI
+# [Watsonx AI](https://ibm.com)
 
 IBM watsonx is an AI and data platform designed to help businesses scale and accelerate the impact of AI with trusted data. It's comprised of three components: watsonx.ai, a studio for building and deploying AI models; watsonx.data, a data store built on an open lakehouse architecture; and watsonx.governance, a toolkit to enable AI workflows to be built with responsible and trustworthy principles. Additionally, the platform offers a range of AI assistants tailored for specific business functions.  IBM watsonx is designed to be open, using open-source technologies and offering a choice of models, targeted to address specific enterprise needs, and trusted, ensuring data governance and responsible AI practices.
 
@@ -48,12 +48,12 @@ The following model aliases are provided for this provider.
 
 The following parameters can be passed through `options`.
 
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
 - `random_seed`: _Details not available, please refer to the LLM provider documentation._
 - `repeat_penalty`: _Details not available, please refer to the LLM provider documentation._
-- `temperature`: _Details not available, please refer to the LLM provider documentation._
-- `top_k`: _Details not available, please refer to the LLM provider documentation._
-- `top_p`: _Details not available, please refer to the LLM provider documentation._
+- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
+- `top_k`: The number of highest probability vocabulary tokens to keep for top-k sampling.
+- `top_p`: Controls the cumulative probability of token selections for nucleus sampling. It limits the tokens to the smallest set whose cumulative probability exceeds the threshold. It is recommended to alter this or temperature, but not both.
 
 
 ## Features

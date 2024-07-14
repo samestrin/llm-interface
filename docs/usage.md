@@ -1,12 +1,12 @@
-# LLM Interface Usage Documentation
+# LLM Interface Usage Documentation<!-- omit from toc -->
 
-## Table of Contents
+## Table of Contents<!-- omit from toc -->
 
 - [LLMInterface](#llminterface)
   - [getAllModelNames()](#getallmodelnames)
   - [getEmbeddingsModelAlias(interfaceName, alias)](#getembeddingsmodelaliasinterfacename-alias)
-  - [getInterfaceConfigValue(interfaceName, key)](#getInterfaceConfigValueinterfacename-key)
-  - [getModelByAlias(interfaceName, alias)](#getmodelbyaliasinterfacename-alias)
+  - [getInterfaceConfigValue(interfaceName, key)](#getinterfaceconfigvalueinterfacename-key)
+  - [getModelAlias(interfaceName, alias)](#getmodelaliasinterfacename-alias)
   - [setApiKey(interfaceNames, apiKey)](#setapikeyinterfacenames-apikey)
   - [setEmbeddingsModelAlias(interfaceName, alias, name)](#setembeddingsmodelaliasinterfacename-alias-name)
   - [setModelAlias(interfaceName, alias, name)](#setmodelaliasinterfacename-alias-name)
@@ -14,7 +14,7 @@
   - [flushCache()](#flushcache)
   - [sendMessage(interfaceName, message, options = {}, interfaceOptions = {})](#sendmessageinterfacename-message-options---interfaceoptions--)
   - [streamMessage(interfaceName, message, options = {})](#streammessageinterfacename-message-options--)
-  - [embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})](#embeddingsinterfacename-embeddingstring-options---interfaceoptions--)
+  - [embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {}, defaultProvider = 'voyage')](#embeddingsinterfacename-embeddingstring-options---interfaceoptions---defaultprovider--voyage)
   - [chat.completions.create(interfaceName, message, options = {}, interfaceOptions = {})](#chatcompletionscreateinterfacename-message-options---interfaceoptions--)
   - [Supported Interface Names](#supported-interface-names)
 - [LLMInterfaceSendMessage](#llminterfacesendmessage)
@@ -28,25 +28,23 @@
 - [Interface Options Object](#interface-options-object)
   - [Structure of an Interface Options Object](#structure-of-an-interface-options-object)
 - [Caching](#caching)
+  - [Cache Initialization](#cache-initialization)
   - [Simple Cache](#simple-cache)
-    - [Example Usage](#example-usage-1)
+    - [Example Initialization (Optional)](#example-initialization-optional)
   - [Flat Cache](#flat-cache)
-    - [Installation](#installation-1)
-    - [Example Usage](#example-usage-2)
+    - [Installation](#installation)
+    - [Example Initialization](#example-initialization)
   - [Cache Manager](#cache-manager)
-    - [Installation](#installation-2)
-    - [Example Usage](#example-usage-3)
+    - [Installation](#installation-1)
+    - [Example Initialization](#example-initialization-1)
     - [Advanced Backends](#advanced-backends)
-      - [Redis](#redis)
-      - [Memcached](#memcached)
-      - [MongoDB](#mongodb)
   - [Memory Cache](#memory-cache)
-    - [Example Usage](#example-usage-4)
-- [Examples](#examples)
+    - [Example Initialization](#example-initialization-2)
+  - [Using the Cache](#using-the-cache)
 
 ## LLMInterface
 
-To use the `LLMInterface.*` functions, first import `LLMInterface`. You can do this using either the CommonJS `require` syntax:
+To use the `LLMInterface.*` functions, first import `llm-interface`. You can do this using either the CommonJS `require` syntax:
 
 ```javascript
 const { LLMInterface } = require('llm-interface');
@@ -72,7 +70,7 @@ console.log(modelNames);
 Retrieves an embeddings model name for a specific interfaceName alias.
 
 ```javascript
-const model = LLMInterface.getEmbeddingsModelAlias('openai','default');
+const model = LLMInterface.getEmbeddingsModelAlias('openai', 'default');
 console.log(model);
 ```
 
@@ -93,7 +91,7 @@ console.log(apiKey);
 Retrieves a model name for a specific interfaceName alias.
 
 ```javascript
-const model = LLMInterface.getModelAlias('openai','default');
+const model = LLMInterface.getModelAlias('openai', 'default');
 console.log(model);
 ```
 
@@ -119,7 +117,11 @@ Sets an alias for a model within a specific interface.
 - `name` (String): The model name.
 
 ```javascript
-LLMInterface.setEmbeddingsModelAlias('openai', 'default', 'text-embedding-3-large');
+LLMInterface.setEmbeddingsModelAlias(
+  'openai',
+  'default',
+  'text-embedding-3-large',
+);
 ```
 
 ### setModelAlias(interfaceName, alias, name)
@@ -158,7 +160,7 @@ Sends a message to a specified interface and returns the response. _The specifie
 
 - `interfaceName` (String|Array): The name of the LLM interface or an array containing the name of the LLM interface and the API key.
 - `message` (String|Object): The message to send.
-- `options` (Object|number, optional): Additional options for the embedding generation. If a number, it represents the cache timeout in seconds.
+- `options` (Object|number, optional): Model specific options or parameters. If a number, it represents the cache timeout in seconds.
 - `interfaceOptions` (Object, optional): Interface-specific options.
 
 ```javascript
@@ -190,7 +192,7 @@ Streams a message to a specified interface and returns the response stream. _You
 
 - `interfaceName` (String): The name of the LLM interface.
 - `message` (String|Object): The message to send.
-- `options` (Object|number, optional): Additional options for the embedding generation. If a number, it represents the cache timeout in seconds.
+- `options` (Object|number, optional): Model specific options or parameters. If a number, it represents the cache timeout in seconds.
 
 ```javascript
 try {
@@ -205,13 +207,13 @@ try {
 
 _processStream(stream) is not part of LLMInterface. It is defined in the[streaming mode example](/examples/misc/streaming-mode.js)._
 
-### embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {})
+### embeddings(interfaceName, embeddingString, options = {}, interfaceOptions = {}, defaultProvider = 'voyage')
 
 Generates embeddings using a specified LLM interface.
 
 - `interfaceName` (String): The name of the LLM interface to use.
 - `embeddingString` (String): The string to generate embeddings for.
-- `options` (Object|number, optional): Additional options for the embedding generation. If a number, it represents the cache timeout in seconds.
+- `options` (Object|number, optional): Model specific options or parameters. If a number, it represents the cache timeout in seconds.
 - `interfaceOptions` (Object, optional): Options specific to the LLM interface.
 - `defaultProvider` (String, optional): The default provider to use if the specified interface doesn't support embeddings. Defaults to 'voyage'.
 
@@ -243,46 +245,46 @@ console.log(response.results);
 
 The following are the interfaceNames for each supported LLM provider (in alphabetical order):
 
-|  | Interface Name | Provider Name | [.sendMessage](#sendmessageinterfacename-message-options---interfaceoptions--) | [.embeddings](#embeddinginterfacename-embeddingstring-options---interfaceoptions--)
-| --- | --- | --- | --- | --- |
-| ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png) | `ai21` | [AI21 Studio](providers/ai21.md) | &check; | &check; |
-|  | `ailayer` | [AiLAYER](providers/ailayer.md) | &check; |   |
-| ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png) | `aimlapi` | [AIMLAPI](providers/aimlapi.md) | &check; | &check; |
-| ![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png) | `anthropic` | [Anthropic](providers/anthropic.md) | &check; |   |
-| ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png) | `anyscale` | [Anyscale](providers/anyscale.md) | &check; | &check; |
-| ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png) | `cloudflareai` | [Cloudflare AI](providers/cloudflareai.md) | &check; | &check; |
-| ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png) | `cohere` | [Cohere](providers/cohere.md) | &check; | &check; |
-| ![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png) | `corcel` | [Corcel](providers/corcel.md) | &check; |   |
-| ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png) | `deepinfra` | [DeepInfra](providers/deepinfra.md) | &check; | &check; |
-| ![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png) | `deepseek` | [DeepSeek](providers/deepseek.md) | &check; |   |
-|  | `fireworksai` | [Fireworks AI](providers/fireworksai.md) | &check; | &check; |
-| ![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png) | `forefront` | [Forefront AI](providers/forefront.md) | &check; |   |
-|  | `friendliai` | [FriendliAI](providers/friendliai.md) | &check; |   |
-|  | `gemini` | [Google Gemini](providers/gemini.md) | &check; | &check; |
-| ![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png) | `gooseai` | [GooseAI](providers/gooseai.md) | &check; |   |
-|  | `groq` | [Groq](providers/groq.md) | &check; |   |
-|  | `huggingface` | [Hugging Face Inference](providers/huggingface.md) | &check; | &check; |
-|  | `hyperbeeai` | [HyperBee AI](providers/hyperbeeai.md) | &check; |   |
-| ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png) | `lamini` | [Lamini](providers/lamini.md) | &check; | &check; |
-|  | `llamacpp` | [LLaMA.CPP](providers/llamacpp.md) | &check; | &check; |
-| ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png) | `mistralai` | [Mistral AI](providers/mistralai.md) | &check; | &check; |
-| ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png) | `monsterapi` | [Monster API](providers/monsterapi.md) | &check; |   |
-| ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png) | `neetsai` | [Neets.ai](providers/neetsai.md) | &check; |   |
-|  | `novitaai` | [Novita AI](providers/novitaai.md) | &check; |   |
-|  | `nvidia` | [NVIDIA AI](providers/nvidia.md) | &check; |   |
-|  | `octoai` | [OctoAI](providers/octoai.md) | &check; |   |
-|  | `ollama` | [Ollama](providers/ollama.md) | &check; | &check; |
-|  | `openai` | [OpenAI](providers/openai.md) | &check; | &check; |
-| ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png) | `perplexity` | [Perplexity AI](providers/perplexity.md) | &check; |   |
-| ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png) | `rekaai` | [Reka AI](providers/rekaai.md) | &check; |   |
-| ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png) | `replicate` | [Replicate](providers/replicate.md) | &check; |   |
-| ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png) | `shuttleai` | [Shuttle AI](providers/shuttleai.md) | &check; |   |
-|  | `thebai` | [TheB.ai](providers/thebai.md) | &check; |   |
-| ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png) | `togetherai` | [Together AI](providers/togetherai.md) | &check; | &check; |
-|  | `voyage` | [Voyage AI](providers/voyage.md) |   | &check; |
-|  | `watsonxai` | [Watsonx AI](providers/watsonxai.md) | &check; | &check; |
-| ![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png) | `writer` | [Writer](providers/writer.md) | &check; |   |
-|  | `zhipuai` | [Zhipu AI](providers/zhipuai.md) | &check; |   |
+|  | Interface Name | Provider Name | [.sendMessage](usage.md#sendmessageinterfacename-message-options---interfaceoptions--) | [.streamMessage](usage.md#streammessageinterfacename-message-options--) | [.embeddings](usage.md#embeddingsinterfacename-embeddingstring-options---interfaceoptions---defaultprovider--voyage) |
+| --- | --- | --- | --- | --- | --- |
+| ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png) | `ai21` | [AI21 Studio](providers/ai21.md) | &check; | &check; | &check; |
+|  | `ailayer` | [AiLAYER](providers/ailayer.md) | &check; |   |   |
+| ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png) | `aimlapi` | [AIMLAPI](providers/aimlapi.md) | &check; | &check; | &check; |
+| ![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png) | `anthropic` | [Anthropic](providers/anthropic.md) | &check; | &check; |   |
+| ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png) | `anyscale` | [Anyscale](providers/anyscale.md) | &check; |   | &check; |
+| ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png) | `cloudflareai` | [Cloudflare AI](providers/cloudflareai.md) | &check; |   | &check; |
+| ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png) | `cohere` | [Cohere](providers/cohere.md) | &check; | &check; | &check; |
+| ![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png) | `corcel` | [Corcel](providers/corcel.md) | &check; | &check; |   |
+| ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png) | `deepinfra` | [DeepInfra](providers/deepinfra.md) | &check; | &check; | &check; |
+| ![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png) | `deepseek` | [DeepSeek](providers/deepseek.md) | &check; | &check; |   |
+|  | `fireworksai` | [Fireworks AI](providers/fireworksai.md) | &check; | &check; | &check; |
+| ![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png) | `forefront` | [Forefront AI](providers/forefront.md) | &check; |   |   |
+|  | `friendliai` | [FriendliAI](providers/friendliai.md) | &check; | &check; |   |
+|  | `gemini` | [Google Gemini](providers/gemini.md) | &check; | &check; | &check; |
+| ![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png) | `gooseai` | [GooseAI](providers/gooseai.md) | &check; | &check; |   |
+|  | `groq` | [Groq](providers/groq.md) | &check; | &check; |   |
+|  | `huggingface` | [Hugging Face Inference](providers/huggingface.md) | &check; |   | &check; |
+|  | `hyperbeeai` | [HyperBee AI](providers/hyperbeeai.md) | &check; | &check; |   |
+| ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png) | `lamini` | [Lamini](providers/lamini.md) | &check; |   | &check; |
+|  | `llamacpp` | [LLaMA.CPP](providers/llamacpp.md) | &check; | &check; | &check; |
+| ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png) | `mistralai` | [Mistral AI](providers/mistralai.md) | &check; | &check; | &check; |
+| ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png) | `monsterapi` | [Monster API](providers/monsterapi.md) | &check; | &check; |   |
+| ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png) | `neetsai` | [Neets.ai](providers/neetsai.md) | &check; | &check; |   |
+|  | `novitaai` | [Novita AI](providers/novitaai.md) | &check; | &check; |   |
+|  | `nvidia` | [NVIDIA AI](providers/nvidia.md) | &check; | &check; |   |
+|  | `octoai` | [OctoAI](providers/octoai.md) | &check; |   |   |
+|  | `ollama` | [Ollama](providers/ollama.md) | &check; | &check; | &check; |
+|  | `openai` | [OpenAI](providers/openai.md) | &check; | &check; | &check; |
+| ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png) | `perplexity` | [Perplexity AI](providers/perplexity.md) | &check; | &check; |   |
+| ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png) | `rekaai` | [Reka AI](providers/rekaai.md) | &check; | &check; |   |
+| ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png) | `replicate` | [Replicate](providers/replicate.md) | &check; | &check; |   |
+| ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png) | `shuttleai` | [Shuttle AI](providers/shuttleai.md) | &check; | &check; |   |
+|  | `thebai` | [TheB.ai](providers/thebai.md) | &check; | &check; |   |
+| ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png) | `togetherai` | [Together AI](providers/togetherai.md) | &check; | &check; | &check; |
+|  | `voyage` | [Voyage AI](providers/voyage.md) |   |   | &check; |
+|  | `watsonxai` | [Watsonx AI](providers/watsonxai.md) | &check; |   | &check; |
+| ![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png) | `writer` | [Writer](providers/writer.md) | &check; | &check; |   |
+|  | `zhipuai` | [Zhipu AI](providers/zhipuai.md) | &check; | &check; |   |
 
 _This is regularly updated! :)_
 
@@ -351,12 +353,18 @@ Streams a message using the specified LLM interface.
 
 ```javascript
 try {
-  const stream = await LLMInterfaceStreamMessage('openai', 'your-api-key', 'Hello, world!', { max_tokens: 100 });
+  const stream = await LLMInterfaceStreamMessage(
+    'openai',
+    'your-api-key',
+    'Hello, world!',
+    { max_tokens: 100 },
+  );
   const result = await processStream(stream.data);
 } catch (error) {
-  console.error(error.message)
+  console.error(error.message);
 }
 ```
+
 _processStream(stream) is defined in the [streaming mode example](/examples/misc/streaming-mode.js)._
 
 _This is a legacy function and will be depreciated._
@@ -395,15 +403,14 @@ Two other common values of interest are:
 
 If `options.stream` is true, then a LLMInterface.sendMessage() or LLMInterfaceSendMessage() call becomes a LLMInterface.streamMessage() call.
 
-If `options.response_format` is set to "json_object", along with including a JSON schema in the prompt, many LLM providers will return a valid JSON object. _Not all providers support this feature._
+If `options.response_format` is set to "json*object", along with including a JSON schema in the prompt, many LLM providers will return a valid JSON object. \_Not all providers support this feature.*
 
 ```javascript
 const options = {
   max_tokens: 1024,
-  temperature: 0.3 // Lower values are more deterministic, Higher are more creative
-}
-
-````
+  temperature: 0.3, // Lower values are more deterministic, Higher are more creative
+};
+```
 
 ## Interface Options Object
 
@@ -429,15 +436,25 @@ const interfaceOptions = {
 };
 ```
 
+[Interface object examples](/examples/interface-options) are provided in the [/examples](/examples) folder:
+
+- [Auto Retry Failed](/examples/interface-options/auto-retry-failed-requests.js)
+- [Include Original Response](/examples/interface-options/include-original-response.js)
+- [JSON Repair](/examples/interface-options/json-repair.js)
+
 ## Caching
 
-Caching is an essential feature that can significantly improve the performance of your application by reducing the number of requests made to the LLM APIs. The LLM Interface npm module supports various caching mechanisms, each with its own use case and configuration options. Below are examples showing how to use different caching strategies.
+Caching is a crucial feature that can significantly enhance your application's performance by reducing the number of requests made to the LLM APIs. The LLM Interface npm module supports various caching mechanisms, each tailored to different use cases and configuration options.
+
+### Cache Initialization
+
+Before utilizing a cache, it needs to be initialized. The exception to this rule is the Simple Cache. If you do not initialize a cache but request a cached response, the Simple Cache will automatically initialize before processing the request.
 
 ### Simple Cache
 
 Simple Cache uses the default cache engine provided by the LLM Interface npm module. It is suitable for basic caching needs without additional dependencies.
 
-#### Example Usage
+#### Example Initialization (Optional)
 
 Here's how to configure the Simple Cache:
 
@@ -458,7 +475,7 @@ npm install flat-cache
 
 ```
 
-#### Example Usage
+#### Example Initialization
 
 Here's how to configure the Flat Cache:
 
@@ -479,7 +496,7 @@ npm install cache-manager@4.0.0 cache-manager-fs-hash
 
 ```
 
-#### Example Usage
+#### Example Initialization
 
 Here's how to configure the Cache Manager with a file system-based store (using cache-manager-fs-hash):
 
@@ -561,8 +578,41 @@ LLMInterface.configureCache({
 
 Memory Cache stores responses in memory for quick retrieval during subsequent requests within the specified time-to-live (TTL).
 
-#### Example Usage
+#### Example Initialization
 
 ```javascript
 LLMInterface.configureCache({ cache: 'memory-cache' });
 ```
+
+### Using the Cache
+
+Once the cache is configured, you can use the cache by passing a cacheTimeoutSeconds value through options.
+
+```javascript
+try {
+  const response = await LLMInterface.sendMessage('openai', 'Hello, world!', {
+    cacheTimeoutSeconds: 3600,
+  });
+  console.log(response.results);
+} catch (error) {
+  console.error(error.message);
+}
+// or
+try {
+  const response = await LLMInterface.sendMessage(
+    'openai',
+    'Hello, world!',
+    3600,
+  );
+  console.log(response.results);
+} catch (error) {
+  console.error(error.message);
+}
+```
+
+[Caching examples](/examples/caching) are provided in the [/examples](/examples) folder:
+
+- [Simple Cache](/examples/caching/simple-cache.js)
+- [Flat Cache](/examples/caching/flat-cache.js)
+- [Cache Manager](/examples/caching/cache-manager.js)
+- [Memory Cache](/examples/caching/memory-cache.js)

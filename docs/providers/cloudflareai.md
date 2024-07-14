@@ -1,6 +1,6 @@
 ![Cloudflare AI](https://cf-assets.www.cloudflare.com/slt3lc6tev37/2FNnxFZOBEha1W2MhF44EN/e9438de558c983ccce8129ddc20e1b8b/CF_MetaImage_1200x628.png)
 
-# [Cloudflare AI](https://www.cloudflare.com)
+# [Cloudflare AI](https://cloudflare.com)
 
 Cloudflare, Inc. is a leading web performance and security company that offers a range of services to enhance website speed, reliability, and protection. Their Cloudflare AI platform focuses on leveraging artificial intelligence and machine learning to optimize content delivery, mitigate threats, and improve user experiences. Cloudflare AI's capabilities include content-based asset creation, intelligent routing, automated threat detection, and personalized content recommendations, all aimed at making the internet faster, safer, and more efficient for businesses and users alike.
 
@@ -48,8 +48,8 @@ The following model aliases are provided for this provider.
 
 The following parameters can be passed through `options`.
 
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
-- `temperature`: _Details not available, please refer to the LLM provider documentation._
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
 
 
 ### Features

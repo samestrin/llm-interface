@@ -1,6 +1,6 @@
 ![Writer](https://writer.com/wp-content/uploads/2024/01/writer-share.png)
 
-# [Writer](https://www.writer.com)
+# [Writer](https://writer.com)
 
 Writer is a comprehensive AI platform designed for enterprises to harness the power of generative AI. It enables businesses to streamline workflows, enhance productivity, and maintain brand consistency across various applications. Writer's platform offers tools for content creation, analysis, and governance, ensuring high-quality output that aligns with company guidelines and standards. With features like custom AI app deployment, content generation, summarization, and data analysis, Writer empowers teams to unlock new levels of efficiency and innovation in their work.
 
@@ -44,12 +44,12 @@ The following parameters can be passed through `options`.
 - `choices`: _Details not available, please refer to the LLM provider documentation._
 - `created`: _Details not available, please refer to the LLM provider documentation._
 - `id`: _Details not available, please refer to the LLM provider documentation._
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
-- `n`: _Details not available, please refer to the LLM provider documentation._
-- `stop`: _Details not available, please refer to the LLM provider documentation._
-- `stream`: _Details not available, please refer to the LLM provider documentation._
-- `temperature`: _Details not available, please refer to the LLM provider documentation._
-- `top_p`: _Details not available, please refer to the LLM provider documentation._
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+- `n`: Specifies the number of responses to generate for each input message. Note that costs are based on the number of generated tokens across all choices. Keeping n as 1 minimizes costs.
+- `stop`: Up to 4 sequences where the API will stop generating further tokens.
+- `stream`: If set, partial message deltas will be sent, similar to ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
+- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
+- `top_p`: Controls the cumulative probability of token selections for nucleus sampling. It limits the tokens to the smallest set whose cumulative probability exceeds the threshold. It is recommended to alter this or temperature, but not both.
 
 
 ### Features
@@ -73,7 +73,10 @@ The link above does not take you directly to the API key generation page, instea
 [Writer documentation](https://dev.writer.com/home/introduction) is available [here](https://dev.writer.com/home/introduction).
 
 
+## [Writer X](https://www.x.com/Get_Writer)
+
 ![@Get_Writer](https://pbs.twimg.com/profile_images/1798110641414443008/XP8gyBaY_normal.jpg)
+
 [@Get_Writer](https://www.x.com/Get_Writer)
 
-Anthropic
+

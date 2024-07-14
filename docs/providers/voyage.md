@@ -17,7 +17,7 @@ LLMInterface.setApiKey({'voyage': process.env.VOYAGE_API_KEY});
 
 async function main() {
   try {
-    const response = await LLMInterface.sendMessage('voyage', 'Explain the importance of low latency LLMs.');
+    const response = await LLMInterface.embeddings('voyage', 'Explain the importance of low latency LLMs.');
     console.log(response.results);
   } catch (error) {
     console.error(error);

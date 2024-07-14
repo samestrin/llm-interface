@@ -2,37 +2,18 @@
 
 ## Table of Contents
 
+- [Examples](#examples)
+  - [Table of Contents](#table-of-contents)
   - [Using LLMInterface](#using-llminterface)
     - [Basic Usage](#basic-usage)
-      - [Chat](#chat)
-      - [Prompt](#prompt)
-      - [Streaming Mode](#streaming-mode)
-      - [Set Multiple API Keys](#set-multiple-api-keys)
     - [Embeddings](#embeddings)
-      - [Embeddings](#embeddings-1)
-      - [Embeddings Failover](#embeddings-failover)
-      - [Embeddings Custom Failover](#embeddings-custom-failover)
     - [Caching](#caching)
-      - [Simple Cache](#simple-cache)
-      - [Memory Cache](#memory-cache)
-      - [Flat Cache](#flat-cache)
-      - [Cache Manager](#cache-manager)
     - [Interface Options](#interface-options)
-      - [Auto Retry Failed Requests](#auto-retry-failed-requests)
-      - [Include Original Response](#include-original-response)
-      - [JSON Repair](#json-repair)
     - [JSON](#json)
-      - [JSON Output](#json-output)
-      - [JSON Repair](#json-repair-1)
-      - [Native JSON Output](#native-json-output)
   - [What Can You Do with LLMInterface?](#what-can-you-do-with-llminterface)
-    - [Langchain.js](#langchainjs)
-      - [Retrieval-Augmented Generation (RAG)](#retrieval-augmented-generation-rag)
+    - [Retrieval-Augmented Generation (RAG) using Langchain.js](#retrieval-augmented-generation-rag-using-langchainjs)
     - [Mixture of Agents (MoA)](#mixture-of-agents-moa)
-      - [Mixture of Agents (MoA)](#mixture-of-agents-moa-1)
     - [Miscellaneous](#miscellaneous)
-      - [Chart Generation](#chart-generation)
-      - [RSS Feed Summarization](#rss-feed-summarization)
 
 ## Using LLMInterface
 
@@ -74,7 +55,7 @@ The following examples focus on LLMInterface usage.
 
 The following are some examples using LLMInterface.
 
-### Langchain.js
+### Retrieval-Augmented Generation (RAG) using Langchain.js
 
 - **[Retrieval-Augmented Generation (RAG)](/examples/langchain/rag.js)**: Example demonstrating Retrieval-Augmented Generation (RAG) using Langchain.js `PromptTemplate` and `LLMChain`.
 

@@ -1,6 +1,6 @@
 ![AIMLAPI](https://cdn.prod.website-files.com/65b8f36fa600366bc7cf9a67/65e055f2cce5ca962f833d3f_Group%201000007684.png)
 
-# [AIMLAPI](https://www.aimlapi.com)
+# [AIMLAPI](https://aimlapi.com)
 
 AIMLAPI.com is a versatile platform that provides developers with streamlined access to over 200 AI models through a single API. It simplifies the integration of AI capabilities into applications, offering a diverse range of models from industry leaders like OpenAI, Anthropic, and Stability AI. With a focus on quality, stability, and affordability, AIMLAPI.com caters to developers seeking efficient AI solutions for their projects.
 
@@ -48,11 +48,11 @@ The following model aliases are provided for this provider.
 
 The following parameters can be passed through `options`.
 
-- `frequency_penalty`: _Details not available, please refer to the LLM provider documentation._
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
-- `stream`: _Details not available, please refer to the LLM provider documentation._
-- `temperature`: _Details not available, please refer to the LLM provider documentation._
-- `top_p`: _Details not available, please refer to the LLM provider documentation._
+- `frequency_penalty`: Penalizes new tokens based on their existing frequency in the text so far, reducing the likelihood of repeating the same line. Positive values reduce the frequency of tokens appearing in the generated text.
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+- `stream`: If set, partial message deltas will be sent, similar to ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
+- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
+- `top_p`: Controls the cumulative probability of token selections for nucleus sampling. It limits the tokens to the smallest set whose cumulative probability exceeds the threshold. It is recommended to alter this or temperature, but not both.
 
 
 ### Features
