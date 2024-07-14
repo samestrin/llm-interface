@@ -30,17 +30,19 @@
   - [Interface Options Object](#interface-options-object)
     - [Structure of an Interface Options Object](#structure-of-an-interface-options-object)
   - [Caching](#caching)
+    - [Cache Initialization](#cache-initialization)
     - [Simple Cache](#simple-cache)
-      - [Example Usage](#example-usage)
+      - [Example Initialization (Optional)](#example-initialization-optional)
     - [Flat Cache](#flat-cache)
       - [Installation](#installation)
-      - [Example Usage](#example-usage-1)
+      - [Example Initialization](#example-initialization)
     - [Cache Manager](#cache-manager)
       - [Installation](#installation-1)
-      - [Example Usage](#example-usage-2)
+      - [Example Initialization](#example-initialization-1)
       - [Advanced Backends](#advanced-backends)
     - [Memory Cache](#memory-cache)
-      - [Example Usage](#example-usage-3)
+      - [Example Initialization](#example-initialization-2)
+    - [Using the Cache](#using-the-cache)
 
 ## LLMInterface
 
@@ -245,46 +247,46 @@ console.log(response.results);
 
 The following are the interfaceNames for each supported LLM provider (in alphabetical order):
 
-|  | Interface Name | Provider Name | [.sendMessage](usage.md#sendmessageinterfacename-message-options---interfaceoptions--) | [.streamMessage](usage.md#streammessageinterfacename-message-options--) | [.embeddings](usage.md#embeddingsinterfacename-embeddingstring-options---interfaceoptions---defaultprovider--voyage) |
-| --- | --- | --- | --- | --- | --- |
-| ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png) | `ai21` | [AI21 Studio](providers/ai21.md) | &check; | &check; | &check; |
-|  | `ailayer` | [AiLAYER](providers/ailayer.md) | &check; |   |   |
-| ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png) | `aimlapi` | [AIMLAPI](providers/aimlapi.md) | &check; | &check; | &check; |
-| ![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png) | `anthropic` | [Anthropic](providers/anthropic.md) | &check; | &check; |   |
-| ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png) | `anyscale` | [Anyscale](providers/anyscale.md) | &check; |   | &check; |
-| ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png) | `cloudflareai` | [Cloudflare AI](providers/cloudflareai.md) | &check; |   | &check; |
-| ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png) | `cohere` | [Cohere](providers/cohere.md) | &check; | &check; | &check; |
-| ![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png) | `corcel` | [Corcel](providers/corcel.md) | &check; | &check; |   |
-| ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png) | `deepinfra` | [DeepInfra](providers/deepinfra.md) | &check; | &check; | &check; |
-| ![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png) | `deepseek` | [DeepSeek](providers/deepseek.md) | &check; | &check; |   |
-|  | `fireworksai` | [Fireworks AI](providers/fireworksai.md) | &check; | &check; | &check; |
-| ![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png) | `forefront` | [Forefront AI](providers/forefront.md) | &check; |   |   |
-|  | `friendliai` | [FriendliAI](providers/friendliai.md) | &check; | &check; |   |
-|  | `gemini` | [Google Gemini](providers/gemini.md) | &check; | &check; | &check; |
-| ![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png) | `gooseai` | [GooseAI](providers/gooseai.md) | &check; | &check; |   |
-|  | `groq` | [Groq](providers/groq.md) | &check; | &check; |   |
-|  | `huggingface` | [Hugging Face Inference](providers/huggingface.md) | &check; |   | &check; |
-|  | `hyperbeeai` | [HyperBee AI](providers/hyperbeeai.md) | &check; | &check; |   |
-| ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png) | `lamini` | [Lamini](providers/lamini.md) | &check; |   | &check; |
-|  | `llamacpp` | [LLaMA.CPP](providers/llamacpp.md) | &check; | &check; | &check; |
-| ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png) | `mistralai` | [Mistral AI](providers/mistralai.md) | &check; | &check; | &check; |
-| ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png) | `monsterapi` | [Monster API](providers/monsterapi.md) | &check; | &check; |   |
-| ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png) | `neetsai` | [Neets.ai](providers/neetsai.md) | &check; | &check; |   |
-|  | `novitaai` | [Novita AI](providers/novitaai.md) | &check; | &check; |   |
-|  | `nvidia` | [NVIDIA AI](providers/nvidia.md) | &check; | &check; |   |
-|  | `octoai` | [OctoAI](providers/octoai.md) | &check; |   |   |
-|  | `ollama` | [Ollama](providers/ollama.md) | &check; | &check; | &check; |
-|  | `openai` | [OpenAI](providers/openai.md) | &check; | &check; | &check; |
-| ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png) | `perplexity` | [Perplexity AI](providers/perplexity.md) | &check; | &check; |   |
-| ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png) | `rekaai` | [Reka AI](providers/rekaai.md) | &check; | &check; |   |
-| ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png) | `replicate` | [Replicate](providers/replicate.md) | &check; | &check; |   |
-| ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png) | `shuttleai` | [Shuttle AI](providers/shuttleai.md) | &check; | &check; |   |
-|  | `thebai` | [TheB.ai](providers/thebai.md) | &check; | &check; |   |
-| ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png) | `togetherai` | [Together AI](providers/togetherai.md) | &check; | &check; | &check; |
-|  | `voyage` | [Voyage AI](providers/voyage.md) |   |   | &check; |
-|  | `watsonxai` | [Watsonx AI](providers/watsonxai.md) | &check; |   | &check; |
-| ![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png) | `writer` | [Writer](providers/writer.md) | &check; | &check; |   |
-|  | `zhipuai` | [Zhipu AI](providers/zhipuai.md) | &check; | &check; |   |
+|                                                                                         | Interface Name | Provider Name                                      | [.sendMessage](usage.md#sendmessageinterfacename-message-options---interfaceoptions--) | [.streamMessage](usage.md#streammessageinterfacename-message-options--) | [.embeddings](usage.md#embeddingsinterfacename-embeddingstring-options---interfaceoptions---defaultprovider--voyage) |
+| --------------------------------------------------------------------------------------- | -------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png)                 | `ai21`         | [AI21 Studio](providers/ai21.md)                   | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+|                                                                                         | `ailayer`      | [AiLAYER](providers/ailayer.md)                    | &check;                                                                                |                                                                         |                                                                                                                      |
+| ![aimlapi](https://samestrin.github.io/media/llm-interface/icons/aimlapi.png)           | `aimlapi`      | [AIMLAPI](providers/aimlapi.md)                    | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+| ![anthropic](https://samestrin.github.io/media/llm-interface/icons/anthropic.png)       | `anthropic`    | [Anthropic](providers/anthropic.md)                | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+| ![anyscale](https://samestrin.github.io/media/llm-interface/icons/anyscale.png)         | `anyscale`     | [Anyscale](providers/anyscale.md)                  | &check;                                                                                |                                                                         | &check;                                                                                                              |
+| ![cloudflareai](https://samestrin.github.io/media/llm-interface/icons/cloudflareai.png) | `cloudflareai` | [Cloudflare AI](providers/cloudflareai.md)         | &check;                                                                                |                                                                         | &check;                                                                                                              |
+| ![cohere](https://samestrin.github.io/media/llm-interface/icons/cohere.png)             | `cohere`       | [Cohere](providers/cohere.md)                      | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+| ![corcel](https://samestrin.github.io/media/llm-interface/icons/corcel.png)             | `corcel`       | [Corcel](providers/corcel.md)                      | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+| ![deepinfra](https://samestrin.github.io/media/llm-interface/icons/deepinfra.png)       | `deepinfra`    | [DeepInfra](providers/deepinfra.md)                | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+| ![deepseek](https://samestrin.github.io/media/llm-interface/icons/deepseek.png)         | `deepseek`     | [DeepSeek](providers/deepseek.md)                  | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+|                                                                                         | `fireworksai`  | [Fireworks AI](providers/fireworksai.md)           | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+| ![forefront](https://samestrin.github.io/media/llm-interface/icons/forefront.png)       | `forefront`    | [Forefront AI](providers/forefront.md)             | &check;                                                                                |                                                                         |                                                                                                                      |
+|                                                                                         | `friendliai`   | [FriendliAI](providers/friendliai.md)              | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+|                                                                                         | `gemini`       | [Google Gemini](providers/gemini.md)               | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+| ![gooseai](https://samestrin.github.io/media/llm-interface/icons/gooseai.png)           | `gooseai`      | [GooseAI](providers/gooseai.md)                    | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+|                                                                                         | `groq`         | [Groq](providers/groq.md)                          | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+|                                                                                         | `huggingface`  | [Hugging Face Inference](providers/huggingface.md) | &check;                                                                                |                                                                         | &check;                                                                                                              |
+|                                                                                         | `hyperbeeai`   | [HyperBee AI](providers/hyperbeeai.md)             | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+| ![lamini](https://samestrin.github.io/media/llm-interface/icons/lamini.png)             | `lamini`       | [Lamini](providers/lamini.md)                      | &check;                                                                                |                                                                         | &check;                                                                                                              |
+|                                                                                         | `llamacpp`     | [LLaMA.CPP](providers/llamacpp.md)                 | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+| ![mistralai](https://samestrin.github.io/media/llm-interface/icons/mistralai.png)       | `mistralai`    | [Mistral AI](providers/mistralai.md)               | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+| ![monsterapi](https://samestrin.github.io/media/llm-interface/icons/monsterapi.png)     | `monsterapi`   | [Monster API](providers/monsterapi.md)             | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+| ![neetsai](https://samestrin.github.io/media/llm-interface/icons/neetsai.png)           | `neetsai`      | [Neets.ai](providers/neetsai.md)                   | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+|                                                                                         | `novitaai`     | [Novita AI](providers/novitaai.md)                 | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+|                                                                                         | `nvidia`       | [NVIDIA AI](providers/nvidia.md)                   | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+|                                                                                         | `octoai`       | [OctoAI](providers/octoai.md)                      | &check;                                                                                |                                                                         |                                                                                                                      |
+|                                                                                         | `ollama`       | [Ollama](providers/ollama.md)                      | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+|                                                                                         | `openai`       | [OpenAI](providers/openai.md)                      | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+| ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png)     | `perplexity`   | [Perplexity AI](providers/perplexity.md)           | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+| ![rekaai](https://samestrin.github.io/media/llm-interface/icons/rekaai.png)             | `rekaai`       | [Reka AI](providers/rekaai.md)                     | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+| ![replicate](https://samestrin.github.io/media/llm-interface/icons/replicate.png)       | `replicate`    | [Replicate](providers/replicate.md)                | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+| ![shuttleai](https://samestrin.github.io/media/llm-interface/icons/shuttleai.png)       | `shuttleai`    | [Shuttle AI](providers/shuttleai.md)               | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+|                                                                                         | `thebai`       | [TheB.ai](providers/thebai.md)                     | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+| ![togetherai](https://samestrin.github.io/media/llm-interface/icons/togetherai.png)     | `togetherai`   | [Together AI](providers/togetherai.md)             | &check;                                                                                | &check;                                                                 | &check;                                                                                                              |
+|                                                                                         | `voyage`       | [Voyage AI](providers/voyage.md)                   |                                                                                        |                                                                         | &check;                                                                                                              |
+|                                                                                         | `watsonxai`    | [Watsonx AI](providers/watsonxai.md)               | &check;                                                                                |                                                                         | &check;                                                                                                              |
+| ![writer](https://samestrin.github.io/media/llm-interface/icons/writer.png)             | `writer`       | [Writer](providers/writer.md)                      | &check;                                                                                | &check;                                                                 |                                                                                                                      |
+|                                                                                         | `zhipuai`      | [Zhipu AI](providers/zhipuai.md)                   | &check;                                                                                | &check;                                                                 |                                                                                                                      |
 
 _This is regularly updated! :)_
 
@@ -438,13 +440,17 @@ const interfaceOptions = {
 
 ## Caching
 
-Caching is an essential feature that can significantly improve the performance of your application by reducing the number of requests made to the LLM APIs. The LLM Interface npm module supports various caching mechanisms, each with its own use case and configuration options. Below are examples showing how to use different caching strategies.
+Caching is a crucial feature that can significantly enhance your application's performance by reducing the number of requests made to the LLM APIs. The LLM Interface npm module supports various caching mechanisms, each tailored to different use cases and configuration options.
+
+### Cache Initialization
+
+Before utilizing a cache, it needs to be initialized. The exception to this rule is the Simple Cache. If you do not initialize a cache but request a cached response, the Simple Cache will automatically initialize before processing the request.
 
 ### Simple Cache
 
 Simple Cache uses the default cache engine provided by the LLM Interface npm module. It is suitable for basic caching needs without additional dependencies.
 
-#### Example Usage
+#### Example Initialization (Optional)
 
 Here's how to configure the Simple Cache:
 
@@ -465,7 +471,7 @@ npm install flat-cache
 
 ```
 
-#### Example Usage
+#### Example Initialization
 
 Here's how to configure the Flat Cache:
 
@@ -486,7 +492,7 @@ npm install cache-manager@4.0.0 cache-manager-fs-hash
 
 ```
 
-#### Example Usage
+#### Example Initialization
 
 Here's how to configure the Cache Manager with a file system-based store (using cache-manager-fs-hash):
 
@@ -568,8 +574,34 @@ LLMInterface.configureCache({
 
 Memory Cache stores responses in memory for quick retrieval during subsequent requests within the specified time-to-live (TTL).
 
-#### Example Usage
+#### Example Initialization
 
 ```javascript
 LLMInterface.configureCache({ cache: 'memory-cache' });
+```
+
+### Using the Cache
+
+Once the cache is configured, you can use the cache by passing a cacheTimeoutSeconds value through the options.
+
+```javascript
+try {
+  const response = await LLMInterface.sendMessage('openai', 'Hello, world!', {
+    cacheTimeoutSeconds: 3600,
+  });
+  console.log(response.results);
+} catch (error) {
+  console.error(error.message);
+}
+// or
+try {
+  const response = await LLMInterface.sendMessage(
+    'openai',
+    'Hello, world!',
+    3600,
+  );
+  console.log(response.results);
+} catch (error) {
+  console.error(error.message);
+}
 ```
