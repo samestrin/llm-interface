@@ -160,7 +160,7 @@ Sends a message to a specified interface and returns the response. _The specifie
 
 - `interfaceName` (String|Array): The name of the LLM interface or an array containing the name of the LLM interface and the API key.
 - `message` (String|Object): The message to send.
-- `options` (Object|number, optional): Additional options object to pass parameters to the model. If a number, it represents the cache timeout in seconds.
+- `options` (Object|number, optional): Model specific options or parameters. If a number, it represents the cache timeout in seconds.
 - `interfaceOptions` (Object, optional): Interface-specific options.
 
 ```javascript
@@ -192,7 +192,7 @@ Streams a message to a specified interface and returns the response stream. _You
 
 - `interfaceName` (String): The name of the LLM interface.
 - `message` (String|Object): The message to send.
-- `options` (Object|number, optional): Additional options object to pass parameters to the model. If a number, it represents the cache timeout in seconds.
+- `options` (Object|number, optional): Model specific options or parameters. If a number, it represents the cache timeout in seconds.
 
 ```javascript
 try {
@@ -213,7 +213,7 @@ Generates embeddings using a specified LLM interface.
 
 - `interfaceName` (String): The name of the LLM interface to use.
 - `embeddingString` (String): The string to generate embeddings for.
-- `options` (Object|number, optional): Additional options object to pass parameters to the model. If a number, it represents the cache timeout in seconds.
+- `options` (Object|number, optional): Model specific options or parameters. If a number, it represents the cache timeout in seconds.
 - `interfaceOptions` (Object, optional): Options specific to the LLM interface.
 - `defaultProvider` (String, optional): The default provider to use if the specified interface doesn't support embeddings. Defaults to 'voyage'.
 

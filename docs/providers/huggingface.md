@@ -49,10 +49,10 @@ The following model aliases are provided for this provider.
 The following parameters can be passed through `options`.
 
 - `arguments will vary by model`: _Details not available, please refer to the LLM provider documentation._
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
-- `temperature`: _Details not available, please refer to the LLM provider documentation._
-- `top_k`: _Details not available, please refer to the LLM provider documentation._
-- `top_p`: _Details not available, please refer to the LLM provider documentation._
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
+- `top_k`: The number of highest probability vocabulary tokens to keep for top-k sampling.
+- `top_p`: Controls the cumulative probability of token selections for nucleus sampling. It limits the tokens to the smallest set whose cumulative probability exceeds the threshold. It is recommended to alter this or temperature, but not both.
 
 
 ## Features

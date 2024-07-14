@@ -42,10 +42,10 @@ The following model aliases are provided for this provider.
 
 The following parameters can be passed through `options`.
 
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
-- `stream`: _Details not available, please refer to the LLM provider documentation._
-- `tool_choice`: _Details not available, please refer to the LLM provider documentation._
-- `tools`: _Details not available, please refer to the LLM provider documentation._
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+- `stream`: If set, partial message deltas will be sent, similar to ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
+- `tool_choice`: Specifies which external tools the AI can use to assist in generating its response.
+- `tools`: A list of external tools available for the AI to use in generating responses.
 
 
 ### Features

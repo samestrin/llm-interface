@@ -42,16 +42,16 @@ The following model aliases are provided for this provider.
 
 The following parameters can be passed through `options`.
 
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
-- `metadata`: _Details not available, please refer to the LLM provider documentation._
-- `stop_sequences`: _Details not available, please refer to the LLM provider documentation._
-- `stream`: _Details not available, please refer to the LLM provider documentation._
-- `system`: _Details not available, please refer to the LLM provider documentation._
-- `temperature`: _Details not available, please refer to the LLM provider documentation._
-- `tool_choice`: _Details not available, please refer to the LLM provider documentation._
-- `tools`: _Details not available, please refer to the LLM provider documentation._
-- `top_k`: _Details not available, please refer to the LLM provider documentation._
-- `top_p`: _Details not available, please refer to the LLM provider documentation._
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+- `metadata`: Additional information about the input or environment that might influence the AI's response.
+- `stop_sequences`: Sequences that indicate to the model when to stop generating further tokens.
+- `stream`: If set, partial message deltas will be sent, similar to ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
+- `system`: Defines the role and instructions for the system component of the AI interaction, guiding the overall behavior.
+- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
+- `tool_choice`: Specifies which external tools the AI can use to assist in generating its response.
+- `tools`: A list of external tools available for the AI to use in generating responses.
+- `top_k`: The number of highest probability vocabulary tokens to keep for top-k sampling.
+- `top_p`: Controls the cumulative probability of token selections for nucleus sampling. It limits the tokens to the smallest set whose cumulative probability exceeds the threshold. It is recommended to alter this or temperature, but not both.
 
 
 ### Features

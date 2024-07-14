@@ -50,7 +50,7 @@ The following parameters can be passed through `options`.
 - `format`: _Details not available, please refer to the LLM provider documentation._
 - `keep_alive`: _Details not available, please refer to the LLM provider documentation._
 - `options`: _Details not available, please refer to the LLM provider documentation._
-- `stream`: _Details not available, please refer to the LLM provider documentation._
+- `stream`: If set, partial message deltas will be sent, similar to ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
 
 
 ### Features

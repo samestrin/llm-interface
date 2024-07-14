@@ -53,16 +53,16 @@ The following parameters can be passed through `options`.
 - `cache_prompt`: _Details not available, please refer to the LLM provider documentation._
 - `dynatemp_exponent`: _Details not available, please refer to the LLM provider documentation._
 - `dynatemp_range`: _Details not available, please refer to the LLM provider documentation._
-- `frequency_penalty`: _Details not available, please refer to the LLM provider documentation._
+- `frequency_penalty`: Penalizes new tokens based on their existing frequency in the text so far, reducing the likelihood of repeating the same line. Positive values reduce the frequency of tokens appearing in the generated text.
 - `grammar`: _Details not available, please refer to the LLM provider documentation._
 - `id_slot`: _Details not available, please refer to the LLM provider documentation._
-- `ignore_eos`: _Details not available, please refer to the LLM provider documentation._
+- `ignore_eos`: Whether to ignore the end-of-sequence token.
 - `image_data`: _Details not available, please refer to the LLM provider documentation._
 - `json_schema`: _Details not available, please refer to the LLM provider documentation._
-- `logit_bias`: _Details not available, please refer to the LLM provider documentation._
-- `max_tokens`: _Details not available, please refer to the LLM provider documentation._
+- `logit_bias`: An optional parameter that modifies the likelihood of specified tokens appearing in the model-generated output.
+- `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
 - `min_keep`: _Details not available, please refer to the LLM provider documentation._
-- `min_p`: _Details not available, please refer to the LLM provider documentation._
+- `min_p`: Minimum probability threshold for token selection.
 - `mirostat`: _Details not available, please refer to the LLM provider documentation._
 - `mirostat_eta`: _Details not available, please refer to the LLM provider documentation._
 - `mirostat_tau`: _Details not available, please refer to the LLM provider documentation._
@@ -70,18 +70,18 @@ The following parameters can be passed through `options`.
 - `n_probs`: _Details not available, please refer to the LLM provider documentation._
 - `penalize_nl`: _Details not available, please refer to the LLM provider documentation._
 - `penalty_prompt`: _Details not available, please refer to the LLM provider documentation._
-- `presence_penalty`: _Details not available, please refer to the LLM provider documentation._
+- `presence_penalty`: Penalizes new tokens based on whether they appear in the text so far, encouraging the model to talk about new topics. Positive values increase the likelihood of new tokens appearing in the generated text.
 - `repeat_last_n`: _Details not available, please refer to the LLM provider documentation._
 - `repeat_penalty`: _Details not available, please refer to the LLM provider documentation._
 - `samplers`: _Details not available, please refer to the LLM provider documentation._
-- `seed`: _Details not available, please refer to the LLM provider documentation._
-- `stop`: _Details not available, please refer to the LLM provider documentation._
-- `stream`: _Details not available, please refer to the LLM provider documentation._
+- `seed`: A random seed for reproducibility. If specified, the system will attempt to sample deterministically, ensuring repeated requests with the same seed and parameters return the same result. Determinism is not guaranteed.
+- `stop`: Up to 4 sequences where the API will stop generating further tokens.
+- `stream`: If set, partial message deltas will be sent, similar to ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
 - `system_prompt`: _Details not available, please refer to the LLM provider documentation._
-- `temperature`: _Details not available, please refer to the LLM provider documentation._
+- `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
 - `tfs_z`: _Details not available, please refer to the LLM provider documentation._
-- `top_k`: _Details not available, please refer to the LLM provider documentation._
-- `top_p`: _Details not available, please refer to the LLM provider documentation._
+- `top_k`: The number of highest probability vocabulary tokens to keep for top-k sampling.
+- `top_p`: Controls the cumulative probability of token selections for nucleus sampling. It limits the tokens to the smallest set whose cumulative probability exceeds the threshold. It is recommended to alter this or temperature, but not both.
 - `typical_p`: _Details not available, please refer to the LLM provider documentation._
 
 
