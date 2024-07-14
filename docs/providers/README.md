@@ -2,7 +2,7 @@
 
 The following providers are supported by LLMInterface.
 
-|  | Provider Name | Interface Name | [.sendMessage](/samestrin/llm-interface/blob/docs/docs/usage.md#sendmessageinterfacename-message-options---interfaceoptions--) | [.streamMessage](/samestrin/llm-interface/blob/docs/docs/usage.md#streammessageinterfacename-message-options--) | [.embeddings](/samestrin/llm-interface/blob/docs/docs/usage.md#embeddingsinterfacename-embeddingstring-options---interfaceoptions---defaultprovider--voyage) |
+|  | Provider Name | Interface Name | [.sendMessage](/samestrin/llm-interface/docs/usage.md#sendmessageinterfacename-message-options---interfaceoptions--) | [.streamMessage](/samestrin/llm-interface/docs/usage.md#streammessageinterfacename-message-options--) | [.embeddings](/samestrin/llm-interface/docs/usage.md#embeddingsinterfacename-embeddingstring-options---interfaceoptions---defaultprovider--voyage) |
 | --- | --- | --- | --- | --- | --- |
 | ![ai21](https://samestrin.github.io/media/llm-interface/icons/ai21.png) | [AI21 Studio](ai21.md) | `ai21` | &check; | &check; | &check; |
 |  | [AiLAYER](ailayer.md) | `ailayer` | &check; |   |   |
