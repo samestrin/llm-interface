@@ -11,7 +11,7 @@
     - [Interface Options](#interface-options)
     - [JSON](#json)
   - [What Can You Do with LLMInterface?](#what-can-you-do-with-llminterface)
-    - [Langchain.js](#langchainjs)
+    - [Retrieval-Augmented Generation (RAG) using Langchain.js](#retrieval-augmented-generation-rag-using-langchainjs)
     - [Mixture of Agents (MoA)](#mixture-of-agents-moa)
     - [Miscellaneous](#miscellaneous)
 
@@ -55,7 +55,7 @@ The following examples focus on LLMInterface usage.
 
 The following are some examples using LLMInterface.
 
-### Langchain.js
+### Retrieval-Augmented Generation (RAG) using Langchain.js
 
 - **[Retrieval-Augmented Generation (RAG)](/examples/langchain/rag.js)**: Example demonstrating Retrieval-Augmented Generation (RAG) using Langchain.js `PromptTemplate` and `LLMChain`.
 
