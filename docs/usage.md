@@ -438,7 +438,7 @@ const interfaceOptions = {
 };
 ```
 
-[Interface object examples](/examples/interface-options) are provided in the /examples folder:
+[Interface object examples](/examples/interface-options) are provided in the [/examples](/examples) folder:
 
 - [Auto Retry Failed](/examples/interface-options/auto-retry-failed-requests.js)
 - [Include Original Response](/examples/interface-options/include-original-response.js)
@@ -612,7 +612,7 @@ try {
 }
 ```
 
-[Caching examples](/examples/caching) are provided in the /examples folder:
+[Caching examples](/examples/caching) are provided in the [/examples](/examples) folder:
 
 - [Simple Cache](/examples/caching/simple-cache.js)
 - [Flat Cache](/examples/caching/flat-cache.js)
