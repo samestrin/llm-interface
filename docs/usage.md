@@ -438,6 +438,12 @@ const interfaceOptions = {
 };
 ```
 
+[Interface object examples](/examples/interface-options) are provided in the /examples folder:
+
+- [Auto Retry Failed](/examples/interface-options/auto-retry-failed-requests.js)
+- [Include Original Response](/examples/interface-options/include-original-response.js)
+- [JSON Repair](/examples/interface-options/json-repair.js)
+
 ## Caching
 
 Caching is a crucial feature that can significantly enhance your application's performance by reducing the number of requests made to the LLM APIs. The LLM Interface npm module supports various caching mechanisms, each tailored to different use cases and configuration options.
@@ -582,7 +588,7 @@ LLMInterface.configureCache({ cache: 'memory-cache' });
 
 ### Using the Cache
 
-Once the cache is configured, you can use the cache by passing a cacheTimeoutSeconds value through the options.
+Once the cache is configured, you can use the cache by passing a cacheTimeoutSeconds value through options.
 
 ```javascript
 try {
@@ -605,3 +611,10 @@ try {
   console.error(error.message);
 }
 ```
+
+[Caching examples](/examples/caching) are provided in the /examples folder:
+
+- [Simple Cache](/examples/caching/simple-cache.js)
+- [Flat Cache](/examples/caching/flat-cache.js)
+- [Cache Manager](/examples/caching/cache-manager.js)
+- [Memory Cache](/examples/caching/memory-cache.js)
