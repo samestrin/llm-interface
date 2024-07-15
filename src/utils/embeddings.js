@@ -3,6 +3,22 @@
  * @description Message related functions both non streamed and streamed. Includes wrapper that don't require the API key each time.
  */
 
+const {
+  updateConfig,
+  getConfig,
+  loadProviderConfig,
+} = require('./configManager.js');
+
+const { LLMInterface } = require('./llmInterface.js');
+const { createCacheKey } = require('./utils.js');
+
+const config = getConfig();
+
+const LLMInstances = {}; // Persistent LLM instances
+
+const { EmbeddingsError } = require('./errors.js');
+const { retryWithBackoff } = require('./retryWithBackoff.js');
+
 /**
  * Generates embeddings using a specified LLM interface.
  * @param {string} interfaceName - The name of the LLM interface to use.
@@ -12,7 +28,7 @@
  * @param {object|number} [interfaceOptions={}] - Options specific to the LLM interface. If a number, it represents the cache timeout in seconds.
  * @param {string} [defaultProvider] - The default provider to use if the specified interface doesn't support embeddings.
  * @throws {EmbeddingsError} Throws an error if the input parameters are invalid or if the LLM interface is unsupported.
- * @throws {SendMessageError} Throws an error if the embedding generation fails.
+ * @throws {EmbeddingsError} Throws an error if the embedding generation fails.
  * @returns {Promise<Object>} A promise that resolves to the embedding response, potentially including cache information.
  */
 async function LLMInterfaceEmbeddings(
@@ -146,7 +162,7 @@ async function LLMInterfaceEmbeddings(
 
     return response;
   } catch (error) {
-    throw new SendMessageError(
+    throw new EmbeddingsError(
       `Failed to generate embeddings using LLM  ${interfaceName}:`,
       error.message,
       error.stack,

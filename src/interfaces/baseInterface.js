@@ -81,7 +81,7 @@ class BaseInterface {
    * @param {object} client - The Axios client instance.
    * @param {object} newHeaders - The new headers to set on the Axios client.
    */
-  updateHeaders(client, newHeaders) { }
+  updateHeaders(client, newHeaders) {}
 
   /**
    * Method to update the message object if needed.
@@ -166,7 +166,6 @@ class BaseInterface {
       }
     }
 
-
     // Finalize the model name
     model =
       model || options.model || this.config[this.interfaceName].model.default;
@@ -174,10 +173,7 @@ class BaseInterface {
 
     const selectedModel = getModelByAlias(this.interfaceName, model);
 
-    const {
-      max_tokens = 1024,
-      response_format = ''
-    } = options;
+    const { max_tokens = 1024, response_format = '' } = options;
 
     // Adjust options
     options = this.adjustOptions(options);
@@ -194,7 +190,6 @@ class BaseInterface {
       requestBody.response_format = { type: response_format };
     }
 
-
     // update the url based on the model
     const url = this.getRequestUrl(selectedModel);
 
@@ -203,7 +198,7 @@ class BaseInterface {
     // update the headers
     this.updateHeaders(this.client);
 
-    log.log(this.client.defaults.headers)
+    log.log(this.client.defaults.headers);
 
     log.log(requestBody);
 
@@ -219,13 +214,13 @@ class BaseInterface {
         });
       }
     } catch (error) {
-
       // pass up the axios error to the retry handler
       if (error.response) {
         throw {
           response: error.response,
-          message: `Could not connect to ${this.baseURL + url} (${error.response.status
-            })`,
+          message: `Could not connect to ${this.baseURL + url} (${
+            error.response.status
+          })`,
           stack: error.stack,
         };
       } else if (error.request) {
@@ -420,8 +415,9 @@ class BaseInterface {
           if (error.response) {
             throw {
               response: error.response,
-              message: `Could not connect to ${embeddingUrl + url} (${error.response.status
-                })`,
+              message: `Could not connect to ${embeddingUrl + url} (${
+                error.response.status
+              })`,
               stack: error.stack,
             };
           } else if (error.request) {

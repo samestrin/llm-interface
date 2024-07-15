@@ -46,10 +46,7 @@ let interfaces = {
   voyage: config.voyageApiKey,
   zhipuai: config.zhipuaiApiKey,
 };
-
 interfaces = {
-  thebai: config.thebaiApiKey,
+  ai21: config.ai21ApiKey,
 };
-
-
 module.exports = interfaces;

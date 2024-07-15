@@ -3,17 +3,17 @@
  * @description Entry point for the LLM interface module, dynamically loading LLMInterface for different LLM providers.
  */
 
-const { LLMInterface } = require("./utils/llmInterface.js");
+const { LLMInterface } = require('./utils/llmInterface.js');
 const {
   LLMInterfaceSendMessage,
   LLMInterfaceStreamMessage,
   LLMInterfaceSendMessageWithConfig,
   LLMInterfaceStreamMessageWithConfig,
-} = require("./utils/message.js");
+} = require('./utils/message.js');
 const {
   LLMInterfaceEmbeddings,
   LLMInterfaceEmbeddingsWithConfig,
-} = require("./utils/embeddings.js");
+} = require('./utils/embeddings.js');
 const {
   getAllModelNames,
   setApiKey,
@@ -21,9 +21,9 @@ const {
   setModelAlias,
   setEmbeddingsModelAlias,
   getModelByAlias,
-  getEmbeddingsModelByAlias
-} = require("./utils/config.js");
-const { flushCache, configureCache } = require("./utils/cache.js");
+  getEmbeddingsModelByAlias,
+} = require('./utils/config.js');
+const { flushCache, configureCache } = require('./utils/cache.js');
 
 // LLMInterface get functions
 LLMInterface.getAllModelNames = getAllModelNames;

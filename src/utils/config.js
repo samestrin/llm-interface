@@ -123,6 +123,7 @@ function getInterfaceConfigValue(interfaceName, key, passThrough = false) {
   const config = getConfig();
 
   const interfaceConfig = config[interfaceName];
+
   if (!interfaceConfig) {
     if (passThrough) {
       return key;
@@ -147,7 +148,8 @@ function getInterfaceConfigValue(interfaceName, key, passThrough = false) {
 
     result = result[k];
   }
-  if (typeof result === 'string') {
+
+  if (typeof result === 'string' || typeof result === 'boolean') {
     return result;
   } else {
     if (passThrough) {
@@ -208,5 +210,5 @@ module.exports = {
   getAllModelNames,
   setApiKey,
   setModelAlias,
-  setEmbeddingsModelAlias
+  setEmbeddingsModelAlias,
 };
