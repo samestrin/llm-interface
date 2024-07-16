@@ -299,16 +299,18 @@ class BaseInterface {
       );
     }
     log.log(responseContent);
+
+    let finalResponse = {};
+
     if (responseContent) {
-      responseContent = { results: responseContent };
-
-      // optionally include the original llm api response
-      if (interfaceOptions.includeOriginalResponse) {
-        responseContent.originalResponse = response.data;
-      }
-
-      return responseContent;
+      finalResponse.results = responseContent;
     }
+    // optionally include the original llm api response
+    if (interfaceOptions.includeOriginalResponse) {
+      finalResponse.originalResponse = response.data;
+    }
+
+    return finalResponse;
   }
 
   /**
