@@ -12,16 +12,17 @@ log.setLevel(log.levels.SILENT);
  * @param {number} options.retryMultiplier - Multiplier for the retry delay.
  * @param {string} errorType - The type of error to throw ('SendMessageError' or 'EmbeddingsError').
  * @returns {Promise<any>} - The result of the function call.
- * @throws {SendMessageError|EmbeddingsError} - Throws an error if all retry attempts fail.
+ * @throws {SendMessageError|EmbeddingsError} - Throws an error if all retry attempts fail or on specific HTTP errors.
  */
 async function retryWithBackoff(fn, options, errorType) {
   const start = hrtime();
   let { retryAttempts = 3, retryMultiplier = 0.3 } = options;
   let currentRetry = 0;
+  let lastError;
 
   while (retryAttempts > 0) {
     try {
-      log.log(`retryWithBackoff:${retryAttempts}`);
+      log.log(`retryWithBackoff: Attempt ${currentRetry + 1}`);
       let response = await fn();
       if (response?.results) {
         const end = hrtime(start);
@@ -31,6 +32,7 @@ async function retryWithBackoff(fn, options, errorType) {
         return response;
       }
     } catch (error) {
+      lastError = error;
       const statusCode = error.response?.status;
       const delayTime = (currentRetry + 1) * retryMultiplier * 1000 + 500;
 
@@ -46,13 +48,11 @@ async function retryWithBackoff(fn, options, errorType) {
           );
 
           throw createError(errorType, statusCode, error);
-          break;
 
         case 429:
         case 503:
           // Retry after the specified time in the Retry-After header if present
           const retryAfter = error.response?.headers['retry-after'];
-
           if (retryAfter) {
             log.log(
               `retryWithBackoff:error:${statusCode}: Retry after ${retryAfter} s`,
@@ -72,11 +72,26 @@ async function retryWithBackoff(fn, options, errorType) {
 
         default:
           throw createError(errorType, statusCode || 'Unknown', error);
-          break;
       }
     }
     currentRetry++;
     retryAttempts--;
+  }
+
+  // If all retries are exhausted without specific HTTP errors, return the last response with additional info
+  if (lastError) {
+    const end = hrtime(start);
+    const milliseconds = end[0] * 1e3 + end[1] / 1e6;
+
+    const results = {
+      total_time: milliseconds.toFixed(5),
+      retries: currentRetry,
+      success: false,
+      error: `HTTP ${statusCode}: ${
+        lastError.response?.statusText || lastError.message
+      }}`,
+    };
+    return results; // Return the last error with total_time and retries
   }
 
   if (errorType === 'SendMessageError') {
