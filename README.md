@@ -25,7 +25,7 @@ LLM Interface supports: **AI21 Studio, AiLAYER, AIMLAPI, Anyscale, Anthropic, Cl
 ## Features
 
 - **Unified Interface**: `LLMInterface.sendMessage` is a single, consistent interface to interact with **36 different LLM APIs** (34 hosted LLM providers and 2 local LLM providers).
-- **Chat Completion, Streaming and Embeddings**: Supports [chat completion, streaming, and embeddings](docs/providers.md) (with failover).
+- **Chat Completion, Streaming and Embeddings**: Supports [chat completion, streaming, and embeddings](docs/providers/README.md) (with failover).
 - **Dynamic Module Loading**: Automatically loads and manages LLM interfaces only when they are invoked, minimizing resource usage.
 - **Error Handling**: Robust error handling mechanisms to ensure reliable API interactions.
 - **Extensible**: Easily extendable to support additional LLM providers as needed.
