@@ -131,7 +131,11 @@ async function LLMInterfaceSendMessage(
 
   let response = {};
   try {
-    response = await retryWithBackoff(sendMessageWithRetries, interfaceOptions);
+    response = await retryWithBackoff(
+      sendMessageWithRetries,
+      interfaceOptions,
+      'SendMessageError',
+    );
   } catch (error) {
     throw error;
   }

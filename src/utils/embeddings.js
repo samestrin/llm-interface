@@ -143,7 +143,11 @@ async function LLMInterfaceEmbeddings(
   let response = {};
 
   try {
-    response = await retryWithBackoff(embeddingsWithRetries, interfaceOptions);
+    response = await retryWithBackoff(
+      embeddingsWithRetries,
+      interfaceOptions,
+      'EmbeddingsError',
+    );
   } catch (error) {
     throw error;
   }
