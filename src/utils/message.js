@@ -129,13 +129,15 @@ async function LLMInterfaceSendMessage(
     return await llmInstance.sendMessage(message, options, interfaceOptions);
   };
 
+  let response = {};
   try {
-    const response = await retryWithBackoff(
-      sendMessageWithRetries,
-      interfaceOptions,
-    );
+    response = await retryWithBackoff(sendMessageWithRetries, interfaceOptions);
+  } catch (error) {
+    throw error;
+  }
 
-    if (LLMInterface && LLMInterface.cacheManagerInstance && response) {
+  if (LLMInterface && LLMInterface.cacheManagerInstance && response?.results) {
+    try {
       const { cacheManagerInstance } = LLMInterface;
 
       if (cacheManagerInstance.cacheType === 'memory-cache') {
@@ -147,15 +149,12 @@ async function LLMInterfaceSendMessage(
           cacheTimeoutSeconds,
         );
       }
+    } catch (error) {
+      throw error;
     }
-
-    return response;
-  } catch (error) {
-    throw new SendMessageError(
-      `Failed to send message using LLM interfaceName ${interfaceName}: ${error.message}`,
-      error.stack,
-    );
   }
+
+  return response;
 }
 
 /**

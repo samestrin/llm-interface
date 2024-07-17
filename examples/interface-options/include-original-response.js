@@ -29,7 +29,7 @@ To run this example, you first need to install the required modules by executing
  */
 async function exampleUsage() {
   prettyHeader(
-    'Auto Retry Failed Requests Example',
+    'Include Original Response',
     description,
     simplePrompt,
     interfaceName,
@@ -50,7 +50,8 @@ async function exampleUsage() {
       },
     );
 
-    prettyResult(response.results);
+    //prettyResult(response.results);
+    console.log(response);
     console.log();
     console.timeEnd('Timer');
     console.log();

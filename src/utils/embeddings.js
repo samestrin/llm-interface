@@ -140,13 +140,15 @@ async function LLMInterfaceEmbeddings(
     );
   };
 
-  try {
-    const response = await retryWithBackoff(
-      embeddingsWithRetries,
-      interfaceOptions,
-    );
+  let response = {};
 
-    if (LLMInterface && LLMInterface.cacheManagerInstance && response) {
+  try {
+    response = await retryWithBackoff(embeddingsWithRetries, interfaceOptions);
+  } catch (error) {
+    throw error;
+  }
+  if (LLMInterface && LLMInterface.cacheManagerInstance && response?.results) {
+    try {
       const { cacheManagerInstance } = LLMInterface;
 
       if (cacheManagerInstance.cacheType === 'memory-cache') {
@@ -158,16 +160,12 @@ async function LLMInterfaceEmbeddings(
           cacheTimeoutSeconds,
         );
       }
+    } catch (error) {
+      throw error;
     }
-
-    return response;
-  } catch (error) {
-    throw new EmbeddingsError(
-      `Failed to generate embeddings using LLM  ${interfaceName}:`,
-      error.message,
-      error.stack,
-    );
   }
+
+  return response;
 }
 
 /**
