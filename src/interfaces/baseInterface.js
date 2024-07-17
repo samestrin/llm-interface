@@ -27,7 +27,6 @@ const {
 
 const config = getConfig();
 const log = require('loglevel');
-log.setLevel(log.levels.SILENT);
 
 // BaseInterface class for interacting with various APIs
 class BaseInterface {
@@ -193,21 +192,20 @@ class BaseInterface {
     // update the url based on the model
     const url = this.getRequestUrl(selectedModel);
 
-    log.log(this.baseURL + url);
+    // log.log('baseInterface:url', this.baseURL + url);
 
     // update the headers
     this.updateHeaders(this.client);
 
-    log.log(this.client.defaults.headers);
-
-    log.log(requestBody);
+    // log.log('baseInterface:headers', this.client.defaults.headers);
+    // log.log('baseInterface:requestBody', requestBody);
 
     let response;
 
     try {
       if (options.stream !== true) {
         response = await this.client.post(this.baseURL + url, requestBody);
-        log.log(JSON.stringify(response.data));
+        // log.log('baseInterface:response.data', JSON.stringify(response.data));
       } else {
         return await this.client.post(this.baseURL + url, requestBody, {
           responseType: 'stream',
@@ -298,12 +296,13 @@ class BaseInterface {
         interfaceOptions.attemptJsonRepair,
       );
     }
-    log.log(responseContent);
+    // log.log('responseContent', responseContent);
 
-    let finalResponse = {};
+    let finalResponse = { success: false };
 
     if (responseContent) {
       finalResponse.results = responseContent;
+      finalResponse.success = true;
     }
     // optionally include the original llm api response
     if (interfaceOptions.includeOriginalResponse) {
@@ -371,7 +370,7 @@ class BaseInterface {
       let payload;
 
       // Adjust options
-      log.log('expects', expects);
+      // log.log('expects', expects);
       prompt = this.adjustEmbeddingPrompt(prompt);
       //console.log('prompt', prompt);
 
@@ -402,17 +401,17 @@ class BaseInterface {
         };
       }
       const url = this.getEmbedRequestUrl(model);
-      log.log('url', embeddingUrl + url);
-      log.log('api', config[this.interfaceName].apiKey);
-      log.log('payload', payload);
-      log.log('prompt', prompt.length);
+      // log.log('url', embeddingUrl + url);
+      // log.log('api', config[this.interfaceName].apiKey);
+      // log.log('payload', payload);
+      // log.log('prompt', prompt.length);
 
       let response, embeddings;
 
       try {
         try {
           response = await this.client.post(embeddingUrl + url, payload);
-          log.log('response', response.data);
+          // log.log('response', response.data);
         } catch (error) {
           if (error.response) {
             throw {

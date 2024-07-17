@@ -10,8 +10,7 @@ const {
 } = require('./configManager.js');
 const { listOfActiveProviders } = require('../config/providers.js');
 const log = require('loglevel');
-//log.setLevel('silent');
-let cacheInstance = [];
+
 /**
  * Sets the API key for a specified interface or multiple interfaces.
  *

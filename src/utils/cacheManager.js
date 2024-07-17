@@ -10,7 +10,6 @@
 const { CacheError } = require('./errors.js');
 const fs = require('fs');
 const log = require('loglevel');
-log.setLevel(log.levels.SILENT);
 
 /**
  * CacheManager class for managing different caching strategies.

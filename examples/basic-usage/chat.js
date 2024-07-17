@@ -7,9 +7,9 @@
  *    npm install dotenv
  */
 
-
 const { LLMInterface } = require('../../src/index.js');
-const { prettyHeader,
+const {
+  prettyHeader,
   prettyText,
   prettyResult,
   GREEN,
@@ -32,36 +32,35 @@ To run this example, you first need to install the required modules by executing
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-
-  console.time('Timer');
   // OpenAI chat.completion structure
   const openaiCompatibleStructure = {
-    "model": "gemma-7b-it",
-    "messages":
-      [
-        { "role": "system", "content": "You are a helpful assistant." },
-        { "role": "user", "content": "Say hello with a polite greeting!" },
-        { "role": "system", "content": "Hello there! It's an absolute pleasure to make your acquaintance. How may I have the honor of assisting you today?" },
-        { "role": "user", "content": "I need help understanding low latency LLMs!" }
-      ],
-    "max_tokens": 100
-  }
+    model: 'gemma-7b-it',
+    messages: [
+      { role: 'system', content: 'You are a helpful assistant.' },
+      { role: 'user', content: 'Say hello with a polite greeting!' },
+      {
+        role: 'system',
+        content:
+          "Hello there! It's an absolute pleasure to make your acquaintance. How may I have the honor of assisting you today?",
+      },
+      { role: 'user', content: 'I need help understanding low latency LLMs!' },
+    ],
+    max_tokens: 100,
+  };
   LLMInterface.setApiKey(interfaceName, apiKey);
 
   try {
-    console.time('Timer')
-    prettyHeader(
-      'Chat Example',
-      description,
-      false,
-      interfaceName,
-    );
+    console.time('Timer');
+    prettyHeader('Chat Example', description, false, interfaceName);
 
     prettyText(`\n\n${GREEN}Prompt (OpenAI Compatible Structure):${RESET}\n\n`);
-    console.log(openaiCompatibleStructure)
-    console.log()
+    console.log(openaiCompatibleStructure);
+    console.log();
 
-    const response = await LLMInterface.sendMessage(interfaceName, openaiCompatibleStructure);
+    const response = await LLMInterface.sendMessage(
+      interfaceName,
+      openaiCompatibleStructure,
+    );
 
     /*
     or for the OpenAI API fans
@@ -77,7 +76,10 @@ async function exampleUsage() {
     console.timeEnd('Timer');
     console.log();
   } catch (error) {
-    console.error('Error processing openaiCompatibleStructure sendMessage:', error);
+    console.error(
+      'Error processing openaiCompatibleStructure sendMessage:',
+      error,
+    );
   }
 }
 

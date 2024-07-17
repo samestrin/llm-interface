@@ -9,6 +9,7 @@ const GREEN = '\u001b[32m';
 const BLUE = '\u001b[34m';
 const YELLOW = '\x1b[33m';
 const RESET = '\u001b[0m';
+const log = require('loglevel');
 
 /**
  * Returns a message object with the provided message and an optional system message.
@@ -140,6 +141,7 @@ async function parseJSON(json, attemptRepair) {
  * @returns {Promise<void>} A promise that resolves after the delay.
  */
 async function delay(ms) {
+  log.log(`delay(${ms})`);
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -163,7 +165,6 @@ function createCacheKey(key = {}) {
     .update(JSON.stringify(cacheKey))
     .digest('hex');
 }
-
 
 /* should be moved */
 
@@ -201,9 +202,10 @@ function prettyHeader(
 
   if (interfaceName) {
     process.stdout.write(
-      `\n${YELLOW}Using ${interfaceName} and ${!embeddings
-        ? getInterfaceConfigValue(interfaceName, 'model.default')
-        : getInterfaceConfigValue(interfaceName, 'embeddings.default')
+      `\n${YELLOW}Using ${interfaceName} and ${
+        !embeddings
+          ? getInterfaceConfigValue(interfaceName, 'model.default')
+          : getInterfaceConfigValue(interfaceName, 'embeddings.default')
       }${RESET}`,
     );
   }
@@ -236,7 +238,6 @@ function prettyResult(response, title = 'Response') {
   }
 }
 
-
 /**
  * Checks if the given variable is an empty plain object.
  *
@@ -252,9 +253,13 @@ function prettyResult(response, title = 'Response') {
  */
 
 function isEmptyObject(obj) {
-  return obj !== null && obj !== undefined && Object.keys(obj).length === 0 && obj.constructor === Object;
+  return (
+    obj !== null &&
+    obj !== undefined &&
+    Object.keys(obj).length === 0 &&
+    obj.constructor === Object
+  );
 }
-
 
 module.exports = {
   getMessageObject,

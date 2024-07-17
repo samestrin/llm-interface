@@ -7,7 +7,6 @@
  *    npm install dotenv
  */
 
-
 const { LLMInterface } = require('../../src/index.js');
 const { prettyHeader, prettyResult } = require('../../src/utils/utils.js');
 const { simplePrompt } = require('../../src/utils/defaults.js');
@@ -32,14 +31,13 @@ async function exampleUsage() {
 
   try {
     console.time('Timer');
-    prettyHeader(
-      'Prompt Example',
-      description,
-      simplePrompt,
-      interfaceName,
-    );
+    prettyHeader('Prompt Example', description, simplePrompt, interfaceName);
 
-    const response = await LLMInterface.sendMessage(interfaceName, simplePrompt, { max_tokens: 100 });
+    const response = await LLMInterface.sendMessage(
+      interfaceName,
+      simplePrompt,
+      { max_tokens: 100 },
+    );
 
     prettyResult(response.results);
     console.timeEnd('Timer');
