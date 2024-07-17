@@ -1,5 +1,6 @@
 const { SendMessageError, EmbeddingsError } = require('./errors.js');
 const { delay } = require('./utils.js');
+const { hrtime } = require('process');
 const log = require('loglevel');
 log.setLevel(log.levels.SILENT);
 
@@ -14,6 +15,7 @@ log.setLevel(log.levels.SILENT);
  * @throws {SendMessageError|EmbeddingsError} - Throws an error if all retry attempts fail.
  */
 async function retryWithBackoff(fn, options, errorType) {
+  const start = hrtime();
   let { retryAttempts = 3, retryMultiplier = 0.3 } = options;
   let currentRetry = 0;
 
@@ -22,6 +24,9 @@ async function retryWithBackoff(fn, options, errorType) {
       log.log(`retryWithBackoff:${retryAttempts}`);
       let response = await fn();
       if (response?.results) {
+        const end = hrtime(start);
+        const milliseconds = end[0] * 1e3 + end[1] / 1e6;
+        response.total_time = milliseconds.toFixed(5);
         return response;
       }
     } catch (error) {
