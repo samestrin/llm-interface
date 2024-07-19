@@ -159,7 +159,7 @@ class Gemini extends BaseInterface {
 
     if (responseContent) {
       // Build response object
-      responseContent = { results: responseContent };
+      responseContent = { results: responseContent, success: true };
 
       // optionally include the original llm api response
       if (interfaceOptions.includeOriginalResponse) {
