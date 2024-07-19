@@ -140,39 +140,41 @@ async function parseJSON(json, attemptRepair) {
 }
 
 function findFirstJsonObject(inputString) {
-  let stack = [];
-  let jsonStartIndex = -1;
-  let jsonString = '';
+  if (inputString) {
+    let stack = [];
+    let jsonStartIndex = -1;
+    let jsonString = '';
 
-  for (let i = 0; i < inputString.length; i++) {
-    const char = inputString[i];
+    for (let i = 0; i < inputString.length; i++) {
+      const char = inputString[i];
 
-    if (char === '{') {
-      if (stack.length === 0) {
-        jsonStartIndex = i; // Mark the start of the JSON object
+      if (char === '{') {
+        if (stack.length === 0) {
+          jsonStartIndex = i; // Mark the start of the JSON object
+        }
+        stack.push(char);
+      } else if (char === '}') {
+        stack.pop();
+        if (stack.length === 0) {
+          jsonString = inputString.substring(jsonStartIndex, i + 1);
+          break;
+        }
       }
-      stack.push(char);
-    } else if (char === '}') {
-      stack.pop();
-      if (stack.length === 0) {
-        jsonString = inputString.substring(jsonStartIndex, i + 1);
-        break;
+    }
+
+    if (jsonString) {
+      try {
+        const jsonObject = JSON.parse(jsonString.replace(/(\w+):/g, '"$1":')); // Adding quotes around keys
+        return jsonObject;
+      } catch (error) {
+        log.error('Error parsing JSON:', error);
       }
+    } else {
+      log.error('No JSON object found in the input string.');
     }
   }
 
-  if (jsonString) {
-    try {
-      const jsonObject = JSON.parse(jsonString.replace(/(\w+):/g, '"$1":')); // Adding quotes around keys
-      return jsonObject;
-    } catch (error) {
-      console.error('Error parsing JSON:', error);
-    }
-  } else {
-    console.error('No JSON object found in the input string.');
-  }
-
-  return null;
+  return inputString;
 }
 
 /**
@@ -284,13 +286,6 @@ function prettyResult(response, title = 'Response') {
  *
  * @param {object} obj - The object to check.
  * @returns {boolean} - Returns true if the object is empty, false otherwise.
- *
- * @example
- * const emptyObj = {};
- * const nonEmptyObj = { key: 'value' };
- *
- * console.log(isEmptyObject(emptyObj)); // true
- * console.log(isEmptyObject(nonEmptyObj)); // false
  */
 
 function isEmptyObject(obj) {
