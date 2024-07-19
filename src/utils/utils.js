@@ -78,8 +78,8 @@ async function getJsonRepairInstance() {
  * @returns {string} - The extracted JavaScript code or the cleaned JSON string.
  */
 function extractCodeFromResponse(json, attemptRepair) {
-  // Define regex to match ```javascript block and capture the code inside
-  const codeBlockRegex = /```javascript\s*([\s\S]*?)\s*```/i;
+  // Define regex to match ``` block and capture the code inside
+  const codeBlockRegex = /```([^`]+)\n([\s\S]*?)```/g;
 
   if (typeof json === 'string' && attemptRepair) {
     // Attempt to match the regex
@@ -93,8 +93,9 @@ function extractCodeFromResponse(json, attemptRepair) {
       json = json.replace(/```javascript/gi, ''); // Replace all occurrences of '```javascript'
       json = json.replace(/```/gi, ''); // Replace all occurrences of '```'
     }
+    json = json.trim();
   }
-  json = json.trim();
+
   return json;
 }
 
@@ -111,8 +112,12 @@ async function parseJSON(json, attemptRepair) {
   const subString = '```';
   const regex = new RegExp(subString, 'ig'); // Added 'g' flag for global replacement
 
-  if (typeof json === 'string' && attemptRepair && regex.test(json)) {
-    json = extractCodeFromResponse(json);
+  if (typeof json === 'string') {
+    if (regex.test(json)) {
+      json = extractCodeFromResponse(json, true);
+    } else {
+      json = findFirstJsonObject(json);
+    }
   }
 
   try {
@@ -125,13 +130,49 @@ async function parseJSON(json, attemptRepair) {
         const repaired = jsonrepair(json);
         const reparsed = JSON.parse(repaired);
         return reparsed;
-      } catch (importError) {
+      } catch (error) {
         return original;
       }
     } else {
       return original;
     }
   }
+}
+
+function findFirstJsonObject(inputString) {
+  let stack = [];
+  let jsonStartIndex = -1;
+  let jsonString = '';
+
+  for (let i = 0; i < inputString.length; i++) {
+    const char = inputString[i];
+
+    if (char === '{') {
+      if (stack.length === 0) {
+        jsonStartIndex = i; // Mark the start of the JSON object
+      }
+      stack.push(char);
+    } else if (char === '}') {
+      stack.pop();
+      if (stack.length === 0) {
+        jsonString = inputString.substring(jsonStartIndex, i + 1);
+        break;
+      }
+    }
+  }
+
+  if (jsonString) {
+    try {
+      const jsonObject = JSON.parse(jsonString.replace(/(\w+):/g, '"$1":')); // Adding quotes around keys
+      return jsonObject;
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+    }
+  } else {
+    console.error('No JSON object found in the input string.');
+  }
+
+  return null;
 }
 
 /**
