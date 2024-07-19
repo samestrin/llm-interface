@@ -36,6 +36,10 @@ LLM Interface supports: **AI21 Studio, AiLAYER, AIMLAPI, Anyscale, Anthropic, Cl
 
 ## Updates
 
+**v2.0.14**
+
+- **Recovery Mode (Beta)**: Automatically repair invalid JSON objects in response errors. Currently, this feature is only available with Groq.
+
 **v2.0.11**
 
 - **New LLM Providers**: Anyscale, Bigmodel, Corcel, Deepseek, Hyperbee AI, Lamini, Neets AI, Novita AI, NVIDIA, Shuttle AI, TheB.AI, and Together AI.
