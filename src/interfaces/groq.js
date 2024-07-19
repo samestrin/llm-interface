@@ -19,6 +19,14 @@ class Groq extends BaseInterface {
     super(interfaceName, apiKey || groqApiKey, config[interfaceName].url);
     super.config = config;
   }
+
+  recoverError(error) {
+    if (error.response?.data?.error?.failed_generation) {
+      return decodeURIComponent(error.response?.data?.error?.failed_generation);
+    }
+
+    return null;
+  }
 }
 
 module.exports = Groq;

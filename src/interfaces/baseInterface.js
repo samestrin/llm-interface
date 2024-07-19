@@ -27,7 +27,7 @@ const {
 
 const config = getConfig();
 const log = require('loglevel');
-
+log.setLevel(log.levels.SILENT);
 // BaseInterface class for interacting with various APIs
 class BaseInterface {
   /**
@@ -192,50 +192,59 @@ class BaseInterface {
     // update the url based on the model
     const url = this.getRequestUrl(selectedModel);
 
-    // log.log('baseInterface:url', this.baseURL + url);
+    //log.log('baseInterface:url', this.baseURL + url);
 
     // update the headers
     this.updateHeaders(this.client);
 
-    // log.log('baseInterface:headers', this.client.defaults.headers);
-    // log.log('baseInterface:requestBody', requestBody);
+    //log.log('baseInterface:headers', this.client.defaults.headers);
+    //log.log('baseInterface:requestBody', requestBody);
 
     let response;
+    let responseContent = null,
+      errorResponse = null;
 
     try {
       if (options.stream !== true) {
         response = await this.client.post(this.baseURL + url, requestBody);
-        // log.log('baseInterface:response.data', JSON.stringify(response.data));
+        //log.log('baseInterface:response.data', JSON.stringify(response.data));
       } else {
         return await this.client.post(this.baseURL + url, requestBody, {
           responseType: 'stream',
         });
       }
     } catch (error) {
-      // pass up the axios error to the retry handler
-      if (error.response) {
-        throw {
-          response: error.response,
-          message: `Could not connect to ${this.baseURL + url} (${
-            error.response.status
-          })`,
-          stack: error.stack,
-        };
-      } else if (error.request) {
-        throw {
-          request: error.request,
-          message: `Could not connect to ${this.baseURL + url}`,
-          stack: error.stack,
-        };
+      // attempt error recovery
+      //log.log('baseInterface:error',JSON.stringify(error),JSON.stringify(response),);
+
+      responseContent = this.recoverError(error);
+
+      if (!responseContent) {
+        // pass up the axios error to the retry handler
+        if (error.response) {
+          throw {
+            response: error.response,
+            message: `Could not connect to ${this.baseURL + url} (${
+              error.response.status
+            })`,
+            stack: error.stack,
+          };
+        } else if (error.request) {
+          throw {
+            request: error.request,
+            message: `Could not connect to ${this.baseURL + url}`,
+            stack: error.stack,
+          };
+        } else {
+          throw {
+            message: `Could not connect to ${this.baseURL + url}`,
+            stack: error.stack,
+          };
+        }
       } else {
-        throw {
-          message: `Could not connect to ${this.baseURL + url}`,
-          stack: error.stack,
-        };
+        errorResponse = error.response.data;
       }
     }
-
-    let responseContent = null;
 
     if (response?.data?.choices?.[0]?.message?.content) {
       // openai format
@@ -275,6 +284,7 @@ class BaseInterface {
     if (responseContent) {
       responseContent = responseContent.trim();
     }
+    //log.log('baseInterface:responseContent', JSON.stringify(responseContent));
 
     // Attempt to repair the object if needed
     if (
@@ -296,9 +306,9 @@ class BaseInterface {
         interfaceOptions.attemptJsonRepair,
       );
     }
-    // log.log('responseContent', responseContent);
+    // log.log('baseInterface:responseContent(post)', JSON.stringify(responseContent));
 
-    let finalResponse = { success: false };
+    let finalResponse = { success: false, recoveryMode: false };
 
     if (responseContent) {
       finalResponse.results = responseContent;
@@ -306,9 +316,14 @@ class BaseInterface {
     }
     // optionally include the original llm api response
     if (interfaceOptions.includeOriginalResponse) {
-      finalResponse.originalResponse = response.data;
+      if (response && response?.data) {
+        finalResponse.originalResponse = response.data;
+      } else if (errorResponse) {
+        finalResponse.originalResponse = errorResponse;
+        finalResponse.recoveryMode = true;
+      }
     }
-
+    //log.log('baseInterface:finalResponse', JSON.stringify(finalResponse));
     return finalResponse;
   }
 
@@ -491,6 +506,10 @@ class BaseInterface {
 
   adjustEmbeddingPrompt(prompt) {
     return prompt;
+  }
+
+  recoverError(error) {
+    return null;
   }
 }
 
