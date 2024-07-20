@@ -27,7 +27,7 @@ const {
 
 const config = getConfig();
 const log = require('loglevel');
-log.setLevel(log.levels.SILENT);
+
 // BaseInterface class for interacting with various APIs
 class BaseInterface {
   /**
@@ -146,6 +146,11 @@ class BaseInterface {
    * @returns {string} The response content from the API.
    */
   async sendMessage(message, options = {}, interfaceOptions = {}) {
+    // allow for debugLevel
+    if (typeof interfaceOptions.debugLevel !== 'undefined') {
+      log.setLevel(interfaceOptions.debugLevel);
+    }
+
     // Create the message object if a string is provided, otherwise use the provided object
     let messageObject =
       typeof message === 'string' ? this.createMessageObject(message) : message;
@@ -192,13 +197,13 @@ class BaseInterface {
     // update the url based on the model
     const url = this.getRequestUrl(selectedModel);
 
-    //log.log('baseInterface:url', this.baseURL + url);
+    log.log('baseInterface:url', this.baseURL + url);
 
     // update the headers
     this.updateHeaders(this.client);
 
-    //log.log('baseInterface:headers', this.client.defaults.headers);
-    //log.log('baseInterface:requestBody', requestBody);
+    log.log('baseInterface:headers', this.client.defaults.headers);
+    log.log('baseInterface:requestBody', requestBody);
 
     let response;
     let responseContent = null,
@@ -207,7 +212,7 @@ class BaseInterface {
     try {
       if (options.stream !== true) {
         response = await this.client.post(this.baseURL + url, requestBody);
-        //log.log('baseInterface:response.data', JSON.stringify(response.data));
+        log.log('baseInterface:response.data', JSON.stringify(response.data));
       } else {
         return await this.client.post(this.baseURL + url, requestBody, {
           responseType: 'stream',
@@ -215,7 +220,11 @@ class BaseInterface {
       }
     } catch (error) {
       // attempt error recovery
-      //log.log('baseInterface:error',JSON.stringify(error),JSON.stringify(response),);
+      log.error(
+        'baseInterface:error',
+        JSON.stringify(error),
+        JSON.stringify(response),
+      );
 
       responseContent = this.recoverError(error);
 
@@ -306,7 +315,7 @@ class BaseInterface {
         interfaceOptions.attemptJsonRepair,
       );
     }
-    // log.log('baseInterface:responseContent(post)', JSON.stringify(responseContent));
+    //log.log('baseInterface:responseContent(post)', JSON.stringify(responseContent));
 
     let finalResponse = { success: false, recoveryMode: false };
 
@@ -323,7 +332,7 @@ class BaseInterface {
         finalResponse.recoveryMode = true;
       }
     }
-    //log.log('baseInterface:finalResponse', JSON.stringify(finalResponse));
+    log.log('baseInterface:finalResponse', JSON.stringify(finalResponse));
     return finalResponse;
   }
 
