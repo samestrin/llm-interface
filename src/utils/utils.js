@@ -164,6 +164,7 @@ function findFirstJsonObject(inputString) {
 
     if (jsonString) {
       try {
+        jsonString = unescapeString(jsonString);
         const jsonObject = JSON.parse(jsonString.replace(/(\w+):/g, '"$1":')); // Adding quotes around keys
         return jsonObject;
       } catch (error) {
@@ -175,6 +176,25 @@ function findFirstJsonObject(inputString) {
   }
 
   return inputString;
+}
+
+/**
+ * Unescapes common escape sequences in a string.
+ * @param {string} str - The string with escape sequences.
+ * @returns {string} - The unescaped string.
+ */
+function unescapeString(str) {
+  return str
+    .replace(/\\n/g, '\n')
+    .replace(/\\t/g, '\t')
+    .replace(/\\r/g, '\r')
+    .replace(/\\f/g, '\f')
+    .replace(/\\b/g, '\b')
+    .replace(/\\v/g, '\v')
+    .replace(/\\'/g, "'")
+    .replace(/\\"/g, '"')
+    .replace(/\\_/g, '_')
+    .replace(/\\\\/g, '\\');
 }
 
 /**
@@ -310,4 +330,5 @@ module.exports = {
   YELLOW,
   GREEN,
   RESET,
+  unescapeString,
 };

@@ -7,8 +7,9 @@
 
 const BaseInterface = require('./baseInterface.js');
 const { groqApiKey } = require('../utils/loadApiKeysFromEnv.js');
+const { unescapeString } = require('../utils/utils.js');
 const { getConfig, loadProviderConfig } = require('../utils/configManager.js');
-const log = require('loglevel');
+
 const interfaceName = 'groq';
 
 loadProviderConfig(interfaceName);
@@ -22,29 +23,10 @@ class Groq extends BaseInterface {
 
   recoverError(error) {
     if (error.response?.data?.error?.failed_generation) {
-      return this.unescapeString(
-        error.response?.data?.error?.failed_generation,
-      );
+      return unescapeString(error.response?.data?.error?.failed_generation);
     }
 
     return null;
-  }
-  /**
-   * Unescapes common escape sequences in a string.
-   * @param {string} str - The string with escape sequences.
-   * @returns {string} - The unescaped string.
-   */
-  unescapeString(str) {
-    return str
-      .replace(/\\n/g, '\n')
-      .replace(/\\t/g, '\t')
-      .replace(/\\r/g, '\r')
-      .replace(/\\f/g, '\f')
-      .replace(/\\b/g, '\b')
-      .replace(/\\v/g, '\v')
-      .replace(/\\'/g, "'")
-      .replace(/\\"/g, '"')
-      .replace(/\\\\/g, '\\');
   }
 }
 
