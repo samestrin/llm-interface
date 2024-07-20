@@ -2,7 +2,7 @@
 
 [![Star on GitHub](https://img.shields.io/github/stars/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/stargazers) [![Fork on GitHub](https://img.shields.io/github/forks/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/network/members) [![Watch on GitHub](https://img.shields.io/github/watchers/samestrin/llm-interface?style=social)](https://github.com/samestrin/llm-interface/watchers)
 
-![Version 2.0.145](https://img.shields.io/badge/Version-2.0.145-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
+![Version 2.0.146](https://img.shields.io/badge/Version-2.0.146-blue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Built with Node.js](https://img.shields.io/badge/Built%20with-Node.js-green)](https://nodejs.org/)
 
 ## Introduction
 
@@ -38,7 +38,7 @@ LLM Interface supports: **AI21 Studio, AiLAYER, AIMLAPI, Anyscale, Anthropic, Cl
 
 **v2.0.14**
 
-- **Recovery Mode (Beta)**: Automatically repair invalid JSON objects in response errors. Currently, this feature is only available with Groq.
+- **Recovery Mode (Beta)**: Automatically repair invalid JSON objects in HTTP 400 response errors. Currently, this feature is only available with Groq.
 
 **v2.0.11**
 
