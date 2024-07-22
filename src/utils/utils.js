@@ -79,7 +79,7 @@ async function getJsonRepairInstance() {
  */
 function extractCodeFromResponse(json, attemptRepair) {
   // Define regex to match ``` block and capture the code inside
-  const codeBlockRegex = /```([^`]+)\n([\s\S]*?)```/g;
+  const codeBlockRegex = /```(?:[^`]*?)\n([\s\S]*?)```/g;
 
   if (typeof json === 'string' && attemptRepair) {
     // Attempt to match the regex
@@ -88,8 +88,8 @@ function extractCodeFromResponse(json, attemptRepair) {
     if (match && match[1]) {
       // If there's a match, return the captured code
       return match[1].trim();
-    } else if (regex.test(json)) {
-      // Fall through to the previous behavior if regex.test(json) is true
+    } else if (json.includes('```')) {
+      // Fall through to the previous behavior if json.includes('```') is true
       json = json.replace(/```javascript/gi, ''); // Replace all occurrences of '```javascript'
       json = json.replace(/```/gi, ''); // Replace all occurrences of '```'
     }
