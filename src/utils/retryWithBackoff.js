@@ -87,8 +87,13 @@ async function retryWithBackoff(fn, options, errorType) {
       total_time: milliseconds.toFixed(5),
       retries: currentRetry,
       success: false,
-      error: `HTTP ${statusCode}: ${
-        lastError.response?.statusText || lastError.message
+      error: `HTTP ${statusCode || 'undefined'}: ${
+        lastError.response?.statusText ||
+        lastError.message ||
+        lastError.error_message ||
+        lastError.failure_message ||
+        lastError.status ||
+        'undefined'
       }}`,
     };
     return results; // Return the last error with total_time and retries
