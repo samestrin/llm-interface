@@ -2,7 +2,6 @@ const { SendMessageError, EmbeddingsError } = require('./errors.js');
 const { delay } = require('./utils.js');
 const { hrtime } = require('process');
 const log = require('loglevel');
-log.setLevel(log.levels.SILENT);
 
 /**
  * Retries the provided function with exponential backoff and handles specific HTTP errors.
@@ -19,6 +18,7 @@ async function retryWithBackoff(fn, options, errorType) {
   let { retryAttempts = 3, retryMultiplier = 0.3 } = options;
   let currentRetry = 0;
   let lastError;
+  let statusCode = 0;
 
   while (retryAttempts > 0) {
     try {
@@ -33,7 +33,7 @@ async function retryWithBackoff(fn, options, errorType) {
       }
     } catch (error) {
       lastError = error;
-      const statusCode = error.response?.status;
+      statusCode = error.response?.status;
       const delayTime = (currentRetry + 1) * retryMultiplier * 1000 + 500;
 
       switch (statusCode) {
