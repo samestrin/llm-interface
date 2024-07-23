@@ -46,7 +46,7 @@ LLM Interface supports: **AI21 Studio, AiLAYER, AIMLAPI, Anyscale, Anthropic, Cl
 - **Caching**: Supports multiple caches: `simple-cache`, `flat-cache`, and `cache-manager`. _`flat-cache` is now an optional package._
 - **Logging**: Improved logging with the `loglevel`.
 - **Improved Documentation**: Improved [documentation](docs/README.md) with new examples, glossary, and provider details. Updated API key details, model alias breakdown, and usage information.
-- **More Examples**: [LangChain.js RAG](examples/langchain/rag.js), [Mixture-of-Authorities (MoA)](examples/moa/moa.js), and [more](docs/examples.md).
+- **More Examples**: [LangChain.js RAG](examples/langchain/rag.js), [Mixture-of-Agents (MoA)](examples/moa/moa.js), and [more](docs/examples.md).
 - **Removed Dependency**: `@anthropic-ai/sdk` is no longer required.
 
 ## Dependencies
@@ -77,8 +77,8 @@ npm install llm-interface
 - Looking for [API Keys](/docs/api-keys.md)? This document provides helpful links.
 - Detailed [usage](/docs/usage.md) documentation is available here.
 - Various [examples](/examples) are also available to help you get started.
-- A breakdown of [model aliases](/docs/models.md) aliases is available here.
-- A breakdown of [embeddings model aliases](/docs/embeddings.md) aliases is available here.
+- A breakdown of [model aliases](/docs/models.md) is available here.
+- A breakdown of [embeddings model aliases](/docs/embeddings.md) is available here.
 - If you still want more examples, you may wish to review the [test cases](/test/) for further examples.
 
 ## Usage
@@ -163,7 +163,7 @@ _Note: Currently skipping NVIDIA test cases due to API issues, and Ollama due to
 ## TODO
 
 - [ ] Provider > Models > Azure AI
-- [ ] Provider > Models > Groq
+- [ ] Provider > Models > Grok
 - [ ] Provider > Models > SiliconFlow
 - [ ] Provider > Embeddings > Nomic
 - [ ] _Feature > Image Generation?_
