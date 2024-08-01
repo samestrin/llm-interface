@@ -1,1 +1,14 @@
-{"url":"https://api.perplexity.ai/chat/completions","model":{"default":"llama-3-sonar-large-32k-online","large":"llama-3-sonar-large-32k-online","small":"llama-3-sonar-small-32k-online","agent":"llama-3-sonar-large-32k-online"},"createMessageObject":"getMessageObject","stream":true,"jsonMode":false,"maxTokens":true,"hasEmbeddings":false}
+{
+  "url": "https://api.perplexity.ai/chat/completions",
+  "model": {
+    "default": "llama-3.1-sonar-large-128k-chat",
+    "large": "llama-3.1-sonar-large-128k-chat",
+    "small": "llama-3.1-sonar-small-128k-chat",
+    "agent": "llama-3.1-70b-instruct"
+  },
+  "createMessageObject": "getMessageObject",
+  "stream": true,
+  "jsonMode": false,
+  "maxTokens": true,
+  "hasEmbeddings": false
+}

@@ -30,12 +30,12 @@ main();
 
 ### Model Aliases
 
-The following model aliases are provided for this provider. 
+The following model aliases are provided for this provider.
 
-- `default`: llama-3-sonar-large-32k-online
-- `large`: llama-3-sonar-large-32k-online
-- `small`: llama-3-sonar-small-32k-online
-- `agent`: llama-3-sonar-large-32k-online
+- `default`: llama-3.1-sonar-large-128k-chat
+- `large`: llama-3.1-sonar-large-128k-chat
+- `small`: llama-3.1-sonar-small-128k-chat
+- `agent`: llama-3.1-8b-instruct
 
 
 ## Options

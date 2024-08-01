@@ -123,7 +123,7 @@ Passing a more complex message object is just as simple. The same rules apply:
 
 ```javascript
 const message = {
-  model: 'gpt-3.5-turbo',
+  model: 'gpt-4o-mini',
   messages: [
     { role: 'system', content: 'You are a helpful assistant.' },
     { role: 'user', content: 'Explain the importance of low latency LLMs.' },

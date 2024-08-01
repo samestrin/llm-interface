@@ -26,9 +26,16 @@ async function retryWithBackoff(fn, options, errorType) {
       let response = await fn();
       if (response?.results) {
         const end = hrtime(start);
+        const resultsEnd = hrtime(start);
+
         const milliseconds = end[0] * 1e3 + end[1] / 1e6;
         response.total_time = milliseconds.toFixed(5);
+
+        const resultsMilliseconds = resultsEnd[0] * 1e3 + resultsEnd[1] / 1e6;
+        response.request_time = resultsMilliseconds.toFixed(5);
+
         response.retries = currentRetry;
+
         return response;
       }
     } catch (error) {

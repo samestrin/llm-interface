@@ -63,7 +63,7 @@ const geminiResult = await LLMInterface.sendMessage("gemini", "Explain the impor
 Changing the aliases is easy:
 
 ```javascript
-LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
+LLMInterface.setModelAlias("openai", "default", "gpt-4o-mini");
 ```
 
 ## Model Alias Values
@@ -197,7 +197,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 - `default`: forefront/Mistral-7B-Instruct-v0.2-chatml
 - `large`: forefront/Mistral-7B-Instruct-v0.2-chatml
 - `small`: forefront/Mistral-7B-Instruct-v0.2-chatml
-- `agent`: 
+- `agent`:
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
@@ -318,7 +318,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 - `default`: Neets-7B
 - `large`: mistralai/Mixtral-8X7B-Instruct-v0.1
 - `small`: Neets-7B
-- `agent`: 
+- `agent`:
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
@@ -362,17 +362,15 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 - `default`: llama3
 - `large`: llama3
 - `small`: llama3
-- `agent`: 
+- `agent`:
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
 ### [OpenAI](providers/openai.md)
 
-
-
-- `default`: gpt-3.5-turbo
+- `default`: gpt-4o-mini
 - `large`: gpt-4o
-- `small`: gpt-3.5-turbo
+- `small`: gpt-4o-mini
 - `agent`: gpt-4o
 
 
@@ -381,10 +379,10 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 
 ![perplexity](https://samestrin.github.io/media/llm-interface/icons/perplexity.png)
 
-- `default`: llama-3-sonar-large-32k-online
-- `large`: llama-3-sonar-large-32k-online
-- `small`: llama-3-sonar-small-32k-online
-- `agent`: llama-3-sonar-large-32k-online
+- `default`: llama-3.1-sonar-large-128k-chat
+- `large`: llama-3.1-sonar-large-128k-chat
+- `small`: llama-3.1-sonar-small-128k-chat
+- `agent`: llama-3.1-70b-instruct
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
@@ -461,7 +459,7 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 - `default`: palmyra-x-002-32k
 - `large`: palmyra-x-002-32k
 - `small`: palmyra-x-002-32k
-- `agent`: 
+- `agent`:
 
 
 ![](https://samestrin.github.io/media/llm-interface/icons/blank.png)
@@ -473,4 +471,3 @@ LLMInterface.setModelAlias("openai", "default", "gpt-3.5-turbo");
 - `large`: glm-4
 - `small`: glm-4-flash
 - `agent`: glm-4
-
