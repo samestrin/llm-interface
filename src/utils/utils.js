@@ -127,9 +127,18 @@ async function parseJSON(json, attemptRepair) {
     if (attemptRepair) {
       try {
         const jsonrepair = await getJsonRepairInstance();
-        const repaired = jsonrepair(json);
-        const reparsed = JSON.parse(repaired);
-        return reparsed;
+        let repaired = false;
+
+        try {
+          repaired = jsonrepair(json);
+        } catch (e) {
+          repaired = jsonrepair(unescapeString(json));
+        }
+
+        if (repaired) {
+          const reparsed = JSON.parse(repaired);
+          return reparsed;
+        }
       } catch (error) {
         return original;
       }
