@@ -13,11 +13,19 @@ Cloudflare, Inc. is a leading web performance and security company that offers a
 ```javascript
 const { LLMInterface } = require('llm-interface');
 
-LLMInterface.setApiKey({'cloudflareai': [process.env.CLOUDFLAREAI_ACCOUNT_ID]});
+LLMInterface.setApiKey({
+  cloudflareai: [
+    process.env.CLOUDFLAREAI_API_KEY,
+    process.env.CLOUDFLAREAI_ACCOUNT_ID,
+  ],
+});
 
 async function main() {
   try {
-    const response = await LLMInterface.sendMessage('cloudflareai', 'Explain the importance of low latency LLMs.');
+    const response = await LLMInterface.sendMessage(
+      'cloudflareai',
+      'Explain the importance of low latency LLMs.',
+    );
     console.log(response.results);
   } catch (error) {
     console.error(error);
@@ -30,7 +38,7 @@ main();
 
 ### Model Aliases
 
-The following model aliases are provided for this provider. 
+The following model aliases are provided for this provider.
 
 - `default`: @cf/meta/llama-3-8b-instruct
 - `large`: @hf/thebloke/llama-2-13b-chat-awq
@@ -43,7 +51,6 @@ The following model aliases are provided for this provider.
 - `large`: @cf/baai/bge-large-en-v1.5
 - `small`: @cf/baai/bge-small-en-v1.5
 
-
 ## Options
 
 The following parameters can be passed through `options`.
@@ -51,12 +58,10 @@ The following parameters can be passed through `options`.
 - `max_tokens`: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
 - `temperature`: Controls the randomness of the AI's responses. A higher temperature results in more random outputs, while a lower temperature makes the output more focused and deterministic. Generally, it is recommended to alter this or top_p, but not both.
 
-
 ### Features
 
 - Functions
 - Embeddings
-
 
 ## Getting an API Key
 
@@ -65,7 +70,6 @@ The following parameters can be passed through `options`.
 To get an API key, first create a Cloudflare AI account, then visit the link below.
 
 - https://dash.cloudflareai.com/profile/api-tokens
-
 
 ## [Cloudflare AI Documentation](https://developers.cloudflare.com/workers-ai/)
 
