@@ -30,11 +30,11 @@ main();
 
 ### Model Aliases
 
-The following model aliases are provided for this provider. 
+The following model aliases are provided for this provider.
 
-- `default`: gpt-3.5-turbo
+- `default`: gpt-4o-mini
 - `large`: gpt-4o
-- `small`: gpt-3.5-turbo
+- `small`: gpt-4o-mini
 - `agent`: gpt-4o
 
 ### Embeddings Model Aliases
