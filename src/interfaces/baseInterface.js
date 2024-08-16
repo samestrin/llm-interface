@@ -221,11 +221,11 @@ class BaseInterface {
       }
     } catch (error) {
       // attempt error recovery
-      log.error(
+      /*log.error(
         'baseInterface:error',
         JSON.stringify(error),
         JSON.stringify(response),
-      );
+      );*/
 
       responseContent = this.recoverError(error);
 
