@@ -89,12 +89,6 @@ First import `LLMInterface`. You can do this using either the CommonJS `require`
 const { LLMInterface } = require('llm-interface');
 ```
 
-or the ES6 `import` syntax:
-
-```javascript
-import { LLMInterface } from 'llm-interface';
-```
-
 then send your prompt to the LLM provider:
 
 ```javascript
