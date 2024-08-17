@@ -99,6 +99,20 @@ function extractCodeFromResponse(json, attemptRepair) {
   return json;
 }
 
+function unescapeString(escapedStr) {
+  return escapedStr
+    .replace(/\\n/g, '\n')
+    .replace(/\\t/g, '\t')
+    .replace(/\\r/g, '\r')
+    .replace(/\\b/g, '\b')
+    .replace(/\\f/g, '\f')
+    .replace(/\\v/g, '\v')
+    .replace(/\\0/g, '\0')
+    .replace(/\\\\/g, '\\')
+    .replace(/\\"/g, '"')
+    .replace(/\\'/g, "'");
+}
+
 /**
  * Attempts to parse a JSON string. If parsing fails and attemptRepair is true,
  * it uses jsonrepair to try repairing the JSON string.
@@ -113,6 +127,7 @@ async function parseJSON(json, attemptRepair) {
   const regex = new RegExp(subString, 'ig'); // Added 'g' flag for global replacement
 
   if (typeof json === 'string') {
+    json = unescapeString(json);
     if (regex.test(json)) {
       json = extractCodeFromResponse(json, true);
     } else {
