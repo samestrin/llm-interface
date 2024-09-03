@@ -8,7 +8,7 @@
  */
 
 const { LLMInterface } = require('../../src/index.js');
-const { simpleprompt } = require('../../src/utils/defaults.js');
+const { simplePrompt } = require('../../src/utils/defaults.js');
 const { prettyHeader, prettyResult } = require('../../src/utils/utils.js');
 
 require('dotenv').config({ path: '../../.env' });
@@ -30,7 +30,7 @@ Note that not all providers support native JSON mode, so it is important to chec
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  let prompt = `${simpleprompt} Return 5 results.\n\nProvide the response as a valid JSON object; validate the object before responding.\n\nJSON Output Format: [{title, reason}]`;
+  let prompt = `${simplePrompt} Return 5 results.\n\nProvide the response as a valid JSON object; validate the object before responding.\n\nJSON Output Format: [{title, reason}]`;
 
   prettyHeader(
     'Native JSON Output Example',

@@ -8,7 +8,7 @@
  */
 
 const { LLMInterface } = require('../../src/index.js');
-const { simpleprompt } = require('../../src/utils/defaults.js');
+const { simplePrompt } = require('../../src/utils/defaults.js');
 const { prettyHeader, prettyResult } = require('../../src/utils/utils.js');
 
 require('dotenv').config({ path: '../../.env' });
@@ -28,7 +28,7 @@ To run this example, you first need to install the required modules by executing
  * Main exampleUsage() function.
  */
 async function exampleUsage() {
-  let prompt = `${simpleprompt} Return 5 results.\n\nProvide the response as a JSON object.\n\nFollow this output format, only responding with the JSON object and nothing else:\n\n{title, reason}`;
+  let prompt = `${simplePrompt} Return 5 results.\n\nProvide the response as a JSON object.\n\nFollow this output format, only responding with the JSON object and nothing else:\n\n{title, reason}`;
 
   prettyHeader(
     'JSON Output (Prompt Based) Example',
