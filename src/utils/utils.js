@@ -11,6 +11,185 @@ const YELLOW = '\x1b[33m';
 const RESET = '\u001b[0m';
 const log = require('loglevel');
 
+let jsonrepairInstance = null;
+
+// json parsing functions
+
+/**
+ * Attempts to parse a JSON string. If parsing fails and attemptRepair is true,
+ * it uses jsonrepair to try repairing the JSON string.
+ *
+ * @param {string|object} input - The JSON string or object to parse.
+ * @param {boolean} attemptRepair - Whether to attempt repairing the JSON string if parsing fails.
+ * @returns {Promise<object|null>} - The parsed or repaired JSON object, or null if parsing and repair both fail.
+ */
+async function parseJSON(input, attemptRepair) {
+  if (typeof input === 'object') {
+    return input; // Input is already a JSON object
+  }
+
+  if (typeof input === 'string') {
+    // First, attempt to parse the input directly
+    try {
+      return JSON.parse(input); // Fast native JSON.parse
+    } catch (e) {
+      //log.warn('Initial JSON.parse failed, attempting to preprocess input:', e);
+
+      // Preprocess the input string to extract potential JSON
+      input = preprocessInput(input);
+    }
+  }
+
+  // After preprocessing, if the input is still a string, try parsing again
+  try {
+    const parsed = JSON.parse(input);
+    return parsed;
+  } catch (e) {
+    //log.error('Secondary JSON parsing failed, attempting repair:', e);
+
+    // If parsing still fails, and repair is enabled, try repairing the JSON
+    if (attemptRepair) {
+      return await repairJSON(input);
+    }
+  }
+
+  return null; // Return null if parsing and repair both fail
+}
+
+/**
+ * Preprocesses a string input to extract the first valid JSON object.
+ *
+ * @param {string} input - The string that may contain JSON.
+ * @returns {string} - A string containing the first detected JSON object.
+ */
+function preprocessInput(input) {
+  // Extract JSON from markdown blocks or raw string
+  input = extractCodeFromResponse(input);
+
+  // Attempt to find and return the first complete JSON object
+  return findFirstValidJsonObject(input);
+}
+
+/**
+ * Tries to repair a malformed JSON string.
+ *
+ * @param {string} json - The JSON string to repair.
+ * @returns {Promise<object|null>} - The repaired and parsed JSON object, or null if repair fails.
+ */
+async function repairJSON(json) {
+  try {
+    const jsonrepair = await getJsonRepairInstance();
+    let repaired;
+
+    try {
+      repaired = jsonrepair(json);
+    } catch (e) {
+      //log.error(
+      //  'Initial JSON repair failed, attempting selective unescape:',
+      //  e,
+      //);
+      const unescapedJson = attemptSelectiveUnescape(json);
+
+      try {
+        repaired = jsonrepair(unescapedJson); // Retry jsonrepair after selective unescaping
+      } catch (retryError) {
+        //log.error('JSON repair failed after selective unescape:', retryError);
+        return null;
+      }
+    }
+
+    if (repaired) {
+      return JSON.parse(repaired);
+    }
+  } catch (error) {
+    //log.error('JSON repair failed:', error);
+  }
+
+  return null;
+}
+
+/**
+ * Attempts selective unescaping of certain sequences within the JSON string.
+ * This approach avoids unescaping characters that could disrupt valid JSON.
+ *
+ * @param {string} json - The JSON string that might need selective unescaping.
+ * @returns {string} - The JSON string with selective unescaping applied.
+ */
+function attemptSelectiveUnescape(json) {
+  // Check if the input is a valid string; if not, return it unchanged
+  if (typeof json !== 'string') {
+    return json;
+  }
+
+  // Only unescape sequences that are safe and necessary
+  return json
+    .replace(/\\\\/g, '\\') // Double backslashes: safer to unescape
+    .replace(/\\"/g, '\\"') // Retain escaped quotes to avoid breaking JSON structure
+    .replace(/\\'/g, "'"); // This should be rare in JSON but included for completeness
+}
+
+/**
+ * Finds and extracts the first complete JSON object from a string.
+ *
+ * @param {string} input - The string to search for JSON.
+ * @returns {string} - The first JSON object found, or the original input if none found.
+ */
+function findFirstValidJsonObject(input) {
+  let stack = [];
+  let jsonStartIndex = -1;
+
+  for (let i = 0; i < input.length; i++) {
+    const char = input[i];
+
+    if (char === '{' || char === '[') {
+      if (stack.length === 0) {
+        jsonStartIndex = i; // Mark the start of the JSON object or array
+      }
+      stack.push(char);
+    } else if (char === '}' || char === ']') {
+      stack.pop();
+      if (stack.length === 0) {
+        const jsonString = input.substring(jsonStartIndex, i + 1);
+        try {
+          return JSON.parse(jsonString); // Return the valid JSON object
+        } catch (error) {
+          //log.warn(
+          //  'Error parsing detected JSON object, continuing search:',
+          //  error,
+          //);
+          continue; // Continue searching for another JSON object
+        }
+      }
+    }
+  }
+
+  // If no valid JSON object is found, return null to trigger repairJSON
+  return input;
+}
+
+/**
+ * Extracts JavaScript or JSON code from a string with markdown code blocks.
+ *
+ * @param {string} input - The input string that may contain code.
+ * @returns {string} - The extracted code or the cleaned-up input string.
+ */
+function extractCodeFromResponse(input) {
+  // Enhanced regex to match triple backtick code blocks with optional language identifiers
+  const codeBlockRegex = /\`\`\`(?:\w*\n)?([\s\S]*?)\`\`\`/g;
+  const match = codeBlockRegex.exec(input);
+
+  if (match && match[1]) {
+    return match[1].trim(); // Return the extracted code if found
+  }
+
+  // Simplified cleanup of the input string by removing markdown markers in one pass
+  return input
+    .replace(/\`\`\`(\w+)?/gi, '') // Remove code block markers with optional language identifiers
+    .trim();
+}
+
+// messaging functions
+
 /**
  * Returns a message object with the provided message and an optional system message.
  *
@@ -53,8 +232,6 @@ function getSimpleMessageObject(message) {
   };
 }
 
-let jsonrepairInstance = null;
-
 /**
  * Loads the jsonrepair dynamically and stores it in the singleton if not already loaded.
  *
@@ -66,37 +243,6 @@ async function getJsonRepairInstance() {
     jsonrepairInstance = jsonrepair;
   }
   return jsonrepairInstance;
-}
-
-/**
- * Extracts JavaScript code from a JSON string if it exists within ```javascript code block.
- * If no such block is found, optionally attempts to clean up the JSON string by removing
- * all occurrences of ```javascript and ``` markers.
- *
- * @param {string} json - The JSON string that may contain JavaScript code.
- * @param {boolean} attemptRepair - Whether to attempt repairing the JSON string.
- * @returns {string} - The extracted JavaScript code or the cleaned JSON string.
- */
-function extractCodeFromResponse(json, attemptRepair) {
-  // Define regex to match ``` block and capture the code inside
-  const codeBlockRegex = /```(?:[^`]*?)\n([\s\S]*?)```/g;
-
-  if (typeof json === 'string' && attemptRepair) {
-    // Attempt to match the regex
-    const match = codeBlockRegex.exec(json);
-
-    if (match && match[1]) {
-      // If there's a match, return the captured code
-      return match[1].trim();
-    } else if (json.includes('```')) {
-      // Fall through to the previous behavior if json.includes('```') is true
-      json = json.replace(/```javascript/gi, ''); // Replace all occurrences of '```javascript'
-      json = json.replace(/```/gi, ''); // Replace all occurrences of '```'
-    }
-    json = json.trim();
-  }
-
-  return json;
 }
 
 function unescapeString(escapedStr) {
@@ -114,121 +260,13 @@ function unescapeString(escapedStr) {
 }
 
 /**
- * Attempts to parse a JSON string. If parsing fails and attemptRepair is true,
- * it uses jsonrepair to try repairing the JSON string.
- *
- * @param {string} json - The JSON string to parse.
- * @param {boolean} attemptRepair - Whether to attempt repairing the JSON string if parsing fails.
- * @returns {Promise<object|null>} - The parsed or repaired JSON object, or null if parsing and repair both fail.
- */
-async function parseJSON(json, attemptRepair) {
-  const original = json;
-  const subString = '```';
-  const regex = new RegExp(subString, 'ig'); // Added 'g' flag for global replacement
-
-  if (typeof json === 'string') {
-    json = unescapeString(json);
-    if (regex.test(json)) {
-      json = extractCodeFromResponse(json, true);
-    } else {
-      json = findFirstJsonObject(json);
-    }
-  }
-
-  try {
-    const parsed = JSON.parse(json);
-    return parsed;
-  } catch (e) {
-    if (attemptRepair) {
-      try {
-        const jsonrepair = await getJsonRepairInstance();
-        let repaired = false;
-
-        try {
-          repaired = jsonrepair(json);
-        } catch (e) {
-          repaired = jsonrepair(unescapeString(json));
-        }
-
-        if (repaired) {
-          const reparsed = JSON.parse(repaired);
-          return reparsed;
-        }
-      } catch (error) {
-        return original;
-      }
-    } else {
-      return original;
-    }
-  }
-}
-
-function findFirstJsonObject(inputString) {
-  if (inputString) {
-    let stack = [];
-    let jsonStartIndex = -1;
-    let jsonString = '';
-
-    for (let i = 0; i < inputString.length; i++) {
-      const char = inputString[i];
-
-      if (char === '{') {
-        if (stack.length === 0) {
-          jsonStartIndex = i; // Mark the start of the JSON object
-        }
-        stack.push(char);
-      } else if (char === '}') {
-        stack.pop();
-        if (stack.length === 0) {
-          jsonString = inputString.substring(jsonStartIndex, i + 1);
-          break;
-        }
-      }
-    }
-
-    if (jsonString) {
-      try {
-        jsonString = unescapeString(jsonString);
-        const jsonObject = JSON.parse(jsonString.replace(/(\w+):/g, '"$1":')); // Adding quotes around keys
-        return jsonObject;
-      } catch (error) {
-        log.error('Error parsing JSON:', error);
-      }
-    } else {
-      log.error('No JSON object found in the input string.');
-    }
-  }
-
-  return inputString;
-}
-
-/**
- * Unescapes common escape sequences in a string.
- * @param {string} str - The string with escape sequences.
- * @returns {string} - The unescaped string.
- */
-function unescapeString(str) {
-  return str
-    .replace(/\\n/g, '\n')
-    .replace(/\\t/g, '\t')
-    .replace(/\\r/g, '\r')
-    .replace(/\\f/g, '\f')
-    .replace(/\\b/g, '\b')
-    .replace(/\\v/g, '\v')
-    .replace(/\\'/g, "'")
-    .replace(/\\"/g, '"')
-    .replace(/\\_/g, '_')
-    .replace(/\\\\/g, '\\');
-}
-
-/**
  * Returns a promise that resolves after a specified delay in milliseconds.
  *
  * @param {number} ms - The number of milliseconds to delay.
  * @returns {Promise<void>} A promise that resolves after the delay.
  */
 async function delay(ms) {
-  log.log(`delay(${ms})`);
+  //log.log(`delay(${ms})`);
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
