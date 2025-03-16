@@ -65,13 +65,13 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
-    "axios": "^1.8.2",
+    "axios": "^1.8.3",
     "dotenv": "^16.4.7",
     "jsonrepair": "^3.12.0",
     "loglevel": "^1.9.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.9",
+    "@babel/core": "^7.26.10",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/preset-env": "^7.26.9",
     "@eslint/js": "^9.22.0",
@@ -80,7 +80,7 @@
     "cache-manager-fs-hash": "^2.0.0",
     "canvas": "^3.1.0",
     "cheerio": "^1.0.0",
-    "cloudinary": "^2.5.1",
+    "cloudinary": "^2.6.0",
     "convert-svg-to-png": "^0.6.4",
     "eventsource": "^3.0.5",
     "flat-cache": "^6.1.7",
