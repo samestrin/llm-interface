@@ -82,7 +82,7 @@
     "cheerio": "^1.0.0",
     "cloudinary": "^2.6.0",
     "convert-svg-to-png": "^0.6.4",
-    "eventsource": "^3.0.5",
+    "eventsource": "^3.0.6",
     "flat-cache": "^6.1.7",
     "fs-extra": "^11.3.0",
     "globals": "^16.0.0",
