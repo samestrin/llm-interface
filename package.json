@@ -92,7 +92,7 @@
     "open-graph-scraper": "^6.10.0",
     "sharp": "^0.34.2",
     "sharp-ico": "^0.1.5",
-    "simple-git": "^3.27.0",
+    "simple-git": "^3.28.0",
     "tldjs": "^2.3.1",
     "vm": "^0.1.0",
     "xml2js": "^0.6.2"
