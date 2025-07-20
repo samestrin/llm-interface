@@ -87,7 +87,7 @@
     "fs-extra": "^11.3.0",
     "globals": "^16.3.0",
     "jest": "^30.0.4",
-    "langchain": "^0.3.29",
+    "langchain": "^0.3.30",
     "markdown-to-text": "^0.1.1",
     "open-graph-scraper": "^6.10.0",
     "sharp": "^0.34.3",
