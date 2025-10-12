@@ -76,7 +76,7 @@
     "@babel/preset-env": "^7.28.3",
     "@eslint/js": "^9.37.0",
     "babel-jest": "^30.2.0",
-    "cache-manager": "^7.2.3",
+    "cache-manager": "^7.2.4",
     "cache-manager-fs-hash": "^3.0.0",
     "canvas": "^3.2.0",
     "cheerio": "^1.1.2",
