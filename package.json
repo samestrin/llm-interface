@@ -66,8 +66,8 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "axios": "^1.15.0",
-    "dotenv": "^17.4.1",
-    "jsonrepair": "^3.13.3",
+    "dotenv": "^17.4.2",
+    "jsonrepair": "^3.14.0",
     "loglevel": "^1.9.2"
   },
   "devDependencies": {
@@ -85,14 +85,14 @@
     "eventsource": "^4.1.0",
     "flat-cache": "^6.1.22",
     "fs-extra": "^11.3.4",
-    "globals": "^17.4.0",
+    "globals": "^17.5.0",
     "jest": "^30.3.0",
-    "langchain": "^1.3.1",
+    "langchain": "^1.3.3",
     "markdown-to-text": "^0.1.1",
     "open-graph-scraper": "^6.11.0",
     "sharp": "^0.34.5",
     "sharp-ico": "^0.1.5",
-    "simple-git": "^3.35.2",
+    "simple-git": "^3.36.0",
     "tldjs": "^2.3.2",
     "vm": "^0.1.0",
     "xml2js": "^0.6.2"
