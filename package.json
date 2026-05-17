@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "axios": "^1.16.0",
+    "axios": "^1.16.1",
     "dotenv": "^17.4.2",
     "jsonrepair": "^3.14.0",
     "loglevel": "^1.9.2"
