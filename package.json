@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "axios": "^1.16.1",
+    "axios": "^1.17.0",
     "dotenv": "^17.4.2",
     "jsonrepair": "^3.14.0",
     "loglevel": "^1.9.2"
@@ -87,7 +87,7 @@
     "fs-extra": "^11.3.5",
     "globals": "^17.6.0",
     "jest": "^30.4.2",
-    "langchain": "^1.4.2",
+    "langchain": "^1.4.4",
     "markdown-to-text": "^0.1.1",
     "open-graph-scraper": "^6.11.0",
     "sharp": "^0.34.5",
